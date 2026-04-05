@@ -3,89 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>eFootball HUB Database</title>
+    <title>eFootball HUB</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', sans-serif; background-color: #020617; color: white; padding-bottom: 80px; overflow-x: hidden; }
-        
-        /* Header & User Profile */
-        .profile-header { background: linear-gradient(180deg, #1e293b 0%, #020617 100%); padding: 30px 20px; text-align: center; border-bottom: 2px solid #3b82f6; }
-        .user-photo { width: 80px; height: 80px; border-radius: 50%; border: 3px solid #3b82f6; margin-bottom: 10px; }
-        
-        /* Sections */
+        body { font-family: 'Segoe UI', sans-serif; background-color: #020617; color: white; padding-bottom: 80px; }
+
+        /* Header & Search */
+        .header { background: #0f172a; padding: 15px; border-bottom: 1px solid #1e293b; position: sticky; top: 0; z-index: 100; }
+        .search-container { position: relative; width: 100%; margin-top: 10px; }
+        .search-container input { width: 100%; padding: 10px 40px 10px 15px; border-radius: 20px; border: 1px solid #334155; background: #1e293b; color: white; outline: none; }
+        .search-container i { position: absolute; right: 15px; top: 12px; color: #94a3b8; }
+
+        /* Home Dashboard Grid */
         .container { padding: 15px; }
-        .section-title { font-size: 18px; color: #3b82f6; margin: 20px 0 15px; padding-left: 10px; border-left: 4px solid #3b82f6; }
+        .home-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .home-card { background: #0f172a; padding: 15px; border-radius: 12px; text-align: center; border: 1px solid #1e293b; }
+        .home-card i { font-size: 20px; display: block; margin-bottom: 8px; color: #3b82f6; }
+        .home-card p { font-size: 13px; font-weight: 500; }
 
-        /* Grid System (Left & Right Column) */
-        .item-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .item-card { background: #0f172a; border-radius: 12px; overflow: hidden; border: 1px solid #1e293b; transition: 0.3s; text-align: center; cursor: pointer; }
-        .item-card:active { transform: scale(0.95); }
-        .item-card img { width: 100%; height: 120px; object-fit: cover; background: #1e293b; }
-        .item-info { padding: 10px; }
-        .item-name { font-size: 14px; font-weight: bold; color: #f8fafc; }
-        .item-type { font-size: 11px; color: #3b82f6; text-transform: uppercase; }
+        /* Player List (Small Cards) */
+        .player-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 15px; }
+        .player-card { background: #111827; border-radius: 8px; overflow: hidden; border: 1px solid #1e293b; text-align: center; padding-bottom: 5px; }
+        .player-card img { width: 100%; height: 80px; object-fit: cover; }
+        .player-card p { font-size: 11px; margin-top: 4px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 2px; }
 
-        /* Bottom Nav */
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 70px; background: #0f172a; display: flex; border-top: 1px solid #1e293b; z-index: 1000; }
-        .nav-link { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #94a3b8; text-decoration: none; font-size: 11px; }
-        .nav-link i { font-size: 20px; margin-bottom: 4px; }
+        /* Navigation Bar */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 65px; background: #0f172a; display: flex; border-top: 1px solid #1e293b; z-index: 1000; }
+        .nav-link { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #94a3b8; text-decoration: none; font-size: 10px; position: relative; }
+        .nav-link i { font-size: 18px; margin-bottom: 3px; }
         .nav-link.active { color: #3b82f6; }
 
-        /* Hidden Sections */
-        .page-content { display: none; }
-        .page-content.active { display: block; }
+        /* Sub-menu Styles */
+        .sub-menu { display: none; position: absolute; bottom: 70px; background: #1e293b; width: 140px; border-radius: 8px; border: 1px solid #334155; box-shadow: 0 10px 15px rgba(0,0,0,0.5); }
+        .sub-menu a { display: block; padding: 10px; color: white; text-decoration: none; border-bottom: 1px solid #334155; font-size: 12px; }
+        .sub-menu.show { display: block; }
+
+        /* Profile Area (Right Side) */
+        .profile-content { text-align: center; padding: 20px; display: none; }
+        .profile-content img { width: 80px; height: 80px; border-radius: 50%; border: 2px solid #3b82f6; margin-bottom: 10px; }
+        
+        .page-active { display: block !important; }
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
-    <div id="home-page" class="page-content active">
-        <div class="profile-header">
-            <img src="https://img.freepik.com/free-vector/user-blue-gradient_78370-4692.jpg" class="user-photo" id="user-pfp">
-            <h2 id="user-full-name">Loading...</h2>
-            <p id="user-id-tag" style="color: #94a3b8;">ID: #0000000</p>
-            <div style="margin-top: 15px;">
-                <span style="background: #1e293b; padding: 5px 15px; border-radius: 20px; font-size: 12px;">Rank: Legend</span>
-            </div>
-        </div>
-        
-        <div class="container">
-            <div class="section-title">TOP CATEGORIES</div>
-            <div class="item-grid">
-                <div class="item-card" onclick="showPage('manager-page')">
-                    <img src="https://e7.pngegg.com/pngimages/145/634/png-clipart-pep-guardiola-manchester-city-f-c-premier-league-fc-bayern-munich-manager-manchester-city-tshirt-blue.png">
-                    <div class="item-info"><p class="item-name">MANAGERS</p></div>
-                </div>
-                <div class="item-card" onclick="showPage('player-page')">
-                    <img src="https://w7.pngwing.com/pngs/303/793/png-transparent-lionel-messi-2018-world-cup-argentina-national-football-team-fc-barcelona-football-player-messi-tshirt-team-jersey.png">
-                    <div class="item-info"><p class="item-name">PLAYERS</p></div>
-                </div>
-            </div>
+    <div class="header" id="main-header">
+        <h2 style="font-size: 18px; text-align: center;">eFootball <span style="color:#3b82f6">HUB</span></h2>
+        <div class="search-container">
+            <input type="text" placeholder="Search player name..." onkeyup="filterPlayers(this.value)">
+            <i class="fas fa-search"></i>
         </div>
     </div>
 
-    <div id="manager-page" class="page-content">
-        <div class="container">
-            <div class="section-title">FAMOUS MANAGERS (10)</div>
-            <div class="item-grid" id="manager-list">
-                </div>
+    <div id="home-page" class="container page-active">
+        <div class="home-grid">
+            <div class="home-card" onclick="alert('Events')"><i class="fas fa-calendar-alt" style="color:#f87171"></i><p>Events</p></div>
+            <div class="home-card" onclick="showPlayerCategory('Legend')"><i class="fas fa-crown" style="color:#fbbf24"></i><p>Legend</p></div>
+            <div class="home-card" onclick="alert('Mining Started!')"><i class="fas fa-hammer" style="color:#4ade80"></i><p>Mining</p></div>
+            <div class="home-card" onclick="alert('Other Button')"><i class="fas fa-plus-circle" style="color:#a78bfa"></i><p>Extras</p></div>
+        </div>
+
+        <h3 style="margin-top:20px; font-size: 14px; color: #3b82f6;">RECOMMENDED PLAYERS</h3>
+        <div class="player-grid" id="player-list">
+            <div class="player-card"><img src="https://via.placeholder.com/100" alt="P"><p>Messi</p></div>
+            <div class="player-card"><img src="https://via.placeholder.com/100" alt="P"><p>Ronaldo</p></div>
+            <div class="player-card"><img src="https://via.placeholder.com/100" alt="P"><p>Mbappe</p></div>
+            <div class="player-card"><img src="https://via.placeholder.com/100" alt="P"><p>Neymar</p></div>
+            <div class="player-card"><img src="https://via.placeholder.com/100" alt="P"><p>Haaland</p></div>
+            <div class="player-card"><img src="https://via.placeholder.com/100" alt="P"><p>Vini Jr</p></div>
         </div>
     </div>
 
-    <div id="player-page" class="page-content">
-        <div class="container">
-            <div class="section-title">TOP PLAYERS (10)</div>
-            <div class="item-grid" id="player-list">
-                </div>
+    <div id="profile-page" class="profile-content">
+        <img src="https://via.placeholder.com/80" id="user-img">
+        <h2 id="user-name">Loading...</h2>
+        <p id="user-id" style="color:#94a3b8; margin-bottom: 20px;">ID: #00000</p>
+        <div style="background:#0f172a; padding:15px; border-radius:10px; border: 1px solid #1e293b;">
+            <p>Rank: <span style="color:#fbbf24">Legendary</span></p>
+            <p>Total Points: 15,200</p>
         </div>
     </div>
 
     <nav class="bottom-nav">
-        <a href="javascript:void(0)" class="nav-link active" onclick="showPage('home-page')"><i class="fas fa-user-circle"></i>Profile</a>
-        <a href="javascript:void(0)" class="nav-link" onclick="showPage('player-page')"><i class="fas fa-users"></i>Players</a>
-        <a href="javascript:void(0)" class="nav-link" onclick="showPage('manager-page')"><i class="fas fa-user-tie"></i>Managers</a>
-        <a href="javascript:void(0)" class="nav-link" onclick="alert('Coming Soon')"><i class="fas fa-exchange-alt"></i>Compare</a>
+        <a href="javascript:void(0)" class="nav-link active" onclick="navigate('home')">
+            <i class="fas fa-home"></i>Home
+        </a>
+
+        <div class="nav-link" onclick="toggleSubMenu()">
+            <i class="fas fa-users"></i>Players
+            <div class="sub-menu" id="player-sub">
+                <a href="#" onclick="showPlayerCategory('All')">Player List</a>
+                <a href="#" onclick="showPlayerCategory('Country')">Country Wise</a>
+                <a href="#" onclick="showPlayerCategory('League')">League Wise</a>
+                <a href="#" onclick="showPlayerCategory('Legend')">Legends</a>
+            </div>
+        </div>
+
+        <a href="javascript:void(0)" class="nav-link" onclick="alert('Compare Mode')">
+            <i class="fas fa-exchange-alt"></i>Compare
+        </a>
+
+        <a href="javascript:void(0)" class="nav-link" onclick="navigate('profile')">
+            <i class="fas fa-user-circle"></i>Profile
+        </a>
     </nav>
 
     <script>
@@ -95,66 +118,48 @@
         // ইউজার ডাটা
         const user = tg.initDataUnsafe?.user;
         if (user) {
-            document.getElementById('user-full-name').innerText = user.first_name + " " + (user.last_name || "");
-            document.getElementById('user-id-tag').innerText = "ID: #" + user.id;
-            if(user.photo_url) document.getElementById('user-pfp').src = user.photo_url;
+            document.getElementById('user-name').innerText = user.first_name;
+            document.getElementById('user-id').innerText = "ID: #" + user.id;
+            if(user.photo_url) document.getElementById('user-img').src = user.photo_url;
         }
 
-        // পেজ সুইচিং ফাংশন
-        function showPage(pageId) {
-            document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
-            
-            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-            // সিম্পল লজিক নেভ হাইলাইট করার জন্য
+        // নেভিগেশন লজিক
+        function navigate(page) {
+            document.getElementById('player-sub').classList.remove('show');
+            if(page === 'home') {
+                document.getElementById('home-page').classList.add('page-active');
+                document.getElementById('profile-page').classList.remove('page-active');
+                document.getElementById('main-header').classList.remove('hidden');
+            } else if (page === 'profile') {
+                document.getElementById('home-page').classList.remove('page-active');
+                document.getElementById('profile-page').classList.add('page-active');
+                document.getElementById('main-header').classList.add('hidden');
+            }
             tg.HapticFeedback.impactOccurred('light');
         }
 
-        // ডাটা লিস্ট (২০টি বাটন)
-        const managers = [
-            { name: "P. Guardiola", img: "https://via.placeholder.com/150/1e293b/white?text=Pep" },
-            { name: "J. Klopp", img: "https://via.placeholder.com/150/1e293b/white?text=Klopp" },
-            { name: "C. Ancelotti", img: "https://via.placeholder.com/150/1e293b/white?text=Carlo" },
-            { name: "Xavi", img: "https://via.placeholder.com/150/1e293b/white?text=Xavi" },
-            { name: "M. Arteta", img: "https://via.placeholder.com/150/1e293b/white?text=Arteta" },
-            { name: "E. Ten Hag", img: "https://via.placeholder.com/150/1e293b/white?text=Ten+Hag" },
-            { name: "Z. Zidane", img: "https://via.placeholder.com/150/1e293b/white?text=Zidane" },
-            { name: "Jose Mourinho", img: "https://via.placeholder.com/150/1e293b/white?text=Mourinho" },
-            { name: "L. Scaloni", img: "https://via.placeholder.com/150/1e293b/white?text=Scaloni" },
-            { name: "D. Simeone", img: "https://via.placeholder.com/150/1e293b/white?text=Simeone" }
-        ];
+        // সাব-মেনু টগল
+        function toggleSubMenu() {
+            document.getElementById('player-sub').classList.toggle('show');
+        }
 
-        const players = [
-            { name: "L. Messi", img: "https://via.placeholder.com/150/0f172a/white?text=Messi" },
-            { name: "C. Ronaldo", img: "https://via.placeholder.com/150/0f172a/white?text=CR7" },
-            { name: "K. Mbappe", img: "https://via.placeholder.com/150/0f172a/white?text=Mbappe" },
-            { name: "E. Haaland", img: "https://via.placeholder.com/150/0f172a/white?text=Haaland" },
-            { name: "Neymar Jr", img: "https://via.placeholder.com/150/0f172a/white?text=Neymar" },
-            { name: "K. De Bruyne", img: "https://via.placeholder.com/150/0f172a/white?text=KDB" },
-            { name: "Vini Jr", img: "https://via.placeholder.com/150/0f172a/white?text=Vini" },
-            { name: "M. Salah", img: "https://via.placeholder.com/150/0f172a/white?text=Salah" },
-            { name: "R. Lewandowski", img: "https://via.placeholder.com/150/0f172a/white?text=Lewa" },
-            { name: "J. Bellingham", img: "https://via.placeholder.com/150/0f172a/white?text=Jude" }
-        ];
-
-        // লিস্ট রেন্ডার করা
-        function renderList(data, elementId, type) {
-            const container = document.getElementById(elementId);
-            data.forEach(item => {
-                container.innerHTML += `
-                    <div class="item-card" onclick="alert('Details of ${item.name}')">
-                        <img src="${item.img}">
-                        <div class="item-info">
-                            <p class="item-name">${item.name}</p>
-                            <p class="item-type">${type}</p>
-                        </div>
-                    </div>
-                `;
+        // প্লেয়ার ফিল্টার (Search Box)
+        function filterPlayers(val) {
+            const players = document.querySelectorAll('.player-card');
+            players.forEach(card => {
+                const name = card.innerText.toLowerCase();
+                if(name.includes(val.toLowerCase())) {
+                    card.style.display = "block";
+                } else {
+                    card.style.display = "none";
+                }
             });
         }
 
-        renderList(managers, 'manager-list', 'Manager');
-        renderList(players, 'player-list', 'Player');
+        function showPlayerCategory(cat) {
+            alert("Loading " + cat + " Players...");
+            document.getElementById('player-sub').classList.remove('show');
+        }
     </script>
 </body>
 </html>
