@@ -1,19 +1,79 @@
-// ইউজারের নাম দেখানোর জন্য
-const tg = window.Telegram.WebApp;
-const user = tg.initDataUnsafe?.user;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eFootball Mini App</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body { font-family: sans-serif; background-color: #0d1117; color: white; padding: 20px; }
+        .profile-card { background: #161b22; padding: 20px; border-radius: 10px; text-align: center; }
+        .shipping-section { margin-top: 20px; background: #161b22; padding: 15px; border-radius: 10px; }
+        input { width: 90%; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: none; }
+        button { background: #238636; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
+        #saved-address-display { display: none; background: #0d1117; padding: 10px; border: 1px dashed #30363d; margin-top: 10px; }
+    </style>
+</head>
+<body>
 
-if (user) {
-    document.getElementById('user-name-display').innerText = user.first_name;
-    document.getElementById('user-id-display').innerText = "#" + user.id;
-}
+    <div class="profile-card">
+        <h2 id="user-name-display">Loading...</h2>
+        <p id="user-id-display">#000000</p>
+    </div>
 
-// অ্যাড্রেস সেভ হলে বক্স হাইড করার জন্য
-function saveAddress() {
-    const address = document.getElementById('shipping-address').value;
-    if(address) {
-        localStorage.setItem('userAddress', address);
-        document.getElementById('address-input-area').style.display = 'none'; // ইনপুট বক্স হাইড
-        document.getElementById('saved-address-display').style.display = 'block'; // সেভড টেক্সট শো
-        document.getElementById('address-text').innerText = address;
-    }
-}
+    <div class="shipping-section">
+        <h3>SHIPPING ADDRESS</h3>
+        
+        <div id="address-input-area">
+            <input type="text" id="shipping-address" placeholder="Enter your address...">
+            <button onclick="saveAddress()">SAVE ADDRESS</button>
+        </div>
+
+        <div id="saved-address-display">
+            <p><strong>Saved Address:</strong></p>
+            <p id="address-text"></p>
+            <button onclick="editAddress()" style="background: #8b949e;">Edit</button>
+        </div>
+    </div>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+
+        // ইউজার ডাটা সেট করা
+        const user = tg.initDataUnsafe?.user;
+        if (user) {
+            document.getElementById('user-name-display').innerText = user.first_name + (user.last_name ? " " + user.last_name : "");
+            document.getElementById('user-id-display').innerText = "#" + user.id;
+        }
+
+        // অ্যাড্রেস সেভ করা
+        function saveAddress() {
+            const addr = document.getElementById('shipping-address').value.trim();
+            if (addr !== "") {
+                localStorage.setItem('userAddress', addr);
+                showSavedAddress(addr);
+            }
+        }
+
+        // অ্যাড্রেস দেখানো
+        function showSavedAddress(addr) {
+            document.getElementById('address-input-area').style.display = 'none';
+            document.getElementById('saved-address-display').style.display = 'block';
+            document.getElementById('address-text').innerText = addr;
+        }
+
+        // এডিট করা
+        function editAddress() {
+            document.getElementById('address-input-area').style.display = 'block';
+            document.getElementById('saved-address-display').style.display = 'none';
+        }
+
+        // পেজ লোড হলে চেক করা
+        window.onload = () => {
+            const saved = localStorage.getItem('userAddress');
+            if (saved) showSavedAddress(saved);
+        };
+    </script>
+</body>
+</html>
