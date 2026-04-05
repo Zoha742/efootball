@@ -3,155 +3,225 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>eFootball HUB - Official</title>
+    <title>eFootball HUB</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', sans-serif; background-color: #020617; color: white; padding-bottom: 80px; }
+        :root { --primary: #3b82f6; --bg: #020617; --card-bg: #0f172a; --border: #1e293b; --text-dim: #94a3b8; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); color: white; overflow-x: hidden; padding-bottom: 80px; }
 
-        /* Header & Search Bar */
-        .header { background: #0f172a; padding: 15px; border-bottom: 1px solid #1e293b; position: sticky; top: 0; z-index: 100; }
-        .search-box { position: relative; width: 100%; margin-top: 10px; }
-        .search-box input { width: 100%; padding: 12px 40px 12px 15px; border-radius: 25px; border: 1px solid #334155; background: #1e293b; color: white; outline: none; }
-        .search-box i { position: absolute; right: 15px; top: 14px; color: #3b82f6; }
+        /* Header & Search */
+        .header { background: #0f172a; padding: 15px; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; }
+        .search-bar { position: relative; margin-top: 10px; }
+        .search-bar input { width: 100%; padding: 12px 40px 12px 15px; border-radius: 25px; border: 1px solid var(--border); background: #1e293b; color: white; outline: none; font-size: 14px; }
+        .search-bar i { position: absolute; right: 15px; top: 13px; color: var(--primary); }
 
-        /* Navigation Layout */
-        .container { padding: 15px; }
-        .page { display: none; }
+        /* Navigation Logic */
+        .page { display: none; padding: 15px; animation: fadeIn 0.3s ease; }
         .active-page { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Grid for IDs (Player, Manager, etc.) */
-        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-        .card-small { background: #0f172a; border-radius: 10px; overflow: hidden; border: 1px solid #1e293b; text-align: center; padding-bottom: 8px; transition: 0.3s; }
-        .card-small:active { transform: scale(0.95); }
-        .card-small img { width: 100%; height: 80px; object-fit: cover; }
-        .card-small p { font-size: 11px; font-weight: bold; margin-top: 5px; }
+        /* Home Grid - (Buttons from your images) */
+        .home-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px; }
+        .menu-item { background: var(--card-bg); border: 1px solid var(--border); padding: 20px; border-radius: 16px; text-align: center; cursor: pointer; }
+        .menu-item i { font-size: 24px; color: var(--primary); margin-bottom: 10px; display: block; }
+        .menu-item span { font-size: 14px; font-weight: 600; }
 
-        /* Home Dashboard */
-        .home-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
-        .menu-btn { background: linear-gradient(145deg, #1e293b, #0f172a); padding: 20px; border-radius: 15px; text-align: center; border: 1px solid #334155; }
-        .menu-btn i { font-size: 24px; color: #3b82f6; margin-bottom: 8px; display: block; }
+        /* Grid View (3 columns as requested) */
+        .item-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        .card { background: var(--card-bg); border-radius: 10px; border: 1px solid var(--border); overflow: hidden; text-align: center; padding-bottom: 8px; position: relative; }
+        .card img { width: 100%; height: 85px; object-fit: cover; background: #1e293b; }
+        .card p { font-size: 11px; font-weight: bold; margin-top: 5px; padding: 0 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .flag-icon { position: absolute; top: 55px; right: 5px; width: 18px; border: 1px solid white; border-radius: 2px; }
 
         /* Bottom Nav */
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 70px; background: #0f172a; display: flex; border-top: 1px solid #1e293b; justify-content: space-around; align-items: center; }
-        .nav-item { color: #94a3b8; text-decoration: none; text-align: center; font-size: 10px; cursor: pointer; flex: 1; position: relative; }
-        .nav-item i { font-size: 20px; margin-bottom: 4px; display: block; }
-        .nav-item.active { color: #3b82f6; }
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 70px; background: #0f172a; display: flex; border-top: 1px solid var(--border); z-index: 1000; }
+        .nav-link { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-dim); text-decoration: none; font-size: 10px; }
+        .nav-link i { font-size: 20px; margin-bottom: 4px; }
+        .nav-link.active { color: var(--primary); }
 
-        /* Sub-menu Popup */
-        .sub-menu { display: none; position: absolute; bottom: 75px; background: #1e293b; width: 150px; border-radius: 10px; border: 1px solid #334155; left: 50%; transform: translateX(-50%); z-index: 1000; }
-        .sub-menu a { display: block; padding: 12px; color: white; text-decoration: none; font-size: 12px; border-bottom: 1px solid #334155; }
-        .sub-menu.show { display: block; }
+        /* Detail Popup */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; justify-content: center; align-items: center; padding: 20px; }
+        .modal-content { background: var(--card-bg); border-radius: 20px; width: 100%; max-width: 350px; padding: 20px; position: relative; border: 1px solid var(--primary); text-align: center; }
+        .close-btn { position: absolute; top: 15px; right: 15px; font-size: 20px; color: var(--text-dim); }
+
+        /* Profile Style */
+        .profile-card { text-align: center; background: var(--card-bg); padding: 30px; border-radius: 20px; border: 1px solid var(--border); }
+        .profile-card img { width: 90px; height: 90px; border-radius: 50%; border: 3px solid var(--primary); }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <h2 style="font-size: 18px; text-align: center;">eFootball <span style="color:#3b82f6">HUB</span></h2>
-        <div class="search-box">
-            <input type="text" placeholder="Search by name or ID..." onkeyup="searchGlobal(this.value)">
+        <h2 style="font-size: 18px; text-align: center; letter-spacing: 1px;">eFootball <span style="color:var(--primary)">HUB</span></h2>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search Player, Manager or ID..." onkeyup="searchItems()">
             <i class="fas fa-search"></i>
         </div>
     </div>
 
-    <div id="home" class="container page active-page">
+    <div id="home" class="page active-page">
         <div class="home-menu">
-            <div class="menu-btn" onclick="showPage('page-3')"><i class="fas fa-calendar-check"></i>Events (ID 3)</div>
-            <div class="menu-btn" onclick="showPage('page-4')"><i class="fas fa-crown"></i>Legend (ID 4)</div>
-            <div class="menu-btn" onclick="alert('Mining Started')"><i class="fas fa-microchip"></i>Mining</div>
-            <div class="menu-btn" onclick="showPage('task-page')"><i class="fas fa-tasks"></i>Task</div>
+            <div class="menu-item" onclick="showPage('page-player')"><i class="fas fa-users"></i><span>Player (ID 1)</span></div>
+            <div class="menu-item" onclick="showPage('page-manager')"><i class="fas fa-user-tie"></i><span>Manager (ID 2)</span></div>
+            <div class="menu-item" onclick="showPage('page-event')"><i class="fas fa-calendar-star"></i><span>Events (ID 3)</span></div>
+            <div class="menu-item" onclick="showPage('page-legend')"><i class="fas fa-crown"></i><span>Legend (ID 4)</span></div>
         </div>
-        <h3 style="font-size: 14px; color: #3b82f6; margin-bottom: 10px;">TOP PLAYERS</h3>
-        <div class="grid-3" id="top-player-list">
+        <h3 style="font-size: 15px; color: var(--primary); margin-bottom: 12px; border-left: 4px solid var(--primary); padding-left: 10px;">TOP PLAYERS</h3>
+        <div class="item-grid" id="top-players-grid"></div>
+    </div>
+
+    <div id="page-player" class="page">
+        <h3 style="margin-bottom:15px;"><i class="fas fa-users"></i> Player List (ID 1)</h3>
+        <div class="item-grid" id="all-players-grid"></div>
+    </div>
+
+    <div id="page-manager" class="page">
+        <h3 style="margin-bottom:15px;"><i class="fas fa-user-tie"></i> Manager Database (ID 2)</h3>
+        <div class="item-grid" id="managers-grid"></div>
+    </div>
+
+    <div id="page-event" class="page">
+        <h3 style="margin-bottom:15px;"><i class="fas fa-calendar-check"></i> Weekly Events (ID 3)</h3>
+        <div id="events-container">
+            <div class="menu-item" style="width:100%; margin-bottom:10px; text-align:left;">
+                <p>🏆 Online Championship - LIVE</p>
             </div>
-    </div>
-
-    <div id="page-1" class="container page">
-        <h3 class="section-title">PLAYER LIST (ID 1)</h3>
-        <div class="grid-3" id="list-id-1"></div>
-    </div>
-
-    <div id="page-2" class="container page">
-        <h3 class="section-title">MANAGER LIST (ID 2)</h3>
-        <div class="grid-3" id="list-id-2"></div>
-    </div>
-
-    <div id="profile" class="container page" style="text-align: center;">
-        <img src="" id="u-img" style="width: 100px; border-radius: 50%; border: 3px solid #3b82f6; margin-top: 20px;">
-        <h2 id="u-name" style="margin-top: 10px;">User</h2>
-        <p id="u-id" style="color: #94a3b8;">#000000</p>
         </div>
+    </div>
+
+    <div id="page-legend" class="page">
+        <h3 style="margin-bottom:15px;"><i class="fas fa-crown" style="color:gold"></i> Legend Cards (ID 4)</h3>
+        <div class="item-grid" id="legends-grid"></div>
+    </div>
+
+    <div id="page-task" class="page">
+        <div class="profile-card">
+            <i class="fas fa-coins" style="font-size:40px; color:gold"></i>
+            <h2>Daily Tasks</h2>
+            <p style="color:var(--text-dim)">Complete tasks to earn points</p>
+        </div>
+    </div>
+
+    <div id="page-profile" class="page">
+        <div class="profile-card">
+            <img src="https://via.placeholder.com/90" id="user-pfp">
+            <h2 id="user-name" style="margin-top:15px;">User Name</h2>
+            <p id="user-id" style="color:var(--text-dim)">ID: #0000000</p>
+            <div style="margin-top:20px; display:flex; justify-content:space-around; border-top:1px solid var(--border); padding-top:20px;">
+                <div><p>Rank</p><b>Legend</b></div>
+                <div><p>Points</p><b>1,250</b></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="detailModal" class="modal">
+        <div class="modal-content">
+            <i class="fas fa-times close-btn" onclick="closeModal()"></i>
+            <img id="modal-img" src="" style="width:120px; height:120px; border-radius:10px; border:2px solid var(--primary)">
+            <h2 id="modal-name" style="margin:15px 0 5px">Name</h2>
+            <p id="modal-type" style="color:var(--primary); font-size:12px; text-transform:uppercase; font-weight:bold"></p>
+            <hr style="margin:15px 0; border:0; border-top:1px solid var(--border)">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; text-align:left; font-size:13px;">
+                <p>Nationality: <span id="modal-nation" style="color:var(--text-dim)"></span></p>
+                <p>Status: <span style="color:#4ade80">Active</span></p>
+            </div>
+            <button onclick="closeModal()" style="margin-top:20px; width:100%; padding:10px; background:var(--primary); border:none; color:white; border-radius:10px; font-weight:bold">CLOSE</button>
+        </div>
+    </div>
 
     <nav class="bottom-nav">
-        <div class="nav-item active" onclick="showPage('home')"><i class="fas fa-home"></i>Home</div>
-        
-        <div class="nav-item" onclick="toggleSub()">
-            <i class="fas fa-users"></i>Players
-            <div class="sub-menu" id="sub-menu">
-                <a href="#" onclick="showPage('page-1')">Player List (ID 1)</a>
-                <a href="#" onclick="showPage('page-2')">Manager List (ID 2)</a>
-                <a href="#" onclick="showPage('page-4')">Legends (ID 4)</a>
-            </div>
-        </div>
-
-        <div class="nav-item" onclick="showPage('task-page')"><i class="fas fa-coins"></i>Tasks</div>
-        <div class="nav-item" onclick="showPage('profile')"><i class="fas fa-user-circle"></i>Profile</div>
+        <a href="javascript:void(0)" class="nav-link active" onclick="showPage('home')"><i class="fas fa-home"></i>Home</a>
+        <a href="javascript:void(0)" class="nav-link" onclick="showPage('page-player')"><i class="fas fa-users"></i>Players</a>
+        <a href="javascript:void(0)" class="nav-link" onclick="showPage('page-task')"><i class="fas fa-tasks"></i>Tasks</a>
+        <a href="javascript:void(0)" class="nav-link" onclick="showPage('page-profile')"><i class="fas fa-user-circle"></i>Profile</a>
     </nav>
 
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand();
 
-        // ইউজার ইনফো সেট করা
+        // Load User Data
         const user = tg.initDataUnsafe?.user;
         if (user) {
-            document.getElementById('u-name').innerText = user.first_name;
-            document.getElementById('u-id').innerText = "ID: #" + user.id;
-            if(user.photo_url) document.getElementById('u-img').src = user.photo_url;
+            document.getElementById('user-name').innerText = user.first_name;
+            document.getElementById('user-id').innerText = "ID: #" + user.id;
+            if(user.photo_url) document.getElementById('user-pfp').src = user.photo_url;
         }
 
-        // পেজ সুইচিং ফাংশন
+        // Navigation Function
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
             document.getElementById(pageId).classList.add('active-page');
-            document.getElementById('sub-menu').classList.remove('show');
+            
+            document.querySelectorAll('.nav-link').forEach(l => {
+                l.classList.remove('active');
+                if(l.innerText.toLowerCase() === pageId.replace('page-','').replace('home','home')) l.classList.add('active');
+            });
+            window.scrollTo(0,0);
             tg.HapticFeedback.impactOccurred('light');
         }
 
-        function toggleSub() {
-            document.getElementById('sub-menu').classList.toggle('show');
+        // Load Data from players.json
+        async function loadData() {
+            try {
+                const res = await fetch('players.json');
+                const data = await res.json();
+                renderAll(data);
+            } catch (e) { console.error("JSON Error:", e); }
         }
 
-        // তোমার ডিজাইন অনুযায়ী অটোমেটিক ২০টি বাটন/কার্ড জেনারেট করা
-        function generateData(containerId, count, prefix) {
-            const container = document.getElementById(containerId);
-            for(let i=1; i<=count; i++) {
-                container.innerHTML += `
-                    <div class="card-small" onclick="alert('Details of ${prefix} ${i}')">
-                        <img src="https://via.placeholder.com/150/1e293b/fff?text=${prefix}+${i}">
-                        <p>${prefix} ${i}</p>
+        function renderAll(items) {
+            const grids = {
+                'home': document.getElementById('top-players-grid'),
+                'Player': document.getElementById('all-players-grid'),
+                'Manager': document.getElementById('managers-grid'),
+                'Legend': document.getElementById('legends-grid')
+            };
+
+            items.forEach((item, index) => {
+                const card = `
+                    <div class="card" onclick="openModal('${item.name}', '${item.img}', '${player.type}', '${player.country}')">
+                        <img src="${item.img}" onerror="this.src='https://via.placeholder.com/150/1e293b/fff?text=${item.name}'">
+                        <img src="https://flagcdn.com/w40/${item.country}.png" class="flag-icon">
+                        <p>${item.name}</p>
                     </div>
                 `;
-            }
-        }
-
-        // লোড করা হচ্ছে
-        generateData('top-player-list', 9, 'Top Player');
-        generateData('list-id-1', 20, 'Player');
-        generateData('list-id-2', 15, 'Manager');
-
-        // গ্লোবাল সার্চ ফাংশন
-        function searchGlobal(query) {
-            const cards = document.querySelectorAll('.card-small');
-            cards.forEach(card => {
-                if(card.innerText.toLowerCase().includes(query.toLowerCase())) {
-                    card.style.display = "block";
-                } else {
-                    card.style.display = "none";
-                }
+                
+                // Add to specific grids based on type
+                if(grids[item.type]) grids[item.type].innerHTML += card;
+                
+                // Top 6 for Home
+                if(index < 6) grids['home'].innerHTML += card;
             });
         }
+
+        // Search Function
+        function searchItems() {
+            let filter = document.getElementById('searchInput').value.toLowerCase();
+            let cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                let name = card.querySelector('p').innerText.toLowerCase();
+                card.style.display = name.includes(filter) ? "block" : "none";
+            });
+        }
+
+        // Modal Logic
+        function openModal(name, img, type, nation) {
+            document.getElementById('modal-name').innerText = name;
+            document.getElementById('modal-img').src = img;
+            document.getElementById('modal-type').innerText = type;
+            document.getElementById('modal-nation').innerText = nation.toUpperCase();
+            document.getElementById('detailModal').style.display = 'flex';
+            tg.HapticFeedback.notificationOccurred('success');
+        }
+
+        function closeModal() {
+            document.getElementById('detailModal').style.display = 'none';
+        }
+
+        window.onload = loadData;
     </script>
 </body>
 </html>
