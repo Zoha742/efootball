@@ -1,7 +1,142 @@
-{ 
-  "id": 16, 
-  "name": "প্লেয়ারের নাম", 
-  "country": "দেশের কোড (যেমন: ar, br, pt)", 
-  "type": "ক্যাটাগরি (Legend/Base)", 
-  "img": "ছবির লিঙ্ক" 
-}
+[
+  {
+    "id": 1,
+    "name": "L. Messi",
+    "country": "ar",
+    "type": "Legend",
+    "img": "https://img.ayz.sh/efootball/players/messi.png"
+  },
+  {
+    "id": 2,
+    "name": "C. Ronaldo",
+    "country": "pt",
+    "type": "Legend",
+    "img": "https://img.ayz.sh/efootball/players/cr7.png"
+  },
+  {
+    "id": 3,
+    "name": "K. Mbappé",
+    "country": "fr",
+    "type": "Top Player",
+    "img": "https://img.ayz.sh/efootball/players/mbappe.png"
+  },
+  {
+    "id": 4,
+    "name": "Neymar Jr",
+    "country": "br",
+    "type": "Epic",
+    "img": "https://img.ayz.sh/efootball/players/neymar.png"
+  },
+  {
+    "id": 5,
+    "name": "E. Haaland",
+    "country": "no",
+    "type": "Top Player",
+    "img": "https://img.ayz.sh/efootball/players/haaland.png"
+  },
+  {
+    "id": 6,
+    "name": "Vinícius Jr.",
+    "country": "br",
+    "type": "Top Player",
+    "img": "https://img.ayz.sh/efootball/players/vini.png"
+  },
+  {
+    "id": 7,
+    "name": "K. De Bruyne",
+    "country": "be",
+    "type": "Base",
+    "img": "https://img.ayz.sh/efootball/players/kdb.png"
+  },
+  {
+    "id": 8,
+    "name": "Ronaldinho",
+    "country": "br",
+    "type": "Legend",
+    "img": "https://img.ayz.sh/efootball/players/ronaldinho.png"
+  },
+  {
+    "id": 9,
+    "name": "D. Maradona",
+    "country": "ar",
+    "type": "Legend",
+    "img": "https://img.ayz.sh/efootball/players/maradona.png"
+  },
+  {
+    "id": 10,
+    "name": "P. Guardiola",
+    "country": "es",
+    "type": "Manager",
+    "img": "https://img.ayz.sh/efootball/managers/pep.png"
+  },
+  {
+    "id": 11,
+    "name": "J. Klopp",
+    "country": "de",
+    "type": "Manager",
+    "img": "https://img.ayz.sh/efootball/managers/klopp.png"
+  },
+  {
+    "id": 12,
+    "name": "Z. Zidane",
+    "country": "fr",
+    "type": "Manager",
+    "img": "https://img.ayz.sh/efootball/managers/zidane.png"
+  },
+  {
+    "id": 13,
+    "name": "Kaká",
+    "country": "br",
+    "type": "Legend",
+    "img": "https://img.ayz.sh/efootball/players/kaka.png"
+  },
+  {
+    "id": 14,
+    "name": "M. Salah",
+    "country": "eg",
+    "type": "Base",
+    "img": "https://img.ayz.sh/efootball/players/salah.png"
+  },
+  {
+    "id": 15,
+    "name": "J. Bellingham",
+    "country": "gb-eng",
+    "type": "Top Player",
+    "img": "https://img.ayz.sh/efootball/players/jude.png"
+  },
+  {
+    "id": 16,
+    "name": "L. Yashin",
+    "country": "ru",
+    "type": "Legend",
+    "img": "https://img.ayz.sh/efootball/players/yashin.png"
+  },
+  {
+    "id": 17,
+    "name": "Xavi",
+    "country": "es",
+    "type": "Manager",
+    "img": "https://img.ayz.sh/efootball/managers/xavi.png"
+  },
+  {
+    "id": 18,
+    "name": "P. Maldini",
+    "country": "it",
+    "type": "Legend",
+    "img": "https://img.ayz.sh/efootball/players/maldini.png"
+  },
+  {
+    "id": 19,
+    "name": "Bukayo Saka",
+    "country": "gb-eng",
+    "type": "Base",
+    "img": "https://img.ayz.sh/efootball/players/saka.png"
+  },
+  {
+    "id": 20,
+    "name": "C. Ancelotti",
+    "country": "it",
+    "type": "Manager",
+    "img": "https://img.ayz.sh/efootball/managers/carlo.png"
+  }
+]
