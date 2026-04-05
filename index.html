@@ -10,96 +10,103 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', sans-serif; background-color: #020617; color: white; padding-bottom: 80px; }
 
-        /* Header */
-        .header { background: #0f172a; padding: 15px; text-align: center; border-bottom: 1px solid #1e293b; }
-        
-        /* Container */
+        /* Header & Search */
+        .header { background: #0f172a; padding: 15px; border-bottom: 1px solid #1e293b; position: sticky; top: 0; z-index: 100; }
+        .search-container { position: relative; width: 100%; margin-top: 10px; }
+        .search-container input { width: 100%; padding: 10px 40px 10px 15px; border-radius: 20px; border: 1px solid #334155; background: #1e293b; color: white; outline: none; }
+        .search-container i { position: absolute; right: 15px; top: 12px; color: #94a3b8; }
+
+        /* Home Dashboard Grid */
         .container { padding: 15px; }
-        .page { display: none; }
-        .active-page { display: block; }
+        .home-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .home-card { background: #0f172a; padding: 15px; border-radius: 12px; text-align: center; border: 1px solid #1e293b; }
+        .home-card i { font-size: 20px; display: block; margin-bottom: 8px; color: #3b82f6; }
+        .home-card p { font-size: 13px; font-weight: 500; }
 
-        /* Profile Styles */
-        .profile-card { text-align: center; padding: 20px 0; border-bottom: 1px solid #1e293b; margin-bottom: 20px; }
-        .profile-card img { width: 80px; height: 80px; border-radius: 50%; border: 2px solid #3b82f6; margin-bottom: 10px; }
-        .profile-card h2 { font-size: 20px; margin-bottom: 2px; }
-        .profile-card p { font-size: 12px; color: #94a3b8; }
-        .divider { height: 2px; background: linear-gradient(90deg, transparent, #3b82f6, transparent); margin: 15px auto; width: 80%; }
-
-        /* Menu List (Profile & Home) */
-        .menu-list { display: flex; flex-direction: column; gap: 10px; }
-        .menu-item { background: #0f172a; padding: 15px; border-radius: 12px; border: 1px solid #1e293b; display: flex; justify-content: space-between; align-items: center; text-decoration: none; color: white; }
-        .menu-item i { color: #3b82f6; width: 25px; }
-        .point-text { color: #4ade80; font-weight: bold; }
-
-        /* Home Grid */
-        .home-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
-        .category-card { background: #0f172a; padding: 20px; border-radius: 15px; text-align: center; border: 1px solid #1e293b; }
-        .category-card i { font-size: 24px; margin-bottom: 10px; display: block; }
+        /* Player List (Small Cards) */
+        .player-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 15px; }
+        .player-card { background: #111827; border-radius: 8px; overflow: hidden; border: 1px solid #1e293b; text-align: center; padding-bottom: 5px; }
+        .player-card img { width: 100%; height: 80px; object-fit: cover; }
+        .player-card p { font-size: 11px; margin-top: 4px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 2px; }
 
         /* Navigation Bar */
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 70px; background: #0f172a; display: flex; border-top: 1px solid #1e293b; z-index: 1000; }
-        .nav-link { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #94a3b8; text-decoration: none; font-size: 12px; }
-        .nav-link i { font-size: 22px; margin-bottom: 4px; }
-        .nav-link.active { color: #3b82f6; border-top: 3px solid #3b82f6; }
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 65px; background: #0f172a; display: flex; border-top: 1px solid #1e293b; z-index: 1000; }
+        .nav-link { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #94a3b8; text-decoration: none; font-size: 10px; position: relative; }
+        .nav-link i { font-size: 18px; margin-bottom: 3px; }
+        .nav-link.active { color: #3b82f6; }
 
-        /* Search Box inside Category */
-        .search-box { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #1e293b; background: #1e293b; color: white; margin-bottom: 15px; }
+        /* Sub-menu Styles */
+        .sub-menu { display: none; position: absolute; bottom: 70px; background: #1e293b; width: 140px; border-radius: 8px; border: 1px solid #334155; box-shadow: 0 10px 15px rgba(0,0,0,0.5); }
+        .sub-menu a { display: block; padding: 10px; color: white; text-decoration: none; border-bottom: 1px solid #334155; font-size: 12px; }
+        .sub-menu.show { display: block; }
+
+        /* Profile Area (Right Side) */
+        .profile-content { text-align: center; padding: 20px; display: none; }
+        .profile-content img { width: 80px; height: 80px; border-radius: 50%; border: 2px solid #3b82f6; margin-bottom: 10px; }
+        
+        .page-active { display: block !important; }
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
-    <div id="home-page" class="container page active-page">
-        <h3 style="margin-bottom: 15px; color: #3b82f6;">EXPLORE DATABASE</h3>
-        <div class="home-grid">
-            <div class="category-card" onclick="showSub('Player List')"><i class="fas fa-users" style="color:#60a5fa"></i>Player List</div>
-            <div class="category-card" onclick="showSub('Country wise')"><i class="fas fa-globe" style="color:#4ade80"></i>Country wise</div>
-            <div class="category-card" onclick="showSub('League wise')"><i class="fas fa-trophy" style="color:#f87171"></i>League wise</div>
-            <div class="category-card" onclick="showSub('Legends')"><i class="fas fa-star" style="color:#fbbf24"></i>Legends</div>
-            <div class="category-card" onclick="showSub('Managers')"><i class="fas fa-user-tie" style="color:#a78bfa"></i>Managers</div>
-            <div class="category-card" onclick="alert('Mining Start!')"><i class="fas fa-hammer" style="color:#94a3b8"></i>Mining</div>
-        </div>
-
-        <div id="sub-content" style="margin-top: 30px; display: none;">
-            <input type="text" class="search-box" id="categorySearch" placeholder="Search in this category...">
-            <div id="item-display-list" style="text-align: center; color: #94a3b8;">
-                Select a category to view items
-            </div>
+    <div class="header" id="main-header">
+        <h2 style="font-size: 18px; text-align: center;">eFootball <span style="color:#3b82f6">HUB</span></h2>
+        <div class="search-container">
+            <input type="text" placeholder="Search player name..." onkeyup="filterPlayers(this.value)">
+            <i class="fas fa-search"></i>
         </div>
     </div>
 
-    <div id="profile-page" class="container page">
-        <div class="profile-card">
-            <img src="https://via.placeholder.com/80" id="user-pfp">
-            <h2 id="user-name">Loading...</h2>
-            <p id="user-id">ID: #00000000</p>
-            <div class="divider"></div>
+    <div id="home-page" class="container page-active">
+        <div class="home-grid">
+            <div class="home-card" onclick="alert('Events')"><i class="fas fa-calendar-alt" style="color:#f87171"></i><p>Events</p></div>
+            <div class="home-card" onclick="showPlayerCategory('Legend')"><i class="fas fa-crown" style="color:#fbbf24"></i><p>Legend</p></div>
+            <div class="home-card" onclick="alert('Mining Started!')"><i class="fas fa-hammer" style="color:#4ade80"></i><p>Mining</p></div>
+            <div class="home-card" onclick="alert('Other Button')"><i class="fas fa-plus-circle" style="color:#a78bfa"></i><p>Extras</p></div>
         </div>
 
-        <div class="menu-list">
-            <div class="menu-item">
-                <span><i class="fas fa-coins"></i> Mining Points</span>
-                <span class="point-text">1,250 GP</span>
-            </div>
-            <div class="menu-item" onclick="alert('Withdraw logic coming soon')">
-                <span><i class="fas fa-wallet"></i> Withdraw Points</span>
-                <i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="menu-item">
-                <span><i class="fas fa-history"></i> History</span>
-                <i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="menu-item">
-                <span><i class="fas fa-headset"></i> Support</span>
-                <i class="fas fa-chevron-right"></i>
-            </div>
+        <h3 style="margin-top:20px; font-size: 14px; color: #3b82f6;">RECOMMENDED PLAYERS</h3>
+        <div class="player-grid" id="player-list">
+            <div class="player-card"><img src="https://via.placeholder.com/100" alt="P"><p>Messi</p></div>
+            <div class="player-card"><img src="https://via.placeholder.com/100" alt="P"><p>Ronaldo</p></div>
+            <div class="player-card"><img src="https://via.placeholder.com/100" alt="P"><p>Mbappe</p></div>
+            <div class="player-card"><img src="https://via.placeholder.com/100" alt="P"><p>Neymar</p></div>
+            <div class="player-card"><img src="https://via.placeholder.com/100" alt="P"><p>Haaland</p></div>
+            <div class="player-card"><img src="https://via.placeholder.com/100" alt="P"><p>Vini Jr</p></div>
+        </div>
+    </div>
+
+    <div id="profile-page" class="profile-content">
+        <img src="https://via.placeholder.com/80" id="user-img">
+        <h2 id="user-name">Loading...</h2>
+        <p id="user-id" style="color:#94a3b8; margin-bottom: 20px;">ID: #00000</p>
+        <div style="background:#0f172a; padding:15px; border-radius:10px; border: 1px solid #1e293b;">
+            <p>Rank: <span style="color:#fbbf24">Legendary</span></p>
+            <p>Total Points: 15,200</p>
         </div>
     </div>
 
     <nav class="bottom-nav">
-        <a href="javascript:void(0)" class="nav-link active" id="home-btn" onclick="togglePage('home')">
+        <a href="javascript:void(0)" class="nav-link active" onclick="navigate('home')">
             <i class="fas fa-home"></i>Home
         </a>
-        <a href="javascript:void(0)" class="nav-link" id="profile-btn" onclick="togglePage('profile')">
+
+        <div class="nav-link" onclick="toggleSubMenu()">
+            <i class="fas fa-users"></i>Players
+            <div class="sub-menu" id="player-sub">
+                <a href="#" onclick="showPlayerCategory('All')">Player List</a>
+                <a href="#" onclick="showPlayerCategory('Country')">Country Wise</a>
+                <a href="#" onclick="showPlayerCategory('League')">League Wise</a>
+                <a href="#" onclick="showPlayerCategory('Legend')">Legends</a>
+            </div>
+        </div>
+
+        <a href="javascript:void(0)" class="nav-link" onclick="alert('Compare Mode')">
+            <i class="fas fa-exchange-alt"></i>Compare
+        </a>
+
+        <a href="javascript:void(0)" class="nav-link" onclick="navigate('profile')">
             <i class="fas fa-user-circle"></i>Profile
         </a>
     </nav>
@@ -108,36 +115,50 @@
         const tg = window.Telegram.WebApp;
         tg.expand();
 
-        // ইউজার ডাটা সেটআপ
+        // ইউজার ডাটা
         const user = tg.initDataUnsafe?.user;
         if (user) {
-            document.getElementById('user-name').innerText = user.first_name + " " + (user.last_name || "");
+            document.getElementById('user-name').innerText = user.first_name;
             document.getElementById('user-id').innerText = "ID: #" + user.id;
-            if(user.photo_url) document.getElementById('user-pfp').src = user.photo_url;
+            if(user.photo_url) document.getElementById('user-img').src = user.photo_url;
         }
 
-        // পেজ টগল ফাংশন
-        function togglePage(page) {
-            tg.HapticFeedback.impactOccurred('light');
+        // নেভিগেশন লজিক
+        function navigate(page) {
+            document.getElementById('player-sub').classList.remove('show');
             if(page === 'home') {
-                document.getElementById('home-page').classList.add('active-page');
-                document.getElementById('profile-page').classList.remove('active-page');
-                document.getElementById('home-btn').classList.add('active');
-                document.getElementById('profile-btn').classList.remove('active');
-            } else {
-                document.getElementById('home-page').classList.remove('active-page');
-                document.getElementById('profile-page').classList.add('active-page');
-                document.getElementById('home-btn').classList.remove('active');
-                document.getElementById('profile-btn').classList.add('active');
+                document.getElementById('home-page').classList.add('page-active');
+                document.getElementById('profile-page').classList.remove('page-active');
+                document.getElementById('main-header').classList.remove('hidden');
+            } else if (page === 'profile') {
+                document.getElementById('home-page').classList.remove('page-active');
+                document.getElementById('profile-page').classList.add('page-active');
+                document.getElementById('main-header').classList.add('hidden');
             }
+            tg.HapticFeedback.impactOccurred('light');
         }
 
-        // সাব ক্যাটাগরি দেখানো
-        function showSub(title) {
-            document.getElementById('sub-content').style.display = 'block';
-            document.getElementById('categorySearch').placeholder = "Search " + title + "...";
-            document.getElementById('item-display-list').innerText = "Loading " + title + " list...";
-            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        // সাব-মেনু টগল
+        function toggleSubMenu() {
+            document.getElementById('player-sub').classList.toggle('show');
+        }
+
+        // প্লেয়ার ফিল্টার (Search Box)
+        function filterPlayers(val) {
+            const players = document.querySelectorAll('.player-card');
+            players.forEach(card => {
+                const name = card.innerText.toLowerCase();
+                if(name.includes(val.toLowerCase())) {
+                    card.style.display = "block";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        }
+
+        function showPlayerCategory(cat) {
+            alert("Loading " + cat + " Players...");
+            document.getElementById('player-sub').classList.remove('show');
         }
     </script>
 </body>
