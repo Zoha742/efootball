@@ -5,74 +5,141 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>eFootball Mini App</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body { font-family: sans-serif; background-color: #0d1117; color: white; padding: 20px; }
-        .profile-card { background: #161b22; padding: 20px; border-radius: 10px; text-align: center; }
-        .shipping-section { margin-top: 20px; background: #161b22; padding: 15px; border-radius: 10px; }
-        input { width: 90%; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: none; }
-        button { background: #238636; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
-        #saved-address-display { display: none; background: #0d1117; padding: 10px; border: 1px dashed #30363d; margin-top: 10px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0d1117; color: white; padding-bottom: 70px; }
+        
+        /* Header Section */
+        .header { background: #161b22; padding: 20px; text-align: center; border-bottom: 2px solid #238636; }
+        .user-info { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 10px; }
+        .user-info img { width: 50px; border-radius: 50%; border: 2px solid #238636; }
+
+        /* Main Content Panel */
+        .container { padding: 15px; }
+        .promo-banner { width: 100%; border-radius: 10px; margin-bottom: 20px; }
+        
+        .section-title { font-size: 18px; margin-bottom: 15px; border-left: 4px solid #238636; padding-left: 10px; }
+
+        /* Grid for Products/Features */
+        .grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .card { background: #161b22; padding: 15px; border-radius: 12px; text-align: center; border: 1px solid #30363d; transition: 0.3s; }
+        .card:active { transform: scale(0.95); }
+        .card i { font-size: 24px; color: #238636; margin-bottom: 10px; }
+
+        /* Bottom Navigation Menu */
+        .bottom-nav { 
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 65px; 
+            background: #161b22; display: flex; justify-content: space-around; 
+            align-items: center; border-top: 1px solid #30363d; z-index: 1000;
+        }
+        .nav-item { text-align: center; color: #8b949e; text-decoration: none; font-size: 12px; flex: 1; transition: 0.3s; }
+        .nav-item i { font-size: 20px; display: block; margin-bottom: 4px; }
+        .nav-item.active { color: #238636; }
+
+        /* Address Section */
+        .shipping-card { background: #161b22; padding: 15px; border-radius: 12px; margin-top: 20px; border: 1px dashed #30363d; }
+        input { width: 100%; padding: 12px; background: #0d1117; border: 1px solid #30363d; color: white; border-radius: 8px; margin: 10px 0; }
+        .btn-save { background: #238636; width: 100%; padding: 10px; border: none; color: white; border-radius: 8px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <div class="profile-card">
-        <h2 id="user-name-display">Loading...</h2>
-        <p id="user-id-display">#000000</p>
-    </div>
-
-    <div class="shipping-section">
-        <h3>SHIPPING ADDRESS</h3>
-        
-        <div id="address-input-area">
-            <input type="text" id="shipping-address" placeholder="Enter your address...">
-            <button onclick="saveAddress()">SAVE ADDRESS</button>
-        </div>
-
-        <div id="saved-address-display">
-            <p><strong>Saved Address:</strong></p>
-            <p id="address-text"></p>
-            <button onclick="editAddress()" style="background: #8b949e;">Edit</button>
+    <div class="header">
+        <h1>eFootball TM</h1>
+        <div class="user-info">
+            <span id="user-name">Loading...</span>
+            <span id="user-id" style="color: #8b949e; font-size: 12px;"></span>
         </div>
     </div>
+
+    <div class="container">
+        <div class="section-title">Quick Actions</div>
+        <div class="grid-container">
+            <div class="card" onclick="alert('Shop Coming Soon!')">
+                <i class="fas fa-shopping-cart"></i>
+                <p>Buy Coins</p>
+            </div>
+            <div class="card" onclick="alert('Event Loading...')">
+                <i class="fas fa-trophy"></i>
+                <p>Weekly Event</p>
+            </div>
+            <div class="card" onclick="alert('Referral Section')">
+                <i class="fas fa-users"></i>
+                <p>Invite Friends</p>
+            </div>
+            <div class="card" onclick="alert('Profile Settings')">
+                <i class="fas fa-user-gear"></i>
+                <p>Support</p>
+            </div>
+        </div>
+
+        <div class="shipping-card">
+            <h3><i class="fas fa-truck"></i> Shipping Address</h3>
+            <div id="address-input-area">
+                <input type="text" id="shipping-address" placeholder="Enter your full address...">
+                <button class="btn-save" onclick="saveAddress()">SAVE ADDRESS</button>
+            </div>
+            <div id="saved-address-display" style="display:none;">
+                <p id="address-text" style="color: #238636; margin: 10px 0;"></p>
+                <button onclick="editAddress()" style="background:none; border:none; color: #58a6ff; cursor:pointer;">Edit Address</button>
+            </div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="#" class="nav-item active">
+            <i class="fas fa-home"></i>
+            Home
+        </a>
+        <a href="#" class="nav-item" onclick="alert('Shop Tab')">
+            <i class="fas fa-store"></i>
+            Shop
+        </a>
+        <a href="#" class="nav-item" onclick="alert('Event Tab')">
+            <i class="fas fa-play-circle"></i>
+            Events
+        </a>
+        <a href="#" class="nav-item" onclick="alert('Wallet Tab')">
+            <i class="fas fa-wallet"></i>
+            Wallet
+        </a>
+    </nav>
 
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand();
 
-        // ইউজার ডাটা সেট করা
+        // ইউজার ডাটা দেখানো
         const user = tg.initDataUnsafe?.user;
         if (user) {
-            document.getElementById('user-name-display').innerText = user.first_name + (user.last_name ? " " + user.last_name : "");
-            document.getElementById('user-id-display').innerText = "#" + user.id;
+            document.getElementById('user-name').innerText = user.first_name;
+            document.getElementById('user-id').innerText = "#" + user.id;
         }
 
-        // অ্যাড্রেস সেভ করা
+        // অ্যাড্রেস ফাংশন
         function saveAddress() {
-            const addr = document.getElementById('shipping-address').value.trim();
-            if (addr !== "") {
+            const addr = document.getElementById('shipping-address').value;
+            if(addr.trim() !== "") {
                 localStorage.setItem('userAddress', addr);
-                showSavedAddress(addr);
+                updateAddressUI(addr);
             }
         }
 
-        // অ্যাড্রেস দেখানো
-        function showSavedAddress(addr) {
+        function updateAddressUI(addr) {
             document.getElementById('address-input-area').style.display = 'none';
             document.getElementById('saved-address-display').style.display = 'block';
             document.getElementById('address-text').innerText = addr;
         }
 
-        // এডিট করা
         function editAddress() {
             document.getElementById('address-input-area').style.display = 'block';
             document.getElementById('saved-address-display').style.display = 'none';
         }
 
-        // পেজ লোড হলে চেক করা
         window.onload = () => {
             const saved = localStorage.getItem('userAddress');
-            if (saved) showSavedAddress(saved);
+            if(saved) updateAddressUI(saved);
         };
     </script>
 </body>
