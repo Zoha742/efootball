@@ -3,103 +3,158 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>eFootball Database</title>
+    <title>eFootball HUB Database</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', sans-serif; background-color: #020617; color: white; padding-bottom: 80px; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: #020617; color: white; padding-bottom: 80px; overflow-x: hidden; }
         
-        /* Header */
-        .header { background: linear-gradient(180deg, #1e293b 0%, #020617 100%); padding: 25px 20px; text-align: center; border-bottom: 2px solid #3b82f6; }
-        .user-badge { display: inline-block; background: #1d4ed8; padding: 5px 15px; border-radius: 20px; font-size: 12px; margin-top: 10px; font-weight: bold; }
+        /* Header & User Profile */
+        .profile-header { background: linear-gradient(180deg, #1e293b 0%, #020617 100%); padding: 30px 20px; text-align: center; border-bottom: 2px solid #3b82f6; }
+        .user-photo { width: 80px; height: 80px; border-radius: 50%; border: 3px solid #3b82f6; margin-bottom: 10px; }
+        
+        /* Sections */
+        .container { padding: 15px; }
+        .section-title { font-size: 18px; color: #3b82f6; margin: 20px 0 15px; padding-left: 10px; border-left: 4px solid #3b82f6; }
 
-        /* Stats Bar */
-        .stats-bar { display: flex; justify-content: space-around; background: #0f172a; padding: 15px; margin: 15px; border-radius: 12px; border: 1px solid #1e293b; }
-        .stat-item { text-align: center; }
-        .stat-item span { display: block; font-size: 10px; color: #94a3b8; text-transform: uppercase; }
-        .stat-item b { font-size: 16px; color: #3b82f6; }
-
-        /* Main Grid */
-        .container { padding: 0 15px; }
-        .section-title { font-size: 16px; margin: 20px 0 15px; display: flex; align-items: center; gap: 8px; color: #3b82f6; }
-        
-        .db-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .db-card { background: #0f172a; padding: 20px; border-radius: 15px; text-align: center; border: 1px solid #1e293b; transition: 0.3s; }
-        .db-card:active { transform: scale(0.95); background: #1e293b; }
-        .db-card i { font-size: 28px; margin-bottom: 12px; display: block; }
-        
-        /* Icons Colors */
-        .ic-player { color: #60a5fa; }
-        .ic-legend { color: #fbbf24; }
-        .ic-league { color: #f87171; }
-        .ic-country { color: #4ade80; }
+        /* Grid System (Left & Right Column) */
+        .item-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .item-card { background: #0f172a; border-radius: 12px; overflow: hidden; border: 1px solid #1e293b; transition: 0.3s; text-align: center; cursor: pointer; }
+        .item-card:active { transform: scale(0.95); }
+        .item-card img { width: 100%; height: 120px; object-fit: cover; background: #1e293b; }
+        .item-info { padding: 10px; }
+        .item-name { font-size: 14px; font-weight: bold; color: #f8fafc; }
+        .item-type { font-size: 11px; color: #3b82f6; text-transform: uppercase; }
 
         /* Bottom Nav */
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 70px; background: #0f172a; display: flex; border-top: 1px solid #1e293b; }
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 70px; background: #0f172a; display: flex; border-top: 1px solid #1e293b; z-index: 1000; }
         .nav-link { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #94a3b8; text-decoration: none; font-size: 11px; }
         .nav-link i { font-size: 20px; margin-bottom: 4px; }
-        .nav-link.active { color: #3b82f6; border-top: 2px solid #3b82f6; }
+        .nav-link.active { color: #3b82f6; }
+
+        /* Hidden Sections */
+        .page-content { display: none; }
+        .page-content.active { display: block; }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h1 style="font-size: 22px; letter-spacing: 1px;">eFootball <span style="color: #3b82f6;">HUB</span></h1>
-        <div id="user-name" style="margin-top: 5px; font-weight: 500;">Loading...</div>
-        <div class="user-badge" id="user-id">#000000</div>
-    </div>
-
-    <div class="stats-bar">
-        <div class="stat-item"><span>Players</span><b>15K+</b></div>
-        <div class="stat-item"><span>Leagues</span><b>50+</b></div>
-        <div class="stat-item"><span>Legends</span><b>200+</b></div>
-    </div>
-
-    <div class="container">
-        <div class="section-title"><i class="fas fa-database"></i> EXPLORE DATABASE</div>
+    <div id="home-page" class="page-content active">
+        <div class="profile-header">
+            <img src="https://img.freepik.com/free-vector/user-blue-gradient_78370-4692.jpg" class="user-photo" id="user-pfp">
+            <h2 id="user-full-name">Loading...</h2>
+            <p id="user-id-tag" style="color: #94a3b8;">ID: #0000000</p>
+            <div style="margin-top: 15px;">
+                <span style="background: #1e293b; padding: 5px 15px; border-radius: 20px; font-size: 12px;">Rank: Legend</span>
+            </div>
+        </div>
         
-        <div class="db-grid">
-            <div class="db-card" onclick="openSection('Players')">
-                <i class="fas fa-users ic-player"></i>
-                <p>All Players</p>
-            </div>
-            <div class="db-card" onclick="openSection('Legends')">
-                <i class="fas fa-star ic-legend"></i>
-                <p>Legends</p>
-            </div>
-            <div class="db-card" onclick="openSection('Leagues')">
-                <i class="fas fa-trophy ic-league"></i>
-                <p>Leagues</p>
-            </div>
-            <div class="db-card" onclick="openSection('Countries')">
-                <i class="fas fa-globe-americas ic-country"></i>
-                <p>Countries</p>
+        <div class="container">
+            <div class="section-title">TOP CATEGORIES</div>
+            <div class="item-grid">
+                <div class="item-card" onclick="showPage('manager-page')">
+                    <img src="https://e7.pngegg.com/pngimages/145/634/png-clipart-pep-guardiola-manchester-city-f-c-premier-league-fc-bayern-munich-manager-manchester-city-tshirt-blue.png">
+                    <div class="item-info"><p class="item-name">MANAGERS</p></div>
+                </div>
+                <div class="item-card" onclick="showPage('player-page')">
+                    <img src="https://w7.pngwing.com/pngs/303/793/png-transparent-lionel-messi-2018-world-cup-argentina-national-football-team-fc-barcelona-football-player-messi-tshirt-team-jersey.png">
+                    <div class="item-info"><p class="item-name">PLAYERS</p></div>
+                </div>
             </div>
         </div>
     </div>
 
+    <div id="manager-page" class="page-content">
+        <div class="container">
+            <div class="section-title">FAMOUS MANAGERS (10)</div>
+            <div class="item-grid" id="manager-list">
+                </div>
+        </div>
+    </div>
+
+    <div id="player-page" class="page-content">
+        <div class="container">
+            <div class="section-title">TOP PLAYERS (10)</div>
+            <div class="item-grid" id="player-list">
+                </div>
+        </div>
+    </div>
+
     <nav class="bottom-nav">
-        <a href="#" class="nav-link active"><i class="fas fa-home"></i>Home</a>
-        <a href="#" class="nav-link" onclick="openSection('Database')"><i class="fas fa-search"></i>Database</a>
-        <a href="#" class="nav-link" onclick="openSection('Manager')"><i class="fas fa-user-tie"></i>Manager</a>
-        <a href="#" class="nav-link" onclick="openSection('Compare')"><i class="fas fa-exchange-alt"></i>Compare</a>
+        <a href="javascript:void(0)" class="nav-link active" onclick="showPage('home-page')"><i class="fas fa-user-circle"></i>Profile</a>
+        <a href="javascript:void(0)" class="nav-link" onclick="showPage('player-page')"><i class="fas fa-users"></i>Players</a>
+        <a href="javascript:void(0)" class="nav-link" onclick="showPage('manager-page')"><i class="fas fa-user-tie"></i>Managers</a>
+        <a href="javascript:void(0)" class="nav-link" onclick="alert('Coming Soon')"><i class="fas fa-exchange-alt"></i>Compare</a>
     </nav>
 
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand();
 
+        // ইউজার ডাটা
         const user = tg.initDataUnsafe?.user;
         if (user) {
-            document.getElementById('user-name').innerText = user.first_name;
-            document.getElementById('user-id').innerText = "ID: " + user.id;
+            document.getElementById('user-full-name').innerText = user.first_name + " " + (user.last_name || "");
+            document.getElementById('user-id-tag').innerText = "ID: #" + user.id;
+            if(user.photo_url) document.getElementById('user-pfp').src = user.photo_url;
         }
 
-        function openSection(name) {
-            tg.HapticFeedback.impactOccurred('medium');
-            alert(name + " section coming soon!");
+        // পেজ সুইচিং ফাংশন
+        function showPage(pageId) {
+            document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            // সিম্পল লজিক নেভ হাইলাইট করার জন্য
+            tg.HapticFeedback.impactOccurred('light');
         }
+
+        // ডাটা লিস্ট (২০টি বাটন)
+        const managers = [
+            { name: "P. Guardiola", img: "https://via.placeholder.com/150/1e293b/white?text=Pep" },
+            { name: "J. Klopp", img: "https://via.placeholder.com/150/1e293b/white?text=Klopp" },
+            { name: "C. Ancelotti", img: "https://via.placeholder.com/150/1e293b/white?text=Carlo" },
+            { name: "Xavi", img: "https://via.placeholder.com/150/1e293b/white?text=Xavi" },
+            { name: "M. Arteta", img: "https://via.placeholder.com/150/1e293b/white?text=Arteta" },
+            { name: "E. Ten Hag", img: "https://via.placeholder.com/150/1e293b/white?text=Ten+Hag" },
+            { name: "Z. Zidane", img: "https://via.placeholder.com/150/1e293b/white?text=Zidane" },
+            { name: "Jose Mourinho", img: "https://via.placeholder.com/150/1e293b/white?text=Mourinho" },
+            { name: "L. Scaloni", img: "https://via.placeholder.com/150/1e293b/white?text=Scaloni" },
+            { name: "D. Simeone", img: "https://via.placeholder.com/150/1e293b/white?text=Simeone" }
+        ];
+
+        const players = [
+            { name: "L. Messi", img: "https://via.placeholder.com/150/0f172a/white?text=Messi" },
+            { name: "C. Ronaldo", img: "https://via.placeholder.com/150/0f172a/white?text=CR7" },
+            { name: "K. Mbappe", img: "https://via.placeholder.com/150/0f172a/white?text=Mbappe" },
+            { name: "E. Haaland", img: "https://via.placeholder.com/150/0f172a/white?text=Haaland" },
+            { name: "Neymar Jr", img: "https://via.placeholder.com/150/0f172a/white?text=Neymar" },
+            { name: "K. De Bruyne", img: "https://via.placeholder.com/150/0f172a/white?text=KDB" },
+            { name: "Vini Jr", img: "https://via.placeholder.com/150/0f172a/white?text=Vini" },
+            { name: "M. Salah", img: "https://via.placeholder.com/150/0f172a/white?text=Salah" },
+            { name: "R. Lewandowski", img: "https://via.placeholder.com/150/0f172a/white?text=Lewa" },
+            { name: "J. Bellingham", img: "https://via.placeholder.com/150/0f172a/white?text=Jude" }
+        ];
+
+        // লিস্ট রেন্ডার করা
+        function renderList(data, elementId, type) {
+            const container = document.getElementById(elementId);
+            data.forEach(item => {
+                container.innerHTML += `
+                    <div class="item-card" onclick="alert('Details of ${item.name}')">
+                        <img src="${item.img}">
+                        <div class="item-info">
+                            <p class="item-name">${item.name}</p>
+                            <p class="item-type">${type}</p>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        renderList(managers, 'manager-list', 'Manager');
+        renderList(players, 'player-list', 'Player');
     </script>
 </body>
 </html>
