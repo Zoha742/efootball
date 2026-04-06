@@ -1,13 +1,11 @@
 require('dotenv').config();
 const express = require('express');
-const path = require('path'); // এটি যোগ করা হয়েছে
+const path = require('path');
 const cloudinary = require('cloudinary').v2;
-const { Telegraf } = require('telegraf');
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-// স্ট্যাটিক ফাইল (HTML, CSS, JS) সার্ভ করার জন্য এটি দরকার
 app.use(express.static(path.join(__dirname)));
 
 cloudinary.config({ 
@@ -16,15 +14,28 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET 
 });
 
-const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
+// Cloudinary ফোল্ডার থেকে অটোমেটিক ইমেজ রিট্রিভ করার API
+app.get('/api/assets/:folder', async (req, res) => {
+    try {
+        const folderName = req.params.folder;
+        const result = await cloudinary.search
+            .expression(`folder:${folderName}/*`)
+            .execute();
+        
+        const images = result.resources.map(file => ({
+            url: file.secure_url,
+            name: file.public_id.split('/').pop().replace(/_/g, ' ')
+        }));
+        res.json(images);
+    } catch (error) {
+        res.status(500).json({ error: "Cloudinary Error" });
+    }
+});
 
-// এখন সার্ভার ওপেন হলে index.html ফাইলটি দেখাবে
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+  console.log(`Server running on port ${port}`);
 });
-
-bot.launch().catch(err => console.error('Bot launch error:', err));
