@@ -12,131 +12,124 @@
         body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); color: white; padding-bottom: 80px; }
 
         .header { background: #0f172a; padding: 20px; border-bottom: 1px solid var(--border); text-align: center; position: sticky; top: 0; z-index: 1000; }
-        .header h2 { font-size: 20px; letter-spacing: 1px; }
-
         .page { display: none; padding: 15px; animation: fadeIn 0.3s ease; }
         .active-page { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* Main Menu Grid */
-        .main-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 10px 0 20px 0; }
-        .menu-btn { background: linear-gradient(145deg, #1e293b, #0f172a); border: 1px solid var(--border); padding: 20px; border-radius: 15px; text-align: center; cursor: pointer; }
-        .menu-btn i { font-size: 24px; color: var(--primary); margin-bottom: 8px; display: block; }
+        /* Colorfull Quick Actions */
+        .main-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+        .menu-btn { background: var(--card-bg); border: 1px solid var(--border); padding: 20px; border-radius: 15px; text-align: center; cursor: pointer; }
+        .action-btn { border: none; font-weight: bold; }
+        .btn-store { background: linear-gradient(135deg, #f59e0b, #d97706); } /* Orange */
+        .btn-club { background: linear-gradient(135deg, #10b981, #059669); }  /* Green */
+        .btn-leader { background: linear-gradient(135deg, #8b5cf6, #7c3aed); } /* Purple */
+        .btn-orders { background: linear-gradient(135deg, #3b82f6, #2563eb); } /* Blue */
 
-        /* Position Buttons Grid (Player ID 1 Next Page) */
-        .pos-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-        .pos-btn { background: #0f172a; border: 1px solid var(--border); padding: 15px; border-radius: 10px; text-align: center; font-weight: bold; color: white; cursor: pointer; }
+        /* Card Views */
+        .list-container { display: flex; flex-direction: column; gap: 12px; }
+        .wide-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 15px; display: flex; align-items: center; padding: 12px; cursor: pointer; }
+        .wide-card img { width: 70px; height: 95px; border-radius: 10px; object-fit: cover; border: 1px solid var(--primary); }
+        .manager-card img { border-radius: 50%; height: 70px; }
+        .card-info { margin-left: 15px; flex-grow: 1; }
 
-        /* Manager CardView */
-        .manager-list { display: flex; flex-direction: column; gap: 15px; }
-        .manager-card { 
-            background: var(--card-bg); border: 1px solid var(--border); border-radius: 15px; 
-            display: flex; align-items: center; padding: 12px;
-        }
-        .manager-card img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
-        .manager-info { margin-left: 15px; }
+        /* Ad Overlay */
+        .ad-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; display: none; flex-direction: column; justify-content: center; align-items: center; }
+        .ad-box { background: white; color: black; width: 80%; padding: 20px; border-radius: 15px; text-align: center; }
 
         /* Bottom Nav */
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 70px; background: #0f172a; display: flex; border-top: 1px solid var(--border); z-index: 1000; }
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 70px; background: #0f172a; display: flex; border-top: 1px solid var(--border); }
         .nav-link { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-dim); text-decoration: none; font-size: 10px; }
-        .nav-link i { font-size: 22px; margin-bottom: 4px; }
         .nav-link.active { color: var(--primary); }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h2>eFootball <span style="color:var(--primary)">HUB</span></h2>
-    </div>
+    <div class="header"><h2>eFootball <span style="color:var(--primary)">HUB</span></h2></div>
 
     <div id="home" class="page active-page">
         <div class="main-menu">
-            <div class="menu-btn" onclick="showPage('page-pos-select')"><i class="fas fa-users"></i><span>Player (ID 1)</span></div>
-            <div class="menu-btn" onclick="showPage('page-manager')"><i class="fas fa-user-tie"></i><span>Manager (ID 2)</span></div>
-            <div class="menu-btn" onclick="showPage('page-event')"><i class="fas fa-trophy"></i><span>Events (ID 3)</span></div>
-            <div class="menu-btn" onclick="showPage('page-legend')"><i class="fas fa-crown"></i><span>Legend (ID 4)</span></div>
+            <div class="menu-btn" onclick="showPage('page-pos')"><i class="fas fa-users"></i><br>Player (ID 1)</div>
+            <div class="menu-btn" onclick="loadAndShow('manager')"><i class="fas fa-user-tie"></i><br>Manager (ID 2)</div>
+            <div class="menu-btn" onclick="loadAndShow('event')"><i class="fas fa-trophy"></i><br>Events (ID 3)</div>
+            <div class="menu-btn" onclick="loadAndShow('legend')"><i class="fas fa-crown"></i><br>Legend (ID 4)</div>
         </div>
 
-        <h3 style="font-size: 14px; color: var(--primary); margin-bottom: 12px;">QUICK ACTIONS</h3>
-        <div class="main-menu" style="margin-bottom: 30px;">
-            <div class="menu-btn" style="padding:15px;"><i class="fas fa-gem" style="font-size:18px;"></i><span style="font-size:12px;">Premium Store</span></div>
-            <div class="menu-btn" style="padding:15px;"><i class="fas fa-shield-alt" style="font-size:18px;"></i><span style="font-size:12px;">Club & League</span></div>
-            <div class="menu-btn" style="padding:15px;"><i class="fas fa-chart-line" style="font-size:18px;"></i><span style="font-size:12px;">Leaderboard</span></div>
-            <div class="menu-btn" style="padding:15px;"><i class="fas fa-shopping-bag" style="font-size:18px;"></i><span style="font-size:12px;">My Orders</span></div>
+        <h3 style="font-size: 14px; margin-bottom: 12px;">QUICK ACTIONS</h3>
+        <div class="main-menu">
+            <div class="menu-btn action-btn btn-store"><i class="fas fa-gem"></i><br>Store</div>
+            <div class="menu-btn action-btn btn-club"><i class="fas fa-shield-alt"></i><br>Club</div>
+            <div class="menu-btn action-btn btn-leader"><i class="fas fa-chart-line"></i><br>Leader</div>
+            <div class="menu-btn action-btn btn-orders"><i class="fas fa-shopping-bag"></i><br>Orders</div>
         </div>
 
-        <h3 style="font-size: 14px; color: var(--primary); margin-bottom: 12px;">TOP PLAYERS</h3>
-        <div id="top-players-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;"></div>
+        <h3 style="font-size: 14px; margin: 20px 0 10px;">TOP PLAYERS</h3>
+        <div id="top-players" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;"></div>
     </div>
 
-    <div id="page-pos-select" class="page">
-        <h3 style="margin-bottom:20px; color:var(--primary);">Select Position</h3>
-        <div class="pos-grid">
-            <div class="pos-btn" onclick="alert('Coming Soon')">CF</div>
-            <div class="pos-btn" onclick="alert('Coming Soon')">SS</div>
-            <div class="pos-btn" onclick="alert('Coming Soon')">AMF</div>
-            <div class="pos-btn" onclick="alert('Coming Soon')">LWF</div>
-            <div class="pos-btn" onclick="alert('Coming Soon')">RWF</div>
-            <div class="pos-btn" onclick="alert('Coming Soon')">LMF</div>
-            <div class="pos-btn" onclick="alert('Coming Soon')">CMF</div>
-            <div class="pos-btn" onclick="alert('Coming Soon')">RMF</div>
-            <div class="pos-btn" onclick="alert('Coming Soon')">DMF</div>
-            <div class="pos-btn" onclick="alert('Coming Soon')">LB</div>
-            <div class="pos-btn" onclick="alert('Coming Soon')">CB</div>
-            <div class="pos-btn" onclick="alert('Coming Soon')">RB</div>
-            <div class="pos-btn" onclick="alert('Coming Soon')">GK</div>
+    <div id="page-list" class="page">
+        <h3 id="list-title" style="color: var(--primary); margin-bottom: 15px;">List</h3>
+        <div id="list-render" class="list-container"></div>
+    </div>
+
+    <div id="page-pos" class="page">
+        <h3>Select Position</h3>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:15px;">
+            <div class="menu-btn" onclick="alert('Coming Soon')">CF</div>
+            <div class="menu-btn" onclick="alert('Coming Soon')">GK</div>
         </div>
     </div>
 
-    <div id="page-manager" class="page">
-        <h3 style="margin-bottom:20px; color:var(--primary);">Manager List (ID 2)</h3>
-        <div class="manager-list" id="managers-container">
-            </div>
+    <div id="ad-pop" class="ad-overlay">
+        <div class="ad-box">
+            <h4>AdsGram Test Ad</h4>
+            <div style="height:100px; background:#eee; margin:15px 0;"></div>
+            <button onclick="closeAd()" style="background:var(--primary); color:white; border:none; padding:10px 20px; border-radius:5px;">Close Ad</button>
+        </div>
     </div>
 
     <nav class="bottom-nav">
-        <a href="javascript:void(0)" class="nav-link active" onclick="showPage('home')"><i class="fas fa-home"></i>Home</a>
-        <a href="javascript:void(0)" class="nav-link" onclick="showPage('page-legend')"><i class="fas fa-crown"></i>Legend</a>
-        <a href="javascript:void(0)" class="nav-link" onclick="alert('Coming Soon')"><i class="fas fa-gem"></i>Task</a>
-        <a href="javascript:void(0)" class="nav-link" onclick="showPage('home')"><i class="fas fa-user-alt"></i>Profile</a>
+        <a href="#" class="nav-link active" onclick="showPage('home')"><i class="fas fa-home"></i>Home</a>
+        <a href="#" class="nav-link" onclick="loadAndShow('legend')"><i class="fas fa-crown"></i>Legend</a>
+        <a href="#" class="nav-link" onclick="alert('Coming Soon')"><i class="fas fa-gem"></i>Task</a>
     </nav>
 
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand();
 
-        const managers = [
-            { name: "Zinedine Zidane", img: "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775477859/Zinedine_Zidane_ql35df.png" },
-            { name: "Jürgen Klopp", img: "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775477859/J%C3%BCrgen_Klopp_x4z8by.png" },
-            { name: "Sir Alex Ferguson", img: "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775477857/Sir_Alex_Ferguson_vstoay.png" },
-            { name: "Pep Guardiola", img: "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775477854/Pep_Guardiola_ymdrle.png" },
-            { name: "Fabio Capello", img: "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775477776/Fabio_Capello_vqvulv.png" },
-            { name: "Johan Cruyff", img: "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775477768/Johan_Cruyff_bqjtlt.png" },
-            { name: "José Mourinho", img: "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775477765/Jos%C3%A9_Mourinho_acn3sj.png" }
-        ];
-
-        function showPage(pageId) {
+        function showPage(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
-            document.getElementById(pageId).classList.add('active-page');
-            tg.HapticFeedback.impactOccurred('medium');
+            document.getElementById(id).classList.add('active-page');
         }
 
-        function renderManagers() {
-            const container = document.getElementById('managers-container');
-            managers.forEach(m => {
-                container.innerHTML += `
-                    <div class="manager-card">
-                        <img src="${m.img}">
-                        <div class="manager-info">
-                            <h3>${m.name}</h3>
-                            <p style="color:var(--text-dim); font-size:12px;">Professional Manager</p>
-                        </div>
-                    </div>
-                `;
-            });
+        async function loadAndShow(folder) {
+            const listArea = document.getElementById('list-render');
+            document.getElementById('list-title').innerText = folder.toUpperCase() + " List";
+            listArea.innerHTML = "Loading...";
+            showPage('page-list');
+
+            try {
+                const res = await fetch(`/api/assets/${folder}`);
+                const data = await res.json();
+                listArea.innerHTML = '';
+                data.forEach(item => {
+                    listArea.innerHTML += `
+                        <div class="wide-card ${folder === 'manager' ? 'manager-card' : ''}" onclick="triggerAd()">
+                            <img src="${item.url}">
+                            <div class="card-info">
+                                <h3>${item.name}</h3>
+                                <p style="font-size:12px; color:var(--text-dim)">Info coming soon</p>
+                            </div>
+                        </div>`;
+                });
+            } catch (e) { listArea.innerHTML = "Error loading images."; }
         }
 
-        window.onload = renderManagers;
+        function triggerAd() { document.getElementById('ad-pop').style.display = 'flex'; }
+        function closeAd() { 
+            document.getElementById('ad-pop').style.display = 'none';
+            alert("More details coming soon!");
+        }
     </script>
 </body>
 </html>
