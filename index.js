@@ -1,29 +1,34 @@
+const express = require('express');
+const cloudinary = require('cloudinary').v2;
+const app = express();
+
+cloudinary.config({ 
+  cloud_name: 'dyqegwdme', 
+  api_key: 'YOUR_KEY', 
+  api_secret: 'YOUR_SECRET' 
+});
+
 app.get('/api/assets/:folder', async (req, res) => {
     try {
-        const folderParam = req.params.folder;
-        let searchPath = "";
-
-        // ফোল্ডার নেম ম্যাপিং
-        if (folderParam === 'legend') {
-            searchPath = "Home/Legend_Cards/*"; // Legend_Cards এর ভেতরের সব সাব-ফোল্ডার
-        } else if (folderParam === 'manager') {
-            searchPath = "Home/Manager/*";
-        } else if (folderParam === 'event') {
-            searchPath = "Home/Events/*";
-        }
+        const folder = req.params.folder;
+        let path = "";
+        
+        if(folder === 'legend') path = "Home/Legend_Cards/*";
+        if(folder === 'manager') path = "Home/Manager/*";
+        if(folder === 'event') path = "Home/Events/*";
 
         const result = await cloudinary.search
-            .expression(`folder:${searchPath}`)
-            .sort_by('public_id', 'asc')
+            .expression(`folder:${path}`)
             .execute();
-        
-        const images = result.resources.map(file => ({
+
+        const assets = result.resources.map(file => ({
             url: file.secure_url,
-            name: file.public_id.split('/').pop().replace(/_/g, ' ')
+            name: file.public_id.split('/').pop()
         }));
-        res.json(images);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Cloudinary Fetch Error" });
+        res.json(assets);
+    } catch (err) {
+        res.status(500).send(err);
     }
 });
+
+app.listen(3000, () => console.log("Server running on port 3000"));
