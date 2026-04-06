@@ -4,81 +4,122 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>eFootball HUB</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { background: #0f172a; color: white; font-family: sans-serif; margin: 0; padding-bottom: 70px; }
-        .page { display: none; padding: 20px; }
-        .active-page { display: block; }
-        
-        /* Card View Setup */
-        .card-container { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
-        .player-card { background: #1e293b; border-radius: 15px; overflow: hidden; border: 1px solid #334155; }
-        .player-card img { width: 100%; height: auto; display: block; }
-        .player-info { padding: 10px; text-align: center; }
-        
-        /* Bottom Navigation */
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: #1e293b; display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid #334155; }
-        .nav-item { color: #94a3b8; text-decoration: none; font-size: 12px; text-align: center; cursor: pointer; }
-        .nav-item.active { color: #3b82f6; }
-        .nav-item i { font-size: 20px; display: block; margin-bottom: 4px; }
+        :root { --bg: #050a18; --card: #121a2d; --primary: #3b82f6; --text: #f8fafc; }
+        body { background: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; padding-bottom: 80px; }
+        .page { display: none; padding: 15px; }
+        .active { display: block; }
 
-        /* Banner Ad Placeholder */
-        .banner-ad { width: 100%; height: 50px; background: #334155; margin-top: 20px; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #94a3b8; }
-        
-        /* Quick Action Buttons */
-        .quick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-        .q-btn { background: #3b82f6; padding: 20px; border-radius: 15px; text-align: center; font-weight: bold; }
+        /* Home Header & Quick Action */
+        .header { text-align: center; padding: 20px; font-size: 20px; font-weight: bold; }
+        .quick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0; }
+        .q-btn { background: var(--card); padding: 15px; border-radius: 12px; text-align: center; border: 1px solid #2d3748; }
+
+        /* Top Players & Cards */
+        .section-title { color: var(--primary); font-size: 14px; margin: 20px 0 10px; }
+        .card-container { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .player-card { background: var(--card); border-radius: 15px; overflow: hidden; border: 1px solid #1e293b; position: relative; }
+        .player-card img { width: 100%; display: block; }
+        .p-info { padding: 8px; text-align: center; font-size: 12px; }
+
+        /* Stats Overlay (Bio) */
+        .stats-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; display: none; overflow-y: auto; padding: 20px; }
+        .stats-box { background: var(--card); border-radius: 20px; padding: 20px; margin-top: 50px; }
+        .stat-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #2d3748; }
+        .stat-val { color: #4ade80; font-weight: bold; }
+
+        /* Bottom Nav */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 70px; background: #0f172a; display: flex; border-top: 1px solid #1e293b; }
+        .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #94a3b8; font-size: 10px; cursor: pointer; }
+        .nav-item.active-nav { color: var(--primary); }
     </style>
 </head>
 <body>
 
-    <div id="home" class="page active-page">
-        <h2>eFootball HUB</h2>
+    <div id="home" class="page active">
+        <div class="header">eFootball <span style="color:var(--primary)">HUB</span></div>
         <div class="quick-grid">
-            <div class="q-btn" onclick="showPage('legend')">Legend (ID 4)</div>
-            <div class="q-btn" onclick="showPage('manager')">Manager (ID 2)</div>
+            <div class="q-btn" onclick="showPage('page-legend')">PLAYER (ID 1)</div>
+            <div class="q-btn" onclick="showPage('page-manager')">MANAGER (ID 2)</div>
         </div>
-        <div class="banner-ad">Banner Test Ad - 320x50</div>
+        
+        <div class="section-title">TOP PLAYERS</div>
+        <div class="card-container" id="top-players-list"></div>
     </div>
 
-    <div id="legend" class="page">
-        <i class="fas fa-arrow-left" onclick="showPage('home')"></i>
-        <h3>Select Position (ID 1)</h3>
-        <div class="card-container" id="legend-list">
-            </div>
-        <div class="banner-ad">Banner Test Ad - 320x50</div>
+    <div id="page-legend" class="page">
+        <div class="section-title">LEGEND VIEW</div>
+        <div class="card-container" id="legend-list"></div>
     </div>
 
-    <div id="manager" class="page">
-        <h3>Managers</h3>
-        <div class="card-container" id="manager-list"></div>
+    <div id="stats-view" class="stats-overlay">
+        <div class="stats-box" id="stats-content"></div>
+        <button onclick="closeStats()" style="width:100%; margin-top:20px; padding:15px; background:var(--primary); color:white; border:none; border-radius:10px;">Close & Watch Ad</button>
     </div>
 
-    <div class="bottom-nav">
-        <div class="nav-item active" onclick="showPage('home')"><i class="fas fa-home"></i>Home</div>
-        <div class="nav-item"><i class="fas fa-users"></i>Top Player</div>
-        <div class="nav-item"><i class="fas fa-tasks"></i>Task</div>
-        <div class="nav-item"><i class="fas fa-user"></i>Profile</div>
-    </div>
+    <nav class="bottom-nav">
+        <div class="nav-item active-nav" onclick="showPage('home')"><i class="fas fa-home"></i>Home</div>
+        <div class="nav-item" onclick="showPage('page-legend')"><i class="fas fa-crown"></i>Legend</div>
+        <div class="nav-item" onclick="alert('Mining/Task coming soon')"><i class="fas fa-gem"></i>Task</div>
+        <div class="nav-item" onclick="alert('Profile info soon')"><i class="fas fa-user"></i>Profile</div>
+    </nav>
 
     <script>
-        function showPage(pageId) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
-            document.getElementById(pageId).classList.add('active-page');
-            if(pageId !== 'home') loadAssets(pageId);
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+
+        function showPage(id) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active-nav'));
+            // Haptic feedback
+            tg.HapticFeedback.impactOccurred('light');
+            
+            if(id === 'page-legend') loadPlayerData();
         }
 
-        async function loadAssets(type) {
-            const res = await fetch(`/api/assets/${type}`);
+        async function loadPlayerData() {
+            const res = await fetch('/api/players');
             const data = await res.json();
-            const container = document.getElementById(`${type}-list`);
-            container.innerHTML = data.map(item => `
-                <div class="player-card">
-                    <img src="${item.url}" alt="card">
-                    <div class="player-info">${item.name}</div>
+            const list = document.getElementById('legend-list');
+            
+            list.innerHTML = data.legend.map(p => `
+                <div class="player-card" onclick="showStats('${p.id}')">
+                    <img src="${p.image}" alt="">
+                    <div class="p-info"><b>${p.position}</b><br>${p.name}</div>
                 </div>
             `).join('');
         }
+
+        async function showStats(id) {
+            const res = await fetch('/api/players');
+            const data = await res.json();
+            const p = data.legend.find(item => item.id === id);
+            
+            const content = document.getElementById('stats-content');
+            content.innerHTML = `
+                <h2 style="text-align:center">${p.name}</h2>
+                <div class="section-title">ATTACKING</div>
+                ${Object.entries(p.stats.attacking).map(([key, val]) => `
+                    <div class="stat-row"><span>${key}</span><span class="stat-val">${val}</span></div>
+                `).join('')}
+                <div class="section-title">SKILLS</div>
+                <p style="font-size:12px; color:#94a3b8">${p.stats.skills.join(', ')}</p>
+            `;
+            document.getElementById('stats-view').style.display = 'block';
+        }
+
+        function closeStats() {
+            document.getElementById('stats-view').style.display = 'none';
+            // এখানে আপনার AdsGram Interstitial Ad স্ক্রিপ্ট কল করুন
+            alert("Test Ad: Player data unlocked!");
+        }
+
+        // ইনিশিয়াল লোড (Top Players)
+        window.onload = loadPlayerData;
     </script>
 </body>
 </html>
