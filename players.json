@@ -1,23 +1,23 @@
 {
   "legend": [
     {
-      "id": "01",
-      "name": "Ronaldinho Gaucho",
-      "position": "LWF",
-      "image": "https://res.cloudinary.com/dyqegwdme/image/upload/v1/Home/Legend_Cards/LWF/ronaldinho.png",
-      "bio": {
-        "height": "182cm",
-        "weight": "80kg",
-        "age": "29",
-        "foot": "Right",
-        "condition": "B"
-      },
+      "id": "101",
+      "name": "Lionel Messi",
+      "position": "SS",
+      "image": "https://res.cloudinary.com/dyqegwdme/image/upload/v1/Home/Legend_Cards/SS/messi.png",
       "stats": {
-        "attacking": {"Ball Control": 86, "Dribbling": 85, "Finishing": 79},
-        "athleticism": {"Speed": 76, "Acceleration": 79, "Stamina": 74},
-        "defending": {"Defensive Awareness": 42, "Tackling": 44},
-        "skills": ["Scissors Feint", "Double Touch", "Flip Flap", "Phenomenal Pass"]
+        "attacking": {"Offensive Awareness": 95, "Ball Control": 99, "Dribbling": 96},
+        "athleticism": {"Speed": 82, "Acceleration": 89, "Balance": 97},
+        "defending": {"Tackling": 35, "Aggression": 40},
+        "skills": ["Double Touch", "Flip Flap", "Long Range Shooting"]
       }
+    }
+  ],
+  "manager": [
+    {
+      "id": "m1",
+      "name": "Pep Guardiola",
+      "image": "https://res.cloudinary.com/dyqegwdme/image/upload/v1/Home/Manager/pep.png"
     }
   ]
 }
