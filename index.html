@@ -1,49 +1,84 @@
-<style>
-    /* Home Page Position Card */
-    .pos-selection-card {
-        background: white;
-        border-radius: 25px;
-        padding: 20px;
-        margin: 20px 0;
-        color: #0891b2;
-    }
-    .pos-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-        margin-top: 15px;
-    }
-    .pos-btn {
-        background: #f1f5f9;
-        border: none;
-        padding: 15px;
-        border-radius: 12px;
-        font-weight: bold;
-        color: #1e293b;
-        text-align: center;
-    }
-    /* Colorful Buttons from your screenshot */
-    .btn-premium { background: #f59e0b; }
-    .btn-club { background: #3b82f6; }
-    .btn-leader { background: #f97316; }
-    .btn-order { background: #ef4444; }
-</style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eFootball HUB</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { background: #0f172a; color: white; font-family: sans-serif; margin: 0; padding-bottom: 70px; }
+        .page { display: none; padding: 20px; }
+        .active-page { display: block; }
+        
+        /* Card View Setup */
+        .card-container { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+        .player-card { background: #1e293b; border-radius: 15px; overflow: hidden; border: 1px solid #334155; }
+        .player-card img { width: 100%; height: auto; display: block; }
+        .player-info { padding: 10px; text-align: center; }
+        
+        /* Bottom Navigation */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: #1e293b; display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid #334155; }
+        .nav-item { color: #94a3b8; text-decoration: none; font-size: 12px; text-align: center; cursor: pointer; }
+        .nav-item.active { color: #3b82f6; }
+        .nav-item i { font-size: 20px; display: block; margin-bottom: 4px; }
 
-<div id="home" class="page active-page">
-    <div class="main-menu">
-        <div class="menu-btn btn-premium">PREMIUM STORE</div>
-        <div class="menu-btn btn-club">CLUB & LEAGUE</div>
-        <div class="menu-btn btn-leader">LEADERBOARD</div>
-        <div class="menu-btn btn-order">MY ORDERS</div>
-    </div>
+        /* Banner Ad Placeholder */
+        .banner-ad { width: 100%; height: 50px; background: #334155; margin-top: 20px; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #94a3b8; }
+        
+        /* Quick Action Buttons */
+        .quick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .q-btn { background: #3b82f6; padding: 20px; border-radius: 15px; text-align: center; font-weight: bold; }
+    </style>
+</head>
+<body>
 
-    <div class="pos-selection-card">
-        <h3>Select Position</h3>
-        <div class="pos-grid">
-            <div class="pos-btn" onclick="loadData('legend')">Forward</div>
-            <div class="pos-btn" onclick="loadData('legend')">Midfielder</div>
-            <div class="pos-btn" onclick="loadData('legend')">Defender</div>
-            <div class="pos-btn" onclick="loadData('legend')">Goalkeeper</div>
+    <div id="home" class="page active-page">
+        <h2>eFootball HUB</h2>
+        <div class="quick-grid">
+            <div class="q-btn" onclick="showPage('legend')">Legend (ID 4)</div>
+            <div class="q-btn" onclick="showPage('manager')">Manager (ID 2)</div>
         </div>
+        <div class="banner-ad">Banner Test Ad - 320x50</div>
     </div>
-</div>
+
+    <div id="legend" class="page">
+        <i class="fas fa-arrow-left" onclick="showPage('home')"></i>
+        <h3>Select Position (ID 1)</h3>
+        <div class="card-container" id="legend-list">
+            </div>
+        <div class="banner-ad">Banner Test Ad - 320x50</div>
+    </div>
+
+    <div id="manager" class="page">
+        <h3>Managers</h3>
+        <div class="card-container" id="manager-list"></div>
+    </div>
+
+    <div class="bottom-nav">
+        <div class="nav-item active" onclick="showPage('home')"><i class="fas fa-home"></i>Home</div>
+        <div class="nav-item"><i class="fas fa-users"></i>Top Player</div>
+        <div class="nav-item"><i class="fas fa-tasks"></i>Task</div>
+        <div class="nav-item"><i class="fas fa-user"></i>Profile</div>
+    </div>
+
+    <script>
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
+            document.getElementById(pageId).classList.add('active-page');
+            if(pageId !== 'home') loadAssets(pageId);
+        }
+
+        async function loadAssets(type) {
+            const res = await fetch(`/api/assets/${type}`);
+            const data = await res.json();
+            const container = document.getElementById(`${type}-list`);
+            container.innerHTML = data.map(item => `
+                <div class="player-card">
+                    <img src="${item.url}" alt="card">
+                    <div class="player-info">${item.name}</div>
+                </div>
+            `).join('');
+        }
+    </script>
+</body>
+</html>
