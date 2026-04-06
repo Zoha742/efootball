@@ -9,168 +9,164 @@
     <style>
         :root { --primary: #3b82f6; --bg: #020617; --card-bg: #0f172a; --border: #1e293b; --text-dim: #94a3b8; }
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); color: white; padding-bottom: 80px; overflow-x: hidden; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); color: white; padding-bottom: 80px; }
 
-        /* Header with Back Button */
-        .header { background: #0f172a; padding: 15px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; position: sticky; top: 0; z-index: 1000; height: 60px; }
-        .back-btn { font-size: 20px; color: white; cursor: pointer; margin-right: 15px; display: none; }
-        .header h2 { font-size: 18px; letter-spacing: 1px; flex-grow: 1; text-align: center; margin-right: 35px; }
+        .header { background: #0f172a; padding: 20px; border-bottom: 1px solid var(--border); text-align: center; position: sticky; top: 0; z-index: 1000; }
+        .header h2 { font-size: 20px; letter-spacing: 1px; }
 
-        /* Navigation Pages */
-        .page { display: none; padding: 15px; animation: slideIn 0.3s ease; }
+        .page { display: none; padding: 15px; animation: fadeIn 0.3s ease; }
         .active-page { display: block; }
-        @keyframes slideIn { from { transform: translateX(50px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* Colorful Main Menu (ID 1-4) */
-        .main-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px; }
-        .menu-btn { border: none; padding: 25px; border-radius: 18px; text-align: center; cursor: pointer; color: white; display: flex; flex-direction: column; align-items: center; }
-        .menu-btn i { font-size: 28px; margin-bottom: 10px; }
-        .menu-btn span { font-size: 14px; font-weight: bold; }
+        /* Home Menu Styles */
+        .main-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 10px 0 25px 0; }
+        .menu-btn { background: linear-gradient(145deg, #1e293b, #0f172a); border: 1px solid var(--border); padding: 25px; border-radius: 18px; text-align: center; cursor: pointer; transition: 0.2s; }
+        .menu-btn i { font-size: 28px; color: var(--primary); margin-bottom: 10px; display: block; }
 
-        .id-player { background: linear-gradient(135deg, #06b6d4, #0891b2); }
-        .id-manager { background: linear-gradient(135deg, #ec4899, #db2777); }
-        .id-event { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
-        .id-legend { background: linear-gradient(135deg, #10b981, #059669); }
+        /* Legend Card View */
+        .legend-list { display: flex; flex-direction: column; gap: 12px; }
+        .legend-card-wide { 
+            background: var(--card-bg); border: 1px solid var(--border); border-radius: 15px; 
+            display: flex; align-items: center; padding: 10px; cursor: pointer; 
+        }
+        .legend-card-wide img { width: 75px; height: 100px; border-radius: 10px; object-fit: cover; border: 1px solid var(--primary); }
+        .legend-info { margin-left: 15px; flex-grow: 1; }
+        .pos-tag { background: var(--primary); color: white; padding: 2px 8px; border-radius: 5px; font-size: 10px; font-weight: bold; margin-bottom: 5px; display: inline-block; }
 
-        /* Quick Actions (4 Buttons) */
-        .grid-menu { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 15px; }
-        .m-btn { height: 85px; border-radius: 18px; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; font-weight: bold; font-size: 11px; text-transform: uppercase; border: none; cursor: pointer; }
-        .c-gold { background: linear-gradient(135deg, #f59e0b, #d97706); }
-        .c-blue { background: linear-gradient(135deg, #3b82f6, #2563eb); }
-        .c-orange { background: linear-gradient(135deg, #f97316, #ea580c); }
-        .c-red { background: linear-gradient(135deg, #ef4444, #dc2626); }
-
-        /* Player Position Grid (Next Page) */
-        .pos-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
-        .pos-card { background: var(--card-bg); border: 1px solid var(--border); padding: 20px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; cursor: pointer; }
-        .pos-card i { color: var(--primary); }
-
-        /* Player List Card View (As per Image) */
-        .player-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .player-card { background: #1e293b; border-radius: 15px; overflow: hidden; border: 1px solid var(--border); transition: 0.2s; }
-        .player-card img { width: 100%; height: 160px; object-fit: cover; background: #0f172a; }
-        .player-info { padding: 10px; text-align: center; }
-        .player-info p { font-size: 13px; font-weight: bold; color: white; }
+        /* Ad Overlay */
+        .ad-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 2000; display: none; flex-direction: column; justify-content: center; align-items: center; }
+        .ad-box { background: white; color: black; width: 85%; padding: 20px; border-radius: 15px; text-align: center; position: relative; }
+        .close-ad { position: absolute; top: -10px; right: -10px; background: #ef4444; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: bold; cursor: pointer; }
 
         /* Bottom Nav */
         .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 70px; background: #0f172a; display: flex; border-top: 1px solid var(--border); z-index: 1000; }
         .nav-link { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-dim); text-decoration: none; font-size: 10px; }
-        .nav-link.active { color: var(--primary); }
         .nav-link i { font-size: 22px; margin-bottom: 4px; }
+        .nav-link.active { color: var(--primary); }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <i class="fas fa-arrow-left back-btn" id="back-icon" onclick="goBack()"></i>
-        <h2 id="header-title">eFootball HUB</h2>
+        <h2>eFootball <span style="color:var(--primary)">HUB</span></h2>
     </div>
 
     <div id="home" class="page active-page">
         <div class="main-menu">
-            <div class="menu-btn id-player" onclick="showPage('page-pos')"><i class="fas fa-users"></i><span>Player (ID 1)</span></div>
-            <div class="menu-btn id-manager" onclick="showPage('page-manager')"><i class="fas fa-user-tie"></i><span>Manager (ID 2)</span></div>
-            <div class="menu-btn id-event" onclick="showPage('page-event')"><i class="fas fa-trophy"></i><span>Events (ID 3)</span></div>
-            <div class="menu-btn id-legend" onclick="showPage('page-legend')"><i class="fas fa-crown"></i><span>Legend (ID 4)</span></div>
+            <div class="menu-btn" onclick="showPage('page-player')"><i class="fas fa-users"></i><span>Player (ID 1)</span></div>
+            <div class="menu-btn" onclick="showPage('page-manager')"><i class="fas fa-user-tie"></i><span>Manager (ID 2)</span></div>
+            <div class="menu-btn" onclick="showPage('page-event')"><i class="fas fa-trophy"></i><span>Events (ID 3)</span></div>
+            <div class="menu-btn" onclick="showPage('page-legend')"><i class="fas fa-crown"></i><span>Legend (ID 4)</span></div>
         </div>
-
-        <h3 style="font-size: 12px; color: var(--primary); margin: 25px 0 10px; text-transform: uppercase;">Quick Actions</h3>
-        <div class="grid-menu">
-            <button class="m-btn c-gold" onclick="showPage('page-store')"><i class="fas fa-shopping-cart"></i>Premium Store</button>
-            <button class="m-btn c-blue" onclick="showPage('page-club')"><i class="fas fa-shield-alt"></i>Club & League</button>
-            <button class="m-btn c-orange" onclick="showPage('page-leader')"><i class="fas fa-users-cog"></i>Leaderboard</button>
-            <button class="m-btn c-red" onclick="showPage('page-orders')"><i class="fas fa-receipt"></i>My Orders</button>
-        </div>
+        <h3 style="font-size: 14px; color: var(--primary); margin-bottom: 15px;">TOP PLAYERS</h3>
+        <div id="top-players-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;"></div>
     </div>
 
-    <div id="page-pos" class="page">
-        <div class="pos-grid">
-            <div class="pos-card" onclick="loadPlayers('Forward')"><span>Forward</span> <i class="fas fa-chevron-right"></i></div>
-            <div class="pos-card" onclick="loadPlayers('Midfielder')"><span>Midfielder</span> <i class="fas fa-chevron-right"></i></div>
-            <div class="pos-card" onclick="loadPlayers('Defender')"><span>Defender</span> <i class="fas fa-chevron-right"></i></div>
-            <div class="pos-card" onclick="loadPlayers('Goalkeeper')"><span>Goalkeeper</span> <i class="fas fa-chevron-right"></i></div>
-        </div>
-    </div>
-
-    <div id="page-player-list" class="page">
-        <div class="player-grid" id="player-render-area">
+    <div id="page-legend" class="page">
+        <h3 style="margin-bottom:15px; color: var(--primary);">Legend Card View</h3>
+        <div class="legend-list" id="legends-render-area">
             </div>
     </div>
 
-    <div id="page-manager" class="page"><h3>Managers List</h3></div>
-    <div id="page-store" class="page"><h3>Premium Store</h3></div>
-    <div id="page-leader" class="page"><h3>Leaderboard</h3></div>
+    <div id="page-coming-soon" class="page">
+        <div style="text-align: center; margin-top: 50px;">
+            <i class="fas fa-clock" style="font-size: 60px; color: var(--primary); margin-bottom: 20px;"></i>
+            <h2>Info is Coming Soon</h2>
+            <p style="color: var(--text-dim); margin-top: 10px;">We are working on player stats.</p>
+            <button onclick="showPage('home')" style="margin-top:20px; padding: 10px 20px; background: var(--border); border: none; color: white; border-radius: 8px;">Back to Home</button>
+        </div>
+    </div>
+
+    <div id="ad-popup" class="ad-overlay">
+        <div class="ad-box">
+            <div class="close-ad" onclick="closeAd()">X</div>
+            <p style="color: grey; font-size: 10px;">TEST AD</p>
+            <div style="height: 150px; background: #eee; margin: 15px 0; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                <b>AdsGram Test Ad</b>
+            </div>
+            <button style="width: 100%; padding: 10px; background: var(--primary); color: white; border: none; border-radius: 5px;">Visit Sponsor</button>
+        </div>
+    </div>
 
     <nav class="bottom-nav">
-        <a href="javascript:void(0)" class="nav-link active" onclick="showPage('home', this)"><i class="fas fa-home"></i>Home</a>
-        <a href="javascript:void(0)" class="nav-link" onclick="showPage('page-pos', this)"><i class="fas fa-users"></i>Top Player</a>
-        <a href="javascript:void(0)" class="nav-link" onclick="showPage('page-task', this)"><i class="fas fa-gem"></i>Task</a>
-        <a href="javascript:void(0)" class="nav-link" onclick="showPage('page-profile', this)"><i class="fas fa-user-alt"></i>Profile</a>
+        <a href="javascript:void(0)" class="nav-link active" onclick="showPage('home')"><i class="fas fa-home"></i>Home</a>
+        <a href="javascript:void(0)" class="nav-link" onclick="showPage('page-legend')"><i class="fas fa-crown"></i>Legend</a>
+        <a href="javascript:void(0)" class="nav-link" onclick="showPage('page-coming-soon')"><i class="fas fa-gem"></i>Task</a>
+        <a href="javascript:void(0)" class="nav-link" onclick="showPage('home')"><i class="fas fa-user-alt"></i>Profile</a>
     </nav>
 
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand();
 
-        let pageHistory = ['home'];
+        // Cloudinary Data (Based on your links)
+        const legends = [
+            { name: "K. Rummenigge", pos: "CF", img: "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470946/K._Heinz_Rummenigge_tucqrv.png" },
+            { name: "Pele", pos: "SS", img: "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470969/Pele_wudkac.png" },
+            { name: "Lionel Messi", pos: "SS", img: "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470967/Lionel_Messi_cjusph.png" },
+            { name: "Diego Maradona", pos: "SS", img: "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470966/Diego_Maradona_xjo0gg.png" },
+            { name: "Franck Ribery", pos: "LWF", img: "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471167/Franck_Ribery_kfskxt.png" },
+            { name: "Luis Figo", pos: "RWF", img: "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471160/Luis_Figo_btsf31.png" },
+            { name: "Gareth Bale", pos: "LMF", img: "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471200/Gareth_Bale_vxoe6t.png" },
+            { name: "Cafu", pos: "RMF", img: "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471191/Cafu_u4ctam.png" },
+            { name: "Andres Iniesta", pos: "CMF", img: "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471223/Andres_Iniesta_f6djcy.png" },
+            { name: "Andrea Pirlo", pos: "DMF", img: "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471237/Andrea_Pirlo_psnvig.png" },
+            { name: "Franco Baresi", pos: "CB", img: "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472137/Franco_Baresi_n7ftqj.png" },
+            { name: "Cafu", pos: "RB", img: "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471251/Cafu_q8ip7b.png" },
+            { name: "Martin Caceres", pos: "LB", img: "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472221/Martin_Caceres_sbmmyl.png" },
+            { name: "Peter Schmeichel", pos: "GK", img: "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472276/Peter_Schmeichel_lnpuvq.png" }
+        ];
 
-        function showPage(pageId, element) {
+        const posOrder = ["CF", "SS", "LWF", "RWF", "LMF", "RMF", "CMF", "DMF", "CB", "RB", "LB", "GK"];
+
+        function showPage(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
             document.getElementById(pageId).classList.add('active-page');
-            
-            // Header Logic
-            const backIcon = document.getElementById('back-icon');
-            if (pageId === 'home') {
-                backIcon.style.display = 'none';
-                document.getElementById('header-title').innerText = "eFootball HUB";
-                pageHistory = ['home'];
-            } else {
-                backIcon.style.display = 'block';
-                pageHistory.push(pageId);
-            }
-
-            if(element) {
-                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-                element.classList.add('active');
-            }
             tg.HapticFeedback.impactOccurred('medium');
         }
 
-        function goBack() {
-            if (pageHistory.length > 1) {
-                pageHistory.pop(); // Remove current page
-                const prevPage = pageHistory[pageHistory.length - 1];
-                showPage(prevPage);
-                pageHistory.pop(); // Prevent double push in showPage
-            }
-        }
-
-        function loadPlayers(pos) {
-            document.getElementById('header-title').innerText = pos + " Players";
-            const area = document.getElementById('player-render-area');
-            area.innerHTML = ''; // Clear
-
-            // ডামি ডাটা (তুমি পরে তোমার JSON থেকে কানেক্ট করতে পারবে)
-            const dummyPlayers = [
-                { name: "L. MESSI", img: "https://via.placeholder.com/300x400/0f172a/fff?text=MESSI" },
-                { name: "C. RONALDO", img: "https://via.placeholder.com/300x400/0f172a/fff?text=RONALDO" },
-                { name: "NEYMAR JR", img: "https://via.placeholder.com/300x400/0f172a/fff?text=NEYMAR" },
-                { name: "K. MBAPPE", img: "https://via.placeholder.com/300x400/0f172a/fff?text=MBAPPE" }
-            ];
-
-            dummyPlayers.forEach(p => {
-                area.innerHTML += `
-                    <div class="player-card">
-                        <img src="${p.img}">
-                        <div class="player-info">
-                            <p>${p.name}</p>
+        function renderLegends() {
+            const area = document.getElementById('legends-render-area');
+            area.innerHTML = '';
+            
+            posOrder.forEach(pos => {
+                const filtered = legends.filter(p => p.pos === pos);
+                filtered.forEach(p => {
+                    area.innerHTML += `
+                        <div class="legend-card-wide" onclick="showAd()">
+                            <img src="${p.img}">
+                            <div class="legend-info">
+                                <div class="pos-tag">${p.pos}</div>
+                                <h3>${p.name}</h3>
+                            </div>
+                            <i class="fas fa-chevron-right" style="color:var(--text-dim)"></i>
                         </div>
-                    </div>
-                `;
+                    `;
+                });
             });
-
-            showPage('page-player-list');
         }
+
+        function showAd() {
+            tg.HapticFeedback.notificationOccurred('success');
+            document.getElementById('ad-popup').style.display = 'flex';
+        }
+
+        function closeAd() {
+            document.getElementById('ad-popup').style.display = 'none';
+            showPage('page-coming-soon');
+        }
+
+        window.onload = () => {
+            renderLegends();
+            // Top Players sample on home
+            const homeGrid = document.getElementById('top-players-grid');
+            legends.slice(0, 6).forEach(p => {
+                homeGrid.innerHTML += `<div style="background:var(--card-bg); border-radius:10px; padding:5px; text-align:center;">
+                    <img src="${p.img}" style="width:100%; border-radius:8px;">
+                    <p style="font-size:10px; margin-top:5px;">${p.name}</p>
+                </div>`;
+            });
+        };
     </script>
 </body>
 </html>
