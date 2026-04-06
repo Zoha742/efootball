@@ -76,18 +76,3 @@ app.post('/api/save-progress', express.json(), (req, res) => {
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
-app.use(express.static(path.join(__dirname)));
-
-// হোম রুট
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
-});
-
-// মাইনিনিং এবং টাস্ক ডাটা সেভ করার জন্য API (ভবিষ্যতের জন্য)
-app.post('/api/save-progress', express.json(), (req, res) => {
-    // এখানে ইউজারের প্রগ্রেস সেভ করার লজিক থাকবে
-    res.json({ status: "success" });
-});
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
