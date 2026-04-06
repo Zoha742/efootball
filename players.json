@@ -1,51 +1,15 @@
 {
-  "legend": [
-    {
-      "id": "101",
-      "name": "Pele",
-      "position": "CF",
-      "image": "https://res.cloudinary.com/dyqegwdme/image/upload/v1775478478/Legend_Cards/CF/pele.png",
-      "stats": {
-        "attacking": { "Awareness": 99, "Finishing": 98, "Dribbling": 96 },
-        "athleticism": { "Speed": 95, "Acceleration": 97, "Stamina": 88 }
-      }
-    },
-    {
-      "id": "102",
-      "name": "Maldini",
-      "position": "CB",
-      "image": "https://res.cloudinary.com/dyqegwdme/image/upload/v1775478478/Legend_Cards/CB/maldini.png",
-      "stats": {
-        "attacking": { "Awareness": 60, "Finishing": 55, "Passing": 85 },
-        "athleticism": { "Speed": 88, "Acceleration": 85, "Stamina": 92 }
-      }
-    },
-    {
-      "id": "103",
-      "name": "Ronaldinho",
-      "position": "SS",
-      "image": "https://res.cloudinary.com/dyqegwdme/image/upload/v1775478478/Legend_Cards/SS/ronaldinho.png",
-      "stats": {
-        "attacking": { "Awareness": 92, "Finishing": 90, "Dribbling": 99 },
-        "athleticism": { "Speed": 90, "Acceleration": 94, "Stamina": 85 }
-      }
-    }
+  "players": [
+    { "id": 1, "name": "Messi", "rating": 95, "image": "https://res.cloudinary.com/demo/image/upload/messi.png" },
+    { "id": 2, "name": "Mbappe", "rating": 92, "image": "https://res.cloudinary.com/demo/image/upload/mbappe.png" }
   ],
-  "manager": [
-    {
-      "id": "201",
-      "name": "Pep Guardiola",
-      "position": "Manager",
-      "image": "https://res.cloudinary.com/dyqegwdme/image/upload/v123456/Manager/pep.png",
-      "style": "Possession Game"
-    }
+  "legends": [
+    { "id": 4, "name": "Maradona", "rating": 97, "image": "https://res.cloudinary.com/demo/image/upload/maradona.png" }
   ],
-  "player": [],
-  "event": [
-    {
-      "id": "301",
-      "name": "Italian League",
-      "image": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775478478/Italian_League_ifo9bb.jpg"
-    }
+  "managers": [
+    { "id": 2, "name": "Pep Guardiola", "club": "Man City" }
+  ],
+  "events": [
+    { "id": 3, "title": "Champions League Final", "date": "2026-05-28" }
   ]
 }
