@@ -1,182 +1,49 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>eFootball HUB</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root { --primary: #3b82f6; --bg: #020617; --card-bg: #0f172a; --border: #1e293b; --text-dim: #94a3b8; }
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); color: white; padding-bottom: 80px; overflow-x: hidden; }
+<style>
+    /* Home Page Position Card */
+    .pos-selection-card {
+        background: white;
+        border-radius: 25px;
+        padding: 20px;
+        margin: 20px 0;
+        color: #0891b2;
+    }
+    .pos-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: 15px;
+    }
+    .pos-btn {
+        background: #f1f5f9;
+        border: none;
+        padding: 15px;
+        border-radius: 12px;
+        font-weight: bold;
+        color: #1e293b;
+        text-align: center;
+    }
+    /* Colorful Buttons from your screenshot */
+    .btn-premium { background: #f59e0b; }
+    .btn-club { background: #3b82f6; }
+    .btn-leader { background: #f97316; }
+    .btn-order { background: #ef4444; }
+</style>
 
-        /* Header */
-        .header { background: #0f172a; padding: 20px; border-bottom: 1px solid var(--border); text-align: center; position: sticky; top: 0; z-index: 1000; }
-        
-        /* Navigation & Pages */
-        .page { display: none; padding: 15px; animation: fadeIn 0.3s ease; }
-        .active-page { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        /* ID Buttons Grid */
-        .main-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px; }
-        .menu-btn { background: var(--card-bg); border: 1px solid var(--border); padding: 20px; border-radius: 15px; text-align: center; cursor: pointer; transition: 0.2s; }
-        .menu-btn:active { transform: scale(0.95); }
-        .menu-btn i { font-size: 24px; color: var(--primary); margin-bottom: 8px; display: block; }
-
-        /* Colorful Quick Actions */
-        .action-btn { border: none; font-weight: bold; color: white; padding: 15px !important; }
-        .btn-store { background: linear-gradient(135deg, #f59e0b, #d97706); }
-        .btn-club { background: linear-gradient(135deg, #10b981, #059669); }
-        .btn-leader { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
-        .btn-orders { background: linear-gradient(135deg, #3b82f6, #2563eb); }
-
-        /* Card Views */
-        .list-container { display: flex; flex-direction: column; gap: 12px; }
-        .wide-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 15px; display: flex; align-items: center; padding: 12px; cursor: pointer; }
-        .wide-card img { width: 70px; height: 95px; border-radius: 10px; object-fit: cover; border: 1px solid var(--primary); }
-        .manager-card img { border-radius: 50%; height: 75px; width: 75px; }
-        .card-info { margin-left: 15px; flex-grow: 1; }
-        .pos-tag { background: var(--primary); color: white; padding: 2px 8px; border-radius: 5px; font-size: 10px; font-weight: bold; display: inline-block; margin-bottom: 5px; }
-
-        /* Interstitial Ad Mockup */
-        .ad-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 2000; display: none; flex-direction: column; justify-content: center; align-items: center; }
-        .ad-box { background: white; color: black; width: 85%; padding: 20px; border-radius: 15px; text-align: center; position: relative; }
-        .close-ad { position: absolute; top: -10px; right: -10px; background: #ef4444; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: bold; }
-
-        /* Bottom Navigation */
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 70px; background: #0f172a; display: flex; border-top: 1px solid var(--border); z-index: 1000; }
-        .nav-link { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-dim); text-decoration: none; font-size: 10px; }
-        .nav-link i { font-size: 22px; margin-bottom: 4px; }
-        .nav-link.active { color: var(--primary); }
-    </style>
-</head>
-<body>
-
-    <div class="header">
-        <h2>eFootball <span style="color:var(--primary)">HUB</span></h2>
+<div id="home" class="page active-page">
+    <div class="main-menu">
+        <div class="menu-btn btn-premium">PREMIUM STORE</div>
+        <div class="menu-btn btn-club">CLUB & LEAGUE</div>
+        <div class="menu-btn btn-leader">LEADERBOARD</div>
+        <div class="menu-btn btn-order">MY ORDERS</div>
     </div>
 
-    <div id="home" class="page active-page">
-        <div class="main-menu">
-            <div class="menu-btn" onclick="showPage('page-pos')"><i class="fas fa-users"></i><span>Player (ID 1)</span></div>
-            <div class="menu-btn" onclick="loadData('manager')"><i class="fas fa-user-tie"></i><span>Manager (ID 2)</span></div>
-            <div class="menu-btn" onclick="loadData('event')"><i class="fas fa-trophy"></i><span>Events (ID 3)</span></div>
-            <div class="menu-btn" onclick="loadData('legend')"><i class="fas fa-crown"></i><span>Legend (ID 4)</span></div>
-        </div>
-
-        <h3 style="font-size: 14px; color: var(--primary); margin-bottom: 15px;">QUICK ACTIONS</h3>
-        <div class="main-menu">
-            <div class="menu-btn action-btn btn-store"><i class="fas fa-gem"></i><span>Store</span></div>
-            <div class="menu-btn action-btn btn-club"><i class="fas fa-shield-alt"></i><span>Club</span></div>
-            <div class="menu-btn action-btn btn-leader"><i class="fas fa-chart-line"></i><span>Leader</span></div>
-            <div class="menu-btn action-btn btn-orders"><i class="fas fa-shopping-bag"></i><span>Orders</span></div>
-        </div>
-
-        <h3 style="font-size: 14px; color: var(--primary); margin: 25px 0 12px;">TOP PLAYERS</h3>
-        <div id="top-players-container" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
-            </div>
-    </div>
-
-    <div id="page-list" class="page">
-        <h3 id="list-title" style="color: var(--primary); margin-bottom: 20px; text-transform: uppercase;">List</h3>
-        <div id="list-render" class="list-container"></div>
-    </div>
-
-    <div id="page-pos" class="page">
-        <h3 style="margin-bottom:20px; color:var(--primary);">Select Position</h3>
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
-            <div class="menu-btn" onclick="alert('Info Coming Soon')">CF</div>
-            <div class="menu-btn" onclick="alert('Info Coming Soon')">SS</div>
-            <div class="menu-btn" onclick="alert('Info Coming Soon')">LWF</div>
-            <div class="menu-btn" onclick="alert('Info Coming Soon')">RWF</div>
-            <div class="menu-btn" onclick="alert('Info Coming Soon')">GK</div>
+    <div class="pos-selection-card">
+        <h3>Select Position</h3>
+        <div class="pos-grid">
+            <div class="pos-btn" onclick="loadData('legend')">Forward</div>
+            <div class="pos-btn" onclick="loadData('legend')">Midfielder</div>
+            <div class="pos-btn" onclick="loadData('legend')">Defender</div>
+            <div class="pos-btn" onclick="loadData('legend')">Goalkeeper</div>
         </div>
     </div>
-
-    <div id="ad-pop" class="ad-overlay">
-        <div class="ad-box">
-            <div class="close-ad" onclick="closeAd()">X</div>
-            <p style="color: grey; font-size: 10px; margin-bottom: 10px;">SPONSORED AD</p>
-            <div style="height: 150px; background: #eee; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
-                <b style="color: #333;">AdsGram Test Ad</b>
-            </div>
-            <button style="width:100%; margin-top:15px; padding:12px; background:var(--primary); color:white; border:none; border-radius:8px;">Install Now</button>
-        </div>
-    </div>
-
-    <nav class="bottom-nav">
-        <a href="javascript:void(0)" class="nav-link active" onclick="showPage('home')"><i class="fas fa-home"></i>Home</a>
-        <a href="javascript:void(0)" class="nav-link" onclick="loadData('legend')"><i class="fas fa-crown"></i>Legend</a>
-        <a href="javascript:void(0)" class="nav-link" onclick="alert('Task Coming Soon')"><i class="fas fa-tasks"></i>Task</a>
-    </nav>
-
-    <script>
-        const tg = window.Telegram.WebApp;
-        tg.expand();
-
-        function showPage(id) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
-            document.getElementById(id).classList.add('active-page');
-            tg.HapticFeedback.impactOccurred('medium');
-        }
-
-        async function loadData(folder) {
-            const area = document.getElementById('list-render');
-            document.getElementById('list-title').innerText = folder + " View";
-            area.innerHTML = "<p style='text-align:center; padding:20px;'>Loading from Cloudinary...</p>";
-            showPage('page-list');
-
-            try {
-                const res = await fetch(`/api/assets/${folder}`);
-                const data = await res.json();
-                
-                if(data.length === 0) {
-                    area.innerHTML = "<p style='text-align:center; color:gray;'>No files found in " + folder + " folder.</p>";
-                    return;
-                }
-
-                area.innerHTML = '';
-                data.forEach(item => {
-                    const isManager = folder === 'manager';
-                    const isEvent = folder === 'event';
-                    
-                    area.innerHTML += `
-                        <div class="wide-card ${isManager ? 'manager-card' : ''}" onclick="triggerAd()">
-                            <img src="${item.url}" style="${isEvent ? 'width:100%; height:auto; border-radius:10px;' : ''}">
-                            <div class="card-info" style="${isEvent ? 'display:none' : ''}">
-                                <h3>${item.name}</h3>
-                                <p style="font-size:12px; color:var(--text-dim)">Tap to see details</p>
-                            </div>
-                        </div>`;
-                });
-            } catch (e) {
-                area.innerHTML = "<p style='text-align:center; color:red;'>Failed to connect to server.</p>";
-            }
-        }
-
-        function triggerAd() {
-            tg.HapticFeedback.notificationOccurred('success');
-            document.getElementById('ad-pop').style.display = 'flex';
-        }
-
-        function closeAd() {
-            document.getElementById('ad-pop').style.display = 'none';
-            alert("Player Info is Coming Soon!");
-        }
-
-        // Home Top Players (Optional Mockup)
-        window.onload = () => {
-            const topArea = document.getElementById('top-players-container');
-            for(let i=1; i<=3; i++) {
-                topArea.innerHTML += `
-                    <div style="background:var(--card-bg); padding:8px; border-radius:10px; text-align:center; border:1px solid var(--border);">
-                        <div style="height:80px; background:#1e293b; border-radius:5px; margin-bottom:5px;"></div>
-                        <span style="font-size:10px; color:var(--text-dim);">Legend</span>
-                    </div>`;
-            }
-        };
-    </script>
-</body>
-</html>
+</div>
