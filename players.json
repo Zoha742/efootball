@@ -1,41 +1,51 @@
-const express = require('express');
-const path = require('path');
-const fs = require('fs');
-const app = express();
-
-app.use(express.json());
-app.use(express.static(path.join(__dirname)));
-
-const DATA_PATH = path.join(__dirname, 'players.json');
-
-// ডিফল্ট ডাটাবেস চেক
-if (!fs.existsSync(DATA_PATH)) {
-    const initialData = { legend: [], manager: [], event: [] };
-    fs.writeFileSync(DATA_PATH, JSON.stringify(initialData, null, 2));
+{
+  "legend": [
+    {
+      "id": "101",
+      "name": "Pele",
+      "position": "CF",
+      "image": "https://res.cloudinary.com/dyqegwdme/image/upload/v1775478478/Legend_Cards/CF/pele.png",
+      "stats": {
+        "attacking": { "Awareness": 99, "Finishing": 98, "Dribbling": 96 },
+        "athleticism": { "Speed": 95, "Acceleration": 97, "Stamina": 88 }
+      }
+    },
+    {
+      "id": "102",
+      "name": "Maldini",
+      "position": "CB",
+      "image": "https://res.cloudinary.com/dyqegwdme/image/upload/v1775478478/Legend_Cards/CB/maldini.png",
+      "stats": {
+        "attacking": { "Awareness": 60, "Finishing": 55, "Passing": 85 },
+        "athleticism": { "Speed": 88, "Acceleration": 85, "Stamina": 92 }
+      }
+    },
+    {
+      "id": "103",
+      "name": "Ronaldinho",
+      "position": "SS",
+      "image": "https://res.cloudinary.com/dyqegwdme/image/upload/v1775478478/Legend_Cards/SS/ronaldinho.png",
+      "stats": {
+        "attacking": { "Awareness": 92, "Finishing": 90, "Dribbling": 99 },
+        "athleticism": { "Speed": 90, "Acceleration": 94, "Stamina": 85 }
+      }
+    }
+  ],
+  "manager": [
+    {
+      "id": "201",
+      "name": "Pep Guardiola",
+      "position": "Manager",
+      "image": "https://res.cloudinary.com/dyqegwdme/image/upload/v123456/Manager/pep.png",
+      "style": "Possession Game"
+    }
+  ],
+  "player": [],
+  "event": [
+    {
+      "id": "301",
+      "name": "Italian League",
+      "image": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775478478/Italian_League_ifo9bb.jpg"
+    }
+  ]
 }
-
-// API: ডাটা লোড করার জন্য
-app.get('/api/players', (req, res) => {
-    fs.readFile(DATA_PATH, 'utf8', (err, data) => {
-        if (err) return res.status(500).json({ error: "Read Error" });
-        res.json(JSON.parse(data));
-    });
-});
-
-// API: নতুন কার্ড সেভ (Admin এর জন্য)
-app.post('/api/save-card', (req, res) => {
-    const newEntry = req.body;
-    fs.readFile(DATA_PATH, 'utf8', (err, data) => {
-        if (err) return res.status(500).json({ success: false });
-        let db = JSON.parse(data);
-        newEntry.id = Date.now().toString();
-        db[newEntry.type].push(newEntry);
-        fs.writeFile(DATA_PATH, JSON.stringify(db, null, 2), (err) => {
-            if (err) return res.status(500).json({ success: false });
-            res.json({ success: true });
-        });
-    });
-});
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running: http://localhost:${PORT}`));
