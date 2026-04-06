@@ -1,37 +1,15 @@
-const fs = require('fs');
-const { MongoClient } = require('mongodb');
-
-// MongoDB connection URI (নিজের URI বসাও)
-const uri = "mongodb://localhost:27017";
-const client = new MongoClient(uri);
-
-async function updatePlayerJson() {
-  try {
-    await client.connect();
-    const db = client.db("efootballDB");
-
-    // Collections থেকে ডেটা ফেচ করো
-    const players = await db.collection("players").find({}).toArray();
-    const legends = await db.collection("legends").find({}).toArray();
-    const managers = await db.collection("managers").find({}).toArray();
-    const events = await db.collection("events").find({}).toArray();
-
-    // JSON structure বানাও
-    const data = {
-      players,
-      legends,
-      managers,
-      events
-    };
-
-    // player.json এ লিখে দাও
-    fs.writeFileSync("player.json", JSON.stringify(data, null, 2));
-    console.log("✅ player.json updated successfully!");
-  } catch (err) {
-    console.error("❌ Error updating player.json:", err);
-  } finally {
-    await client.close();
-  }
+{
+  "players": [
+    { "id": 1, "name": "Messi", "rating": 95, "image": "https://res.cloudinary.com/demo/image/upload/messi.png" },
+    { "id": 2, "name": "Mbappe", "rating": 92, "image": "https://res.cloudinary.com/demo/image/upload/mbappe.png" }
+  ],
+  "legends": [
+    { "id": 4, "name": "Maradona", "rating": 97, "image": "https://res.cloudinary.com/demo/image/upload/maradona.png" }
+  ],
+  "managers": [
+    { "id": 2, "name": "Pep Guardiola", "club": "Man City" }
+  ],
+  "events": [
+    { "id": 3, "title": "Champions League Final", "date": "2026-05-28" }
+  ]
 }
-
-updatePlayerJson();
