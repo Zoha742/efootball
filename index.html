@@ -9,89 +9,101 @@
     <style>
         :root { --primary: #3b82f6; --bg: #020617; --card-bg: #0f172a; --border: #1e293b; --text-dim: #94a3b8; }
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); color: white; padding-bottom: 80px; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); color: white; padding-bottom: 80px; overflow-x: hidden; }
 
-        .header { background: #0f172a; padding: 20px; border-bottom: 1px solid var(--border); text-align: center; position: sticky; top: 0; z-index: 1000; }
-        
-        .page { display: none; padding: 15px; animation: fadeIn 0.3s ease; }
+        /* Header with Back Button */
+        .header { background: #0f172a; padding: 15px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; position: sticky; top: 0; z-index: 1000; height: 60px; }
+        .back-btn { font-size: 20px; color: white; cursor: pointer; margin-right: 15px; display: none; }
+        .header h2 { font-size: 18px; letter-spacing: 1px; flex-grow: 1; text-align: center; margin-right: 35px; }
+
+        /* Navigation Pages */
+        .page { display: none; padding: 15px; animation: slideIn 0.3s ease; }
         .active-page { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideIn { from { transform: translateX(50px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
-        /* --- Main 4 Buttons (ID 1-4) Colorful --- */
-        .main-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 10px 0 25px 0; }
-        .menu-btn { border: none; padding: 25px; border-radius: 18px; text-align: center; cursor: pointer; transition: 0.2s; color: white; }
-        .menu-btn:active { transform: scale(0.95); }
-        .menu-btn i { font-size: 28px; margin-bottom: 10px; display: block; color: white; }
-        .menu-btn span { font-size: 15px; font-weight: bold; }
+        /* Colorful Main Menu (ID 1-4) */
+        .main-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px; }
+        .menu-btn { border: none; padding: 25px; border-radius: 18px; text-align: center; cursor: pointer; color: white; display: flex; flex-direction: column; align-items: center; }
+        .menu-btn i { font-size: 28px; margin-bottom: 10px; }
+        .menu-btn span { font-size: 14px; font-weight: bold; }
 
-        /* ID 1-4 Colors */
-        .id-player { background: linear-gradient(135deg, #06b6d4, #0891b2); } /* Cyan */
-        .id-manager { background: linear-gradient(135deg, #ec4899, #db2777); } /* Pink */
-        .id-event { background: linear-gradient(135deg, #8b5cf6, #7c3aed); } /* Purple */
-        .id-legend { background: linear-gradient(135deg, #10b981, #059669); } /* Green */
+        .id-player { background: linear-gradient(135deg, #06b6d4, #0891b2); }
+        .id-manager { background: linear-gradient(135deg, #ec4899, #db2777); }
+        .id-event { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+        .id-legend { background: linear-gradient(135deg, #10b981, #059669); }
 
-        /* --- Quick Actions (Bottom 4 Only) --- */
-        .grid-menu { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 25px; }
+        /* Quick Actions (4 Buttons) */
+        .grid-menu { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 15px; }
         .m-btn { height: 85px; border-radius: 18px; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; font-weight: bold; font-size: 11px; text-transform: uppercase; border: none; cursor: pointer; }
-        
         .c-gold { background: linear-gradient(135deg, #f59e0b, #d97706); }
         .c-blue { background: linear-gradient(135deg, #3b82f6, #2563eb); }
         .c-orange { background: linear-gradient(135deg, #f97316, #ea580c); }
         .c-red { background: linear-gradient(135deg, #ef4444, #dc2626); }
 
-        /* Display Area */
-        .white-display { background: #ffffff; color: #0f172a; padding: 20px; border-radius: 20px; min-height: 120px; margin-bottom: 25px; }
+        /* Player Position Grid (Next Page) */
+        .pos-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+        .pos-card { background: var(--card-bg); border: 1px solid var(--border); padding: 20px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; cursor: pointer; }
+        .pos-card i { color: var(--primary); }
 
-        /* Position Buttons Style */
-        .pos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
-        .pos-btn { background: #f1f5f9; border: 1px solid #e2e8f0; padding: 15px; border-radius: 12px; font-weight: bold; color: #0f172a; cursor: pointer; }
+        /* Player List Card View (As per Image) */
+        .player-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .player-card { background: #1e293b; border-radius: 15px; overflow: hidden; border: 1px solid var(--border); transition: 0.2s; }
+        .player-card img { width: 100%; height: 160px; object-fit: cover; background: #0f172a; }
+        .player-info { padding: 10px; text-align: center; }
+        .player-info p { font-size: 13px; font-weight: bold; color: white; }
 
         /* Bottom Nav */
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 70px; background: #0f172a; display: flex; border-top: 1px solid var(--border); }
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 70px; background: #0f172a; display: flex; border-top: 1px solid var(--border); z-index: 1000; }
         .nav-link { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-dim); text-decoration: none; font-size: 10px; }
         .nav-link.active { color: var(--primary); }
+        .nav-link i { font-size: 22px; margin-bottom: 4px; }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <h2>eFootball <span style="color:var(--primary)">HUB</span></h2>
+        <i class="fas fa-arrow-left back-btn" id="back-icon" onclick="goBack()"></i>
+        <h2 id="header-title">eFootball HUB</h2>
     </div>
 
     <div id="home" class="page active-page">
         <div class="main-menu">
-            <div class="menu-btn id-player" onclick="openPositionMenu()"><i class="fas fa-users"></i><span>Player (ID 1)</span></div>
+            <div class="menu-btn id-player" onclick="showPage('page-pos')"><i class="fas fa-users"></i><span>Player (ID 1)</span></div>
             <div class="menu-btn id-manager" onclick="showPage('page-manager')"><i class="fas fa-user-tie"></i><span>Manager (ID 2)</span></div>
             <div class="menu-btn id-event" onclick="showPage('page-event')"><i class="fas fa-trophy"></i><span>Events (ID 3)</span></div>
             <div class="menu-btn id-legend" onclick="showPage('page-legend')"><i class="fas fa-crown"></i><span>Legend (ID 4)</span></div>
         </div>
 
-        <h3 style="font-size: 14px; color: var(--primary); margin-bottom: 15px; text-transform: uppercase;">Quick Actions</h3>
-        
+        <h3 style="font-size: 12px; color: var(--primary); margin: 25px 0 10px; text-transform: uppercase;">Quick Actions</h3>
         <div class="grid-menu">
-            <button class="m-btn c-gold" onclick="hAction('store')"><i class="fas fa-shopping-cart"></i>Premium Store</button>
-            <button class="m-btn c-blue" onclick="hAction('club')"><i class="fas fa-shield-alt"></i>Club & League</button>
-            <button class="m-btn c-orange" onclick="hAction('leader')"><i class="fas fa-users-cog"></i>Leaderboard</button>
-            <button class="m-btn c-red" onclick="hAction('orders')"><i class="fas fa-receipt"></i>My Orders</button>
+            <button class="m-btn c-gold" onclick="showPage('page-store')"><i class="fas fa-shopping-cart"></i>Premium Store</button>
+            <button class="m-btn c-blue" onclick="showPage('page-club')"><i class="fas fa-shield-alt"></i>Club & League</button>
+            <button class="m-btn c-orange" onclick="showPage('page-leader')"><i class="fas fa-users-cog"></i>Leaderboard</button>
+            <button class="m-btn c-red" onclick="showPage('page-orders')"><i class="fas fa-receipt"></i>My Orders</button>
         </div>
+    </div>
 
-        <div class="white-display" id="h-display">
-            <div id="display-content">
-                <h3 style="margin-top:0; font-size: 16px;">System Message</h3>
-                <p style="font-size: 12px; color: #64748b;">Select an option to interact.</p>
+    <div id="page-pos" class="page">
+        <div class="pos-grid">
+            <div class="pos-card" onclick="loadPlayers('Forward')"><span>Forward</span> <i class="fas fa-chevron-right"></i></div>
+            <div class="pos-card" onclick="loadPlayers('Midfielder')"><span>Midfielder</span> <i class="fas fa-chevron-right"></i></div>
+            <div class="pos-card" onclick="loadPlayers('Defender')"><span>Defender</span> <i class="fas fa-chevron-right"></i></div>
+            <div class="pos-card" onclick="loadPlayers('Goalkeeper')"><span>Goalkeeper</span> <i class="fas fa-chevron-right"></i></div>
+        </div>
+    </div>
+
+    <div id="page-player-list" class="page">
+        <div class="player-grid" id="player-render-area">
             </div>
-        </div>
     </div>
 
-    <div id="page-player" class="page">
-        <h3 id="pos-title">Players</h3>
-        <div class="item-grid" id="all-players-grid"></div>
-        <button onclick="showPage('home')" style="margin-top:20px; padding:10px; width:100%; border-radius:10px; border:none; background:var(--primary); color:white;">Back to Home</button>
-    </div>
-    
+    <div id="page-manager" class="page"><h3>Managers List</h3></div>
+    <div id="page-store" class="page"><h3>Premium Store</h3></div>
+    <div id="page-leader" class="page"><h3>Leaderboard</h3></div>
+
     <nav class="bottom-nav">
         <a href="javascript:void(0)" class="nav-link active" onclick="showPage('home', this)"><i class="fas fa-home"></i>Home</a>
-        <a href="javascript:void(0)" class="nav-link" onclick="openPositionMenu()"><i class="fas fa-users"></i>Top Player</a>
+        <a href="javascript:void(0)" class="nav-link" onclick="showPage('page-pos', this)"><i class="fas fa-users"></i>Top Player</a>
         <a href="javascript:void(0)" class="nav-link" onclick="showPage('page-task', this)"><i class="fas fa-gem"></i>Task</a>
         <a href="javascript:void(0)" class="nav-link" onclick="showPage('page-profile', this)"><i class="fas fa-user-alt"></i>Profile</a>
     </nav>
@@ -100,9 +112,23 @@
         const tg = window.Telegram.WebApp;
         tg.expand();
 
+        let pageHistory = ['home'];
+
         function showPage(pageId, element) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
             document.getElementById(pageId).classList.add('active-page');
+            
+            // Header Logic
+            const backIcon = document.getElementById('back-icon');
+            if (pageId === 'home') {
+                backIcon.style.display = 'none';
+                document.getElementById('header-title').innerText = "eFootball HUB";
+                pageHistory = ['home'];
+            } else {
+                backIcon.style.display = 'block';
+                pageHistory.push(pageId);
+            }
+
             if(element) {
                 document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
                 element.classList.add('active');
@@ -110,38 +136,40 @@
             tg.HapticFeedback.impactOccurred('medium');
         }
 
-        // পজিশন মেনু ওপেন করার ফাংশন
-        function openPositionMenu() {
-            const display = document.getElementById('display-content');
-            display.innerHTML = `
-                <h3 style="color:#0891b2">Select Position</h3>
-                <div class="pos-grid">
-                    <button class="pos-btn" onclick="filterByPos('Forward')">Forward</button>
-                    <button class="pos-btn" onclick="filterByPos('Midfielder')">Midfielder</button>
-                    <button class="pos-btn" onclick="filterByPos('Defender')">Defender</button>
-                    <button class="pos-btn" onclick="filterByPos('Goalkeeper')">Goalkeeper</button>
-                </div>
-            `;
-            tg.HapticFeedback.impactOccurred('light');
+        function goBack() {
+            if (pageHistory.length > 1) {
+                pageHistory.pop(); // Remove current page
+                const prevPage = pageHistory[pageHistory.length - 1];
+                showPage(prevPage);
+                pageHistory.pop(); // Prevent double push in showPage
+            }
         }
 
-        function filterByPos(pos) {
-            // এখানে আপনি পরে JSON ফিল্টারিং লজিক অ্যাড করবেন
-            alert("Showing all " + pos + " players...");
-            showPage('page-player');
-            document.getElementById('pos-title').innerText = pos + " List";
-        }
+        function loadPlayers(pos) {
+            document.getElementById('header-title').innerText = pos + " Players";
+            const area = document.getElementById('player-render-area');
+            area.innerHTML = ''; // Clear
 
-        function hAction(type) {
-            const box = document.getElementById('display-content');
-            const content = {
-                'store': '<h3>Premium Store</h3><p>Buy Coins & Boosters.</p>',
-                'club': '<h3>Club & League</h3><p>View Teams.</p>',
-                'leader': '<h3>Leaderboard</h3><p>Your Referral Stats.</p>',
-                'orders': '<h3>My Orders</h3><p>Purchase History.</p>'
-            };
-            box.innerHTML = content[type] || '<h3>Soon</h3>';
-            tg.HapticFeedback.impactOccurred('light');
+            // ডামি ডাটা (তুমি পরে তোমার JSON থেকে কানেক্ট করতে পারবে)
+            const dummyPlayers = [
+                { name: "L. MESSI", img: "https://via.placeholder.com/300x400/0f172a/fff?text=MESSI" },
+                { name: "C. RONALDO", img: "https://via.placeholder.com/300x400/0f172a/fff?text=RONALDO" },
+                { name: "NEYMAR JR", img: "https://via.placeholder.com/300x400/0f172a/fff?text=NEYMAR" },
+                { name: "K. MBAPPE", img: "https://via.placeholder.com/300x400/0f172a/fff?text=MBAPPE" }
+            ];
+
+            dummyPlayers.forEach(p => {
+                area.innerHTML += `
+                    <div class="player-card">
+                        <img src="${p.img}">
+                        <div class="player-info">
+                            <p>${p.name}</p>
+                        </div>
+                    </div>
+                `;
+            });
+
+            showPage('page-player-list');
         }
     </script>
 </body>
