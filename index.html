@@ -10,7 +10,7 @@
     <style>
         :root { --bg: #050a18; --card-dark: #121e36; --primary: #3b82f6; --text: #ffffff; --border: #1e2d4d; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; padding-bottom: 80px; }
+        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; padding-bottom: 80px; overflow-x: hidden; }
         .page { display: none; padding: 15px; animation: fadeIn 0.3s; }
         .active { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -18,25 +18,32 @@
         .hub-title { text-align: center; margin: 15px 0 25px; font-weight: bold; font-size: 20px; text-transform: uppercase; }
         .hub-title span { color: var(--primary); }
 
-        /* Main Grid Layout */
+        /* Main ID Grid */
         .id-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px; }
         .id-btn { background: var(--card-dark); border: 1px solid var(--border); padding: 25px 15px; border-radius: 18px; text-align: center; cursor: pointer; }
         .id-btn i { font-size: 28px; color: var(--primary); margin-bottom: 12px; display: block; }
 
-        /* Position Grid (CF to GK) */
+        /* Quick Actions Section */
+        .section-title { color: var(--text); font-size: 14px; font-weight: bold; text-transform: uppercase; margin: 25px 0 12px; padding-left: 5px; }
+        .quick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 25px; }
+        .quick-btn { border: none; padding: 20px 10px; border-radius: 12px; text-align: center; cursor: pointer; color: #fff; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+        .q-store { background: #f97316; } .q-task { background: #ec4899; }
+
+        /* Position Grid */
         .pos-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 20px; }
-        .pos-btn { background: var(--card-dark); border: 1px solid var(--primary); padding: 15px 10px; border-radius: 10px; text-align: center; font-weight: bold; cursor: pointer; font-size: 13px; color: #fff; text-transform: uppercase; }
+        .pos-btn { background: var(--card-dark); border: 1px solid var(--primary); padding: 15px 5px; border-radius: 10px; text-align: center; font-weight: bold; cursor: pointer; font-size: 12px; }
 
-        /* Card View (2 per row) */
-        .top-players-container { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
-        .top-card { background: var(--card-dark); border-radius: 10px; border: 1px solid var(--border); overflow: hidden; text-align: center; }
-        .top-card img { width: 100%; height: auto; display: block; }
+        /* Card View Layout */
+        .top-players-container { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; }
+        .top-card { background: var(--card-dark); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; text-align: center; padding: 5px; }
+        .top-card img { width: 100%; height: auto; border-radius: 8px; display: block; }
+        .top-card p { font-size: 11px; margin-top: 8px; font-weight: 500; }
 
-        /* Bottom Nav */
+        /* Bottom Navigation */
         .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 70px; background: #070d19; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid var(--border); z-index: 1000; }
         .nav-item { text-align: center; color: #94a3b8; font-size: 11px; cursor: pointer; flex: 1; }
         .nav-item i { font-size: 20px; display: block; margin-bottom: 4px; }
-        .active-nav { color: var(--primary); }
+        .active-nav { color: var(--primary); font-weight: bold; }
     </style>
 </head>
 <body>
@@ -50,7 +57,13 @@
             <div class="id-btn" onclick="showPage('page-legend')"><i class="fas fa-crown"></i><span>Legend</span></div>
         </div>
 
-        <div style="font-weight: bold; margin-bottom: 10px; text-transform: uppercase;">TOP PLAYERS</div>
+        <div class="section-title">QUICK ACTIONS</div>
+        <div class="quick-grid">
+            <div class="quick-btn q-store" onclick="showPage('page-store')"><i class="fas fa-shopping-cart"></i><span>Store</span></div>
+            <div class="quick-btn q-task" onclick="showPage('page-task')"><i class="fas fa-clipboard-check"></i><span>Task</span></div>
+        </div>
+
+        <div class="section-title">TOP PLAYERS</div>
         <div class="top-players-container" id="home-top-players">
             </div>
     </div>
@@ -63,11 +76,6 @@
             <div class="pos-btn" onclick="openBio('LWF', '...')">LWF</div>
             <div class="pos-btn" onclick="openBio('RWF', '...')">RWF</div>
             <div class="pos-btn" onclick="openBio('AMF', '...')">AMF</div>
-            <div class="pos-btn" onclick="openBio('CMF', '...')">CMF</div>
-            <div class="pos-btn" onclick="openBio('DMF', '...')">DMF</div>
-            <div class="pos-btn" onclick="openBio('CB', '...')">CB</div>
-            <div class="pos-btn" onclick="openBio('LB', '...')">LB</div>
-            <div class="pos-btn" onclick="openBio('RB', '...')">RB</div>
             <div class="pos-btn" onclick="openBio('GK', '...')">GK</div>
         </div>
     </div>
@@ -78,9 +86,12 @@
     </div>
 
     <div id="page-details" class="page">
-        <div class="hub-title"><i id="dynamic-back-btn" class="fas fa-arrow-left" style="float:left; cursor:pointer;"></i> PLAYER <span>DETAILS</span></div>
+        <div class="hub-title"><i id="back-btn" class="fas fa-arrow-left" style="float:left; cursor:pointer;"></i> PLAYER <span>DETAILS</span></div>
         <div id="details-content" style="text-align:center; padding:20px;"></div>
     </div>
+
+    <div id="page-store" class="page"><i class="fas fa-arrow-left" onclick="showPage('home')"></i> Store Page Content</div>
+    <div id="page-task" class="page"><i class="fas fa-arrow-left" onclick="showPage('home')"></i> Task Page Content</div>
 
     <nav class="bottom-nav">
         <div class="nav-item active-nav" onclick="showPage('home')"><i class="fas fa-home"></i>Home</div>
@@ -93,31 +104,21 @@
         const tg = window.Telegram.WebApp;
         tg.expand();
 
-        let lastPage = 'home'; 
-
-        // Adsgram Block ID ekhane boshaben
-        const AdController = window.Adsgram.init({ blockId: "YOUR_BLOCK_ID" });
+        let currentActivePage = 'home';
 
         function showPage(id) {
-            // Back navigation er jonno current page track kora
-            if (id !== 'page-details') {
-                lastPage = document.querySelector('.page.active').id;
-            }
-
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
+            currentActivePage = id;
 
-            // Notun page open holei ads show korbe
-            if (id !== 'home') {
-                AdController.show().catch(() => { console.log("Ad skipped/error"); });
-            }
-
-            if (id === 'page-legend') loadLegendData();
+            if(id === 'page-legend') loadLegendData();
             
+            // Navigation Highlight
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active-nav'));
             tg.HapticFeedback.impactOccurred('light');
         }
 
+        // Home Page-এ ৪টি কার্ড ভিউ কোড
         function loadHomePlayers() {
             const container = document.getElementById('home-top-players');
             container.innerHTML = "";
@@ -131,7 +132,7 @@
             players.forEach(p => {
                 const card = document.createElement('div');
                 card.className = 'top-card';
-                card.innerHTML = `<img src="${p.img}"><p style="font-size:10px; padding:5px;">${p.name}</p>`;
+                card.innerHTML = `<img src="${p.img}"><p>${p.name}</p>`;
                 card.onclick = () => openBio(p.name, p.img);
                 container.appendChild(card);
             });
@@ -147,25 +148,22 @@
             legends.forEach(p => {
                 const card = document.createElement('div');
                 card.className = 'top-card';
-                card.innerHTML = `<img src="${p.img}"><p style="font-size:10px; padding:5px;">${p.name}</p>`;
+                card.innerHTML = `<img src="${p.img}"><p>${p.name}</p>`;
                 card.onclick = () => openBio(p.name, p.img);
                 container.appendChild(card);
             });
         }
 
         function openBio(name, img) {
-            // Details-e jawar ager page track kora hoyeche
-            const backTo = document.querySelector('.page.active').id;
-            
+            const fromPage = document.querySelector('.page.active').id;
             showPage('page-details');
             document.getElementById('details-content').innerHTML = `
-                <img src="${img}" style="width:100%; max-width:200px; border-radius:15px; border:2px solid #3b82f6;">
+                <img src="${img}" style="width:100%; max-width:200px; border-radius:15px; border:2px solid gold;">
                 <h2 style="margin-top:15px;">${name}</h2>
-                <p style="color:#94a3b8;">Player Bio details and stats will be here.</p>
+                <p>Statistics and Bio for ${name} will appear here.</p>
             `;
-
-            // Dynamic back button logic
-            document.getElementById('dynamic-back-btn').onclick = () => showPage(backTo);
+            // Back button command - আগের পেজে ফিরে যাবে
+            document.getElementById('back-btn').onclick = () => showPage(fromPage);
         }
 
         window.onload = loadHomePlayers;
