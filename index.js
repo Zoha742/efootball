@@ -50,4 +50,10 @@
             if(id === 'page-legend') loadLegendData();
             
             tg.HapticFeedback.impactOccurred('light');
+
+                // মেনু আইকন কালার চেঞ্জ করা
+    document.querySelectorAll('.nav-item').forEach(nav => {
+        nav.classList.remove('active-nav');
+    });
+    event.currentTarget.classList.add('active-nav');
         }
