@@ -163,42 +163,51 @@
             document.getElementById('back-btn').onclick = () => showPage(fromPage);
         }
 
-        // আপনার সার্ভার API থেকে ডাটা লোড করার ফাইনাল ফাংশন
         async function loadPlayersByPos(position = 'ALL') {
-            const container = document.getElementById('player-list-view');
-            container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>Loading...</p>";
+    const container = document.getElementById('player-list-view');
+    container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>Loading...</p>";
 
-            try {
-                const response = await fetch('/api/data'); 
-                const data = await response.json();
-                
-                let filteredPlayers;
-                if(position === 'ALL') {
-                    filteredPlayers = data.players.slice(0, 10);
-                } else {
-                    filteredPlayers = data.players.filter(p => p.pos === position);
-                }
-                
-                container.innerHTML = "";
-                if(!filteredPlayers || filteredPlayers.length === 0) {
-                    container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>No players found</p>";
-                    return;
-                }
-
-                filteredPlayers.forEach(player => {
-                    const card = document.createElement('div');
-                    card.className = 'top-card';
-                    card.innerHTML = `<img src="${player.img}"><p style="font-size:9px; padding:3px;">${player.name}</p>`;
-                    card.onclick = () => {
-                        AdController.show().then(() => openBio(player.name, player.img)).catch(() => openBio(player.name, player.img));
-                    };
-                    container.appendChild(card);
-                });
-            } catch (e) {
-                container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>Error connecting to server</p>";
-            }
+    try {
+        // আপনার সার্ভারের API থেকে ডাটা নিবে
+        const response = await fetch('/api/data'); 
+        const data = await response.json();
+        
+        let filteredPlayers;
+        if(position === 'ALL') {
+            filteredPlayers = data.players.slice(0, 10);
+        } else {
+            filteredPlayers = data.players.filter(p => p.pos === position);
         }
 
+        container.innerHTML = ""; 
+        if(filteredPlayers.length === 0) {
+            container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>No players found</p>";
+            return;
+        }
+
+        filteredPlayers.forEach(player => {
+            const card = document.createElement('div');
+            card.className = 'top-card';
+            card.innerHTML = `
+                <img src="${player.img}">
+                <p style="font-size:9px; padding:3px;">${player.name}</p>
+            `;
+            // ক্লিক করলে অ্যাড দেখাবে তারপর বায়ো
+            card.onclick = () => {
+                if (typeof AdController !== 'undefined') {
+                    AdController.show().then(() => openBio(player.name, player.img))
+                                     .catch(() => openBio(player.name, player.img));
+                } else {
+                    openBio(player.name, player.img);
+                }
+            };
+            container.appendChild(card);
+        });
+    } catch (e) {
+        container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>Error loading data!</p>";
+        console.error("Fetch error:", e);
+    }
+}
         window.onload = loadHomePlayers;
     </script>
 </body>
