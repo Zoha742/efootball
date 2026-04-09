@@ -14,25 +14,42 @@
         .active { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* স্ক্রিনশট অনুযায়ী eFootball HUB Title */
+        /* eFootball HUB Title */
         .hub-title { text-align: center; margin: 15px 0 25px; font-weight: bold; font-size: 20px; text-transform: uppercase; }
         .hub-title span { color: var(--primary); }
 
-        /* ID গ্রিড লেআউট (স্ক্রিনশট অনুযায়ী) */
+        /* Mian ID Grid Layout */
         .id-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px; }
-        .id-btn { background: var(--card-dark); border: 1px solid var(--border); padding: 30px 15px; border-radius: 18px; text-align: center; cursor: pointer; position: relative; }
+        .id-btn { background: var(--card-dark); border: 1px solid var(--border); padding: 25px 15px; border-radius: 18px; text-align: center; cursor: pointer; transition: 0.2s; }
         .id-btn i { font-size: 28px; color: var(--primary); margin-bottom: 12px; display: block; }
         .id-btn span { font-size: 14px; font-weight: bold; color: #fff; }
-        .highlight-id { border-color: #4ade80; /* Legend (cite: ID 4) highlights as requested */ }
 
-        /* TOP PLAYERS সেকশন (cite: স্ক্রিনশট অনুযায়ী) */
-        .section-title { color: var(--primary); font-size: 12px; font-weight: bold; text-transform: uppercase; margin: 25px 0 10px; padding-left: 5px; }
+        /* Quick Actions - (cite: 4 colourful buttons as requested) */
+        .section-title { color: var(--text); font-size: 14px; font-weight: bold; text-transform: uppercase; margin: 30px 0 12px; padding-left: 5px; }
+        .quick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 30px; }
+        .quick-btn { border: none; padding: 20px 10px; border-radius: 12px; text-align: center; cursor: pointer; color: #fff; display: flex; flex-direction: column; align-items: center; gap: 8px; transition: 0.2s; }
+        .quick-btn i { font-size: 22px; }
+        .quick-btn span { font-size: 12px; font-weight: bold; text-transform: uppercase; }
+
+        /* Colourful styles (cite: match image_19.png) */
+        /* ID Buttons colour tints */
+        .id-btn:nth-child(1) i { color: #06b6d4; }
+        .id-btn:nth-child(2) i { color: #ec4899; }
+        .id-btn:nth-child(3) i { color: #8b5cf6; }
+        .id-btn:nth-child(4) i { color: #22c55e; border: 1px solid #22c55e; border-radius: 18px; padding: 5px; } /* Highlight Legend */
+
+        /* Quick Action Backgrounds */
+        .q-store { background-color: #f97316; } /* Orange */
+        .q-task { background-color: #ec4899; } /* Pink */
+        .q-leader { background-color: #3b82f6; } /* Blue */
+        .q-club { background-color: #22c55e; } /* Green */
+
+        /* TOP PLAYERS (cite: further down) */
         .top-players-container { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; }
         .top-card { flex: 0 0 32%; background: #070d19; border-radius: 10px; border: 1px solid var(--border); overflow: hidden; position: relative; }
         .top-card img { width: 100%; height: auto; display: block; }
-        .card-shadow { position: absolute; bottom: 0; left: 0; width: 100%; height: 50%; background: linear-gradient(transparent, #000); }
 
-        /* Bottom Navigation Bar (cite: স্ক্রিনশট অনুযায়ী ফিক্সড ৪টি মেনু) */
+        /* Bottom Navigation Bar (cite: 4 options from screenshot) */
         .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 70px; background: #070d19; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid var(--border); z-index: 1000; }
         .nav-item { flex: 1; text-align: center; color: #94a3b8; font-size: 11px; cursor: pointer; transition: 0.2s; }
         .nav-item i { font-size: 20px; display: block; margin-bottom: 4px; }
@@ -49,32 +66,35 @@
             <div class="id-btn" onclick="openPage('page-player')"><i class="fas fa-users"></i><span>Player (ID 1)</span></div>
             <div class="id-btn" onclick="openPage('page-manager')"><i class="fas fa-user-tie"></i><span>Manager (ID 2)</span></div>
             <div class="id-btn" onclick="openPage('page-event')"><i class="fas fa-trophy"></i><span>Events (ID 3)</span></div>
-            <div class="id-btn highlight-id" onclick="openPage('page-legend')"><i class="fas fa-crown"></i><span>Legend (ID 4)</span></div>
+            <div class="id-btn" onclick="openPage('page-legend')"><i class="fas fa-crown"></i><span>Legend (ID 4)</span></div>
+        </div>
+
+        <div class="section-title">QUICK ACTIONS</div>
+        <div class="quick-grid">
+            <div class="quick-btn q-store" onclick="openPage('page-store')"><i class="fas fa-shopping-cart"></i><span>Store</span></div>
+            <div class="quick-btn q-task" onclick="openPage('page-task')"><i class="fas fa-clipboard-check"></i><span>Task</span></div>
+            <div class="quick-btn q-leader" onclick="openPage('page-leaderboard')"><i class="fas fa-chart-line"></i><span>Leadership</span></div>
+            <div class="quick-btn q-club" onclick="openPage('page-club')"><i class="fas fa-shield-alt"></i><span>Club & League</span></div>
         </div>
 
         <div class="section-title">TOP PLAYERS</div>
         <div class="top-players-container" id="top-players-list">
-            <div class="top-card">
-                <img src="https://res.cloudinary.com/dyqegwdme/image/upload/v1775478478/Legend_Cards/CF/image_12.png">
-                <div class="card-shadow"></div>
-            </div>
-            <div class="top-card">
-                <img src="https://res.cloudinary.com/dyqegwdme/image/upload/v1775478478/Legend_Cards/CF/pele.png">
-                <div class="card-shadow"></div>
-            </div>
-            <div class="top-card">
-                <img src="https://res.cloudinary.com/dyqegwdme/image/upload/v12345/players/messi.png">
-                <div class="card-shadow"></div>
-            </div>
+            <div class="top-card"><img src="https://res.cloudinary.com/dyqegwdme/image/upload/v1775478478/Legend_Cards/CF/image_12.png"></div>
+            <div class="top-card"><img src="https://res.cloudinary.com/dyqegwdme/image/upload/v1775478478/Legend_Cards/CF/pele.png"></div>
+            <div class="top-card"><img src="https://res.cloudinary.com/dyqegwdme/image/upload/v12345/players/messi.png"></div>
         </div>
     </div>
 
-    <div id="page-player" class="page">Player ID 1 Page</div>
-    <div id="page-manager" class="page">Manager ID 2 Page</div>
-    <div id="page-event" class="page">Events ID 3 Page</div>
-    <div id="page-legend" class="page">Legend ID 4 Page</div>
-    <div id="page-task" class="page">Task Page</div>
-    <div id="page-profile" class="page">Profile Page</div>
+    <div id="page-player" class="page"><i class="fas fa-arrow-left" onclick="showPage('home')"></i>Player ID 1 Page</div>
+    <div id="page-manager" class="page"><i class="fas fa-arrow-left" onclick="showPage('home')"></i>Manager ID 2 Page</div>
+    <div id="page-event" class="page"><i class="fas fa-arrow-left" onclick="showPage('home')"></i>Events ID 3 Page</div>
+    <div id="page-legend" class="page"><i class="fas fa-arrow-left" onclick="showPage('home')"></i>Legend ID 4 Page</div>
+    
+    <div id="page-store" class="page"><i class="fas fa-arrow-left" onclick="showPage('home')"></i>Premium Store Page</div>
+    <div id="page-task" class="page"><i class="fas fa-arrow-left" onclick="showPage('home')"></i>Task Page</div>
+    <div id="page-leaderboard" class="page"><i class="fas fa-arrow-left" onclick="showPage('home')"></i>Leadership Page</div>
+    <div id="page-club" class="page"><i class="fas fa-arrow-left" onclick="showPage('home')"></i>Club & League Page</div>
+    <div id="page-profile" class="page"><i class="fas fa-arrow-left" onclick="showPage('home')"></i>Profile Page</div>
 
     <nav class="bottom-nav">
         <div class="nav-item active-nav" onclick="showPage('home')"><i class="fas fa-home"></i>Home</div>
@@ -91,13 +111,11 @@
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             
-            // Bottom Nav Active State
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active-nav'));
-            // active nav logic based on id
+            // Bottom Nav Active State logic remains the same (cite: A to Z notes)
             tg.HapticFeedback.impactOccurred('medium');
         }
         
-        // This function will be updated with Part 1-3 ads logic in future
+        // No auto-fetching of player data on home page. This is noted
         function openPage(pageId) { showPage(pageId); }
     </script>
 </body>
