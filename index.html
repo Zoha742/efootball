@@ -22,25 +22,26 @@
         .id-btn { background: var(--card-dark); border: 1px solid var(--border); padding: 25px 15px; border-radius: 18px; text-align: center; cursor: pointer; }
         .id-btn i { font-size: 28px; color: var(--primary); margin-bottom: 12px; display: block; }
 
+        .section-title { color: var(--text); font-size: 14px; font-weight: bold; text-transform: uppercase; margin: 25px 0 12px; padding-left: 5px; }
+        .quick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 25px; }
+        .quick-btn { border: none; padding: 20px 10px; border-radius: 12px; text-align: center; cursor: pointer; color: #fff; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+        .q-store { background: #f97316; } .q-task { background: #ec4899; }
+
         .pos-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 20px; }
-        .pos-btn { background: var(--card-dark); border: 1px solid var(--primary); padding: 12px; border-radius: 8px; text-align: center; font-weight: bold; cursor: pointer; }
+        .pos-btn { background: var(--card-dark); border: 1px solid var(--primary); padding: 15px 5px; border-radius: 10px; text-align: center; font-weight: bold; cursor: pointer; font-size: 12px; }
 
-        .top-players-container { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
-        .top-card { background: var(--card-dark); border-radius: 10px; border: 1px solid var(--border); overflow: hidden; text-align: center; }
-        .top-card img { width: 100%; height: auto; display: block; }
+        .top-players-container { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; }
+        .top-card { background: var(--card-dark); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; text-align: center; padding: 5px; cursor: pointer; }
+        .top-card img { width: 100%; height: auto; border-radius: 8px; display: block; }
+        .top-card p { font-size: 11px; margin-top: 8px; font-weight: 500; }
 
-        /* Normal Player এর জন্য ৩-কলাম গ্রিড */
-        .three-column-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 8px;
-            margin-top: 15px;
-        }
+        /* আপনার চাওয়া ৩-কলাম গ্রিড */
+        .three-column-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 15px; }
 
         .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 70px; background: #070d19; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid var(--border); z-index: 1000; }
         .nav-item { text-align: center; color: #94a3b8; font-size: 11px; cursor: pointer; flex: 1; }
         .nav-item i { font-size: 20px; display: block; margin-bottom: 4px; }
-        .active-nav { color: var(--primary); }
+        .active-nav { color: var(--primary); font-weight: bold; }
     </style>
 </head>
 <body>
@@ -48,63 +49,70 @@
     <div id="home" class="page active">
         <div class="hub-title">eFootball <span>HUB</span></div>
         <div class="id-grid">
-            <div class="id-btn" onclick="showPage('page-player')"><i class="fas fa-users"></i><span>Player</span></div>
-            <div class="id-btn"><i class="fas fa-user-tie"></i><span>Manager</span></div>
-            <div class="id-btn"><i class="fas fa-trophy"></i><span>Events</span></div>
+            <div class="id-btn" onclick="showPlayerPage()"><i class="fas fa-users"></i><span>Player</span></div>
+            <div class="id-btn" onclick="showPage('page-manager')"><i class="fas fa-user-tie"></i><span>Manager</span></div>
+            <div class="id-btn" onclick="showPage('page-event')"><i class="fas fa-trophy"></i><span>Events</span></div>
             <div class="id-btn" onclick="showPage('page-legend')"><i class="fas fa-crown"></i><span>Legend</span></div>
         </div>
-        <div style="font-weight: bold; margin-bottom: 10px;">TOP PLAYERS</div>
+        <div class="section-title">QUICK ACTIONS</div>
+        <div class="quick-grid">
+            <div class="quick-btn q-store" onclick="showPage('page-store')"><i class="fas fa-shopping-cart"></i><span>Store</span></div>
+            <div class="quick-btn q-task" onclick="showPage('page-task')"><i class="fas fa-clipboard-check"></i><span>Task</span></div>
+        </div>
+        <div class="section-title">TOP PLAYERS</div>
         <div class="top-players-container" id="home-top-players"></div>
     </div>
 
     <div id="page-player" class="page">
-    <div class="hub-title">
-        <i class="fas fa-arrow-left" onclick="showPage('home')" style="float:left; cursor:pointer;"></i> 
-        SELECT <span>POSITION</span>
-    </div>
-    <div class="pos-grid">
-        <div class="pos-btn" onclick="loadPlayersByPos('CF')">CF</div>
-        <div class="pos-btn" onclick="loadPlayersByPos('SS')">SS</div>
-        <div class="pos-btn" onclick="loadPlayersByPos('GK')">GK</div>
-    </div>
+        <div class="hub-title"><i class="fas fa-arrow-left" onclick="showPage('home')" style="float:left; cursor:pointer;"></i> SELECT <span>POSITION</span></div>
+        <div class="pos-grid">
+            <div class="pos-btn" onclick="loadPlayersByPos('CF')">CF</div>
+            <div class="pos-btn" onclick="loadPlayersByPos('SS')">SS</div>
+            <div class="pos-btn" onclick="loadPlayersByPos('LWF')">LWF</div>
+            <div class="pos-btn" onclick="loadPlayersByPos('RWF')">RWF</div>
+            <div class="pos-btn" onclick="loadPlayersByPos('AMF')">AMF</div>
+            <div class="pos-btn" onclick="loadPlayersByPos('GK')">GK</div>
+        </div>
         <div id="player-list-view" class="three-column-grid"></div>
     </div>
 
     <div id="page-legend" class="page">
-        <div class="hub-title">
-            <i class="fas fa-arrow-left" onclick="showPage('home')" style="float:left; cursor:pointer;"></i> 
-            LEGEND <span>CARDS</span>
-        </div>
+        <div class="hub-title"><i class="fas fa-arrow-left" onclick="showPage('home')" style="float:left; cursor:pointer;"></i> LEGEND <span>CARDS</span></div>
         <div class="top-players-container" id="legend-list-view"></div>
     </div>
 
     <div id="page-details" class="page">
-        <div class="hub-title">
-            <i id="back-btn" class="fas fa-arrow-left" style="float:left; cursor:pointer;"></i> 
-            PLAYER <span>DETAILS</span>
-        </div>
+        <div class="hub-title"><i id="back-btn" class="fas fa-arrow-left" style="float:left; cursor:pointer;"></i> PLAYER <span>DETAILS</span></div>
         <div id="details-content" style="text-align:center; padding:20px;"></div>
     </div>
 
     <nav class="bottom-nav">
         <div class="nav-item active-nav" onclick="showPage('home')"><i class="fas fa-home"></i>Home</div>
         <div class="nav-item" onclick="showPage('page-legend')"><i class="fas fa-crown"></i>Legend</div>
-        <div class="nav-item"><i class="fas fa-clipboard-check"></i>Task</div>
-        <div class="nav-item"><i class="fas fa-user-circle"></i>Profile</div>
+        <div class="nav-item" onclick="showPage('page-task')"><i class="fas fa-clipboard-check"></i>Task</div>
+        <div class="nav-item" onclick="showPage('page-profile')"><i class="fas fa-user-circle"></i>Profile</div>
     </nav>
 
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand();
 
-        const AdController = window.Adsgram.init({ blockId: "YOUR_BLOCK_ID" });
+        // Adsgram Test Block ID
+        const AdController = window.Adsgram.init({ blockId: "int-41" });
 
         function showPage(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            if (id !== 'home') AdController.show().catch(() => {});
-            if (id === 'page-legend') loadLegendData();
+            if(id === 'page-legend') loadLegendData();
+            
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active-nav'));
             tg.HapticFeedback.impactOccurred('light');
+        }
+
+        // Player বাটনের জন্য বিশেষ ফাংশন (১০ জন লোড করবে)
+        function showPlayerPage() {
+            showPage('page-player');
+            loadPlayersByPos('ALL');
         }
 
         function loadHomePlayers() {
@@ -119,7 +127,7 @@
             players.forEach(p => {
                 const card = document.createElement('div');
                 card.className = 'top-card';
-                card.innerHTML = `<img src="${p.img}"><p style="font-size:10px; padding:5px;">${p.name}</p>`;
+                card.innerHTML = `<img src="${p.img}"><p>${p.name}</p>`;
                 card.onclick = () => openBio(p.name, p.img);
                 container.appendChild(card);
             });
@@ -135,8 +143,10 @@
             legends.forEach(p => {
                 const card = document.createElement('div');
                 card.className = 'top-card';
-                card.innerHTML = `<img src="${p.img}"><p style="font-size:10px; padding:5px;">${p.name}</p>`;
-                card.onclick = () => openBio(p.name, p.img);
+                card.innerHTML = `<img src="${p.img}"><p>${p.name}</p>`;
+                card.onclick = () => {
+                    AdController.show().then(() => openBio(p.name, p.img)).catch(() => openBio(p.name, p.img));
+                };
                 container.appendChild(card);
             });
         }
@@ -145,6 +155,7 @@
             const fromPage = document.querySelector('.page.active').id;
             showPage('page-details');
             document.getElementById('details-content').innerHTML = `
+                <div style="width:100%; height:50px; background:#1e2d4d; color:gray; margin-bottom:15px; display:flex; align-items:center; justify-content:center; font-size:12px;">[TEST BANNER AD]</div>
                 <img src="${img}" style="width:100%; max-width:200px; border-radius:15px; border:2px solid gold;">
                 <h2 style="margin-top:15px;">${name}</h2>
                 <p>Statistics and Bio for ${name} will appear here.</p>
@@ -152,27 +163,39 @@
             document.getElementById('back-btn').onclick = () => showPage(fromPage);
         }
 
-        async function loadPlayersByPos(position) {
+        // আপনার সার্ভার API থেকে ডাটা লোড করার ফাইনাল ফাংশন
+        async function loadPlayersByPos(position = 'ALL') {
             const container = document.getElementById('player-list-view');
             container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>Loading...</p>";
+
             try {
-                const response = await fetch('players2.json'); 
+                const response = await fetch('/api/data'); 
                 const data = await response.json();
-                const filteredPlayers = data.players.filter(p => p.pos === position);
+                
+                let filteredPlayers;
+                if(position === 'ALL') {
+                    filteredPlayers = data.players.slice(0, 10);
+                } else {
+                    filteredPlayers = data.players.filter(p => p.pos === position);
+                }
+                
                 container.innerHTML = "";
-                if(filteredPlayers.length === 0) {
+                if(!filteredPlayers || filteredPlayers.length === 0) {
                     container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>No players found</p>";
                     return;
                 }
+
                 filteredPlayers.forEach(player => {
                     const card = document.createElement('div');
                     card.className = 'top-card';
                     card.innerHTML = `<img src="${player.img}"><p style="font-size:9px; padding:3px;">${player.name}</p>`;
-                    card.onclick = () => openBio(player.name, player.img);
+                    card.onclick = () => {
+                        AdController.show().then(() => openBio(player.name, player.img)).catch(() => openBio(player.name, player.img));
+                    };
                     container.appendChild(card);
                 });
             } catch (e) {
-                container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>Error loading players2.json</p>";
+                container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>Error connecting to server</p>";
             }
         }
 
