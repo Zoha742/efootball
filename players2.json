@@ -1,1 +1,6 @@
-
+{
+  "players": [
+    { "id": 1, "name": "Haaland", "pos": "CF", "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775765539/Lionel_Messi_gqr4ew.png" },
+    { "id": 2, "name": "Messi", "pos": "SS", "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775765528/Haaland_kcp6it.jpg" }
+  ]
+}
