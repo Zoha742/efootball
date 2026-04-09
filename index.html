@@ -1,34 +1,121 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
-  <meta charset="UTF-8">
-  <title>eFootball MiniApp</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eFootball TM</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --bg: #050a18; --card: #121a2d; --primary: #3b82f6; --text: #f8fafc; --accent: #4ade80; }
+        body { background: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; padding-bottom: 80px; }
+        .page { display: none; padding: 15px; animation: fadeIn 0.3s; }
+        .active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* Header */
+        .header { display: flex; align-items: center; padding: 10px; border-bottom: 2px solid var(--primary); }
+        .back-btn { font-size: 20px; cursor: pointer; margin-right: 15px; }
+
+        /* Position Buttons (Screen: id 1) */
+        .pos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+        .pos-btn { background: var(--card); border: 1px solid #1e293b; padding: 20px; border-radius: 12px; text-align: center; font-weight: bold; cursor: pointer; }
+
+        /* Profile & Coins */
+        .profile-header { text-align: center; padding: 20px; background: var(--card); border-radius: 15px; margin-bottom: 15px; }
+        .coin-box { background: #1e293b; padding: 10px; border-radius: 8px; margin: 10px 0; color: #f59e0b; font-weight: bold; }
+
+        /* Mining & Ads */
+        .action-btn { background: var(--primary); padding: 15px; border-radius: 10px; text-align: center; margin: 10px 0; cursor: pointer; }
+        .disabled { opacity: 0.5; pointer-events: none; }
+
+        /* Bottom Nav */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 70px; background: #070d19; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #1e2d4d; }
+        .nav-item { color: #94a3b8; text-align: center; font-size: 11px; cursor: pointer; }
+        .nav-item.active-nav { color: var(--primary); }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>⚽ eFootball TM</h1>
-  </header>
 
-  <nav>
-    <button onclick="showSection('players')">Player</button>
-    <button onclick="showSection('legends')">Legend Player</button>
-    <button onclick="showSection('managers')">Manager</button>
-    <button onclick="showSection('events')">Events</button>
-  </nav>
-
-  <main id="content"></main>
-
-  <footer>
-    <div class="bottom-bar">
-      <button onclick="showMining()">Mining</button>
-      <button onclick="showTasks()">Tasks</button>
+    <div id="home" class="page active">
+        <h3 style="text-align:center;">eFootball TM</h3>
+        <div class="pos-grid">
+            <div class="pos-btn" onclick="showPage('page-player-pos')">Player id 1</div>
+            <div class="pos-btn" onclick="showPage('page-manager')">Manager id 2</div>
+            <div class="pos-btn" onclick="openMining()">Mining id 5</div>
+            <div class="pos-btn" onclick="showPage('page-legend')">Legend id 4</div>
+        </div>
+        <div style="margin-top:20px;">
+            <p>QUICK ACTION ADS</p>
+            <div class="pos-grid">
+                <div class="pos-btn" id="ad1" onclick="watchAd('ad1')">Ad 1</div>
+                <div class="pos-btn" id="ad2" onclick="watchAd('ad2')">Ad 2</div>
+            </div>
+        </div>
     </div>
-    <div class="ads">
-      Banner ads (AdsGram integration)
-    </div>
-  </footer>
 
-  <script src="app.js"></script>
+    <div id="page-player-pos" class="page">
+        <div class="header"><i class="fas fa-arrow-left back-btn" onclick="showPage('home')"></i><span>POSITION - ID 1</span></div>
+        <div class="pos-grid">
+            <div class="pos-btn">CF</div><div class="pos-btn">SS</div>
+            <div class="pos-btn">AMF</div><div class="pos-btn">LWF</div>
+            <div class="pos-btn">GK</div><div class="pos-btn">RB</div>
+        </div>
+    </div>
+
+    <div id="page-profile" class="page">
+        <div class="profile-header">
+            <div id="user-photo" style="width:80px; height:80px; background:#334155; border-radius:50%; margin:0 auto 10px;"></div>
+            <h4 id="user-name">User Name</h4>
+            <div class="coin-box">My Coin: <span id="coin-balance">0</span></div>
+        </div>
+        <div class="pos-grid">
+            <div class="pos-btn">Bank</div><div class="pos-btn">Wallet</div>
+            <div class="pos-btn">Withdraw</div><div class="pos-btn">Referral</div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <div class="nav-item active-nav" onclick="showPage('home')"><i class="fas fa-home"></i><br>Home</div>
+        <div class="nav-item" onclick="showPage('page-profile')"><i class="fas fa-user"></i><br>Profile</div>
+    </nav>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        let coins = parseInt(localStorage.getItem('coins')) || 0;
+        document.getElementById('coin-balance').innerText = coins;
+
+        function showPage(id) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        function openMining() {
+            alert("Mining Started for 3 Hours!");
+            // এখানে টাইমার লজিক যোগ করা যাবে
+        }
+
+        function watchAd(id) {
+            const btn = document.getElementById(id);
+            alert("Playing Ad...");
+            btn.classList.add('disabled');
+            let timeLeft = 60;
+            const timer = setInterval(() => {
+                btn.innerText = timeLeft + "s";
+                timeLeft--;
+                if(timeLeft < 0) {
+                    clearInterval(timer);
+                    btn.innerText = "Ad Ready";
+                    btn.classList.remove('disabled');
+                    coins += 100;
+                    localStorage.setItem('coins', coins);
+                    document.getElementById('coin-balance').innerText = coins;
+                }
+            }, 1000);
+        }
+
+        // Telegram User Data
+        document.getElementById('user-name').innerText = tg.initDataUnsafe.user?.first_name || "Guest";
+    </script>
 </body>
 </html>
