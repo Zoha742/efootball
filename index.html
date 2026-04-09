@@ -25,14 +25,7 @@
 
         /* Position Grid (CF to GK) */
         .pos-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 20px; }
-        .pos-btn { background: var(--card-dark); border: 1px solid var(--primary); padding: 12px; border-radius: 8px; text-align: center; font-weight: bold; cursor: pointer; font-size: 12px; }
-
-        /* Quick Actions */
-        .section-title { color: var(--text); font-size: 14px; font-weight: bold; text-transform: uppercase; margin: 20px 0 12px; }
-        .quick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .quick-btn { border: none; padding: 20px 10px; border-radius: 12px; text-align: center; cursor: pointer; color: #fff; display: flex; flex-direction: column; align-items: center; gap: 8px; }
-        .q-store { background: #f97316; } .q-task { background: #ec4899; }
-        .q-leader { background: #3b82f6; } .q-club { background: #22c55e; }
+        .pos-btn { background: var(--card-dark); border: 1px solid var(--primary); padding: 15px 10px; border-radius: 10px; text-align: center; font-weight: bold; cursor: pointer; font-size: 13px; color: #fff; text-transform: uppercase; }
 
         /* Card View (2 per row) */
         .top-players-container { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
@@ -51,56 +44,43 @@
     <div id="home" class="page active">
         <div class="hub-title">eFootball <span>HUB</span></div>
         <div class="id-grid">
-            <div class="id-btn" onclick="openPage('page-player')"><i class="fas fa-users"></i><span>Player</span></div>
-            <div class="id-btn" onclick="openPage('page-manager')"><i class="fas fa-user-tie"></i><span>Manager</span></div>
-            <div class="id-btn" onclick="openPage('page-event')"><i class="fas fa-trophy"></i><span>Events</span></div>
-            <div class="id-btn" onclick="openPage('page-legend')"><i class="fas fa-crown"></i><span>Legend</span></div>
+            <div class="id-btn" onclick="showPage('page-player')"><i class="fas fa-users"></i><span>Player</span></div>
+            <div class="id-btn" onclick="showPage('page-manager')"><i class="fas fa-user-tie"></i><span>Manager</span></div>
+            <div class="id-btn" onclick="showPage('page-event')"><i class="fas fa-trophy"></i><span>Events</span></div>
+            <div class="id-btn" onclick="showPage('page-legend')"><i class="fas fa-crown"></i><span>Legend</span></div>
         </div>
 
-        <div class="section-title">QUICK ACTIONS</div>
-        <div class="quick-grid">
-            <div class="quick-btn q-store" onclick="openPage('page-store')"><i class="fas fa-shopping-cart"></i><span>Store</span></div>
-            <div class="quick-btn q-task" onclick="openPage('page-task')"><i class="fas fa-clipboard-check"></i><span>Task</span></div>
-            <div class="quick-btn q-leaderboard" onclick="openPage('page-store')"><i class="fas fa-shopping-cart"></i><span>Leaderboard</span></div>
-            <div class="quick-btn q-ads" onclick="openPage('page-task')"><i class="fas fa-clipboard-check"></i><span>New Ads</span></div>
-        </div>
-
-        <div class="section-title">TOP PLAYERS</div>
+        <div style="font-weight: bold; margin-bottom: 10px; text-transform: uppercase;">TOP PLAYERS</div>
         <div class="top-players-container" id="home-top-players">
             </div>
     </div>
 
     <div id="page-player" class="page">
-        <div class="hub-title"><i class="fas fa-arrow-left" onclick="showPage('home')" style="float:left;"></i> SELECT <span>POSITION</span></div>
+        <div class="hub-title"><i class="fas fa-arrow-left" onclick="showPage('home')" style="float:left; cursor:pointer;"></i> SELECT <span>POSITION</span></div>
         <div class="pos-grid">
-            <div class="pos-btn" onclick="openBio('CF')">CF</div>
-            <div class="pos-btn" onclick="openBio('SS')">SS</div>
-            <div class="pos-btn" onclick="openBio('LWF')">LWF</div>
-            <div class="pos-btn" onclick="openBio('RWF')">RWF</div>
-            <div class="pos-btn" onclick="openBio('AMF')">AMF</div>
-            <div class="pos-btn" onclick="openBio('CMF')">CMF</div>
-            <div class="pos-btn" onclick="openBio('DMF')">DMF</div>
-            <div class="pos-btn" onclick="openBio('CB')">CB</div>
-            <div class="pos-btn" onclick="openBio('LB')">LB</div>
-            <div class="pos-btn" onclick="openBio('RB')">RB</div>
-            <div class="pos-btn" onclick="openBio('GK')">GK</div>
+            <div class="pos-btn" onclick="openBio('CF', 'https://res.cloudinary.com/dyqegwdme/image/upload/v1775470946/K._Heinz_Rummenigge_tucqrv.png')">CF</div>
+            <div class="pos-btn" onclick="openBio('SS', '...')">SS</div>
+            <div class="pos-btn" onclick="openBio('LWF', '...')">LWF</div>
+            <div class="pos-btn" onclick="openBio('RWF', '...')">RWF</div>
+            <div class="pos-btn" onclick="openBio('AMF', '...')">AMF</div>
+            <div class="pos-btn" onclick="openBio('CMF', '...')">CMF</div>
+            <div class="pos-btn" onclick="openBio('DMF', '...')">DMF</div>
+            <div class="pos-btn" onclick="openBio('CB', '...')">CB</div>
+            <div class="pos-btn" onclick="openBio('LB', '...')">LB</div>
+            <div class="pos-btn" onclick="openBio('RB', '...')">RB</div>
+            <div class="pos-btn" onclick="openBio('GK', '...')">GK</div>
         </div>
     </div>
 
     <div id="page-legend" class="page">
-        <div class="hub-title"><i class="fas fa-arrow-left" onclick="showPage('home')" style="float:left;"></i> LEGEND <span>CARDS</span></div>
+        <div class="hub-title"><i class="fas fa-arrow-left" onclick="showPage('home')" style="float:left; cursor:pointer;"></i> LEGEND <span>CARDS</span></div>
         <div class="top-players-container" id="legend-list-view"></div>
     </div>
 
     <div id="page-details" class="page">
-    <div class="hub-title">
-        <i class="fas fa-arrow-left" onclick="showPage('page-player')" style="float:left; cursor:pointer;"></i> 
-        PLAYER <span>DETAILS</span>
+        <div class="hub-title"><i id="dynamic-back-btn" class="fas fa-arrow-left" style="float:left; cursor:pointer;"></i> PLAYER <span>DETAILS</span></div>
+        <div id="details-content" style="text-align:center; padding:20px;"></div>
     </div>
-    <div id="details-content" style="text-align:center;"></div>
-</div>
-    <div id="page-task" class="page">Task Page Contents</div>
-    <div id="page-profile" class="page">Profile Page Contents</div>
 
     <nav class="bottom-nav">
         <div class="nav-item active-nav" onclick="showPage('home')"><i class="fas fa-home"></i>Home</div>
@@ -113,60 +93,79 @@
         const tg = window.Telegram.WebApp;
         tg.expand();
 
-        // Adsgram Integration (Block ID আপনারটা বসাবেন)
+        let lastPage = 'home'; 
+
+        // Adsgram Block ID ekhane boshaben
         const AdController = window.Adsgram.init({ blockId: "YOUR_BLOCK_ID" });
 
         function showPage(id) {
+            // Back navigation er jonno current page track kora
+            if (id !== 'page-details') {
+                lastPage = document.querySelector('.page.active').id;
+            }
+
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
 
-            // Ads command on new page
-            if(id !== 'home') {
-                AdController.show().catch(() => { console.log("Ad Error"); });
+            // Notun page open holei ads show korbe
+            if (id !== 'home') {
+                AdController.show().catch(() => { console.log("Ad skipped/error"); });
             }
 
-            if(id === 'page-legend') loadLegendData();
+            if (id === 'page-legend') loadLegendData();
             
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active-nav'));
             tg.HapticFeedback.impactOccurred('light');
         }
 
-        function openPage(pageId) { showPage(pageId); }
-
         function loadHomePlayers() {
             const container = document.getElementById('home-top-players');
             container.innerHTML = "";
-            const sampleImg = "https://res.cloudinary.com/dyqegwdme/image/upload/v1775470946/K._Heinz_Rummenigge_tucqrv.png";
-            
-            for(let i=1; i<=10; i++) {
+            const players = [
+                { name: "Rummenigge", img: "https://res.cloudinary.com/dyqegwdme/image/upload/v1775470946/K._Heinz_Rummenigge_tucqrv.png" },
+                { name: "Cruyff", img: "https://res.cloudinary.com/dyqegwdme/image/upload/v1775470945/Johan_Cruyff_fiynct.png" },
+                { name: "Shevchenko", img: "https://res.cloudinary.com/dyqegwdme/image/upload/v1775470945/Andriy_Shevchenko_cgut92.png" },
+                { name: "Cantona", img: "https://res.cloudinary.com/dyqegwdme/image/upload/v1775470945/Eric_Cantona_m7ih4d.png" }
+            ];
+
+            players.forEach(p => {
                 const card = document.createElement('div');
                 card.className = 'top-card';
-                card.innerHTML = `<img src="${sampleImg}"><p style="font-size:10px; padding:5px;">Top Player ${i}</p>`;
-                card.onclick = () => openBio("Top Player " + i);
+                card.innerHTML = `<img src="${p.img}"><p style="font-size:10px; padding:5px;">${p.name}</p>`;
+                card.onclick = () => openBio(p.name, p.img);
                 container.appendChild(card);
-            }
+            });
         }
 
-        async function loadLegendData() {
+        function loadLegendData() {
             const container = document.getElementById('legend-list-view');
-            container.innerHTML = "Loading...";
-            try {
-                const res = await fetch('/api/data');
-                const data = await res.json();
-                container.innerHTML = "";
-                data.legend.forEach(p => {
-                    const card = document.createElement('div');
-                    card.className = 'top-card';
-                    card.innerHTML = `<img src="${p.img}"><p style="font-size:10px; padding:5px;">${p.name}</p>`;
-                    card.onclick = () => openBio(p.name);
-                    container.appendChild(card);
-                });
-            } catch (e) { container.innerHTML = "Error!"; }
+            container.innerHTML = "";
+            const legends = [
+                { name: "Pele", img: "https://res.cloudinary.com/dyqegwdme/image/upload/v1775470969/Pele_wudkac.png" },
+                { name: "Maradona", img: "https://res.cloudinary.com/dyqegwdme/image/upload/v1775470966/Diego_Maradona_xjo0gg.png" }
+            ];
+            legends.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'top-card';
+                card.innerHTML = `<img src="${p.img}"><p style="font-size:10px; padding:5px;">${p.name}</p>`;
+                card.onclick = () => openBio(p.name, p.img);
+                container.appendChild(card);
+            });
         }
 
-        function openBio(title) {
+        function openBio(name, img) {
+            // Details-e jawar ager page track kora hoyeche
+            const backTo = document.querySelector('.page.active').id;
+            
             showPage('page-details');
-            document.getElementById('details-content').innerHTML = `<h2>${title}</h2><p>Bio details soon...</p>`;
+            document.getElementById('details-content').innerHTML = `
+                <img src="${img}" style="width:100%; max-width:200px; border-radius:15px; border:2px solid #3b82f6;">
+                <h2 style="margin-top:15px;">${name}</h2>
+                <p style="color:#94a3b8;">Player Bio details and stats will be here.</p>
+            `;
+
+            // Dynamic back button logic
+            document.getElementById('dynamic-back-btn').onclick = () => showPage(backTo);
         }
 
         window.onload = loadHomePlayers;
