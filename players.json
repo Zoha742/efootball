@@ -1,10 +1,6 @@
 {
   "legend": [
-    { "id": "L1", "name": "Rummenigge", "pos": "CF", "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470946/K._Heinz_Rummenigge_tucqrv.png" },
-    { "id": "L2", "name": "Cruyff", "pos": "CF", "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470945/Johan_Cruyff_fiynct.png" },
-    { "id": "L3", "name": "Shevchenko", "pos": "CF", "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470945/Andriy_Shevchenko_cgut92.png" },
-    { "id": "L4", "name": "Buffon", "pos": "GK", "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472278/Gianluigi_Buffon_owhxfv.png" },
-    { "id": "L5", "name": "Cech", "pos": "GK", "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472277/Petr_Cech_u1l71k.png" },
-    { "id": "L6", "name": "Stam", "pos": "CB", "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472137/Jaap_Stam_lotymx.png" }
+    { "name": "Rummenigge", "pos": "CF", "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1775470946/K._Heinz_Rummenigge_tucqrv.png" },
+    { "name": "Cruyff", "pos": "CF", "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1775470945/Johan_Cruyff_fiynct.png" }
   ]
 }
