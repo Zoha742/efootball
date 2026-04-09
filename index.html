@@ -18,25 +18,36 @@
         .hub-title { text-align: center; margin: 15px 0 25px; font-weight: bold; font-size: 20px; text-transform: uppercase; }
         .hub-title span { color: var(--primary); }
 
+        /* Main ID Grid */
         .id-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px; }
         .id-btn { background: var(--card-dark); border: 1px solid var(--border); padding: 25px 15px; border-radius: 18px; text-align: center; cursor: pointer; }
         .id-btn i { font-size: 28px; color: var(--primary); margin-bottom: 12px; display: block; }
 
+        /* Quick Actions Section */
         .section-title { color: var(--text); font-size: 14px; font-weight: bold; text-transform: uppercase; margin: 25px 0 12px; padding-left: 5px; }
         .quick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 25px; }
         .quick-btn { border: none; padding: 20px 10px; border-radius: 12px; text-align: center; cursor: pointer; color: #fff; display: flex; flex-direction: column; align-items: center; gap: 8px; }
         .q-store { background: #f97316; } .q-task { background: #ec4899; }
 
+        /* Position Grid */
         .pos-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 20px; }
         .pos-btn { background: var(--card-dark); border: 1px solid var(--primary); padding: 15px 5px; border-radius: 10px; text-align: center; font-weight: bold; cursor: pointer; font-size: 12px; }
 
+        /* Card View Layout */
         .top-players-container { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; }
-        .top-card { background: var(--card-dark); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; text-align: center; padding: 5px; cursor: pointer; }
+        .top-card { background: var(--card-dark); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; text-align: center; padding: 5px; }
         .top-card img { width: 100%; height: auto; border-radius: 8px; display: block; }
         .top-card p { font-size: 11px; margin-top: 8px; font-weight: 500; }
 
-        .three-column-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 15px; }
+        /* --- আপনি যে ৩-কলাম গ্রিডটি চেয়েছিলেন --- */
+        .three-column-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+            margin-top: 15px;
+        }
 
+        /* Bottom Navigation */
         .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 70px; background: #070d19; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid var(--border); z-index: 1000; }
         .nav-item { text-align: center; color: #94a3b8; font-size: 11px; cursor: pointer; flex: 1; }
         .nav-item i { font-size: 20px; display: block; margin-bottom: 4px; }
@@ -48,18 +59,21 @@
     <div id="home" class="page active">
         <div class="hub-title">eFootball <span>HUB</span></div>
         <div class="id-grid">
-            <div class="id-btn" onclick="showPlayerPage()"><i class="fas fa-users"></i><span>Player</span></div>
+            <div class="id-btn" onclick="showPlayerPageWithAds()"><i class="fas fa-users"></i><span>Player</span></div>
             <div class="id-btn" onclick="showPage('page-manager')"><i class="fas fa-user-tie"></i><span>Manager</span></div>
             <div class="id-btn" onclick="showPage('page-event')"><i class="fas fa-trophy"></i><span>Events</span></div>
             <div class="id-btn" onclick="showPage('page-legend')"><i class="fas fa-crown"></i><span>Legend</span></div>
         </div>
+
         <div class="section-title">QUICK ACTIONS</div>
         <div class="quick-grid">
             <div class="quick-btn q-store" onclick="showPage('page-store')"><i class="fas fa-shopping-cart"></i><span>Store</span></div>
             <div class="quick-btn q-task" onclick="showPage('page-task')"><i class="fas fa-clipboard-check"></i><span>Task</span></div>
         </div>
+
         <div class="section-title">TOP PLAYERS</div>
-        <div class="top-players-container" id="home-top-players"></div>
+        <div class="top-players-container" id="home-top-players">
+            </div>
     </div>
 
     <div id="page-player" class="page">
@@ -72,6 +86,7 @@
             <div class="pos-btn" onclick="loadPlayersByPos('AMF')">AMF</div>
             <div class="pos-btn" onclick="loadPlayersByPos('GK')">GK</div>
         </div>
+        
         <div id="player-list-view" class="three-column-grid"></div>
     </div>
 
@@ -85,6 +100,9 @@
         <div id="details-content" style="text-align:center; padding:20px;"></div>
     </div>
 
+    <div id="page-store" class="page"><i class="fas fa-arrow-left" onclick="showPage('home')"></i> Store Page Content</div>
+    <div id="page-task" class="page"><i class="fas fa-arrow-left" onclick="showPage('home')"></i> Task Page Content</div>
+
     <nav class="bottom-nav">
         <div class="nav-item active-nav" onclick="showPage('home')"><i class="fas fa-home"></i>Home</div>
         <div class="nav-item" onclick="showPage('page-legend')"><i class="fas fa-crown"></i>Legend</div>
@@ -96,21 +114,38 @@
         const tg = window.Telegram.WebApp;
         tg.expand();
 
-        // Adsgram Initialization (Test Block ID: int-41)
+        // --- Adsgram Initialization (Test Block ID) ---
+        // আপনি যখন লাইভ করবেন তখন "int-41" এর জায়গায় আপনার ব্লক আইডি বসাবেন।
         const AdController = window.Adsgram.init({ blockId: "int-41" });
+
+        let currentActivePage = 'home';
 
         function showPage(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
+            currentActivePage = id;
+
             if(id === 'page-legend') loadLegendData();
             
+            // Navigation Highlight
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active-nav'));
             tg.HapticFeedback.impactOccurred('light');
         }
 
-        function showPlayerPage() {
-            showPage('page-player');
-            loadPlayersByPos('ALL');
+        // --- প্লেয়ার বাটনে ক্লিক করলে অ্যাড দেখিয়ে পেজ ওপেন করার লজিক ---
+        function showPlayerPageWithAds() {
+            // ১. অ্যাড দেখানো শুরু করুন
+            AdController.show().then((result) => {
+                // অ্যাড দেখা শেষ হলে এই ফাংশনটি কল হবে
+                showPage('page-player');
+                // আপনি চাইলে এখানে ডিফল্ট ১০ জন প্লেয়ার লোড করার ফাংশনও কল করতে পারেন।
+                loadPlayersByPos('ALL'); 
+            }).catch((err) => {
+                // কোনো কারণে অ্যাড লোড না হলে সরাসরি পেজে নিয়ে যাবে
+                showPage('page-player');
+                loadPlayersByPos('ALL');
+                console.error("Ads error:", err);
+            });
         }
 
         function loadHomePlayers() {
@@ -122,6 +157,7 @@
                 { name: "Shevchenko", img: "https://res.cloudinary.com/dyqegwdme/image/upload/v1775470945/Andriy_Shevchenko_cgut92.png" },
                 { name: "Cantona", img: "https://res.cloudinary.com/dyqegwdme/image/upload/v1775470945/Eric_Cantona_m7ih4d.png" }
             ];
+
             players.forEach(p => {
                 const card = document.createElement('div');
                 card.className = 'top-card';
@@ -142,11 +178,7 @@
                 const card = document.createElement('div');
                 card.className = 'top-card';
                 card.innerHTML = `<img src="${p.img}"><p>${p.name}</p>`;
-                // Legend কার্ডে ক্লিক করলে অ্যাড দেখিয়ে বায়ো খুলবে
-                card.onclick = () => {
-                    AdController.show().then(() => openBio(p.name, p.img))
-                                     .catch(() => openBio(p.name, p.img));
-                };
+                card.onclick = () => openBio(p.name, p.img);
                 container.appendChild(card);
             });
         }
@@ -159,42 +191,53 @@
                 <h2 style="margin-top:15px;">${name}</h2>
                 <p>Statistics and Bio for ${name} will appear here.</p>
             `;
+            // Back button command - আগের পেজে ফিরে যাবে
             document.getElementById('back-btn').onclick = () => showPage(fromPage);
         }
 
+        // --- আপনার সার্ভার API থেকে ৩-কলাম গ্রিডে ডাটা ফেচ করার লজিক ---
         async function loadPlayersByPos(position = 'ALL') {
             const container = document.getElementById('player-list-view');
+            // পজিশন অনুযায়ী বাটন ক্লিক করলে আগের ডাটা মুছে ফেলা
             container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>Loading...</p>";
 
             try {
+                // আপনার সার্ভার API থেকে ডাটা ফেচ করা
+                // আপনি যদি players2.json সরাসরি ব্যবহার করেন তবে '/api/data' এর জায়গায় ফাইল পাথ দিবেন।
                 const response = await fetch('/api/data'); 
                 const data = await response.json();
                 
                 let filteredPlayers;
                 if(position === 'ALL') {
+                    // শুরুতে ১০ জন প্লেয়ার দেখাবে
                     filteredPlayers = data.players.slice(0, 10);
                 } else {
+                    // পজিশন অনুযায়ী ফিল্টার
                     filteredPlayers = data.players.filter(p => p.pos === position);
                 }
                 
-                container.innerHTML = "";
+                container.innerHTML = ""; // লোডিং টেক্সট সরানো
+
                 if(filteredPlayers.length === 0) {
-                    container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>No players found</p>";
+                    container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>No players found.</p>";
                     return;
                 }
 
                 filteredPlayers.forEach(player => {
                     const card = document.createElement('div');
-                    card.className = 'top-card';
-                    card.innerHTML = `<img src="${player.img}"><p style="font-size:9px; padding:3px;">${player.name}</p>`;
-                    card.onclick = () => {
-                        AdController.show().then(() => openBio(player.name, player.img))
-                                         .catch(() => openBio(player.name, player.img));
-                    };
+                    card.className = 'top-card'; // আপনার আগের ডিজাইন অনুযায়ী কার্ড
+                    card.innerHTML = `
+                        <img src="${player.img}">
+                        <p style="font-size:9px; padding:3px;">${player.name}</p>
+                    `;
+                    
+                    // কার্ডে ক্লিক করলে বায়ো ওপেন হবে
+                    card.onclick = () => openBio(player.name, player.img);
                     container.appendChild(card);
                 });
             } catch (e) {
-                container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>Error loading data</p>";
+                container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>Error connecting to server.</p>";
+                console.error("Fetch error:", e);
             }
         }
 
