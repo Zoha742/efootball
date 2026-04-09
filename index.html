@@ -10,67 +10,71 @@
     <style>
         :root { --bg: #050a18; --card-dark: #121e36; --primary: #3b82f6; --text: #ffffff; --border: #1e2d4d; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: var(--bg); color: var(--text); font-family: sans-serif; padding-bottom: 80px; overflow-x: hidden; }
+        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; padding-bottom: 80px; }
         .page { display: none; padding: 15px; animation: fadeIn 0.3s; }
         .active { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* UI Elements */
-        .hub-title { text-align: center; margin: 15px 0; font-weight: bold; font-size: 20px; color: var(--primary); }
-        .id-grid, .pos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-        .id-btn, .pos-btn { background: var(--card-dark); border: 1px solid var(--border); padding: 20px; border-radius: 12px; text-align: center; cursor: pointer; color: white; }
-        
-        /* Card View - 2 Cards per row */
-        .top-players-container { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; }
-        .top-card { background: var(--card-dark); border-radius: 10px; border: 1px solid var(--border); overflow: hidden; position: relative; }
-        .top-card img { width: 100%; height: auto; display: block; }
-        
-        /* Navigation */
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 70px; background: #070d19; display: flex; border-top: 1px solid var(--border); z-index: 1000; }
-        .nav-item { flex: 1; text-align: center; color: #94a3b8; font-size: 11px; padding-top: 15px; cursor: pointer; }
-        .active-nav { color: var(--primary); font-weight: bold; }
+        .hub-title { text-align: center; margin: 15px 0 25px; font-weight: bold; font-size: 20px; text-transform: uppercase; }
+        .hub-title span { color: var(--primary); }
 
-        /* Ads Placeholder */
-        #banner-ad { width: 100%; min-height: 50px; background: #121e36; margin: 10px 0; border-radius: 5px; text-align: center; line-height: 50px; font-size: 10px; }
+        /* Home Buttons Grid */
+        .id-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px; }
+        .id-btn { background: var(--card-dark); border: 1px solid var(--border); padding: 25px 15px; border-radius: 18px; text-align: center; cursor: pointer; }
+        .id-btn i { font-size: 28px; color: var(--primary); margin-bottom: 12px; display: block; }
+
+        /* Card View (2 per row) */
+        .top-players-container { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .top-card { background: var(--card-dark); border-radius: 10px; border: 1px solid var(--border); overflow: hidden; padding: 5px; text-align: center; }
+        .top-card img { width: 100%; height: auto; border-radius: 5px; }
+
+        /* Position Grid (CF to GK) */
+        .pos-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 20px; }
+        .pos-btn { background: var(--card-dark); border: 1px solid var(--primary); padding: 12px; border-radius: 8px; text-align: center; font-weight: bold; cursor: pointer; }
+
+        /* Bottom Nav */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 70px; background: #070d19; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid var(--border); }
+        .nav-item { text-align: center; color: #94a3b8; font-size: 11px; cursor: pointer; flex: 1; }
+        .nav-item i { font-size: 20px; display: block; margin-bottom: 4px; }
+        .active-nav { color: var(--primary); }
     </style>
 </head>
 <body>
 
     <div id="home" class="page active">
-        <div class="hub-title">eFootball HUB</div>
-        
+        <div class="hub-title">eFootball <span>HUB</span></div>
         <div class="id-grid">
-            <div class="id-btn" onclick="showPage('page-player')"><i class="fas fa-users"></i><br>Player</div>
-            <div class="id-btn" onclick="showPage('page-legend')"><i class="fas fa-crown"></i><br>Legend</div>
+            <div class="id-btn" onclick="showPage('page-player')"><i class="fas fa-users"></i><span>Player</span></div>
+            <div class="id-btn" onclick="showPage('page-manager')"><i class="fas fa-user-tie"></i><span>Manager</span></div>
+            <div class="id-btn" onclick="showPage('page-event')"><i class="fas fa-trophy"></i><span>Event</span></div>
+            <div class="id-btn" onclick="showPage('page-legend')"><i class="fas fa-crown"></i><span>Legend</span></div>
         </div>
 
-        <div style="margin: 20px 0; font-weight: bold;">TOP PLAYERS (10)</div>
+        <div style="font-weight: bold; margin-bottom: 10px;">TOP PLAYERS</div>
         <div class="top-players-container" id="home-top-players">
             </div>
     </div>
 
     <div id="page-player" class="page">
-        <div class="hub-title"><i class="fas fa-arrow-left" onclick="showPage('home')" style="float:left;"></i> PLAYER POSITIONS</div>
-        <div id="banner-ad">Banner Ad Loading...</div>
+        <div class="hub-title"><i class="fas fa-arrow-left" onclick="showPage('home')" style="float:left;"></i> SELECT POSITION</div>
         <div class="pos-grid">
-            <div class="pos-btn" onclick="openPosition('CF')">CF</div>
-            <div class="pos-btn" onclick="openPosition('SS')">SS</div>
-            <div class="pos-btn" onclick="openPosition('LWF')">LWF</div>
-            <div class="pos-btn" onclick="openPosition('RWF')">RWF</div>
-            <div class="pos-btn" onclick="openPosition('AMF')">AMF</div>
-            <div class="pos-btn" onclick="openPosition('CMF')">CMF</div>
-            <div class="pos-btn" onclick="openPosition('DMF')">DMF</div>
-            <div class="pos-btn" onclick="openPosition('CB')">CB</div>
-            <div class="pos-btn" onclick="openPosition('LB')">LB</div>
-            <div class="pos-btn" onclick="openPosition('RB')">RB</div>
-            <div class="pos-btn" onclick="openPosition('GK')">GK</div>
+            <div class="pos-btn" onclick="openBio('CF')">CF</div>
+            <div class="pos-btn" onclick="openBio('SS')">SS</div>
+            <div class="pos-btn" onclick="openBio('LWF')">LWF</div>
+            <div class="pos-btn" onclick="openBio('RWF')">RWF</div>
+            <div class="pos-btn" onclick="openBio('AMF')">AMF</div>
+            <div class="pos-btn" onclick="openBio('CMF')">CMF</div>
+            <div class="pos-btn" onclick="openBio('DMF')">DMF</div>
+            <div class="pos-btn" onclick="openBio('CB')">CB</div>
+            <div class="pos-btn" onclick="openBio('LB')">LB</div>
+            <div class="pos-btn" onclick="openBio('RB')">RB</div>
+            <div class="pos-btn" onclick="openBio('GK')">GK</div>
         </div>
     </div>
 
     <div id="page-legend" class="page">
-        <div class="hub-title"><i class="fas fa-arrow-left" onclick="showPage('home')" style="float:left;"></i> LEGEND CARDS</div>
-        <div id="banner-ad">Banner Ad Loading...</div>
-        <div class="top-players-container" id="legend-list-view">
+        <div class="hub-title"><i class="fas fa-arrow-left" onclick="showPage('home')" style="float:left;"></i> LEGENDS</div>
+        <div class="top-players-container" id="legend-card-list">
             </div>
     </div>
 
@@ -80,10 +84,10 @@
     </div>
 
     <nav class="bottom-nav">
-        <div class="nav-item active-nav" onclick="showPage('home')"><i class="fas fa-home"></i><br>Home</div>
-        <div class="nav-item" onclick="showPage('page-legend')"><i class="fas fa-crown"></i><br>Legend</div>
-        <div class="nav-item" onclick="showPage('page-task')"><i class="fas fa-tasks"></i><br>Task</div>
-        <div class="nav-item" onclick="showPage('page-profile')"><i class="fas fa-user"></i><br>Profile</div>
+        <div class="nav-item active-nav" onclick="showPage('home')"><i class="fas fa-home"></i>Home</div>
+        <div class="nav-item" onclick="showPage('page-legend')"><i class="fas fa-crown"></i>Legend</div>
+        <div class="nav-item" onclick="showPage('page-task')"><i class="fas fa-clipboard-check"></i>Task</div>
+        <div class="nav-item" onclick="showPage('page-profile')"><i class="fas fa-user-circle"></i>Profile</div>
     </nav>
 
     <script>
@@ -91,58 +95,63 @@
         tg.expand();
 
         // Adsgram Integration
-        const AdController = window.Adsgram.init({ blockId: "YOUR_BLOCK_ID" }); // আপনার ID এখানে বসান
+        const AdController = window.Adsgram.init({ blockId: "YOUR_BLOCK_ID" });
 
         function showPage(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            
-            // Show Reward Ad when opening a new page
+
+            // Command for Ads on new page open
             if(id !== 'home') {
-                AdController.show().then((result) => {
-                    console.log("Ad completed", result);
-                }).catch((result) => {
-                    console.error("Ad error", result);
-                });
+                AdController.show().then(() => { console.log("Reward Ad Done"); }).catch(() => { console.log("Ad Skipped"); });
             }
+
+            if(id === 'page-legend') loadLegendCards();
+            
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active-nav'));
+            tg.HapticFeedback.impactOccurred('light');
         }
 
-        async function loadHomePlayers() {
+        // Home page-e 10-ti card view load kora
+        function loadHomeTopPlayers() {
             const container = document.getElementById('home-top-players');
-            // ১০টি কার্ড জেনারেট করা
+            container.innerHTML = "";
+            const playerImg = "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470946/K._Heinz_Rummenigge_tucqrv.png";
+            
             for(let i=1; i<=10; i++) {
                 const card = document.createElement('div');
                 card.className = 'top-card';
-                card.innerHTML = `<img src="https://res.cloudinary.com/dyqegwdme/image/upload/v1775470946/K._Heinz_Rummenigge_tucqrv.png"><p style="font-size:10px; padding:5px; text-align:center;">Top Player ${i}</p>`;
-                card.onclick = () => showPage('page-details');
+                card.innerHTML = `<img src="${playerImg}"><p style="font-size:10px; padding:5px;">Player ${i}</p>`;
+                card.onclick = () => openBio("Player " + i);
                 container.appendChild(card);
             }
         }
 
+        // Legend Page-er card load
         async function loadLegendCards() {
-            const container = document.getElementById('legend-list-view');
-            container.innerHTML = "";
+            const container = document.getElementById('legend-card-list');
+            container.innerHTML = "Loading...";
             try {
                 const res = await fetch('/api/data');
                 const data = await res.json();
+                container.innerHTML = "";
                 data.legend.forEach(p => {
                     const card = document.createElement('div');
                     card.className = 'top-card';
-                    card.innerHTML = `<img src="${p.img}"><p style="font-size:10px; padding:5px; text-align:center;">${p.name}</p>`;
-                    card.onclick = () => showPage('page-details');
+                    card.innerHTML = `<img src="${p.img}"><p style="font-size:10px;">${p.name}</p>`;
+                    card.onclick = () => openBio(p.name);
                     container.appendChild(card);
                 });
-            } catch (e) { console.log("Data Load Error"); }
+            } catch (e) { container.innerHTML = "Error loading data."; }
         }
 
-        function openPosition(pos) {
-            alert(pos + " bio ami pore dibo.");
+        function openBio(title) {
             showPage('page-details');
+            document.getElementById('details-content').innerHTML = `<h2>${title}</h2><p>Bio details will be updated soon.</p>`;
         }
 
-        // Initial Load
-        loadHomePlayers();
-        loadLegendCards();
+        // Home card load on startup
+        window.onload = loadHomeTopPlayers;
     </script>
 </body>
 </html>
