@@ -1,15 +1,54 @@
 {
-  "players": [
-    { "id": 1, "name": "Messi", "rating": 95, "image": "https://res.cloudinary.com/demo/image/upload/messi.png" },
-    { "id": 2, "name": "Mbappe", "rating": 92, "image": "https://res.cloudinary.com/demo/image/upload/mbappe.png" }
+  "player": [
+    {
+      "id": "1",
+      "name": "L. Messi",
+      "position": "RWF",
+      "image": "https://res.cloudinary.com/dyqegwdme/image/upload/v12345/players/messi.png",
+      "stats": {
+        "attacking": { "Awareness": 95, "Finishing": 94, "Dribbling": 99 },
+        "athleticism": { "Speed": 85, "Acceleration": 92, "Stamina": 75 }
+      }
+    },
+    {
+      "id": "2",
+      "name": "K. De Bruyne",
+      "position": "AMF",
+      "image": "https://res.cloudinary.com/dyqegwdme/image/upload/v12345/players/kdb.png",
+      "stats": {
+        "attacking": { "Awareness": 90, "Finishing": 82, "Passing": 98 },
+        "athleticism": { "Speed": 76, "Acceleration": 78, "Stamina": 88 }
+      }
+    }
   ],
-  "legends": [
-    { "id": 4, "name": "Maradona", "rating": 97, "image": "https://res.cloudinary.com/demo/image/upload/maradona.png" }
+  "legend": [
+    {
+      "id": "1001",
+      "name": "Johan Cruyff",
+      "position": "CF",
+      "image": "https://res.cloudinary.com/dyqegwdme/image/upload/v1775478478/Legend_Cards/CF/image_12.png",
+      "stats": {
+        "attacking": { "Awareness": 99, "Finishing": 96, "Dribbling": 98 },
+        "athleticism": { "Speed": 92, "Acceleration": 95, "Stamina": 90 }
+      }
+    }
   ],
-  "managers": [
-    { "id": 2, "name": "Pep Guardiola", "club": "Man City" }
+  "manager": [
+    {
+      "id": "201",
+      "name": "Pep Guardiola",
+      "style": "Possession Game",
+      "image": "https://res.cloudinary.com/dyqegwdme/image/upload/v12345/managers/pep.png"
+    },
+    {
+      "id": "202",
+      "name": "Jurgen Klopp",
+      "style": "Long Ball Counter",
+      "image": "https://res.cloudinary.com/dyqegwdme/image/upload/v12345/managers/klopp.png"
+    }
   ],
-  "events": [
-    { "id": 3, "title": "Champions League Final", "date": "2026-05-28" }
-  ]
-}
+  "event": [
+    {
+      "id": "301",
+      "name": "Italian League",
+      "image": "
