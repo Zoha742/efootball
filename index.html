@@ -35,7 +35,6 @@
         .top-card img { width: 100%; height: auto; border-radius: 8px; display: block; }
         .top-card p { font-size: 11px; margin-top: 8px; font-weight: 500; }
 
-        /* আপনার চাওয়া ৩-কলাম গ্রিড */
         .three-column-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 15px; }
 
         .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 70px; background: #070d19; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid var(--border); z-index: 1000; }
@@ -97,7 +96,7 @@
         const tg = window.Telegram.WebApp;
         tg.expand();
 
-        // Adsgram Test Block ID
+        // Adsgram Initialization (Test Block ID: int-41)
         const AdController = window.Adsgram.init({ blockId: "int-41" });
 
         function showPage(id) {
@@ -109,7 +108,6 @@
             tg.HapticFeedback.impactOccurred('light');
         }
 
-        // Player বাটনের জন্য বিশেষ ফাংশন (১০ জন লোড করবে)
         function showPlayerPage() {
             showPage('page-player');
             loadPlayersByPos('ALL');
@@ -144,8 +142,10 @@
                 const card = document.createElement('div');
                 card.className = 'top-card';
                 card.innerHTML = `<img src="${p.img}"><p>${p.name}</p>`;
+                // Legend কার্ডে ক্লিক করলে অ্যাড দেখিয়ে বায়ো খুলবে
                 card.onclick = () => {
-                    AdController.show().then(() => openBio(p.name, p.img)).catch(() => openBio(p.name, p.img));
+                    AdController.show().then(() => openBio(p.name, p.img))
+                                     .catch(() => openBio(p.name, p.img));
                 };
                 container.appendChild(card);
             });
@@ -155,7 +155,6 @@
             const fromPage = document.querySelector('.page.active').id;
             showPage('page-details');
             document.getElementById('details-content').innerHTML = `
-                <div style="width:100%; height:50px; background:#1e2d4d; color:gray; margin-bottom:15px; display:flex; align-items:center; justify-content:center; font-size:12px;">[TEST BANNER AD]</div>
                 <img src="${img}" style="width:100%; max-width:200px; border-radius:15px; border:2px solid gold;">
                 <h2 style="margin-top:15px;">${name}</h2>
                 <p>Statistics and Bio for ${name} will appear here.</p>
@@ -164,50 +163,41 @@
         }
 
         async function loadPlayersByPos(position = 'ALL') {
-    const container = document.getElementById('player-list-view');
-    container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>Loading...</p>";
+            const container = document.getElementById('player-list-view');
+            container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>Loading...</p>";
 
-    try {
-        // আপনার সার্ভারের API থেকে ডাটা নিবে
-        const response = await fetch('/api/data'); 
-        const data = await response.json();
-        
-        let filteredPlayers;
-        if(position === 'ALL') {
-            filteredPlayers = data.players.slice(0, 10);
-        } else {
-            filteredPlayers = data.players.filter(p => p.pos === position);
-        }
-
-        container.innerHTML = ""; 
-        if(filteredPlayers.length === 0) {
-            container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>No players found</p>";
-            return;
-        }
-
-        filteredPlayers.forEach(player => {
-            const card = document.createElement('div');
-            card.className = 'top-card';
-            card.innerHTML = `
-                <img src="${player.img}">
-                <p style="font-size:9px; padding:3px;">${player.name}</p>
-            `;
-            // ক্লিক করলে অ্যাড দেখাবে তারপর বায়ো
-            card.onclick = () => {
-                if (typeof AdController !== 'undefined') {
-                    AdController.show().then(() => openBio(player.name, player.img))
-                                     .catch(() => openBio(player.name, player.img));
+            try {
+                const response = await fetch('/api/data'); 
+                const data = await response.json();
+                
+                let filteredPlayers;
+                if(position === 'ALL') {
+                    filteredPlayers = data.players.slice(0, 10);
                 } else {
-                    openBio(player.name, player.img);
+                    filteredPlayers = data.players.filter(p => p.pos === position);
                 }
-            };
-            container.appendChild(card);
-        });
-    } catch (e) {
-        container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>Error loading data!</p>";
-        console.error("Fetch error:", e);
-    }
-}
+                
+                container.innerHTML = "";
+                if(filteredPlayers.length === 0) {
+                    container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>No players found</p>";
+                    return;
+                }
+
+                filteredPlayers.forEach(player => {
+                    const card = document.createElement('div');
+                    card.className = 'top-card';
+                    card.innerHTML = `<img src="${player.img}"><p style="font-size:9px; padding:3px;">${player.name}</p>`;
+                    card.onclick = () => {
+                        AdController.show().then(() => openBio(player.name, player.img))
+                                         .catch(() => openBio(player.name, player.img));
+                    };
+                    container.appendChild(card);
+                });
+            } catch (e) {
+                container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>Error loading data</p>";
+            }
+        }
+
         window.onload = loadHomePlayers;
     </script>
 </body>
