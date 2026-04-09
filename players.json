@@ -1,54 +1,10 @@
 {
-  "player": [
-    {
-      "id": "1",
-      "name": "L. Messi",
-      "position": "RWF",
-      "image": "https://res.cloudinary.com/dyqegwdme/image/upload/v12345/players/messi.png",
-      "stats": {
-        "attacking": { "Awareness": 95, "Finishing": 94, "Dribbling": 99 },
-        "athleticism": { "Speed": 85, "Acceleration": 92, "Stamina": 75 }
-      }
-    },
-    {
-      "id": "2",
-      "name": "K. De Bruyne",
-      "position": "AMF",
-      "image": "https://res.cloudinary.com/dyqegwdme/image/upload/v12345/players/kdb.png",
-      "stats": {
-        "attacking": { "Awareness": 90, "Finishing": 82, "Passing": 98 },
-        "athleticism": { "Speed": 76, "Acceleration": 78, "Stamina": 88 }
-      }
-    }
-  ],
   "legend": [
-    {
-      "id": "1001",
-      "name": "Johan Cruyff",
-      "position": "CF",
-      "image": "https://res.cloudinary.com/dyqegwdme/image/upload/v1775478478/Legend_Cards/CF/image_12.png",
-      "stats": {
-        "attacking": { "Awareness": 99, "Finishing": 96, "Dribbling": 98 },
-        "athleticism": { "Speed": 92, "Acceleration": 95, "Stamina": 90 }
-      }
-    }
-  ],
-  "manager": [
-    {
-      "id": "201",
-      "name": "Pep Guardiola",
-      "style": "Possession Game",
-      "image": "https://res.cloudinary.com/dyqegwdme/image/upload/v12345/managers/pep.png"
-    },
-    {
-      "id": "202",
-      "name": "Jurgen Klopp",
-      "style": "Long Ball Counter",
-      "image": "https://res.cloudinary.com/dyqegwdme/image/upload/v12345/managers/klopp.png"
-    }
-  ],
-  "event": [
-    {
-      "id": "301",
-      "name": "Italian League",
-      "image": "
+    { "id": "L1", "name": "Rummenigge", "pos": "CF", "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470946/K._Heinz_Rummenigge_tucqrv.png" },
+    { "id": "L2", "name": "Cruyff", "pos": "CF", "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470945/Johan_Cruyff_fiynct.png" },
+    { "id": "L3", "name": "Shevchenko", "pos": "CF", "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470945/Andriy_Shevchenko_cgut92.png" },
+    { "id": "L4", "name": "Buffon", "pos": "GK", "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472278/Gianluigi_Buffon_owhxfv.png" },
+    { "id": "L5", "name": "Cech", "pos": "GK", "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472277/Petr_Cech_u1l71k.png" },
+    { "id": "L6", "name": "Stam", "pos": "CB", "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472137/Jaap_Stam_lotymx.png" }
+  ]
+}
