@@ -29,7 +29,7 @@
         .top-card { background: var(--card-dark); border-radius: 10px; border: 1px solid var(--border); overflow: hidden; text-align: center; }
         .top-card img { width: 100%; height: auto; display: block; }
 
-        /* New 3-Column Grid for Normal Players */
+        /* Normal Player এর জন্য ৩-কলাম গ্রিড */
         .three-column-grid {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
@@ -58,23 +58,15 @@
     </div>
 
     <div id="page-player" class="page">
-        <div class="hub-title">
-            <i class="fas fa-arrow-left" onclick="showPage('home')" style="float:left; cursor:pointer;"></i> 
-            SELECT <span>POSITION</span>
-        </div>
-        <div class="pos-grid">
-            <div class="pos-btn" onclick="loadPlayersByPos('CF')">CF</div>
-            <div class="pos-btn" onclick="loadPlayersByPos('SS')">SS</div>
-            <div class="pos-btn" onclick="loadPlayersByPos('LWF')">LWF</div>
-            <div class="pos-btn" onclick="loadPlayersByPos('RWF')">RWF</div>
-            <div class="pos-btn" onclick="loadPlayersByPos('AMF')">AMF</div>
-            <div class="pos-btn" onclick="loadPlayersByPos('CMF')">CMF</div>
-            <div class="pos-btn" onclick="loadPlayersByPos('DMF')">DMF</div>
-            <div class="pos-btn" onclick="loadPlayersByPos('CB')">CB</div>
-            <div class="pos-btn" onclick="loadPlayersByPos('LB')">LB</div>
-            <div class="pos-btn" onclick="loadPlayersByPos('RB')">RB</div>
-            <div class="pos-btn" onclick="loadPlayersByPos('GK')">GK</div>
-        </div>
+    <div class="hub-title">
+        <i class="fas fa-arrow-left" onclick="showPage('home')" style="float:left; cursor:pointer;"></i> 
+        SELECT <span>POSITION</span>
+    </div>
+    <div class="pos-grid">
+        <div class="pos-btn" onclick="loadPlayersByPos('CF')">CF</div>
+        <div class="pos-btn" onclick="loadPlayersByPos('SS')">SS</div>
+        <div class="pos-btn" onclick="loadPlayersByPos('GK')">GK</div>
+    </div>
         <div id="player-list-view" class="three-column-grid"></div>
     </div>
 
