@@ -1,6 +1,29 @@
 {
-  "legend": [
-    { "name": "Rummenigge", "pos": "CF", "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1775470946/K._Heinz_Rummenigge_tucqrv.png" },
-    { "name": "Cruyff", "pos": "CF", "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1775470945/Johan_Cruyff_fiynct.png" }
-  ]
+  "legends": [
+    {
+      "id": 1,
+      "name": "Pele",
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1775470969/Pele_wudkac.png",
+      "pos": "CF",
+      "bio": "Edson Arantes do Nascimento, known as Pelé, was a Brazilian professional footballer who played as a forward. Regarded as one of the greatest players of all time."
+    },
+    {
+      "id": 2,
+      "name": "Diego Maradona",
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1775470966/Diego_Maradona_xjo0gg.png",
+      "pos": "SS",
+      "bio": "Diego Armando Maradona was an Argentine professional football player and manager. Widely regarded as one of the greatest players in the history of the sport."
+    },
+    {
+      "id": 3,
+      "name": "Johan Cruyff",
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1775470945/Johan_Cruyff_fiynct.png",
+      "pos": "AMF",
+      "bio": "Hendrik Johannes Cruijff was a Dutch professional football player and manager. He is considered one of the most influential figures in football history."
+    }
+  ],
+  "ads_config": {
+    "reward_id": "int-41",
+    "banner_id": "int-42"
+  }
 }
