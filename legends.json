@@ -1,25 +1,28 @@
 {
-  "legends": [
-    {
-      "id": 1,
-      "name": "Pele",
+ "legends": [
+    { 
+      "id": 1, 
+      "name": "Pele", 
+      "pos": "CF", 
       "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1775470969/Pele_wudkac.png",
-      "pos": "CF",
-      "bio": "Edson Arantes do Nascimento, known as Pelé, was a Brazilian professional footballer who played as a forward. Regarded as one of the greatest players of all time."
+      "rating": "101",
+      "bio": "Pele is widely regarded as the greatest football player of all time and a 3-time World Cup winner."
     },
-    {
-      "id": 2,
-      "name": "Diego Maradona",
+    { 
+      "id": 2, 
+      "name": "Maradona", 
+      "pos": "SS", 
       "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1775470966/Diego_Maradona_xjo0gg.png",
-      "pos": "SS",
-      "bio": "Diego Armando Maradona was an Argentine professional football player and manager. Widely regarded as one of the greatest players in the history of the sport."
+      "rating": "100",
+      "bio": "Diego Maradona, the Golden Boy, is famous for his 'Hand of God' goal and incredible dribbling."
     },
-    {
-      "id": 3,
-      "name": "Johan Cruyff",
-      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1775470945/Johan_Cruyff_fiynct.png",
-      "pos": "AMF",
-      "bio": "Hendrik Johannes Cruijff was a Dutch professional football player and manager. He is considered one of the most influential figures in football history."
+    { 
+      "id": 3, 
+      "name": "Maldini", 
+      "pos": "CB", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1775470966/Diego_Maradona_xjo0gg.png",
+      "rating": "99",
+      "bio": "Paolo Maldini is one of the greatest defenders in football history, spent his entire career at AC Milan."
     }
   ],
   "ads_config": {
