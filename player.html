@@ -4,103 +4,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Players - eFootball HUB</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://sad.adsgram.ai/js/adsgram-sdk.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --bg: #050a18; --card-dark: #121e36; --primary: #3b82f6; --text: #ffffff; --border: #1e2d4d; }
         body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; padding: 15px; margin: 0; }
-        
-        /* Header */
         .header { display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 25px; }
         .back-btn { position: absolute; left: 0; font-size: 22px; color: var(--primary); text-decoration: none; }
-        .title { font-size: 18px; font-weight: bold; text-transform: uppercase; }
-
-        /* Position Buttons Grid (সব পজিশন বাটন এখানে) */
         .pos-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 25px; }
-        .pos-btn { background: var(--card-dark); border: 1px solid var(--primary); padding: 12px; border-radius: 10px; text-align: center; cursor: pointer; font-weight: bold; font-size: 12px; transition: 0.3s; }
-        .pos-btn:active { background: var(--primary); color: #000; }
-
-        /* Player Card View (৩-কলাম গ্রিড যেমনটি টপ প্লেয়ারে আছে) */
+        .pos-btn { background: var(--card-dark); border: 1px solid var(--primary); padding: 12px; border-radius: 10px; text-align: center; cursor: pointer; font-weight: bold; font-size: 12px; }
+        /* ৩-কলাম গ্রিড */
         .player-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
-        .top-card { background: var(--card-dark); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; text-align: center; padding: 5px; cursor: pointer; animation: fadeIn 0.5s; }
+        .top-card { background: var(--card-dark); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; text-align: center; padding: 5px; cursor: pointer; transition: 0.3s; }
         .top-card img { width: 100%; border-radius: 8px; display: block; }
         .top-card p { font-size: 9px; padding: 5px; font-weight: bold; }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
     <div class="header">
         <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
-        <div class="title">SELECT <span>POSITION</span></div>
+        <h2 style="font-size: 18px;">SELECT POSITION</h2>
     </div>
 
     <div class="pos-grid">
-        <div class="pos-btn" onclick="fetchPlayersByPos('CF')">CF</div>
-        <div class="pos-btn" onclick="fetchPlayersByPos('SS')">SS</div>
-        <div class="pos-btn" onclick="fetchPlayersByPos('LWF')">LWF</div>
-        <div class="pos-btn" onclick="fetchPlayersByPos('RWF')">RWF</div>
-        <div class="pos-btn" onclick="fetchPlayersByPos('AMF')">AMF</div>
-        <div class="pos-btn" onclick="fetchPlayersByPos('LB')">LB</div>
-        <div class="pos-btn" onclick="fetchPlayersByPos('RB')">RB</div>
-        <div class="pos-btn" onclick="fetchPlayersByPos('CB')">CB</div>
-        <div class="pos-btn" onclick="fetchPlayersByPos('GK')">GK</div>
+        <div class="pos-btn" onclick="loadPlayers('CF')">CF</div>
+        <div class="pos-btn" onclick="loadPlayers('SS')">SS</div>
+        <div class="pos-btn" onclick="loadPlayers('LB')">LB</div>
+        <div class="pos-btn" onclick="loadPlayers('RB')">RB</div>
+        <div class="pos-btn" onclick="loadPlayers('CB')">CB</div>
+        <div class="pos-btn" onclick="loadPlayers('GK')">GK</div>
     </div>
 
-    <div id="player-list" class="player-grid"></div>
+    <div id="player-container" class="player-grid"></div>
 
     <script>
-        const AdController = window.Adsgram.init({ blockId: "int-41" }); // Reward Ad
+        const AdController = window.Adsgram.init({ blockId: "int-41" });
 
-        async function fetchPlayersByPos(pos) {
-            const container = document.getElementById('player-list');
+        async function loadPlayers(pos) {
+            const container = document.getElementById('player-container');
             container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>Loading...</p>";
-
+            
             try {
-                // players2.json থেকে ডাটা লোড
-                const response = await fetch('players2.json');
+                const response = await fetch('player.json');
                 const data = await response.json();
-                
-                // আপনার নির্দেশ অনুযায়ী আপাতত সব পজিশনে একই প্লেয়ার দেখাবে 
-                // কিন্তু ভবিষ্যতে পজিশন অনুযায়ী ফিল্টার হবে
-                const displayPlayers = data.players.slice(0, 9); // ৩-কলামে সুন্দর দেখানোর জন্য ৯ জন বা তার বেশি
-                
                 container.innerHTML = "";
-                displayPlayers.forEach(p => {
+
+                data.players.forEach(p => {
                     const card = document.createElement('div');
                     card.className = 'top-card';
-                    card.innerHTML = `
-                        <img src="${p.img}">
-                        <p>${p.name}</p>
-                    `;
-                    // কার্ডে ক্লিক করলে অ্যাডসহ বায়ো পেজে নিয়ে যাবে
-                    card.onclick = () => openPlayerBio(p);
+                    card.innerHTML = `<img src="${p.img}"><p>${p.name}</p>`;
+                    card.onclick = () => {
+                        // কার্ডে ক্লিক করলে অ্যাড দেখিয়ে নিউ উইন্ডো ওপেন হবে
+                        AdController.show().then(() => openBio(p)).catch(() => openBio(p));
+                    };
                     container.appendChild(card);
                 });
-            } catch (e) {
-                container.innerHTML = "Error loading players!";
-            }
+            } catch (e) { container.innerHTML = "Error loading data!"; }
         }
 
-        function openPlayerBio(player) {
-            // Reward Ad দেখিয়ে বায়ো পেজে পাঠানো
-            AdController.show().then(() => {
-                localStorage.setItem('p_name', player.name);
-                localStorage.setItem('p_img', player.img);
-                localStorage.setItem('p_bio', player.bio || "No biography available.");
-                window.location.href = 'bio.html';
-            }).catch(() => {
-                // Ad ফেইল করলেও বায়ো পেজে যাবে
-                localStorage.setItem('p_name', player.name);
-                localStorage.setItem('p_img', player.img);
-                window.location.href = 'bio.html';
-            });
+        function openBio(player) {
+            localStorage.setItem('selected_player', JSON.stringify(player));
+            window.location.href = 'playerbio.html'; // New window/page transition
         }
 
-        // ডিফল্টভাবে CF লোড হয়ে থাকবে
-        window.onload = () => fetchPlayersByPos('CF');
+        window.onload = () => loadPlayers('CF');
     </script>
 </body>
 </html>
