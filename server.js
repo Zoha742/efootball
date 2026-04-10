@@ -26,4 +26,12 @@ app.get('/api/data', (req, res) => {
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
+
+    {
+  "ads_config": {
+    "reward_id": "YOUR_REWARD_ID",
+    "banner_id": "YOUR_BANNER_ID"
+  },
+  "players": [...]
+}
 });
