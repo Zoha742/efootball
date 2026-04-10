@@ -1,1 +1,77 @@
 
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Managers - eFootball HUB</title>
+    <script src="https://sad.adsgram.ai/js/adsgram-sdk.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --bg: #050a18; --card-dark: #121e36; --primary: #3b82f6; --text: #ffffff; }
+        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; padding: 15px; margin: 0; }
+        
+        .header { display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 25px; margin-top: 10px; }
+        .back-btn { position: absolute; left: 0; font-size: 22px; color: var(--primary); text-decoration: none; }
+        .title { font-size: 20px; font-weight: bold; text-transform: uppercase; }
+        .title span { color: var(--primary); }
+
+        .player-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+        .top-card { background: var(--card-dark); border-radius: 12px; border: 1px solid #1e2d4d; overflow: hidden; text-align: center; padding: 5px; cursor: pointer; }
+        .top-card img { width: 100%; border-radius: 8px; display: block; }
+        .top-card p { font-size: 9px; padding: 5px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+        <div class="title">SELECT <span>MANAGER</span></div>
+    </div>
+
+    <div id="manager-list" class="player-grid">
+        </div>
+
+    <script>
+        const AdController = window.Adsgram.init({ blockId: "int-41" });
+
+        async function loadManagers() {
+            const container = document.getElementById('manager-list');
+            container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>Loading Managers...</p>";
+
+            try {
+                const response = await fetch('managers.json');
+                const data = await response.json();
+                
+                container.innerHTML = "";
+                data.managers.forEach(manager => {
+                    const card = document.createElement('div');
+                    card.className = 'top-card';
+                    card.innerHTML = `
+                        <img src="${manager.img}">
+                        <p>${manager.name}</p>
+                    `;
+                    card.onclick = () => openBio(manager.name, manager.img);
+                    container.appendChild(card);
+                });
+            } catch (e) {
+                container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>Error loading managers!</p>";
+            }
+        }
+
+        function openBio(name, img) {
+            AdController.show().then(() => {
+                localStorage.setItem('p_name', name);
+                localStorage.setItem('p_img', img);
+                window.location.href = 'bio.html';
+            }).catch(() => {
+                localStorage.setItem('p_name', name);
+                localStorage.setItem('p_img', img);
+                window.location.href = 'bio.html';
+            });
+        }
+
+        window.onload = loadManagers;
+    </script>
+</body>
+</html>
