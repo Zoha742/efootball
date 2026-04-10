@@ -11,38 +11,30 @@
         :root { --bg: #050a18; --card-dark: #121e36; --primary: #3b82f6; --text: #ffffff; --border: #1e2d4d; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; padding-bottom: 80px; overflow-x: hidden; }
-        .page { display: none; padding: 15px; animation: fadeIn 0.3s; }
+        .page { display: none; padding: 15px; animation: fadeIn 0.3s; min-height: 100vh; }
         .active { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .hub-title { text-align: center; margin: 15px 0 25px; font-weight: bold; font-size: 20px; text-transform: uppercase; }
-        .hub-title span { color: var(--primary); }
+        .hub-title { text-align: center; margin: 15px 0 25px; font-weight: bold; font-size: 20px; text-transform: uppercase; display: flex; align-items: center; justify-content: center; position: relative; }
+        .back-icon { position: absolute; left: 0; cursor: pointer; color: var(--primary); font-size: 20px; }
 
-        /* Main ID Grid */
+        /* Interface & Menu Buttons (যা আছে তাই থাকবে) */
         .id-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px; }
         .id-btn { background: var(--card-dark); border: 1px solid var(--border); padding: 25px 15px; border-radius: 18px; text-align: center; cursor: pointer; }
         .id-btn i { font-size: 28px; color: var(--primary); margin-bottom: 12px; display: block; }
 
-        /* Quick Actions Section */
-        .section-title { color: var(--text); font-size: 14px; font-weight: bold; text-transform: uppercase; margin: 25px 0 12px; padding-left: 5px; }
         .quick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 25px; }
         .quick-btn { border: none; padding: 20px 10px; border-radius: 12px; text-align: center; cursor: pointer; color: #fff; display: flex; flex-direction: column; align-items: center; gap: 8px; }
-        .q-store { background: #f97316; } .q-task { background: #ec4899; }
 
-        /* Position Grid */
-        .pos-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 20px; }
-        .pos-btn { background: var(--card-dark); border: 1px solid var(--primary); padding: 15px 5px; border-radius: 10px; text-align: center; font-weight: bold; cursor: pointer; font-size: 12px; }
+        /* CardView Design */
+        .player-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 15px; }
+        .top-card { background: var(--card-dark); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; text-align: center; padding: 5px; cursor: pointer; }
+        .top-card img { width: 100%; border-radius: 8px; display: block; }
+        .top-card p { font-size: 9px; padding: 5px; font-weight: bold; }
 
-        /* Card View Layout */
-        .top-players-container { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; }
-        .top-card { background: var(--card-dark); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; text-align: center; padding: 5px; }
-        .top-card img { width: 100%; height: auto; border-radius: 8px; display: block; }
-        .top-card p { font-size: 11px; margin-top: 8px; font-weight: 500; }
-
-        /* Bottom Navigation */
+        /* Bottom Nav */
         .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 70px; background: #070d19; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid var(--border); z-index: 1000; }
         .nav-item { text-align: center; color: #94a3b8; font-size: 11px; cursor: pointer; flex: 1; }
-        .nav-item i { font-size: 20px; display: block; margin-bottom: 4px; }
         .active-nav { color: var(--primary); font-weight: bold; }
     </style>
 </head>
@@ -51,122 +43,129 @@
     <div id="home" class="page active">
         <div class="hub-title">eFootball <span>HUB</span></div>
         <div class="id-grid">
-            <div class="id-btn" onclick="showPage('page-player')"><i class="fas fa-users"></i><span>Player</span></div>
-            <div class="id-btn" onclick="showPage('page-manager')"><i class="fas fa-user-tie"></i><span>Manager</span></div>
-            <div class="id-btn" onclick="showPage('page-event')"><i class="fas fa-trophy"></i><span>Events</span></div>
-            <div class="id-btn" onclick="showPage('page-legend')"><i class="fas fa-crown"></i><span>Legend</span></div>
+            <div class="id-btn" onclick="navigateTo('page-player')"><i class="fas fa-users"></i><span>Player</span></div>
+            <div class="id-btn" onclick="navigateTo('page-manager')"><i class="fas fa-user-tie"></i><span>Manager</span></div>
+            <div class="id-btn" onclick="navigateTo('page-event')"><i class="fas fa-trophy"></i><span>Events</span></div>
+            <div class="id-btn" onclick="navigateTo('page-legend')"><i class="fas fa-crown"></i><span>Legend</span></div>
         </div>
 
-        <div class="section-title">QUICK ACTIONS</div>
+        <p style="margin: 15px 0;">QUICK ACTIONS</p>
         <div class="quick-grid">
-            <div class="quick-btn q-store" onclick="showPage('page-store')"><i class="fas fa-shopping-cart"></i><span>Store</span></div>
-            <div class="quick-btn q-task" onclick="showPage('page-task')"><i class="fas fa-clipboard-check"></i><span>Task</span></div>
+            <div class="quick-btn" style="background: #f97316;" onclick="navigateTo('page-store')"><i class="fas fa-shopping-cart"></i><span>Store</span></div>
+            <div class="quick-btn" style="background: #ec4899;" onclick="navigateTo('page-task')"><i class="fas fa-clipboard-check"></i><span>Task</span></div>
         </div>
 
-        <div class="section-title">TOP PLAYERS</div>
-        <div class="top-players-container" id="home-top-players">
-            </div>
+        <p style="margin: 15px 0;">TOP PLAYERS</p>
+        <div class="player-grid" id="home-players-list"></div>
     </div>
 
     <div id="page-player" class="page">
-        <div class="hub-title"><i class="fas fa-arrow-left" onclick="showPage('home')" style="float:left; cursor:pointer;"></i> SELECT <span>POSITION</span></div>
-        <div class="pos-grid">
-            <div class="pos-btn" onclick="openBio('CF', 'https://res.cloudinary.com/dyqegwdme/image/upload/v1775470946/K._Heinz_Rummenigge_tucqrv.png')">CF</div>
-            <div class="pos-btn" onclick="openBio('SS', '...')">SS</div>
-            <div class="pos-btn" onclick="openBio('LWF', '...')">LWF</div>
-            <div class="pos-btn" onclick="openBio('RWF', '...')">RWF</div>
-            <div class="pos-btn" onclick="openBio('AMF', '...')">AMF</div>
-            <div class="pos-btn" onclick="openBio('GK', '...')">GK</div>
-        </div>
-    </div>
-
-    <div id="page-legend" class="page">
-        <div class="hub-title"><i class="fas fa-arrow-left" onclick="showPage('home')" style="float:left; cursor:pointer;"></i> LEGEND <span>CARDS</span></div>
-        <div class="top-players-container" id="legend-list-view"></div>
+        <div class="hub-title"><i class="fas fa-arrow-left back-icon" onclick="goBack()"></i> SELECT <span>POSITION</span></div>
+        <div class="player-grid" id="full-player-list"></div>
     </div>
 
     <div id="page-details" class="page">
-        <div class="hub-title"><i id="back-btn" class="fas fa-arrow-left" style="float:left; cursor:pointer;"></i> PLAYER <span>DETAILS</span></div>
-        <div id="details-content" style="text-align:center; padding:20px;"></div>
+        <div class="hub-title"><i class="fas fa-arrow-left back-icon" onclick="goBack()"></i> PLAYER <span>BIO</span></div>
+        <div id="bio-content" style="text-align:center;">
+            </div>
+        <div id="banner-ad-container" style="margin-top:20px; text-align:center; min-height:50px; background:rgba(255,255,255,0.05); border-radius:10px; display:flex; align-items:center; justify-content:center; color:gray; font-size:10px;">
+            [BANNER AD - int-42]
+        </div>
     </div>
 
-    <div id="page-store" class="page"><i class="fas fa-arrow-left" onclick="showPage('home')"></i> Store Page Content</div>
-    <div id="page-task" class="page"><i class="fas fa-arrow-left" onclick="showPage('home')"></i> Task Page Content</div>
+    <div id="page-manager" class="page"><div class="hub-title"><i class="fas fa-arrow-left back-icon" onclick="goBack()"></i> MANAGER</div></div>
+    <div id="page-event" class="page"><div class="hub-title"><i class="fas fa-arrow-left back-icon" onclick="goBack()"></i> EVENT</div></div>
+    <div id="page-legend" class="page"><div class="hub-title"><i class="fas fa-arrow-left back-icon" onclick="goBack()"></i> LEGEND</div></div>
+    <div id="page-store" class="page"><div class="hub-title"><i class="fas fa-arrow-left back-icon" onclick="goBack()"></i> STORE</div></div>
+    <div id="page-task" class="page"><div class="hub-title"><i class="fas fa-arrow-left back-icon" onclick="goBack()"></i> TASK</div></div>
+    <div id="page-profile" class="page"><div class="hub-title"><i class="fas fa-arrow-left back-icon" onclick="goBack()"></i> PROFILE</div></div>
 
     <nav class="bottom-nav">
-        <div class="nav-item active-nav" onclick="showPage('home')"><i class="fas fa-home"></i>Home</div>
-        <div class="nav-item" onclick="showPage('page-legend')"><i class="fas fa-crown"></i>Legend</div>
-        <div class="nav-item" onclick="showPage('page-task')"><i class="fas fa-clipboard-check"></i>Task</div>
-        <div class="nav-item" onclick="showPage('page-profile')"><i class="fas fa-user-circle"></i>Profile</div>
+        <div class="nav-item active-nav" onclick="navigateTo('home')"><i class="fas fa-home"></i><br>Home</div>
+        <div class="nav-item" onclick="navigateTo('page-legend')"><i class="fas fa-crown"></i><br>Legend</div>
+        <div class="nav-item" onclick="navigateTo('page-task')"><i class="fas fa-clipboard-check"></i><br>Task</div>
+        <div class="nav-item" onclick="navigateTo('page-profile')"><i class="fas fa-user-circle"></i><br>Profile</div>
     </nav>
 
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand();
 
-        let currentActivePage = 'home';
+        let historyStack = [];
+        let adsIdConfig = { reward: "int-41", banner: "int-42" }; // Default Test IDs
 
-        function showPage(id) {
+        // JSON Load function (Ads ID and Player Data)
+        async function loadAppData() {
+            try {
+                const response = await fetch('/api/data'); 
+                const data = await response.json();
+                
+                // আপনার JSON থেকে ID লিংক আপ
+                if(data.ads_config) {
+                    adsIdConfig.reward = data.ads_config.reward_id;
+                    adsIdConfig.banner = data.ads_config.banner_id;
+                }
+                
+                renderHomePlayers(data.players);
+            } catch (e) {
+                console.log("JSON not found, using test data.");
+            }
+        }
+
+        // Global Navigation with Reward Ads
+        function navigateTo(targetId) {
+            const current = document.querySelector('.page.active');
+            if(current.id === targetId) return;
+
+            historyStack.push(current.id);
+
+            // Reward Video Ad Trigger (যেকোনো বাটনে ক্লিক করলে রান হবে)
+            const AdController = window.Adsgram.init({ blockId: adsIdConfig.reward });
+            AdController.show().then(() => {
+                showNewPage(targetId);
+            }).catch(() => {
+                showNewPage(targetId); // Error হলে সরাসরি পেজে যাবে
+            });
+        }
+
+        function showNewPage(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            currentActivePage = id;
-
-            if(id === 'page-legend') loadLegendData();
-            
-            // Navigation Highlight
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active-nav'));
             tg.HapticFeedback.impactOccurred('light');
         }
 
-        // Home Page-এ ৪টি কার্ড ভিউ কোড
-        function loadHomePlayers() {
-            const container = document.getElementById('home-top-players');
-            container.innerHTML = "";
-            const players = [
-                { name: "Rummenigge", img: "https://res.cloudinary.com/dyqegwdme/image/upload/v1775470946/K._Heinz_Rummenigge_tucqrv.png" },
-                { name: "Cruyff", img: "https://res.cloudinary.com/dyqegwdme/image/upload/v1775470945/Johan_Cruyff_fiynct.png" },
-                { name: "Shevchenko", img: "https://res.cloudinary.com/dyqegwdme/image/upload/v1775470945/Andriy_Shevchenko_cgut92.png" },
-                { name: "Cantona", img: "https://res.cloudinary.com/dyqegwdme/image/upload/v1775470945/Eric_Cantona_m7ih4d.png" }
-            ];
-
-            players.forEach(p => {
-                const card = document.createElement('div');
-                card.className = 'top-card';
-                card.innerHTML = `<img src="${p.img}"><p>${p.name}</p>`;
-                card.onclick = () => openBio(p.name, p.img);
-                container.appendChild(card);
-            });
+        function goBack() {
+            if(historyStack.length > 0) {
+                const prev = historyStack.pop();
+                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+                document.getElementById(prev).classList.add('active');
+            }
         }
 
-        function loadLegendData() {
-            const container = document.getElementById('legend-list-view');
-            container.innerHTML = "";
-            const legends = [
-                { name: "Pele", img: "https://res.cloudinary.com/dyqegwdme/image/upload/v1775470969/Pele_wudkac.png" },
-                { name: "Maradona", img: "https://res.cloudinary.com/dyqegwdme/image/upload/v1775470966/Diego_Maradona_xjo0gg.png" }
-            ];
-            legends.forEach(p => {
-                const card = document.createElement('div');
-                card.className = 'top-card';
-                card.innerHTML = `<img src="${p.img}"><p>${p.name}</p>`;
-                card.onclick = () => openBio(p.name, p.img);
-                container.appendChild(card);
-            });
-        }
-
-        function openBio(name, img) {
-            const fromPage = document.querySelector('.page.active').id;
-            showPage('page-details');
-            document.getElementById('details-content').innerHTML = `
-                <img src="${img}" style="width:100%; max-width:200px; border-radius:15px; border:2px solid gold;">
-                <h2 style="margin-top:15px;">${name}</h2>
-                <p>Statistics and Bio for ${name} will appear here.</p>
+        // Bio Page Design (Image Upore, Text Niche)
+        function openBio(player) {
+            navigateTo('page-details');
+            document.getElementById('bio-content').innerHTML = `
+                <img src="${player.img}" style="width:100%; max-width:250px; border-radius:15px; border:3px solid var(--primary); margin-bottom:15px;">
+                <div style="padding:10px;">
+                    <h2 style="color:var(--primary);">${player.name}</h2>
+                    <p style="color:#ccc; margin-top:10px; line-height:1.6;">${player.bio || 'Detailed player information and stats go here.'}</p>
+                </div>
             `;
-            // Back button command - আগের পেজে ফিরে যাবে
-            document.getElementById('back-btn').onclick = () => showPage(fromPage);
         }
 
-        window.onload = loadHomePlayers;
+        function renderHomePlayers(players) {
+            const container = document.getElementById('home-players-list');
+            players.slice(0, 6).forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'top-card';
+                card.innerHTML = `<img src="${p.img}"><p>${p.name}</p>`;
+                card.onclick = () => openBio(p);
+                container.appendChild(card);
+            });
+        }
+
+        window.onload = loadAppData;
     </script>
 </body>
 </html>
