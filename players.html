@@ -1,1 +1,61 @@
 
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Players - eFootball HUB</title>
+    <script src="https://sad.adsgram.ai/js/adsgram-sdk.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --bg: #050a18; --card-dark: #121e36; --primary: #3b82f6; --text: #ffffff; }
+        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; padding: 15px; }
+        .back-btn { font-size: 22px; color: var(--primary); text-decoration: none; position: absolute; top: 15px; left: 15px; }
+        .pos-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin: 50px 0 20px; }
+        .pos-btn { background: var(--card-dark); border: 1px solid var(--primary); padding: 12px; border-radius: 8px; text-align: center; cursor: pointer; font-size: 12px; font-weight: bold; }
+        .player-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+        .top-card { background: var(--card-dark); border-radius: 12px; border: 1px solid #1e2d4d; overflow: hidden; text-align: center; padding: 5px; cursor: pointer; }
+        .top-card img { width: 100%; border-radius: 8px; }
+        .top-card p { font-size: 9px; padding: 5px; }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+    <div class="pos-grid">
+        <div class="pos-btn" onclick="fetchPlayers('CF')">CF</div>
+        <div class="pos-btn" onclick="fetchPlayers('SS')">SS</div>
+        <div class="pos-btn" onclick="fetchPlayers('LWF')">LWF</div>
+        <div class="pos-btn" onclick="fetchPlayers('RWF')">RWF</div>
+        <div class="pos-btn" onclick="fetchPlayers('AMF')">AMF</div>
+        <div class="pos-btn" onclick="fetchPlayers('GK')">GK</div>
+    </div>
+    <div id="list" class="player-grid"></div>
+
+    <script>
+        const AdController = window.Adsgram.init({ blockId: "int-41" }); // Reward Ad ID
+
+        async function fetchPlayers(pos) {
+            document.getElementById('list').innerHTML = "Loading...";
+            const res = await fetch('players2.json');
+            const data = await res.json();
+            const filtered = data.players.filter(p => p.pos === pos);
+            
+            let html = "";
+            filtered.forEach(p => {
+                html += `<div class="top-card" onclick="openBio('${p.name}', '${p.img}')">
+                            <img src="${p.img}"><p>${p.name}</p>
+                         </div>`;
+            });
+            document.getElementById('list').innerHTML = html || "No players found";
+        }
+
+        function openBio(name, img) {
+            AdController.show().then(() => {
+                localStorage.setItem('p_name', name);
+                localStorage.setItem('p_img', img);
+                window.location.href = 'bio.html';
+            }).catch(() => { window.location.href = 'bio.html'; });
+        }
+    </script>
+</body>
+</html>
