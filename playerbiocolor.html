@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player Bio Color - eFootball HUB</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #050a18;
+            --card-dark: #121e36;
+            --primary-color: #3b82f6; /* Blue accent */
+            --text-color: #ffffff;
+            --rating-good: #22c55e; /* Green for 90+ ratings */
+            --rating-avg: #eab308; /* Yellow for 80-89 ratings */
+            --rating-low: #ef4444; /* Red for <80 ratings */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', sans-serif;
+            padding-bottom: 20px;
+        }
+
+        /* Header with Back Button */
+        .header {
+            background-color: #070d19;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            border-bottom: 1px solid #1e2d4d;
+        }
+
+        .back-btn {
+            position: absolute;
+            left: 15px;
+            font-size: 22px;
+            color: var(--primary-color);
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .title {
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .title span {
+            color: var(--primary-color);
+        }
+
+        /* Player Main Info Section */
+        .player-info-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 15px;
+        }
+
+        .player-img-container {
+            width: 100%;
+            max-width: 250px;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 3px solid var(--primary-color);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+            margin-bottom: 15px;
+        }
+
+        .player-img-container img {
+            width: 100%;
+            display: block;
+        }
+
+        .player-name {
+            font-size: 24px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        /* Ratings & Stats Container */
+        .stats-container {
+            width: 100%;
+            max-width: 600px;
+            padding: 0 15px;
+        }
+
+        /* Summary Stats (Overall Rating) */
+        .summary-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-box {
+            background-color: var(--card-dark);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid #1e2d4d;
+        }
+
+        .stat-box .label {
+            font-size: 12px;
+            color: #94a3b8;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .stat-box .value {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        /* Green rating class */
+        .rating-good {
+            color: var(--rating-good);
+        }
+
+        /* Detailed Stats List */
+        .detailed-stats-list {
+            background-color: var(--card-dark);
+            border-radius: 12px;
+            border: 1px solid #1e2d4d;
+            overflow: hidden;
+        }
+
+        .detailed-stats-list li {
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            border-bottom: 1px solid #1e2d4d;
+        }
+
+        .detailed-stats-list li:last-child {
+            border-bottom: none;
+        }
+
+        .detailed-stats-list li .stat-name {
+            font-size: 14px;
+            color: #ccc;
+        }
+
+        .detailed-stats-list li .stat-value {
+            font-size: 16px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Mini progress bar style rating */
+        .stat-bar {
+            width: 5px;
+            height: 15px;
+            border-radius: 2px;
+            display: inline-block;
+        }
+
+        /* Green Bar */
+        .bar-good {
+            background-color: var(--rating-good);
+        }
+
+        /* Yellow Bar */
+        .bar-avg {
+            background-color: var(--rating-avg);
+        }
+
+        /* Ad Space */
+        .ad-space {
+            margin-top: 30px;
+            padding: 15px;
+            text-align: center;
+        }
+        .ad-content {
+            background-color: var(--card-dark);
+            border-radius: 10px;
+            padding: 15px;
+            color: gray;
+            font-size: 11px;
+            border: 1px solid #1e2d4d;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+        <div class="title">PLAYER <span>DETAILS</span></div>
+    </div>
+
+    <div id="bio-color-content" class="player-info-section">
+        
+        <div class="player-img-container">
+            <img src="https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775845455/Mohamed_Salah_ppqmqz.jpg" alt="Player Image">
+        </div>
+
+        <h2 class="player-name">M. Salah</h2>
+
+        <div class="stats-container">
+            
+            <div class="summary-stats">
+                <div class="stat-box">
+                    <div class="label">Overall</div>
+                    <div class="value rating-good">101</div>
+                </div>
+                <div class="stat-box">
+                    <div class="label">Position</div>
+                    <div class="value">RW</div>
+                </div>
+                <div class="stat-box">
+                    <div class="label">Level</div>
+                    <div class="value">30/30</div>
+                </div>
+            </div>
+
+            <ul class="detailed-stats-list">
+                <li>
+                    <span class="stat-name">Speed</span>
+                    <span class="stat-value">
+                        <span class="stat-bar bar-good"></span> 99
+                    </span>
+                </li>
+                <li>
+                    <span class="stat-name">Acceleration</span>
+                    <span class="stat-value">
+                        <span class="stat-bar bar-good"></span> 98
+                    </span>
+                </li>
+                <li>
+                    <span class="stat-name">Dribbling</span>
+                    <span class="stat-value">
+                        <span class="stat-bar bar-good"></span> 95
+                    </span>
+                </li>
+                <li>
+                    <span class="stat-name">Finishing</span>
+                    <span class="stat-value">
+                        <span class="stat-bar bar-good"></span> 92
+                    </span>
+                </li>
+                <li>
+                    <span class="stat-name">Passing</span>
+                    <span class="stat-value">
+                        <span class="stat-bar bar-avg"></span> 85
+                    </span>
+                </li>
+            </ul>
+
+        </div>
+
+        <div class="ad-space">
+            <div class="ad-content">
+                <p>[BANNER AD - int-42]</p>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
