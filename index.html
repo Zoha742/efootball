@@ -4,135 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>eFootball HUB</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script src="https://sad.adsgram.ai/js/adsgram-sdk.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --bg: #050a18; --card-dark: #121e36; --primary: #3b82f6; --text: #ffffff; --border: #1e2d4d; }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; padding-bottom: 80px; overflow-x: hidden; }
-        .page { display: none; padding: 15px; animation: fadeIn 0.3s; min-height: 100vh; }
-        .active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        .hub-title { text-align: center; margin: 15px 0 25px; font-weight: bold; font-size: 20px; text-transform: uppercase; display: flex; align-items: center; justify-content: center; position: relative; }
-        .back-icon { position: absolute; left: 0; cursor: pointer; color: var(--primary); font-size: 20px; }
-
-        .id-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px; }
-        .id-btn { background: var(--card-dark); border: 1px solid var(--border); padding: 25px 15px; border-radius: 18px; text-align: center; cursor: pointer; }
+        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 80px; }
+        .hub-title { text-align: center; margin: 25px 0; font-weight: bold; font-size: 20px; text-transform: uppercase; }
+        .id-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 15px; }
+        .id-btn { background: var(--card-dark); border: 1px solid var(--border); padding: 25px 15px; border-radius: 18px; text-align: center; cursor: pointer; text-decoration: none; color: #fff; }
         .id-btn i { font-size: 28px; color: var(--primary); margin-bottom: 12px; display: block; }
-
-        .pos-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 20px; }
-        .pos-btn { background: var(--card-dark); border: 1px solid var(--primary); padding: 15px 5px; border-radius: 10px; text-align: center; font-weight: bold; cursor: pointer; font-size: 12px; }
-
-        .player-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 15px; }
-        .top-card { background: var(--card-dark); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; text-align: center; padding: 5px; cursor: pointer; }
-        .top-card img { width: 100%; border-radius: 8px; display: block; }
-        .top-card p { font-size: 9px; padding: 5px; font-weight: bold; }
-
-        .bio-img { width: 100%; max-width: 250px; border-radius: 15px; border: 3px solid var(--primary); margin-bottom: 15px; }
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 70px; background: #070d19; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid var(--border); z-index: 1000; }
-        .nav-item { text-align: center; color: #94a3b8; font-size: 11px; cursor: pointer; flex: 1; }
-        .active-nav { color: var(--primary); font-weight: bold; }
+        /* Bottom Nav */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 70px; background: #070d19; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid var(--border); }
+        .nav-item { text-align: center; color: #94a3b8; font-size: 11px; text-decoration: none; }
     </style>
 </head>
 <body>
-
-    <div id="home" class="page active">
-        <div class="hub-title">eFootball <span>HUB</span></div>
-        <div class="id-grid">
-            <div class="id-btn" onclick="navigateTo('page-player')"><i class="fas fa-users"></i><span>Player</span></div>
-            <div class="id-btn" onclick="navigateTo('page-manager')"><i class="fas fa-user-tie"></i><span>Manager</span></div>
-            <div class="id-btn" onclick="navigateTo('page-event')"><i class="fas fa-trophy"></i><span>Events</span></div>
-            <div class="id-btn" onclick="navigateTo('page-legend')"><i class="fas fa-crown"></i><span>Legend</span></div>
-        </div>
-        <div class="player-grid" id="home-players-list"></div>
+    <div class="hub-title">eFootball <span>HUB</span></div>
+    <div class="id-grid">
+        <a href="player.html" class="id-btn"><i class="fas fa-users"></i>Player</a>
+        <a href="manager.html" class="id-btn"><i class="fas fa-user-tie"></i>Manager</a>
+        <a href="event.html" class="id-btn"><i class="fas fa-trophy"></i>Events</a>
+        <a href="legend.html" class="id-btn"><i class="fas fa-crown"></i>Legend</a>
     </div>
-
-    <div id="page-player" class="page">
-        <div class="hub-title"><i class="fas fa-arrow-left back-icon" onclick="goBack()"></i> SELECT <span>POSITION</span></div>
-        <div class="pos-grid">
-            <div class="pos-btn" onclick="loadPlayers('CF')">CF</div>
-            <div class="pos-btn" onclick="loadPlayers('SS')">SS</div>
-            <div class="pos-btn" onclick="loadPlayers('LWF')">LWF</div>
-            <div class="pos-btn" onclick="loadPlayers('RWF')">RWF</div>
-            <div class="pos-btn" onclick="loadPlayers('AMF')">AMF</div>
-            <div class="pos-btn" onclick="loadPlayers('GK')">GK</div>
-        </div>
-        <div id="player-list-view" class="player-grid"></div>
-    </div>
-
-    <div id="page-details" class="page">
-        <div class="hub-title"><i class="fas fa-arrow-left back-icon" onclick="goBack()"></i> PLAYER <span>BIO</span></div>
-        <div id="bio-content" style="text-align:center; padding:10px;"></div>
-        <div id="banner-ad" style="margin-top:20px; text-align:center; min-height:50px; background:rgba(255,255,255,0.05); color:gray; font-size:10px; display:flex; align-items:center; justify-content:center;">
-            [BANNER AD - int-42]
-        </div>
-    </div>
-
     <nav class="bottom-nav">
-        <div class="nav-item active-nav" onclick="navigateTo('home')"><i class="fas fa-home"></i><br>Home</div>
-        <div class="nav-item" onclick="navigateTo('page-legend')"><i class="fas fa-crown"></i><br>Legend</div>
-        <div class="nav-item" onclick="navigateTo('page-task')"><i class="fas fa-clipboard-check"></i><br>Task</div>
-        <div class="nav-item" onclick="navigateTo('page-profile')"><i class="fas fa-user-circle"></i><br>Profile</div>
+        <a href="index.html" class="nav-item" style="color:#3b82f6;"><i class="fas fa-home"></i><br>Home</a>
+        <a href="legend.html" class="nav-item"><i class="fas fa-crown"></i><br>Legend</a>
+        <a href="task.html" class="nav-item"><i class="fas fa-tasks"></i><br>Task</a>
+        <a href="profile.html" class="nav-item"><i class="fas fa-user"></i><br>Profile</a>
     </nav>
-
-    <script>
-        const tg = window.Telegram.WebApp;
-        tg.expand();
-        let historyStack = [];
-        let ads = { reward: "int-41", banner: "int-42" };
-
-        // 1. Navigation with Reward Ad
-        function navigateTo(targetId) {
-            const current = document.querySelector('.page.active');
-            historyStack.push(current.id);
-            
-            const AdController = window.Adsgram.init({ blockId: ads.reward });
-            AdController.show().then(() => { showPage(targetId); }).catch(() => { showPage(targetId); });
-        }
-
-        function showPage(id) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            tg.HapticFeedback.impactOccurred('light');
-        }
-
-        function goBack() {
-            if(historyStack.length > 0) showPage(historyStack.pop());
-        }
-
-        // 2. Load Players from players2.json
-        async function loadPlayers(pos) {
-            const view = document.getElementById('player-list-view');
-            view.innerHTML = "<p style='grid-column:span 3;'>Loading...</p>";
-            try {
-                const res = await fetch('/api/data'); 
-                const data = await res.json();
-                const filtered = data.players.filter(p => p.pos === pos);
-                
-                view.innerHTML = filtered.length ? "" : "<p style='grid-column:span 3;'>No players found</p>";
-                filtered.forEach(player => {
-                    const card = document.createElement('div');
-                    card.className = 'top-card';
-                    card.innerHTML = `<img src="${player.img}"><p>${player.name}</p>`;
-                    card.onclick = () => openBio(player);
-                    view.appendChild(card);
-                });
-            } catch (e) { view.innerHTML = "Error loading data"; }
-        }
-
-        // 3. Bio Page (Image upore, Text niche)
-        function openBio(player) {
-            navigateTo('page-details');
-            document.getElementById('bio-content').innerHTML = `
-                <img src="${player.img}" class="bio-img">
-                <h2>${player.name}</h2>
-                <p style="color:#ccc; margin-top:10px;">Position: ${player.pos}<br>Details for this player will be shown here.</p>
-            `;
-        }
-
-        window.onload = () => { /* Initial load logic */ };
-    </script>
 </body>
 </html>
