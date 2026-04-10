@@ -1,6 +1,6 @@
 {
- "legends": [
-    {
+  "players": [
+    { 
   "id": 1,
   "name": "K. Heinz Rummenigge",
   "pos": "CF",
@@ -91,8 +91,6 @@
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470943/Gerd_Muller_a8s7ip.png",
   "bio": "Gerd Muller, 'Der Bomber', was one of the most efficient goalscorers in history, starring for Bayern Munich and West Germany."
 },
-
-[
   {
     "id": 14,
     "name": "Pele",
@@ -150,7 +148,6 @@
     "bio": "Raul was a Real Madrid legend, known for his intelligence, positioning, and consistent goal-scoring throughout his career."
   },
 
- 
 {
     "id": 22,
     "name": "Francesco Totti",
@@ -746,7 +743,6 @@
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472220/Mikael_Silvestre_ovphto.png",
     "bio": "Mikael Silvestre was a French defender known for versatility and composure at the back."
   },
-
 
  {
     "id": 106,
