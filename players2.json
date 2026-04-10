@@ -2,12 +2,48 @@
   "players": [
     { 
       "id": 1, 
+      "name": "Mohamed Salah", 
+      "pos": "CF", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775845455/Mohamed_Salah_ppqmqz.jpg" 
+    },
+     { 
+      "id": 2, 
+      "name": "K Benzema", 
+      "pos": "CF", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775845455/K_benzema_dneowp.jpg" 
+    },
+     { 
+      "id": 3, 
+      "name": "Kylian Mbappe", 
+      "pos": "CF", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775845455/Kylian_Mbappe_xtyk9y.jpg" 
+    },
+     { 
+      "id": 4, 
       "name": "Haaland", 
       "pos": "CF", 
       "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775765528/Haaland_kcp6it.jpg" 
     },
     { 
+      "id": 1, 
+      "name": "Messi", 
+      "pos": "SS", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775765539/Lionel_Messi_gqr4ew.png" 
+    }
+    { 
       "id": 2, 
+      "name": "Messi", 
+      "pos": "SS", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775765539/Lionel_Messi_gqr4ew.png" 
+    }
+    { 
+      "id": 3, 
+      "name": "Messi", 
+      "pos": "SS", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775765539/Lionel_Messi_gqr4ew.png" 
+    }
+    { 
+      "id": 4, 
       "name": "Messi", 
       "pos": "SS", 
       "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775765539/Lionel_Messi_gqr4ew.png" 
