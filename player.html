@@ -45,37 +45,66 @@
 
     <div id="player-container" class="player-grid"></div>
 
-    <script>
-        const AdController = window.Adsgram.init({ blockId: "int-41" });
+   <script>
+    const tg = window.Telegram.WebApp;
+    tg.expand();
 
-        async function loadPlayers(pos) {
-            const container = document.getElementById('player-container');
-            container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>Loading...</p>";
+    // Adsgram Initialization
+    const AdController = window.Adsgram.init({ blockId: "int-41" });
+
+    async function loadPlayers(pos) {
+        const container = document.getElementById('player-container');
+        // লোডিং শুরু
+        container.innerHTML = "<p style='grid-column: span 3; text-align:center; color: #3b82f6;'>Loading Players...</p>";
+        
+        try {
+            // নিশ্চিত করুন ফাইলের নাম player.json
+            const response = await fetch('player.json'); 
             
-            try {
-                const response = await fetch('player.json');
-                const data = await response.json();
-                container.innerHTML = "";
+            if (!response.ok) {
+                throw new Error("ফাইল খুঁজে পাওয়া যায়নি (File not found)");
+            }
 
-                data.players.forEach(p => {
-                    const card = document.createElement('div');
-                    card.className = 'top-card';
-                    card.innerHTML = `<img src="${p.img}"><p>${p.name}</p>`;
-                    card.onclick = () => {
-                        // কার্ডে ক্লিক করলে অ্যাড দেখিয়ে নিউ উইন্ডো ওপেন হবে
-                        AdController.show().then(() => openBio(p)).catch(() => openBio(p));
-                    };
-                    container.appendChild(card);
-                });
-            } catch (e) { container.innerHTML = "Error loading data!"; }
+            const data = await response.json();
+            
+            // পজিশন অনুযায়ী ফিল্টার (যেমন: CF, SS, LB ইত্যাদি)
+            const filteredPlayers = data.players.filter(p => p.pos === pos);
+            
+            container.innerHTML = ""; // লোডিং টেক্সট সরিয়ে ফেলা
+
+            if (filteredPlayers.length === 0) {
+                container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>No players found for " + pos + "</p>";
+                return;
+            }
+
+            filteredPlayers.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'top-card';
+                card.innerHTML = `
+                    <img src="${p.img}" onerror="this.src='https://via.placeholder.com/150'">
+                    <p>${p.name}</p>
+                `;
+                card.onclick = () => {
+                    // অ্যাড দেখিয়ে বায়ো পেজে যাওয়া
+                    AdController.show().then(() => openBio(p)).catch(() => openBio(p));
+                };
+                container.appendChild(card);
+            });
+        } catch (error) {
+            console.error(error);
+            container.innerHTML = "<p style='grid-column: span 3; text-align:center; color: red;'>ডাটা লোড করতে সমস্যা হয়েছে। দয়া করে player.json ফাইলটি চেক করুন।</p>";
         }
+    }
 
-        function openBio(player) {
-            localStorage.setItem('selected_player', JSON.stringify(player));
-            window.location.href = 'playerbio.html'; // New window/page transition
-        }
+    function openBio(player) {
+        // প্লেয়ারের সব ডাটা LocalStorage এ সেভ করা
+        localStorage.setItem('selected_player', JSON.stringify(player));
+        // playerbio.html পেজে নিয়ে যাওয়া
+        window.location.href = 'playerbio.html';
+    }
 
-        window.onload = () => loadPlayers('CF');
-    </script>
+    // পেজ লোড হলে ডিফল্টভাবে CF দেখাবে
+    window.onload = () => loadPlayers('CF');
+</script>
 </body>
 </html>
