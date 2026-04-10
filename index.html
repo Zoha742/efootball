@@ -18,21 +18,19 @@
         .hub-title { text-align: center; margin: 15px 0 25px; font-weight: bold; font-size: 20px; text-transform: uppercase; display: flex; align-items: center; justify-content: center; position: relative; }
         .back-icon { position: absolute; left: 0; cursor: pointer; color: var(--primary); font-size: 20px; }
 
-        /* Interface & Menu Buttons (যা আছে তাই থাকবে) */
         .id-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px; }
         .id-btn { background: var(--card-dark); border: 1px solid var(--border); padding: 25px 15px; border-radius: 18px; text-align: center; cursor: pointer; }
         .id-btn i { font-size: 28px; color: var(--primary); margin-bottom: 12px; display: block; }
 
-        .quick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 25px; }
-        .quick-btn { border: none; padding: 20px 10px; border-radius: 12px; text-align: center; cursor: pointer; color: #fff; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+        .pos-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 20px; }
+        .pos-btn { background: var(--card-dark); border: 1px solid var(--primary); padding: 15px 5px; border-radius: 10px; text-align: center; font-weight: bold; cursor: pointer; font-size: 12px; }
 
-        /* CardView Design */
         .player-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 15px; }
         .top-card { background: var(--card-dark); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; text-align: center; padding: 5px; cursor: pointer; }
         .top-card img { width: 100%; border-radius: 8px; display: block; }
         .top-card p { font-size: 9px; padding: 5px; font-weight: bold; }
 
-        /* Bottom Nav */
+        .bio-img { width: 100%; max-width: 250px; border-radius: 15px; border: 3px solid var(--primary); margin-bottom: 15px; }
         .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 70px; background: #070d19; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid var(--border); z-index: 1000; }
         .nav-item { text-align: center; color: #94a3b8; font-size: 11px; cursor: pointer; flex: 1; }
         .active-nav { color: var(--primary); font-weight: bold; }
@@ -48,37 +46,29 @@
             <div class="id-btn" onclick="navigateTo('page-event')"><i class="fas fa-trophy"></i><span>Events</span></div>
             <div class="id-btn" onclick="navigateTo('page-legend')"><i class="fas fa-crown"></i><span>Legend</span></div>
         </div>
-
-        <p style="margin: 15px 0;">QUICK ACTIONS</p>
-        <div class="quick-grid">
-            <div class="quick-btn" style="background: #f97316;" onclick="navigateTo('page-store')"><i class="fas fa-shopping-cart"></i><span>Store</span></div>
-            <div class="quick-btn" style="background: #ec4899;" onclick="navigateTo('page-task')"><i class="fas fa-clipboard-check"></i><span>Task</span></div>
-        </div>
-
-        <p style="margin: 15px 0;">TOP PLAYERS</p>
         <div class="player-grid" id="home-players-list"></div>
     </div>
 
     <div id="page-player" class="page">
         <div class="hub-title"><i class="fas fa-arrow-left back-icon" onclick="goBack()"></i> SELECT <span>POSITION</span></div>
-        <div class="player-grid" id="full-player-list"></div>
+        <div class="pos-grid">
+            <div class="pos-btn" onclick="loadPlayers('CF')">CF</div>
+            <div class="pos-btn" onclick="loadPlayers('SS')">SS</div>
+            <div class="pos-btn" onclick="loadPlayers('LWF')">LWF</div>
+            <div class="pos-btn" onclick="loadPlayers('RWF')">RWF</div>
+            <div class="pos-btn" onclick="loadPlayers('AMF')">AMF</div>
+            <div class="pos-btn" onclick="loadPlayers('GK')">GK</div>
+        </div>
+        <div id="player-list-view" class="player-grid"></div>
     </div>
 
     <div id="page-details" class="page">
         <div class="hub-title"><i class="fas fa-arrow-left back-icon" onclick="goBack()"></i> PLAYER <span>BIO</span></div>
-        <div id="bio-content" style="text-align:center;">
-            </div>
-        <div id="banner-ad-container" style="margin-top:20px; text-align:center; min-height:50px; background:rgba(255,255,255,0.05); border-radius:10px; display:flex; align-items:center; justify-content:center; color:gray; font-size:10px;">
+        <div id="bio-content" style="text-align:center; padding:10px;"></div>
+        <div id="banner-ad" style="margin-top:20px; text-align:center; min-height:50px; background:rgba(255,255,255,0.05); color:gray; font-size:10px; display:flex; align-items:center; justify-content:center;">
             [BANNER AD - int-42]
         </div>
     </div>
-
-    <div id="page-manager" class="page"><div class="hub-title"><i class="fas fa-arrow-left back-icon" onclick="goBack()"></i> MANAGER</div></div>
-    <div id="page-event" class="page"><div class="hub-title"><i class="fas fa-arrow-left back-icon" onclick="goBack()"></i> EVENT</div></div>
-    <div id="page-legend" class="page"><div class="hub-title"><i class="fas fa-arrow-left back-icon" onclick="goBack()"></i> LEGEND</div></div>
-    <div id="page-store" class="page"><div class="hub-title"><i class="fas fa-arrow-left back-icon" onclick="goBack()"></i> STORE</div></div>
-    <div id="page-task" class="page"><div class="hub-title"><i class="fas fa-arrow-left back-icon" onclick="goBack()"></i> TASK</div></div>
-    <div id="page-profile" class="page"><div class="hub-title"><i class="fas fa-arrow-left back-icon" onclick="goBack()"></i> PROFILE</div></div>
 
     <nav class="bottom-nav">
         <div class="nav-item active-nav" onclick="navigateTo('home')"><i class="fas fa-home"></i><br>Home</div>
@@ -90,82 +80,59 @@
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand();
-
         let historyStack = [];
-        let adsIdConfig = { reward: "int-41", banner: "int-42" }; // Default Test IDs
+        let ads = { reward: "int-41", banner: "int-42" };
 
-        // JSON Load function (Ads ID and Player Data)
-        async function loadAppData() {
-            try {
-                const response = await fetch('/api/data'); 
-                const data = await response.json();
-                
-                // আপনার JSON থেকে ID লিংক আপ
-                if(data.ads_config) {
-                    adsIdConfig.reward = data.ads_config.reward_id;
-                    adsIdConfig.banner = data.ads_config.banner_id;
-                }
-                
-                renderHomePlayers(data.players);
-            } catch (e) {
-                console.log("JSON not found, using test data.");
-            }
-        }
-
-        // Global Navigation with Reward Ads
+        // 1. Navigation with Reward Ad
         function navigateTo(targetId) {
             const current = document.querySelector('.page.active');
-            if(current.id === targetId) return;
-
             historyStack.push(current.id);
-
-            // Reward Video Ad Trigger (যেকোনো বাটনে ক্লিক করলে রান হবে)
-            const AdController = window.Adsgram.init({ blockId: adsIdConfig.reward });
-            AdController.show().then(() => {
-                showNewPage(targetId);
-            }).catch(() => {
-                showNewPage(targetId); // Error হলে সরাসরি পেজে যাবে
-            });
+            
+            const AdController = window.Adsgram.init({ blockId: ads.reward });
+            AdController.show().then(() => { showPage(targetId); }).catch(() => { showPage(targetId); });
         }
 
-        function showNewPage(id) {
+        function showPage(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             tg.HapticFeedback.impactOccurred('light');
         }
 
         function goBack() {
-            if(historyStack.length > 0) {
-                const prev = historyStack.pop();
-                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-                document.getElementById(prev).classList.add('active');
-            }
+            if(historyStack.length > 0) showPage(historyStack.pop());
         }
 
-        // Bio Page Design (Image Upore, Text Niche)
+        // 2. Load Players from players2.json
+        async function loadPlayers(pos) {
+            const view = document.getElementById('player-list-view');
+            view.innerHTML = "<p style='grid-column:span 3;'>Loading...</p>";
+            try {
+                const res = await fetch('/api/data'); 
+                const data = await res.json();
+                const filtered = data.players.filter(p => p.pos === pos);
+                
+                view.innerHTML = filtered.length ? "" : "<p style='grid-column:span 3;'>No players found</p>";
+                filtered.forEach(player => {
+                    const card = document.createElement('div');
+                    card.className = 'top-card';
+                    card.innerHTML = `<img src="${player.img}"><p>${player.name}</p>`;
+                    card.onclick = () => openBio(player);
+                    view.appendChild(card);
+                });
+            } catch (e) { view.innerHTML = "Error loading data"; }
+        }
+
+        // 3. Bio Page (Image upore, Text niche)
         function openBio(player) {
             navigateTo('page-details');
             document.getElementById('bio-content').innerHTML = `
-                <img src="${player.img}" style="width:100%; max-width:250px; border-radius:15px; border:3px solid var(--primary); margin-bottom:15px;">
-                <div style="padding:10px;">
-                    <h2 style="color:var(--primary);">${player.name}</h2>
-                    <p style="color:#ccc; margin-top:10px; line-height:1.6;">${player.bio || 'Detailed player information and stats go here.'}</p>
-                </div>
+                <img src="${player.img}" class="bio-img">
+                <h2>${player.name}</h2>
+                <p style="color:#ccc; margin-top:10px;">Position: ${player.pos}<br>Details for this player will be shown here.</p>
             `;
         }
 
-        function renderHomePlayers(players) {
-            const container = document.getElementById('home-players-list');
-            players.slice(0, 6).forEach(p => {
-                const card = document.createElement('div');
-                card.className = 'top-card';
-                card.innerHTML = `<img src="${p.img}"><p>${p.name}</p>`;
-                card.onclick = () => openBio(p);
-                container.appendChild(card);
-            });
-        }
-
-        window.onload = loadAppData;
+        window.onload = () => { /* Initial load logic */ };
     </script>
 </body>
 </html>
