@@ -3,90 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Player Bio Color - eFootball HUB</title>
+    <title>Legend Bio - eFootball HUB</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --bg-color: #050a18;
-            --card-dark: #121e36;
-            --primary-color: #fbbf24; /* Legend Gold */
-            --text-color: #ffffff;
-            --rating-good: #22c55e;
+            --bg: #050a18;
+            --card: #121e36;
+            --gold: #fbbf24;
+            --green: #22c55e;
+            --text: #ffffff;
         }
+        body { background: var(--bg); color: var(--text); font-family: sans-serif; text-align: center; padding: 20px; margin: 0; }
+        
+        /* Header & Back Button */
+        .header { display: flex; align-items: center; margin-bottom: 20px; }
+        .back-btn { color: var(--gold); font-size: 24px; cursor: pointer; text-decoration: none; }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background-color: var(--bg-color); color: var(--text-color); font-family: 'Segoe UI', sans-serif; padding-bottom: 20px; }
-
-        .header { background-color: #070d19; padding: 15px; display: flex; align-items: center; position: sticky; top: 0; z-index: 100; }
-        .back-btn { color: var(--primary-color); font-size: 20px; text-decoration: none; margin-right: 15px; cursor: pointer; }
-        .header-title { font-size: 18px; font-weight: bold; }
-
-        .container { padding: 15px; max-width: 500px; margin: auto; }
-        .player-card-hero { background: linear-gradient(145deg, #1a2a4d, #0d1629); border-radius: 20px; padding: 20px; text-align: center; border: 1px solid #1e2d4d; margin-bottom: 20px; }
-        .player-img { width: 180px; height: auto; border-radius: 10px; margin-bottom: 15px; }
-        .player-name { font-size: 22px; font-weight: bold; color: var(--primary-color); }
-        .player-pos { color: #94a3b8; font-size: 14px; margin-bottom: 10px; }
-
-        .rating-badge { display: inline-block; background: var(--rating-good); color: #000; padding: 5px 15px; border-radius: 20px; font-weight: bold; font-size: 18px; margin-top: 5px; }
-
-        .bio-section { background: var(--card-dark); border-radius: 15px; padding: 15px; border: 1px solid #1e2d4d; margin-bottom: 20px; }
-        .section-title { font-size: 16px; color: var(--primary-color); margin-bottom: 10px; display: flex; align-items: center; }
-        .section-title i { margin-right: 8px; }
-        .bio-text { line-height: 1.6; color: #cbd5e1; font-size: 14px; }
-
-        /* Ads Space */
-        .ad-space { background: #0a1428; border: 1px dashed #334155; border-radius: 10px; padding: 10px; text-align: center; margin-top: 20px; min-height: 50px; }
-        .ad-content { font-size: 10px; color: #64748b; }
+        /* Bio Card Design (Coloro Style) */
+        .bio-card { background: var(--card); border-radius: 20px; padding: 25px; border: 1px solid #1e2d4d; max-width: 400px; margin: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .bio-img { width: 100%; max-width: 200px; border-radius: 15px; border: 3px solid var(--gold); margin-bottom: 15px; }
+        .legend-name { color: var(--gold); font-size: 26px; margin-bottom: 5px; font-weight: bold; }
+        .legend-pos { color: var(--green); font-size: 18px; font-weight: bold; margin-bottom: 20px; background: rgba(34, 197, 94, 0.1); display: inline-block; padding: 5px 15px; border-radius: 20px; }
+        
+        .bio-text { line-height: 1.6; color: #cbd5e1; text-align: justify; font-size: 15px; border-top: 1px solid #1e2d4d; padding-top: 15px; }
+        
+        .ad-space { margin-top: 30px; padding: 10px; background: #070d19; border: 1px dashed #334155; color: #555; font-size: 10px; }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <div class="back-btn" onclick="history.back()"><i class="fas fa-arrow-left"></i></div>
-        <div class="header-title">Legendary Profile</div>
+        <i class="fas fa-arrow-left back-btn" onclick="history.back()"></i>
     </div>
 
-    <div class="container">
-        <div class="player-card-hero">
-            <img id="player-img" src="" alt="" class="player-img">
-            <h1 id="player-name" class="player-name">Loading...</h1>
-            <p id="player-pos" class="player-pos">Position</p>
-            <div id="player-rating" class="rating-badge">--</div>
-        </div>
-
-        <div class="bio-section">
-            <h3 class="section-title"><i class="fas fa-book"></i> Biography</h3>
-            <p id="bio-text" class="bio-text">
-                Player description will appear here...
-            </p>
-        </div>
-
-        <div class="ad-space">
-            <div class="ad-content">
-                <p>ADVERTISEMENT</p>
-                </div>
-        </div>
+    <div class="bio-card">
+        <img id="img" class="bio-img" src="" alt="">
+        <h2 id="name" class="legend-name">Loading...</h2>
+        <div id="pos" class="legend-pos"></div>
+        <div id="bio" class="bio-text"></div>
     </div>
+
+    <div class="ad-space">ADVERTISEMENT - BANNER AD</div>
 
     <script>
         window.onload = function() {
-            // LocalStorage theke data collect kora
-            const playerData = localStorage.getItem('selected_player');
+            // LocalStorage থেকে legend ডাটা নেওয়া হচ্ছে
+            const savedData = localStorage.getItem('selected_legend');
             
-            if (playerData) {
-                const player = JSON.parse(playerData);
+            if (savedData) {
+                const legend = JSON.parse(savedData);
                 
-                // HTML Elements update kora
-                document.getElementById('player-img').src = player.img;
-                document.getElementById('player-name').innerText = player.name;
-                document.getElementById('player-pos').innerText = player.pos;
-                document.getElementById('player-rating').innerText = player.rating || "99"; // Rating na thakle default 99
-                document.getElementById('bio-text').innerText = player.bio;
+                // HTML-এ ডাটা সেট করা
+                document.getElementById('img').src = legend.img;
+                document.getElementById('name').innerText = legend.name;
+                document.getElementById('pos').innerText = legend.pos;
+                document.getElementById('bio').innerText = legend.bio;
                 
-                // Title update kora
-                document.title = player.name + " - Bio";
+                // ব্রাউজার টাইটেল পরিবর্তন
+                document.title = legend.name + " - Biography";
             } else {
-                document.getElementById('player-name').innerText = "No Data Found";
+                document.getElementById('name').innerText = "Legend Data Not Found!";
             }
         };
     </script>
