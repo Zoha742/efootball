@@ -77,7 +77,7 @@
         async function loadHomeLegends() {
             const container = document.getElementById('home-legend-view');
             try {
-                const response = await fetch('legends.json');
+                const response = await fetch('legend.json');
                 const data = await response.json();
                 
                 // Show first 6 legends on Home
