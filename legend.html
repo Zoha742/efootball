@@ -63,21 +63,21 @@
 
     async function loadLegends(pos) {
         const container = document.getElementById('legend-container');
-        container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>Loading Legends...</p>";
+        container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>Loading...</p>";
         
         try {
             const response = await fetch('legend.json');
             const data = await response.json();
             
-            // যেহেতু আপনি লিজেন্ড নামে কল করতে চাচ্ছেন
-            const allLegends = data.players || data.legend || data.legends;
+            // আপনার JSON-এ যদি মেইন লিস্টের নাম 'legend' হয়
+            const allLegends = data.legend || data.legends || data.players;
             
-            // পজিশন ফিল্টার
-            const filtered = allLegends.filter(l => l.pos === pos);
+            // এখানে ফিল্টার করার সময়ও 'legend' ব্যবহার করা হয়েছে
+            const filtered = allLegends.filter(legend => legend.pos === pos);
             container.innerHTML = "";
 
             if(filtered.length === 0) {
-                container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>No Legends in this position.</p>";
+                container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>No Data Found!</p>";
                 return;
             }
 
@@ -86,7 +86,7 @@
                 card.className = 'top-card';
                 card.innerHTML = `<img src="${legend.img}"><p>${legend.name}</p>`;
                 
-                // এখানে 'legend' অবজেক্টটি পাস করা হচ্ছে
+                // কার্ডে ক্লিক করলে অ্যাড দেখাবে এবং openBio(legend) কল করবে
                 card.onclick = () => {
                     if (typeof AdController !== 'undefined') {
                         AdController.show()
@@ -99,12 +99,12 @@
                 container.appendChild(card);
             });
         } catch (e) { 
-            console.error(e);
-            container.innerHTML = "Error loading legends!"; 
+            console.error("Error:", e);
+            container.innerHTML = "Error loading data!"; 
         }
     }
 
-    // আপনার রিকোয়েস্ট অনুযায়ী এখানে 'legend' ব্যবহার করা হয়েছে
+    // আপনার রিকোয়েস্ট অনুযায়ী এখানে 'legend' ই কল করা হয়েছে
     function openBio(legend) {
         localStorage.setItem('selected_player', JSON.stringify(legend));
         window.location.href = 'legendbiocolor.html'; 
