@@ -57,49 +57,62 @@
 
     <div id="legend-container" class="player-grid"></div>
 
-    <script>
-        const AdController = window.Adsgram.init({ blockId: "int-41" });
+<script>
+    const AdController = window.Adsgram.init({ blockId: "int-41" });
 
-        // আপনার স্ক্রিপ্ট সেকশনে এই অংশটুকু আপডেট করুন
-async function loadLegends(pos) {
-    const container = document.getElementById('legend-container');
-    container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>Loading Legends...</p>";
-    
-    try {
-        const response = await fetch('legend.json');
-        const data = await response.json();
+    async function loadLegends(pos) {
+        const container = document.getElementById('legend-container');
+        container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>Loading Legends...</p>";
         
-        // আপনার ফাইলে 'players' নামে ডাটা আছে, তাই এটি চেক করবে
-        const playerList = data.players || data.legend || data.legends;
-        const filtered = playerList.filter(p => p.pos === pos);
-        
-        container.innerHTML = "";
+        try {
+            const response = await fetch('legend.json');
+            const data = await response.json();
+            
+            // আপনার JSON-এ "players" নামে ডাটা আছে, তাই এটি ব্যবহার করতে হবে
+            const allPlayers = data.players || data.legend || data.legends;
+            
+            // পজিশন অনুযায়ী ফিল্টার
+            const filtered = allPlayers.filter(p => p.pos === pos);
+            container.innerHTML = "";
 
-        if(filtered.length === 0) {
-            container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>No Legends in this position.</p>";
-            return;
+            if(filtered.length === 0) {
+                container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>No Legends in this position.</p>";
+                return;
+            }
+
+            filtered.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'top-card';
+                card.innerHTML = `<img src="${p.img}"><p>${p.name}</p>`;
+                
+                // কার্ডে ক্লিক করলে অ্যাড দেখাবে এবং বায়ো পেজে নিয়ে যাবে
+                card.onclick = () => {
+                    if (typeof AdController !== 'undefined') {
+                        AdController.show()
+                            .then(() => openBio(p))
+                            .catch(() => openBio(p)); // অ্যাড না আসলে সরাসরি চলে যাবে
+                    } else {
+                        openBio(p);
+                    }
+                };
+                container.appendChild(card);
+            });
+        } catch (e) { 
+            console.error(e);
+            container.innerHTML = "Error loading legends!"; 
         }
+    }
 
-        filtered.forEach(p => {
-            const card = document.createElement('div');
-            card.className = 'top-card';
-            card.innerHTML = `<img src="${p.img}"><p>${p.name}</p>`;
-            card.onclick = () => {
-                // রিওয়ার্ড অ্যাড দেখিয়ে বায়ো পেজে যাবে
-                AdController.show().then(() => openBio(p)).catch(() => openBio(p));
-            };
-            container.appendChild(card);
-        });
-    } catch (e) { container.innerHTML = "Error loading legends!"; }
-}
+    function openBio(player) {
+        // ডাটা সেভ করা হচ্ছে
+        localStorage.setItem('selected_player', JSON.stringify(player));
+        // সঠিক পেজ নামে রিডাইরেক্ট
+        window.location.href = 'legendbiocolor.html'; 
+    }
 
-function openBio(player) {
-    localStorage.setItem('selected_player', JSON.stringify(player));
-    window.location.href = 'legendbiocolor.html'; 
-}
-
-        window.onload = () => loadLegends('CF');
-    </script>
+    // শুরুতে CF পজিশন লোড হবে
+    window.onload = () => loadLegends('CF');
+</script>
     <div class="bottom-ad-banner">
     <span style="font-size: 10px; color: #555;">ADVERTISEMENT</span>
 </div>
