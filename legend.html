@@ -69,11 +69,12 @@
             const response = await fetch('legend.json');
             const data = await response.json();
             
-            // আপনার JSON-এ যদি মেইন লিস্টের নাম 'legend' হয়
-            const allLegends = data.legend || data.legends || data.players;
+            // আপনার JSON-এ "players" নামে লিস্ট আছে, তাই data.players নিতে হবে।
+            // কিন্তু আমরা ভেরিয়েবল এর নাম দিচ্ছি all_legends
+            const all_legends = data.players; 
             
-            // এখানে ফিল্টার করার সময়ও 'legend' ব্যবহার করা হয়েছে
-            const filtered = allLegends.filter(legend => legend.pos === pos);
+            // ফিল্টার করার সময় আপনার পছন্দমতো 'legend' ব্যবহার করা হয়েছে
+            const filtered = all_legends.filter(legend => legend.pos === pos);
             container.innerHTML = "";
 
             if(filtered.length === 0) {
@@ -84,9 +85,11 @@
             filtered.forEach(legend => {
                 const card = document.createElement('div');
                 card.className = 'top-card';
+                
+                // ইমেজ এবং নাম লোড হচ্ছে
                 card.innerHTML = `<img src="${legend.img}"><p>${legend.name}</p>`;
                 
-                // কার্ডে ক্লিক করলে অ্যাড দেখাবে এবং openBio(legend) কল করবে
+                // কার্ডে ক্লিক করলে openBio(legend) কল হবে
                 card.onclick = () => {
                     if (typeof AdController !== 'undefined') {
                         AdController.show()
@@ -104,12 +107,16 @@
         }
     }
 
-    // আপনার রিকোয়েস্ট অনুযায়ী এখানে 'legend' ই কল করা হয়েছে
+    // আপনার রিকোয়েস্ট অনুযায়ী প্যারামিটার 'legend' রাখা হয়েছে
     function openBio(legend) {
+        // localStorage এ সেভ করার সময়ও 'legend' অবজেক্ট ব্যবহার হচ্ছে
         localStorage.setItem('selected_player', JSON.stringify(legend));
+        
+        // ফাইল ওপেন হবে legendbiocolor.html
         window.location.href = 'legendbiocolor.html'; 
     }
 
+    // শুরুতে CF ডাটা লোড হবে
     window.onload = () => loadLegends('CF');
 </script>
     <div class="bottom-ad-banner">
