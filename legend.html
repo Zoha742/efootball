@@ -47,39 +47,43 @@
     <script>
         const AdController = window.Adsgram.init({ blockId: "int-41" });
 
-        async function loadLegends(pos) {
-            const container = document.getElementById('legend-container');
-            container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>Loading Legends...</p>";
-            
-            try {
-                const response = await fetch('legend.json');
-                const data = await response.json();
-                
-                // Position filter
-                const filtered = data.legend.filter(p => p.pos === pos);
-                container.innerHTML = "";
+        // আপনার স্ক্রিপ্ট সেকশনে এই অংশটুকু আপডেট করুন
+async function loadLegends(pos) {
+    const container = document.getElementById('legend-container');
+    container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>Loading Legends...</p>";
+    
+    try {
+        const response = await fetch('legend.json');
+        const data = await response.json();
+        
+        // আপনার ফাইলে 'players' নামে ডাটা আছে, তাই এটি চেক করবে
+        const playerList = data.players || data.legend || data.legends;
+        const filtered = playerList.filter(p => p.pos === pos);
+        
+        container.innerHTML = "";
 
-                if(filtered.length === 0) {
-                    container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>No Legends in this position.</p>";
-                    return;
-                }
-
-                filtered.forEach(p => {
-                    const card = document.createElement('div');
-                    card.className = 'top-card';
-                    card.innerHTML = `<img src="${p.img}"><p>${p.name}</p>`;
-                    card.onclick = () => {
-                        AdController.show().then(() => openBio(p)).catch(() => openBio(p));
-                    };
-                    container.appendChild(card);
-                });
-            } catch (e) { container.innerHTML = "Error loading legends!"; }
+        if(filtered.length === 0) {
+            container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>No Legends in this position.</p>";
+            return;
         }
 
-        function openBio(player) {
-            localStorage.setItem('selected_player', JSON.stringify(player));
-            window.location.href = 'legendbiocolor.html'; 
-        }
+        filtered.forEach(p => {
+            const card = document.createElement('div');
+            card.className = 'top-card';
+            card.innerHTML = `<img src="${p.img}"><p>${p.name}</p>`;
+            card.onclick = () => {
+                // রিওয়ার্ড অ্যাড দেখিয়ে বায়ো পেজে যাবে
+                AdController.show().then(() => openBio(p)).catch(() => openBio(p));
+            };
+            container.appendChild(card);
+        });
+    } catch (e) { container.innerHTML = "Error loading legends!"; }
+}
+
+function openBio(player) {
+    localStorage.setItem('selected_player', JSON.stringify(player));
+    window.location.href = 'legendbiocolor.html'; 
+}
 
         window.onload = () => loadLegends('CF');
     </script>
