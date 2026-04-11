@@ -81,7 +81,7 @@
                 const data = await response.json();
                 
                 // Show first 6 legends on Home
-                data.legends.slice(0, 6).forEach(p => {
+                data.legend.slice(0, 6).forEach(p => {
                     const card = document.createElement('div');
                     card.className = 'top-card';
                     card.innerHTML = `<img src="${p.img}"><p>${p.name}</p>`;
