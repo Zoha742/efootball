@@ -7,39 +7,24 @@
     <script src="https://sad.adsgram.ai/js/adsgram-sdk.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --bg: #050a18; --card-dark: #121e36; --primary: #fbbf24; --text: #ffffff; }
+        :root { --bg: #050a18; --card-dark: #121e36; --primary: #fbbf24; --text: #ffffff; --border: #1e2d4d; }
         body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; padding: 15px; margin: 0; }
-        
         .header { display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 25px; }
         .back-btn { position: absolute; left: 0; font-size: 22px; color: var(--primary); text-decoration: none; }
-        
         .pos-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 25px; }
-        .pos-btn { background: var(--card-dark); border: 1px solid var(--primary); padding: 10px; text-align: center; border-radius: 8px; cursor: pointer; color: var(--primary); font-weight: bold; }
-        
-        .player-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; padding-bottom: 120px; }
-        .top-card { background: var(--card-dark); border-radius: 12px; padding: 10px; text-align: center; border: 1px solid #1e2d4d; }
-        .top-card img { width: 100%; border-radius: 8px; margin-bottom: 8px; }
-        .top-card p { font-size: 12px; margin: 0; color: #cbd5e1; }
-
-        .bottom-ad-banner {
-            position: fixed;
-            bottom: 58px; 
-            left: 0;
-            width: 100%;
-            height: 50px;
-            background: rgba(0,0,0,0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
+        .pos-btn { background: var(--card-dark); border: 1px solid var(--primary); padding: 12px; text-align: center; border-radius: 8px; cursor: pointer; color: var(--primary); font-weight: bold; font-size: 14px; }
+        .player-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; padding-bottom: 100px; }
+        .top-card { background: var(--card-dark); border-radius: 12px; padding: 10px; text-align: center; border: 1px solid var(--border); transition: 0.3s; }
+        .top-card img { width: 100%; border-radius: 8px; margin-bottom: 8px; height: auto; }
+        .top-card p { font-size: 11px; margin: 0; color: #cbd5e1; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .bottom-ad-banner { position: fixed; bottom: 0; left: 0; width: 100%; height: 50px; background: rgba(0,0,0,0.8); display: flex; justify-content: center; align-items: center; z-index: 1000; border-top: 1px solid #334155; }
     </style>
 </head>
 <body>
 
     <div class="header">
         <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
-        <h2 style="font-size: 18px; color: var(--primary);">LEGENDARY PLAYERS</h2>
+        <h2 style="font-size: 18px; color: var(--primary);">LEGENDARY <span>PLAYERS</span></h2>
     </div>
 
     <div class="pos-grid">
@@ -70,11 +55,10 @@
         container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>Loading...</p>";
         
         try {
-            // Ekhane apnar dewa notun file name call kora holo
             const response = await fetch('legendplayer.json');
             const data = await response.json();
             
-            // JSON theke data neya hocche (legend ba players jei namei thak)
+            // data fetch kora hocche
             const all_legends = data.legend || data.players || data.legends; 
             
             const filtered = all_legends.filter(legend => legend.pos === pos);
@@ -103,18 +87,16 @@
             });
         } catch (e) { 
             console.error("Error:", e);
-            container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>Error loading cards!</p>"; 
+            container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>Error!</p>"; 
         }
     }
 
     function openBio(legend) {
+        // legend object save kora holo
         localStorage.setItem('selected_player', JSON.stringify(legend));
         window.location.href = 'legendbio.html';
     }
-    <div class="bottom-ad-banner">
-    <span style="font-size: 10px; color: #555;">ADVERTISEMENT</span>
-</div>
-    
+
     window.onload = () => loadLegends('CF');
 </script>
 </body>
