@@ -70,26 +70,23 @@
             const data = await response.json();
             
             // আপনার JSON-এ "players" নামে লিস্ট আছে, তাই data.players নিতে হবে।
-            // কিন্তু আমরা ভেরিয়েবল এর নাম দিচ্ছি all_legends
-            const all_legends = data.players; 
+            // কিন্তু আমরা পুরো প্রোসেসে 'legend' নামেই ভেরিয়েবল ব্যবহার করব।
+            const all_legends = data.players || data.legend; 
             
-            // ফিল্টার করার সময় আপনার পছন্দমতো 'legend' ব্যবহার করা হয়েছে
             const filtered = all_legends.filter(legend => legend.pos === pos);
             container.innerHTML = "";
 
             if(filtered.length === 0) {
-                container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>No Data Found!</p>";
+                container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>No Data!</p>";
                 return;
             }
 
             filtered.forEach(legend => {
                 const card = document.createElement('div');
                 card.className = 'top-card';
-                
-                // ইমেজ এবং নাম লোড হচ্ছে
                 card.innerHTML = `<img src="${legend.img}"><p>${legend.name}</p>`;
                 
-                // কার্ডে ক্লিক করলে openBio(legend) কল হবে
+                // এখানে সরাসরি 'legend' অবজেক্টটি পাস করা হচ্ছে
                 card.onclick = () => {
                     if (typeof AdController !== 'undefined') {
                         AdController.show()
@@ -103,20 +100,19 @@
             });
         } catch (e) { 
             console.error("Error:", e);
-            container.innerHTML = "Error loading data!"; 
+            container.innerHTML = "Error!"; 
         }
     }
 
-    // আপনার রিকোয়েস্ট অনুযায়ী প্যারামিটার 'legend' রাখা হয়েছে
+    // আপনার রিকোয়েস্ট অনুযায়ী এখানে 'legend' ই প্যারামিটার হিসেবে আছে
     function openBio(legend) {
-        // localStorage এ সেভ করার সময়ও 'legend' অবজেক্ট ব্যবহার হচ্ছে
+        // LocalStorage-এ 'legend' অবজেক্টটি সেভ করা হচ্ছে
         localStorage.setItem('selected_player', JSON.stringify(legend));
         
-        // ফাইল ওপেন হবে legendbiocolor.html
+        // এটি সরাসরি legendbiocolor.html ফাইলকে কল করবে
         window.location.href = 'legendbiocolor.html'; 
     }
 
-    // শুরুতে CF ডাটা লোড হবে
     window.onload = () => loadLegends('CF');
 </script>
     <div class="bottom-ad-banner">
