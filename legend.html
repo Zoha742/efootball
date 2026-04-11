@@ -106,11 +106,11 @@
 
     // আপনার রিকোয়েস্ট অনুযায়ী এখানে 'legend' ই প্যারামিটার হিসেবে আছে
     function openBio(legend) {
-        // LocalStorage-এ 'legend' অবজেক্টটি সেভ করা হচ্ছে
-        localStorage.setItem('selected_player', JSON.stringify(legend));
-        
-        // এটি সরাসরি legendbiocolor.html ফাইলকে কল করবে
-        window.location.href = 'legendbiocolor.html'; 
+    // Data save kora hocche 'legend' object diye
+    localStorage.setItem('selected_player', JSON.stringify(legend));
+    
+    // legendbio.html call kora holo
+    window.location.href = 'legendbio.html';
     }
 
     window.onload = () => loadLegends('CF');
