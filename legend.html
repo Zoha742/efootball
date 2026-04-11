@@ -106,13 +106,40 @@
         }
     }
 
-    function openBio(legend) {
-        // legend অবজেক্টটি সেভ করা হচ্ছে
-        localStorage.setItem('selected_player', JSON.stringify(legend));
-        window.location.href = 'legendbio.html';
-    }
+    // আপনার স্ক্রিপ্টের ভেতরে এই ফাংশনটি রিপ্লেস করুন
+function openBio(legend) {
+    // ডাটা 'selected_legend' নামে সেভ করা হচ্ছে
+    localStorage.setItem('selected_legend', JSON.stringify(legend));
+    
+    // সরাসরি legendbio.html পেজ ওপেন হবে
+    window.location.href = 'legendbio.html';
+}
+
+// আপনার loadLegends ফাংশনের ভেতর কার্ড তৈরির লজিক:
+filtered.forEach(legend => {
+    const card = document.createElement('div');
+    card.className = 'top-card';
+    card.innerHTML = `<img src="${legend.img}"><p>${legend.name}</p>`;
+    
+    // কার্ডে ক্লিক করলে সরাসরি openBio কল হবে
+    card.onclick = () => {
+        if (typeof AdController !== 'undefined') {
+            AdController.show()
+                .then(() => openBio(legend))
+                .catch(() => openBio(legend));
+        } else {
+            openBio(legend);
+        }
+    };
+    container.appendChild(card);
 
     window.onload = () => loadLegends('CF');
+});
+
+    <div class="bottom-ad-banner">
+    <span style="font-size: 10px; color: #555;">ADVERTISEMENT</span>
+</div>
+
 </script>
 </body>
 </html>
