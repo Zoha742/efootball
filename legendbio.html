@@ -3,26 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bio - eFootball HUB</title>
+    <title>Legend Bio - eFootball HUB</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { background: #050a18; color: #fff; font-family: sans-serif; text-align: center; padding: 20px; }
-        .back-btn { position: absolute; left: 15px; color: #3b82f6; font-size: 22px; }
-        .bio-img { width: 100%; max-width: 250px; border-radius: 15px; border: 3px solid #3b82f6; margin-top: 40px; }
-        .desc { margin-top: 20px; padding: 10px; color: #ccc; }
-        .ad-box { margin-top: 30px; background: #121e36; padding: 15px; color: gray; font-size: 10px; }
+        :root { --bg: #050a18; --card: #121e36; --primary: #fbbf24; --text: #ffffff; }
+        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; text-align: center; padding: 20px; }
+        .header { display: flex; align-items: center; margin-bottom: 30px; }
+        .back-btn { color: var(--primary); font-size: 24px; cursor: pointer; text-decoration: none; }
+        .bio-container { max-width: 400px; margin: auto; background: var(--card); border-radius: 20px; padding: 20px; border: 1px solid #1e2d4d; }
+        .bio-img { width: 100%; max-width: 220px; border-radius: 15px; border: 2px solid var(--primary); margin-bottom: 15px; }
+        .bio-name { font-size: 24px; color: var(--primary); margin-bottom: 5px; }
+        .bio-pos { color: #94a3b8; font-size: 14px; margin-bottom: 20px; }
+        .bio-text { line-height: 1.6; color: #cbd5e1; text-align: justify; font-size: 15px; }
+        .ad-box { margin-top: 30px; padding: 10px; background: #070d19; border: 1px dashed #334155; color: #555; font-size: 10px; }
     </style>
 </head>
 <body>
-    <i class="fas fa-arrow-left back-btn" onclick="history.back()"></i>
-    <img id="img" class="bio-img">
-    <h2 id="name" style="margin-top:15px;"></h2>
-    <div class="desc">Statistics and player bio will be loaded here.</div>
-    <div class="ad-box">[BANNER AD - int-42]</div>
+
+    <div class="header">
+        <div class="back-btn" onclick="history.back()"><i class="fas fa-arrow-left"></i></div>
+        <h3 style="flex:1; text-align:center;">LEGENDARY PROFILE</h3>
+    </div>
+
+    <div class="bio-container">
+        <img id="legend-img" src="" alt="" class="bio-img">
+        <h1 id="legend-name" class="bio-name">Loading...</h1>
+        <p id="legend-pos" class="bio-pos"></p>
+        <div class="bio-text" id="legend-bio"></div>
+    </div>
+
+    <div class="ad-box">ADVERTISEMENT - BANNER</div>
 
     <script>
-        document.getElementById('name').innerText = localStorage.getItem('p_name');
-        document.getElementById('img').src = localStorage.getItem('p_img');
+        window.onload = function() {
+            // LocalStorage theke data neya
+            const legendData = localStorage.getItem('selected_player');
+            
+            if (legendData) {
+                const legend = JSON.parse(legendData);
+                
+                // UI update kora
+                document.getElementById('legend-img').src = legend.img;
+                document.getElementById('legend-name').innerText = legend.name;
+                document.getElementById('legend-pos').innerText = "Position: " + legend.pos;
+                document.getElementById('legend-bio').innerText = legend.bio;
+            } else {
+                document.getElementById('legend-name').innerText = "Data Not Found";
+            }
+        };
     </script>
 </body>
 </html>
