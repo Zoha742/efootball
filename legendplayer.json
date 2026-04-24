@@ -5,7 +5,13 @@
   "name": "K. Heinz Rummenigge",
   "pos": "CF",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470946/K._Heinz_Rummenigge_tucqrv.png",
-  "bio": "Karl-Heinz Rummenigge is a German football legend known for his clinical finishing and explosive pace. He won the Ballon d'Or twice."
+  "stats": {
+        "Offensive Awareness": 93, "Ball Control": 98, "Dribbling": 99, "Tight Possession": 97,
+        "Low Pass": 90, "Lofted Pass": 88, "Finishing": 95, "Heading": 68,
+        "Place Kicking": 96, "Curl": 97, "Speed": 81, "Acceleration": 88,
+        "Kicking Power": 85, "Jumping": 65, "Physical Contact": 62, "Balance": 98,
+        "Stamina": 76, "Defensive Awareness": 45, "Tackling": 40, "Aggression": 48
+      }
 },
 {
   "id": 2,
