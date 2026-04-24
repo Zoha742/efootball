@@ -8,36 +8,35 @@
     <style>
         body { background: #050a18; color: #fff; font-family: sans-serif; text-align: center; padding: 20px; margin: 0; }
         
-        /* Back Arrow Style */
-        .back-btn { position: absolute; left: 20px; top: 20px; color: #fbbf24; font-size: 24px; cursor: pointer; text-decoration: none; }
-        
-        /* Bio Layout Style */
-        .bio-img { width: 100%; max-width: 250px; border-radius: 15px; border: 3px solid #fbbf24; margin-top: 50px; }
+        /* Header with Back Arrow */
+        .header { display: flex; align-items: center; margin-bottom: 20px; text-align: left; }
+        .back-btn { color: #fbbf24; font-size: 24px; cursor: pointer; text-decoration: none; padding: 5px; }
+
+        .bio-img { width: 100%; max-width: 250px; border-radius: 15px; border: 3px solid #fbbf24; margin-top: 20px; }
         .name { color: #fbbf24; margin-top: 20px; font-size: 26px; font-weight: bold; }
-        .info { color: #22c55e; font-size: 16px; margin: 5px 0; font-weight: bold; background: rgba(34, 197, 94, 0.1); display: inline-block; padding: 5px 15px; border-radius: 20px;}
+        .info { color: #22c55e; font-size: 16px; margin: 10px 0; font-weight: bold; background: rgba(34, 197, 94, 0.1); display: inline-block; padding: 5px 15px; border-radius: 20px;}
         .desc { margin-top: 25px; padding: 15px; color: #ccc; line-height: 1.6; text-align: justify; background: #121e36; border-radius: 15px; border: 1px solid #1e2d4d; }
     </style>
 </head>
 <body>
 
-    <i class="fas fa-arrow-left back-btn" onclick="history.back()"></i>
+    <div class="header">
+        <a href="manager.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+        <span style="flex:1; text-align:center; color:#fbbf24; font-weight:bold;">MANAGER PROFILE</span>
+    </div>
     
     <img id="m-img" class="bio-img" src="">
     <h2 id="m-name" class="name">Loading...</h2>
-    <div id="m-style" class="info"></div>
-    <div id="m-formation" class="info"></div>
+    <div><p id="m-style" class="info"></p></div>
+    <div><p id="m-formation" class="info"></p></div>
     
     <div id="m-bio" class="desc"></div>
 
     <script>
         window.onload = function() {
-            // LocalStorage থেকে ক্লিক করা ম্যানেজারের ডাটা রিসিভ করা হচ্ছে
             const data = localStorage.getItem('selected_manager');
-            
             if (data) {
                 const manager = JSON.parse(data);
-                
-                // HTML-এ ডাটা সেট করা
                 document.getElementById('m-img').src = manager.img;
                 document.getElementById('m-name').innerText = manager.name;
                 document.getElementById('m-style').innerText = "Style: " + manager.style;
