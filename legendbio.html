@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Player Details</title>
+    <title>Player Bio - eFootball HUB</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --bg: #050a18; --card: #121e36; --primary: #fbbf24; --text: #ffffff; }
@@ -12,78 +12,79 @@
         .header { display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 20px; }
         .back-btn { position: absolute; left: 0; font-size: 24px; color: var(--primary); text-decoration: none; }
         
-        /* Player Card */
+        /* Player Profile Card */
         .profile-card { background: var(--card); border-radius: 15px; padding: 20px; text-align: center; border: 1px solid #1e2d4d; margin-bottom: 20px; }
-        .profile-img { width: 130px; height: 170px; border-radius: 10px; object-fit: cover; border: 2px solid var(--primary); margin-bottom: 10px; }
-        .player-name { font-size: 22px; font-weight: bold; margin: 5px 0; color: var(--primary); }
-        .player-pos { font-size: 14px; background: rgba(251, 191, 36, 0.1); color: var(--primary); padding: 4px 15px; border-radius: 20px; display: inline-block; font-weight: bold; }
+        .profile-img { width: 140px; height: 185px; border-radius: 12px; object-fit: cover; border: 2px solid var(--primary); margin-bottom: 10px; background: #000; }
+        .player-name { font-size: 24px; font-weight: bold; margin: 5px 0; color: var(--primary); }
+        .player-pos { font-size: 14px; background: rgba(251, 191, 36, 0.1); color: var(--primary); padding: 4px 15px; border-radius: 20px; display: inline-block; font-weight: bold; border: 1px solid var(--primary); }
 
-        /* Bio Section */
-        .bio-title { font-size: 16px; color: var(--primary); margin: 20px 0 10px; border-left: 4px solid var(--primary); padding-left: 10px; }
-        .player-bio { background: var(--card); padding: 15px; border-radius: 12px; font-size: 14px; line-height: 1.6; color: #ccc; text-align: justify; border: 1px solid #1e2d4d; }
-
-        /* Stats Grid */
-        .stats-title { font-size: 16px; color: var(--primary); margin: 25px 0 15px; border-left: 4px solid var(--primary); padding-left: 10px; }
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-        .stat-box { display: flex; justify-content: space-between; align-items: center; background: var(--card); padding: 10px; border-radius: 8px; border: 1px solid #1e2d4d; }
+        /* Stats Grid Section */
+        .stats-title { font-size: 16px; color: var(--primary); margin: 25px 0 15px; border-left: 4px solid var(--primary); padding-left: 10px; text-transform: uppercase; letter-spacing: 1px; }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .stat-box { display: flex; justify-content: space-between; align-items: center; background: var(--card); padding: 10px 12px; border-radius: 8px; border: 1px solid #1e2d4d; }
         .stat-name { font-size: 11px; color: #cbd5e1; font-weight: bold; text-transform: uppercase; }
-        .stat-num { font-size: 14px; font-weight: bold; color: #000; padding: 2px 8px; border-radius: 4px; min-width: 30px; text-align: center; }
+        .stat-num { font-size: 15px; font-weight: bold; color: #000; padding: 2px 8px; border-radius: 4px; min-width: 32px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.3); }
     </style>
 </head>
 <body>
 
     <div class="header">
         <a href="javascript:history.back()" class="back-btn"><i class="fas fa-arrow-left"></i></a>
-        <h2 style="font-size: 18px; color: var(--primary);">PLAYER <span>BIO</span></h2>
+        <h2 style="font-size: 18px; color: var(--primary);">PLAYER DETAILS</h2>
     </div>
 
     <div class="profile-card">
-        <img id="p-img" class="profile-img" src="">
+        <img id="p-img" class="profile-img" src="" alt="Player Image">
         <h2 id="p-name" class="player-name">Loading...</h2>
         <div id="p-pos" class="player-pos">--</div>
     </div>
 
-    <div class="bio-title">PLAYER DESCRIPTION</div>
-    <div id="p-bio" class="player-bio">Bio not available.</div>
-
-    <div class="stats-title">PLAYER ATTRIBUTES (STATS)</div>
+    <div class="stats-title">PLAYER ATTRIBUTES (21 Stats)</div>
     <div id="stats-container" class="stats-grid"></div>
 
 <script>
+    // eFootball Style Color Logic
     function getStatColor(val) {
-        if (val >= 90) return '#06b6d4'; // Cyan
-        if (val >= 80) return '#22c55e'; // Green
-        if (val >= 70) return '#eab308'; // Yellow
+        const v = parseInt(val);
+        if (v >= 90) return '#06b6d4'; // Cyan/Blue
+        if (v >= 80) return '#22c55e'; // Green
+        if (v >= 70) return '#eab308'; // Yellow
         return '#ef4444'; // Red
     }
 
     window.onload = function() {
-        const data = localStorage.getItem('selected_player');
+        // localStorage থেকে ডেটা রিড করা হচ্ছে
+        const rawData = localStorage.getItem('selected_player');
         
-        if (data) {
-            const player = JSON.parse(data);
+        if (rawData) {
+            const player = JSON.parse(rawData);
             
+            // নাম, ছবি এবং পজিশন সেট করা
             document.getElementById('p-img').src = player.img;
             document.getElementById('p-name').innerText = player.name;
             document.getElementById('p-pos').innerText = player.pos;
-            document.getElementById('p-bio').innerText = player.bio || "No description available.";
 
             const container = document.getElementById('stats-container');
             container.innerHTML = '';
 
+            // যদি প্লেয়ারের stats অবজেক্ট থাকে তবে লুপ চালিয়ে ২১টি স্ট্যাটাস দেখানো
             if (player.stats) {
-                for (const [sName, sValue] of Object.entries(player.stats)) {
+                Object.entries(player.stats).forEach(([sName, sValue]) => {
                     const box = document.createElement('div');
                     box.className = 'stat-box';
                     const color = getStatColor(sValue);
-                    box.innerHTML = `<span class="stat-name">${sName}</span><span class="stat-num" style="background-color:${color}">${sValue}</span>`;
+                    
+                    box.innerHTML = `
+                        <span class="stat-name">${sName}</span>
+                        <span class="stat-num" style="background-color:${color}">${sValue}</span>
+                    `;
                     container.appendChild(box);
-                }
+                });
             } else {
-                container.innerHTML = "<p style='grid-column:span 2; text-align:center;'>Stats not found!</p>";
+                container.innerHTML = "<p style='grid-column:span 2; text-align:center; padding:20px;'>Stats not found in JSON!</p>";
             }
         } else {
-            document.getElementById('p-name').innerText = "Data Not Found!";
+            document.getElementById('p-name').innerText = "Data Not Received!";
         }
     };
 </script>
