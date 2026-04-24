@@ -72,33 +72,36 @@
         <a href="profile.html" class="nav-item"><i class="fas fa-user-circle"></i>Profile</a>
     </nav>
 
-    <script>
-        // Load Legends for Home Page
-        async function loadHomeLegends() {
-            const container = document.getElementById('home-legend-view');
-            try {
-                const response = await fetch('legend.json');
-                const data = await response.json();
+   <script>
+    // Home Page এ Legend লোড করার ফাংশন
+    async function loadHomeLegends() {
+        const container = document.getElementById('home-legend-view');
+        try {
+            // legendplayer.json থেকে ডেটা নিতে হবে
+            const response = await fetch('legendplayer.json'); 
+            const data = await response.json();
+            
+            // প্রথম ৬ জন প্লেয়ারকে হোম পেজে দেখাবে
+            data.legend.slice(0, 6).forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'top-card';
+                card.innerHTML = `<img src="${p.img}"><p>${p.name}</p>`;
                 
-                // Show first 6 legends on Home
-                data.legend.slice(0, 6).forEach(p => {
-                    const card = document.createElement('div');
-                    card.className = 'top-card';
-                    card.innerHTML = `<img src="${p.img}"><p>${p.name}</p>`;
-                    card.onclick = () => {
-                        localStorage.setItem('p_name', p.name);
-                        localStorage.setItem('p_img', p.img);
-                        localStorage.setItem('p_bio', p.bio);
-                        window.location.href = 'bio.html';
-                    };
-                    container.appendChild(card);
-                });
-            } catch (e) {
-                container.innerHTML = "Error loading data";
-            }
+                card.onclick = () => {
+                    // পুরো প্লেয়ার ডেটা JSON স্ট্রিং হিসেবে সেভ হবে
+                    localStorage.setItem('selected_player', JSON.stringify(p)); 
+                    // নতুন ডিটেইলস পেজে নিয়ে যাবে
+                    window.location.href = 'legendbio.html'; 
+                };
+                
+                container.appendChild(card);
+            });
+        } catch (e) {
+            container.innerHTML = "Error loading data";
         }
+    }
 
-        window.onload = loadHomeLegends;
-    </script>
+    window.onload = loadHomeLegends;
+</script>
 </body>
 </html>
