@@ -1,23 +1,18 @@
-
 {
   "managers": [
     {
-      "id": 1,
       "name": "Pep Guardiola",
-      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1775765539/Lionel_Messi_gqr4ew.png", 
-      "pos": "Manager",
-      "bio": "Josep 'Pep' Guardiola Sala is a Spanish professional football manager and former player. He is currently the manager of Premier League club Manchester City."
+      "img": "https://example.com/pep.jpg",
+      "style": "Possession Game",
+      "formation": "4-1-2-3",
+      "bio": "One of the greatest managers of all time, famous for his tiki-taka style and tactical dominance."
     },
     {
-      "id": 2,
-      "name": "Sir Alex Ferguson",
-      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1775470945/Eric_Cantona_m7ih4d.png",
-      "pos": "Manager",
-      "bio": "Sir Alexander Chapman Ferguson is a Scottish former football manager and player, best known for managing Manchester United from 1986 to 2013."
+      "name": "Jurgen Klopp",
+      "img": "https://example.com/klopp.jpg",
+      "style": "Quick Counter",
+      "formation": "4-3-3",
+      "bio": "Famous for heavy metal football and intense high-pressing (Gegenpressing)."
     }
-  ],
-  "ads_config": {
-    "reward_id": "int-41",
-    "banner_id": "int-42"
-  }
+  ]
 }
