@@ -1,21 +1,47 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Managers - eFootball HUB</title>
+    <script src="https://sad.adsgram.ai/js/adsgram-sdk.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --bg: #050a18; --card: #121e36; --primary: #fbbf24; --text: #ffffff; }
+        body { background: var(--bg); color: var(--text); font-family: sans-serif; padding: 15px; margin: 0; }
+        .header { display: flex; align-items: center; margin-bottom: 25px; }
+        .back-btn { font-size: 22px; color: var(--primary); text-decoration: none; margin-right: 15px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+        .card { background: var(--card); border-radius: 12px; padding: 10px; text-align: center; border: 1px solid #1e2d4d; cursor: pointer; }
+        .card img { width: 100%; border-radius: 8px; margin-bottom: 8px; }
+        .card p { font-size: 12px; margin: 0; color: #cbd5e1; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+        <h2 style="font-size: 18px; color: var(--primary);">MANAGERS <span>LIST</span></h2>
+    </div>
+
+    <div id="manager-container" class="grid"></div>
+
 <script>
-    // Adsgram initialization
     const AdController = window.Adsgram.init({ blockId: "int-41" });
 
     async function loadManagers() {
         const container = document.getElementById('manager-container');
-        container.innerHTML = "<p style='text-align:center;'>Loading Managers...</p>";
+        container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>Loading...</p>";
         
         try {
             const response = await fetch('manager.json');
             const data = await response.json();
             const all_managers = data.managers;
-            
             container.innerHTML = "";
 
             all_managers.forEach(manager => {
                 const card = document.createElement('div');
-                card.className = 'top-card';
+                card.className = 'card';
                 card.innerHTML = `<img src="${manager.img}"><p>${manager.name}</p>`;
                 
                 card.onclick = () => {
@@ -35,11 +61,11 @@
     }
 
     function openManagerBio(manager) {
-        // Manager object save kora hocche
         localStorage.setItem('selected_manager', JSON.stringify(manager));
-        // Manager bio page-e pathano hocche
         window.location.href = 'managerbio.html';
     }
 
     window.onload = loadManagers;
 </script>
+</body>
+</html>
