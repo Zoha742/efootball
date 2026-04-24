@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manager Bio - eFootball HUB</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background: #050a18; color: #fff; font-family: sans-serif; text-align: center; padding: 20px; margin: 0; }
+        .back-btn { position: absolute; left: 15px; top: 20px; color: #fbbf24; font-size: 24px; cursor: pointer; }
+        .bio-img { width: 100%; max-width: 250px; border-radius: 15px; border: 3px solid #fbbf24; margin-top: 40px; }
+        .name { color: #fbbf24; margin-top: 20px; font-size: 26px; font-weight: bold; }
+        .info { color: #22c55e; font-size: 16px; margin: 5px 0; font-weight: bold; }
+        .desc { margin-top: 25px; padding: 15px; color: #ccc; line-height: 1.6; text-align: justify; background: #121e36; border-radius: 15px; border: 1px solid #1e2d4d; }
+    </style>
+</head>
+<body>
+    <i class="fas fa-arrow-left back-btn" onclick="history.back()"></i>
+    
+    <img id="m-img" class="bio-img" src="">
+    <h2 id="m-name" class="name">Loading...</h2>
+    <p id="m-style" class="info"></p>
+    <p id="m-formation" class="info"></p>
+    
+    <div id="m-bio" class="desc"></div>
+
+    <script>
+        window.onload = function() {
+            const data = localStorage.getItem('selected_manager');
+            if (data) {
+                const manager = JSON.parse(data);
+                document.getElementById('m-img').src = manager.img;
+                document.getElementById('m-name').innerText = manager.name;
+                document.getElementById('m-style').innerText = "Style: " + manager.style;
+                document.getElementById('m-formation').innerText = "Formation: " + manager.formation;
+                document.getElementById('m-bio').innerText = manager.bio;
+            } else {
+                document.getElementById('m-name').innerText = "Data Not Found!";
+            }
+        };
+    </script>
+</body>
+</html>
