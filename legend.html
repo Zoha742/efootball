@@ -96,15 +96,15 @@
         container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>Loading...</p>";
         
         try {
-            const response = await fetch('legend.json'); // ফাইলের নাম চেক করে নিন
+            const response = await fetch('legendplayer.json'); 
             const data = await response.json();
-            const all_legends = data.legend || data.players; 
+            const all_legends = data.legend || data.players || data; 
             
             const filtered = all_legends.filter(legend => legend.pos === pos);
             container.innerHTML = "";
 
             if(!filtered || filtered.length === 0) {
-                container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>No Data!</p>";
+                container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>No Data Found!</p>";
                 return;
             }
 
@@ -120,7 +120,7 @@
                 container.appendChild(card);
             });
         } catch (e) { 
-            container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>Error!</p>"; 
+            container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>Error loading legendplayer.json</p>"; 
         }
     }
     window.onload = () => loadLegends('CF');
