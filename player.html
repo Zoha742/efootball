@@ -13,53 +13,51 @@
         .header { display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 25px; }
         .back-btn { position: absolute; left: 0; font-size: 22px; color: var(--primary); text-decoration: none; }
         
-        /* All Position Buttons */
+        /* All Position Buttons - Unchanged */
         .pos-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 25px; }
         .pos-btn { background: var(--card-dark); border: 1px solid var(--primary); padding: 12px; text-align: center; border-radius: 8px; cursor: pointer; color: var(--primary); font-weight: bold; font-size: 14px; }
         
-        /* Fixed Player Grid */
         .player-grid { 
             display: grid; 
             grid-template-columns: 1fr 1fr 1fr; 
-            gap: 10px; 
+            gap: 12px; 
             padding-bottom: 100px; 
-            align-items: stretch; 
         }
 
-        /* Card Uniformity Fix */
+        /* Card Design like Screenshot 6 */
         .top-card { 
             background: var(--card-dark); 
-            border-radius: 12px; 
-            padding: 8px; 
+            border-radius: 10px; 
+            overflow: hidden; 
+            border: 1.5px solid var(--primary); /* Gold border like example */
             text-align: center; 
-            border: 1px solid var(--border); 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: space-between; 
-            height: 100%; 
             cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s;
         }
+        
+        .top-card:active { transform: scale(0.95); }
 
+        /* Image View Fix */
         .top-card img { 
             width: 100%; 
-            aspect-ratio: 2/2.3; /* Shob image square hobe */
-            object-fit: cover; /* Chobi chapta hobe na */
-            object-position: top; 
-            border-radius: 8px; 
-            margin-bottom: 8px; 
+            aspect-ratio: 2/2.3; /* Taller portrait view like example */
+            object-fit: cover; /* Fill the card area */
+            object-position: top; /* Keep player face visible */
+            display: block;
         }
 
         .top-card p { 
             font-size: 11px; 
+            padding: 8px 2px; 
             margin: 0; 
-            color: #cbd5e1; 
-            font-weight: 500; 
-            line-height: 1.2;
-            height: 2.4em; /* Name jate max 2 line hoy */
+            color: var(--text); 
+            background: rgba(18, 30, 54, 0.9); /* Card dark color background for name */
+            font-weight: bold;
+            white-space: nowrap;
             overflow: hidden;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
+            text-overflow: ellipsis;
         }
 
         .bottom-ad-banner { position: fixed; bottom: 0; left: 0; width: 100%; height: 50px; background: rgba(0,0,0,0.8); display: flex; justify-content: center; align-items: center; z-index: 1000; border-top: 1px solid #334155; }
