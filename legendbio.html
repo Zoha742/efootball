@@ -3,54 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Legend Bio - eFootball HUB</title>
+    <title>Player Bio</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --bg: #050a18; --card: #121e36; --primary: #fbbf24; --text: #ffffff; }
-        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; text-align: center; padding: 20px; }
-        .header { display: flex; align-items: center; margin-bottom: 30px; }
-        .back-btn { color: var(--primary); font-size: 24px; cursor: pointer; text-decoration: none; }
-        .bio-container { max-width: 400px; margin: auto; background: var(--card); border-radius: 20px; padding: 20px; border: 1px solid #1e2d4d; }
-        .bio-img { width: 100%; max-width: 220px; border-radius: 15px; border: 2px solid var(--primary); margin-bottom: 15px; }
-        .bio-name { font-size: 24px; color: var(--primary); margin-bottom: 5px; }
-        .bio-pos { color: #94a3b8; font-size: 14px; margin-bottom: 20px; }
-        .bio-text { line-height: 1.6; color: #cbd5e1; text-align: justify; font-size: 15px; }
-        .ad-box { margin-top: 30px; padding: 10px; background: #070d19; border: 1px dashed #334155; color: #555; font-size: 10px; }
+        body { background: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; padding: 15px; padding-bottom: 50px; }
+        
+        .header { display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 20px; }
+        .back-btn { position: absolute; left: 0; font-size: 24px; color: var(--primary); text-decoration: none; }
+        
+        /* Player Profile Section */
+        .profile-card { background: var(--card); border-radius: 15px; padding: 20px; text-align: center; border: 1px solid #1e2d4d; margin-bottom: 20px; }
+        .profile-img { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary); margin-bottom: 10px; }
+        .player-name { font-size: 22px; font-weight: bold; margin: 0; color: var(--primary); }
+        .player-pos { font-size: 14px; background: rgba(251, 191, 36, 0.1); color: var(--primary); padding: 4px 12px; border-radius: 20px; display: inline-block; margin-top: 8px; font-weight: bold; }
+
+        /* Stats Grid */
+        .stats-title { font-size: 18px; color: var(--primary); margin-bottom: 15px; border-left: 4px solid var(--primary); padding-left: 10px; }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; } /* 2 Column Layout */
+        
+        .stat-box { display: flex; justify-content: space-between; align-items: center; background: var(--card); padding: 8px 12px; border-radius: 8px; border: 1px solid #1e2d4d; }
+        .stat-name { font-size: 12px; color: #cbd5e1; font-weight: bold; }
+        .stat-num { font-size: 14px; font-weight: bold; color: #000; padding: 3px 8px; border-radius: 6px; min-width: 25px; text-align: center; }
+
     </style>
 </head>
 <body>
 
     <div class="header">
-        <div class="back-btn" onclick="history.back()"><i class="fas fa-arrow-left"></i></div>
-        <h3 style="flex:1; text-align:center;">LEGENDARY PROFILE</h3>
+        <a href="legend.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+        <h2 style="font-size: 18px; color: var(--primary);">PLAYER DETAILS</h2>
     </div>
 
-    <div class="bio-container">
-        <img id="legend-img" src="" alt="" class="bio-img">
-        <h1 id="legend-name" class="bio-name">Loading...</h1>
-        <p id="legend-pos" class="bio-pos"></p>
-        <div class="bio-text" id="legend-bio"></div>
+    <div class="profile-card">
+        <img id="p-img" class="profile-img" src="">
+        <h2 id="p-name" class="player-name">Loading...</h2>
+        <div id="p-pos" class="player-pos">--</div>
     </div>
 
-    <div class="ad-box">ADVERTISEMENT - BANNER</div>
+    <div class="stats-title">PLAYER ATTRIBUTES</div>
+    <div id="stats-container" class="stats-grid"></div>
 
-    <script>
-        window.onload = function() {
-            // LocalStorage theke data neya
-            const legendData = localStorage.getItem('selected_player');
+<script>
+    // eFootball style Color Logic
+    function getStatColor(value) {
+        if (value >= 90) return '#06b6d4'; // Cyan (90+)
+        if (value >= 80) return '#22c55e'; // Green (80-89)
+        if (value >= 70) return '#eab308'; // Yellow (70-79)
+        return '#ef4444'; // Red (Below 70)
+    }
+
+    window.onload = function() {
+        const data = localStorage.getItem('selected_player');
+        
+        if (data) {
+            const player = JSON.parse(data);
             
-            if (legendData) {
-                const legend = JSON.parse(legendData);
-                
-                // UI update kora
-                document.getElementById('legend-img').src = legend.img;
-                document.getElementById('legend-name').innerText = legend.name;
-                document.getElementById('legend-pos').innerText = "Position: " + legend.pos;
-                document.getElementById('legend-bio').innerText = legend.bio;
+            // Profile Info Setup
+            document.getElementById('p-img').src = player.img;
+            document.getElementById('p-name').innerText = player.name;
+            document.getElementById('p-pos').innerText = player.pos;
+
+            // Stats Setup
+            const container = document.getElementById('stats-container');
+            container.innerHTML = '';
+
+            if (player.stats) {
+                for (const [statName, statValue] of Object.entries(player.stats)) {
+                    const box = document.createElement('div');
+                    box.className = 'stat-box';
+                    
+                    const bgColor = getStatColor(statValue);
+                    
+                    box.innerHTML = `
+                        <span class="stat-name">${statName}</span>
+                        <span class="stat-num" style="background-color: ${bgColor};">${statValue}</span>
+                    `;
+                    container.appendChild(box);
+                }
             } else {
-                document.getElementById('legend-name').innerText = "Data Not Found";
+                container.innerHTML = "<p style='color:red; grid-column:span 2;'>Stats not available!</p>";
             }
-        };
-    </script>
+        }
+    };
+</script>
 </body>
 </html>
