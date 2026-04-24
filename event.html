@@ -13,7 +13,6 @@
         .back-btn { position: absolute; left: 0; font-size: 22px; color: var(--primary); text-decoration: none; }
 
         /* Slider Section */
-        .slider-container { margin-bottom: 30px; }
         .event-slider {
             width: 100%;
             height: 200px;
@@ -22,36 +21,20 @@
             border: 2px solid var(--primary);
             position: relative;
             background: var(--card);
-            touch-action: pan-y; /* User scroll korle jate page theke na jay */
+            touch-action: pan-y;
         }
 
-        .slider-track {
-            display: flex;
-            transition: transform 0.4s ease-in-out;
-            height: 100%;
-        }
-
-        .slider-track img {
-            width: 100%;
-            flex-shrink: 0;
-            object-fit: cover;
-            height: 100%;
-            border-radius: 10px;
-        }
+        .slider-track { display: flex; transition: transform 0.4s ease-in-out; height: 100%; }
+        .slider-track img { width: 100%; flex-shrink: 0; object-fit: cover; height: 100%; }
 
         .dots { display: flex; justify-content: center; margin-top: 10px; gap: 6px; }
         .dot { width: 8px; height: 8px; background: #334155; border-radius: 50%; transition: 0.3s; }
         .dot.active { background: var(--primary); width: 20px; border-radius: 10px; }
 
-        /* Niche Niche Sajanor Jonno (Vertical List) */
-        .vertical-events { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
-        .v-card {
-            width: 100%;
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid #1e2d4d;
-            background: var(--card);
-        }
+        /* Vertical List (Niche Niche Sajanor Jonno) */
+        .list-title { color: var(--primary); margin: 25px 0 15px; font-size: 16px; font-weight: bold; border-left: 4px solid var(--primary); padding-left: 10px; }
+        .vertical-list { display: flex; flex-direction: column; gap: 15px; padding-bottom: 50px; }
+        .v-card { width: 100%; border-radius: 12px; overflow: hidden; border: 1px solid #1e2d4d; background: var(--card); }
         .v-card img { width: 100%; height: auto; display: block; }
     </style>
 </head>
@@ -62,71 +45,93 @@
         <h2 style="font-size: 18px; color: var(--primary);">ACTIVE EVENTS</h2>
     </div>
 
-    <div class="slider-container">
-        <div class="event-slider" id="slider">
-            <div id="slider-track" class="slider-track"></div>
-        </div>
-        <div id="dots" class="dots"></div>
+    <div class="event-slider" id="slider">
+        <div id="slider-track" class="slider-track"></div>
     </div>
+    <div id="dots" class="dots"></div>
 
-    <script>
+    <div class="list-title">MORE EVENTS</div>
+    <div id="vertical-container" class="vertical-list"></div>
+
+<script>
     let currentIndex = 0;
     let images = [];
     let slideInterval;
     let startX = 0;
-    let endX = 0;
 
-    async function loadEvents() {
+    async function fetchEvents() {
         const track = document.getElementById('slider-track');
+        const vContainer = document.getElementById('vertical-container');
         const dotsContainer = document.getElementById('dots');
 
         try {
-            const response = await fetch('event.json');
-            const data = await response.json();
-            images = data.events;
+            const res = await fetch('event.json');
+            if (!res.ok) throw new Error("JSON file not found!");
+            const data = await res.json();
+            images = data.events || data.event;
 
-            if (images.length === 0) return;
+            if (!images || images.length === 0) {
+                track.innerHTML = "<p style='text-align:center; padding:20px;'>No Events Found!</p>";
+                return;
+            }
 
-            images.forEach((event, index) => {
-                const img = document.createElement('img');
-                img.src = event.img;
-                track.appendChild(img);
+            images.forEach((ev, index) => {
+                // Slider images
+                const sImg = document.createElement('img');
+                sImg.src = ev.img;
+                track.appendChild(sImg);
 
+                // Vertical list images (Niche niche)
+                const vCard = document.createElement('div');
+                vCard.className = 'v-card';
+                vCard.innerHTML = `<img src="${ev.img}">`;
+                vContainer.appendChild(vCard);
+
+                // Dots
                 const dot = document.createElement('div');
                 dot.className = index === 0 ? 'dot active' : 'dot';
                 dotsContainer.appendChild(dot);
             });
 
             startAutoSlide();
-            setupTouchEvents();
+            setupTouch();
 
         } catch (e) {
-            track.innerHTML = "<p style='text-align:center;'>Loading failed!</p>";
+            track.innerHTML = `<p style='text-align:center; padding:20px; color:red;'>${e.message}</p>`;
         }
     }
 
     function startAutoSlide() {
-        clearInterval(slideInterval); // Ager auto-slide bondho korbe
-        slideInterval = setInterval(nextSlide, 3000); // 3 second por por change hobe
-    }
-
-    function nextSlide() {
-        currentIndex++;
-        if (currentIndex >= images.length) currentIndex = 0;
-        updateSlider();
-    }
-
-    function prevSlide() {
-        currentIndex--;
-        if (currentIndex < 0) currentIndex = images.length - 1;
-        updateSlider();
+        slideInterval = setInterval(() => {
+            currentIndex = (currentIndex + 1) % images.length;
+            updateSlider();
+        }, 3000);
     }
 
     function updateSlider() {
         const track = document.getElementById('slider-track');
         const dots = document.querySelectorAll('.dot');
-        
         track.style.transform = `translateX(-${currentIndex * 100}%)`;
-        
-        dots.forEach(dot => dot.classList.remove('active'));
-        if(dots[currentIndex]) dots[currentIndex].classList.
+        dots.forEach(d => d.classList.remove('active'));
+        if(dots[currentIndex]) dots[currentIndex].classList.add('active');
+    }
+
+    function setupTouch() {
+        const slider = document.getElementById('slider');
+        slider.addEventListener('touchstart', e => {
+            startX = e.touches[0].clientX;
+            clearInterval(slideInterval);
+        });
+        slider.addEventListener('touchend', e => {
+            let endX = e.changedTouches[0].clientX;
+            if (startX - endX > 50) currentIndex = (currentIndex + 1) % images.length;
+            else if (endX - startX > 50) currentIndex = (currentIndex - 1 + images.length) % images.length;
+            updateSlider();
+            startAutoSlide();
+        });
+    }
+
+    window.onload = fetchEvents;
+</script>
+</body>
+</html>
