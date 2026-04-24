@@ -14,7 +14,7 @@
         .grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
         .card { background: var(--card); border-radius: 12px; padding: 10px; text-align: center; border: 1px solid #1e2d4d; cursor: pointer; }
         .card img { width: 100%; border-radius: 8px; margin-bottom: 8px; }
-        .card p { font-size: 12px; margin: 0; color: #cbd5e1; font-weight: bold; }
+        .card p { font-size: 11px; margin: 0; color: #cbd5e1; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -27,17 +27,37 @@
     <div id="manager-container" class="grid"></div>
 
 <script>
-    const AdController = window.Adsgram.init({ blockId: "int-41" });
+    // Adsgram সেফলি ইনিশিয়ালাইজ করা হলো যাতে ক্র্যাশ না করে
+    let AdController = null;
+    try {
+        if (window.Adsgram) {
+            AdController = window.Adsgram.init({ blockId: "int-41" });
+        }
+    } catch (e) {
+        console.warn("Adsgram failed to initialize");
+    }
 
     async function loadManagers() {
         const container = document.getElementById('manager-container');
-        container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>Loading...</p>";
+        container.innerHTML = "<p style='grid-column: span 3; text-align:center; color: #fbbf24;'>Loading Managers...</p>";
         
         try {
+            // manager.json ফাইলটি কল করা হচ্ছে
             const response = await fetch('manager.json');
+            
+            if (!response.ok) {
+                throw new Error("manager.json file missing or spelling mistake!");
+            }
+            
             const data = await response.json();
-            const all_managers = data.managers;
+            const all_managers = data.managers; // আপনার JSON এ ডাটার নাম "managers" থাকতে হবে
+            
             container.innerHTML = "";
+
+            if (!all_managers || all_managers.length === 0) {
+                container.innerHTML = "<p style='grid-column: span 3; text-align:center; color: red;'>No Managers Found!</p>";
+                return;
+            }
 
             all_managers.forEach(manager => {
                 const card = document.createElement('div');
@@ -45,7 +65,7 @@
                 card.innerHTML = `<img src="${manager.img}"><p>${manager.name}</p>`;
                 
                 card.onclick = () => {
-                    if (typeof AdController !== 'undefined') {
+                    if (AdController) {
                         AdController.show()
                             .then(() => openManagerBio(manager))
                             .catch(() => openManagerBio(manager));
@@ -56,7 +76,8 @@
                 container.appendChild(card);
             });
         } catch (e) { 
-            container.innerHTML = "Error loading managers!"; 
+            console.error(e);
+            container.innerHTML = `<p style='grid-column: span 3; text-align:center; color: red;'>Error: ${e.message}</p>`; 
         }
     }
 
@@ -65,6 +86,7 @@
         window.location.href = 'managerbio.html';
     }
 
+    // পেজ লোড হওয়ার সাথে সাথে ডাটা লোড হবে
     window.onload = loadManagers;
 </script>
 </body>
