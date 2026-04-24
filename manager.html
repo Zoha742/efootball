@@ -9,8 +9,12 @@
     <style>
         :root { --bg: #050a18; --card: #121e36; --primary: #fbbf24; --text: #ffffff; }
         body { background: var(--bg); color: var(--text); font-family: sans-serif; padding: 15px; margin: 0; }
-        .header { display: flex; align-items: center; margin-bottom: 25px; }
-        .back-btn { font-size: 22px; color: var(--primary); text-decoration: none; margin-right: 15px; }
+        
+        /* Header Fix */
+        .header { display: flex; align-items: center; position: relative; margin-bottom: 25px; height: 40px; }
+        .back-btn { position: absolute; left: 0; font-size: 22px; color: var(--primary); text-decoration: none; z-index: 10; }
+        .header h2 { width: 100%; text-align: center; font-size: 18px; color: var(--primary); margin: 0; }
+
         .grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
         .card { background: var(--card); border-radius: 12px; padding: 10px; text-align: center; border: 1px solid #1e2d4d; cursor: pointer; }
         .card img { width: 100%; border-radius: 8px; margin-bottom: 8px; }
@@ -21,43 +25,29 @@
 
     <div class="header">
         <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
-        <h2 style="font-size: 18px; color: var(--primary);">MANAGERS <span>LIST</span></h2>
+        <h2>MANAGERS LIST</h2>
     </div>
 
     <div id="manager-container" class="grid"></div>
 
 <script>
-    // Adsgram সেফলি ইনিশিয়ালাইজ করা হলো যাতে ক্র্যাশ না করে
+    // Adsgram Error Handling
     let AdController = null;
     try {
         if (window.Adsgram) {
             AdController = window.Adsgram.init({ blockId: "int-41" });
         }
-    } catch (e) {
-        console.warn("Adsgram failed to initialize");
-    }
+    } catch (e) { console.log("Ad script error"); }
 
     async function loadManagers() {
         const container = document.getElementById('manager-container');
-        container.innerHTML = "<p style='grid-column: span 3; text-align:center; color: #fbbf24;'>Loading Managers...</p>";
+        container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>Loading...</p>";
         
         try {
-            // manager.json ফাইলটি কল করা হচ্ছে
             const response = await fetch('manager.json');
-            
-            if (!response.ok) {
-                throw new Error("manager.json file missing or spelling mistake!");
-            }
-            
             const data = await response.json();
-            const all_managers = data.managers; // আপনার JSON এ ডাটার নাম "managers" থাকতে হবে
-            
+            const all_managers = data.managers;
             container.innerHTML = "";
-
-            if (!all_managers || all_managers.length === 0) {
-                container.innerHTML = "<p style='grid-column: span 3; text-align:center; color: red;'>No Managers Found!</p>";
-                return;
-            }
 
             all_managers.forEach(manager => {
                 const card = document.createElement('div');
@@ -66,27 +56,23 @@
                 
                 card.onclick = () => {
                     if (AdController) {
-                        AdController.show()
-                            .then(() => openManagerBio(manager))
-                            .catch(() => openManagerBio(manager));
+                        AdController.show().then(() => openBio(manager)).catch(() => openBio(manager));
                     } else {
-                        openManagerBio(manager);
+                        openBio(manager);
                     }
                 };
                 container.appendChild(card);
             });
         } catch (e) { 
-            console.error(e);
-            container.innerHTML = `<p style='grid-column: span 3; text-align:center; color: red;'>Error: ${e.message}</p>`; 
+            container.innerHTML = "Error loading managers!"; 
         }
     }
 
-    function openManagerBio(manager) {
+    function openBio(manager) {
         localStorage.setItem('selected_manager', JSON.stringify(manager));
-        window.location.href = 'managerbio.html';
+        window.location.href = 'managerbio.html'; // Oboshshoi ei namer file thakte hobe
     }
 
-    // পেজ লোড হওয়ার সাথে সাথে ডাটা লোড হবে
     window.onload = loadManagers;
 </script>
 </body>
