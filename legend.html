@@ -9,14 +9,59 @@
     <style>
         :root { --bg: #050a18; --card-dark: #121e36; --primary: #fbbf24; --text: #ffffff; --border: #1e2d4d; }
         body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; padding: 15px; margin: 0; }
+        
         .header { display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 25px; }
         .back-btn { position: absolute; left: 0; font-size: 22px; color: var(--primary); text-decoration: none; }
+        
+        /* All Position Buttons */
         .pos-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 25px; }
         .pos-btn { background: var(--card-dark); border: 1px solid var(--primary); padding: 12px; text-align: center; border-radius: 8px; cursor: pointer; color: var(--primary); font-weight: bold; font-size: 14px; }
-        .player-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; padding-bottom: 100px; }
-        .top-card { background: var(--card-dark); border-radius: 12px; padding: 10px; text-align: center; border: 1px solid var(--border); transition: 0.3s; }
-        .top-card img { width: 100%; border-radius: 8px; margin-bottom: 8px; height: auto; }
-        .top-card p { font-size: 11px; margin: 0; color: #cbd5e1; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        
+        /* Fixed Player Grid */
+        .player-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr 1fr; 
+            gap: 10px; 
+            padding-bottom: 100px; 
+            align-items: stretch; 
+        }
+
+        /* Card Uniformity Fix */
+        .top-card { 
+            background: var(--card-dark); 
+            border-radius: 12px; 
+            padding: 8px; 
+            text-align: center; 
+            border: 1px solid var(--border); 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between; 
+            height: 100%; 
+            cursor: pointer;
+        }
+
+        .top-card img { 
+            width: 100%; 
+            aspect-ratio: 1/1; /* Shob image square hobe */
+            object-fit: cover; /* Chobi chapta hobe na */
+            object-position: top; 
+            border-radius: 8px; 
+            margin-bottom: 8px; 
+        }
+
+        .top-card p { 
+            font-size: 11px; 
+            margin: 0; 
+            color: #cbd5e1; 
+            font-weight: 500; 
+            line-height: 1.2;
+            height: 2.4em; /* Name jate max 2 line hoy */
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
         .bottom-ad-banner { position: fixed; bottom: 0; left: 0; width: 100%; height: 50px; background: rgba(0,0,0,0.8); display: flex; justify-content: center; align-items: center; z-index: 1000; border-top: 1px solid #334155; }
     </style>
 </head>
@@ -58,9 +103,7 @@
             const response = await fetch('legendplayer.json');
             const data = await response.json();
             
-            // data fetch kora hocche
             const all_legends = data.legend || data.players || data.legends; 
-            
             const filtered = all_legends.filter(legend => legend.pos === pos);
             container.innerHTML = "";
 
@@ -92,7 +135,6 @@
     }
 
     function openBio(legend) {
-        // legend object save kora holo
         localStorage.setItem('selected_player', JSON.stringify(legend));
         window.location.href = 'legendbio.html';
     }
