@@ -2,14 +2,14 @@
   "managers": [
     {
       "name": "Pep Guardiola",
-      "img": "https://example.com/pep.jpg",
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1775477854/Pep_Guardiola_ymdrle.png",
       "style": "Possession Game",
       "formation": "4-1-2-3",
       "bio": "One of the greatest managers of all time, famous for his tiki-taka style and tactical dominance."
     },
     {
       "name": "Jurgen Klopp",
-      "img": "https://example.com/klopp.jpg",
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1775477859/J%C3%BCrgen_Klopp_x4z8by.png",
       "style": "Quick Counter",
       "formation": "4-3-3",
       "bio": "Famous for heavy metal football and intense high-pressing (Gegenpressing)."
