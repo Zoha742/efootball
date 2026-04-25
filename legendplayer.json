@@ -921,6 +921,13 @@
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472272/Oliver_Kahn_zkzlbr.png",
     "bio": "Oliver Kahn was a fierce German goalkeeper known for leadership, aggression, and shot-stopping."
   }
+    {
+    "id": 130,
+    "name": "Angelo Peruzzi",
+    "pos": "GK",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777123018/Angelo_Peruzzi_jsvsmi.png",
+    "bio": "Angelo Peruzzi was a fierce German goalkeeper known for leadership, aggression, and shot-stopping."
+  }
     
 ],
   "ads_config": {
