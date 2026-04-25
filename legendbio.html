@@ -9,21 +9,22 @@
         :root { --bg: #050a18; --card: #121e36; --primary: #fbbf24; --text: #ffffff; }
         body { background: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; padding: 15px; padding-bottom: 50px; }
         
-        .header { display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 20px; }
-        .back-btn { position: absolute; left: 0; font-size: 24px; color: var(--primary); text-decoration: none; }
+        .header { display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 15px; }
+        .back-btn { position: absolute; left: 0; font-size: 22px; color: var(--primary); text-decoration: none; }
         
         /* Player Profile Card */
-        .profile-card { background: var(--card); border-radius: 15px; padding: 20px; text-align: center; border: 1px solid #1e2d4d; margin-bottom: 20px; }
-        .profile-img { width: 140px; height: 185px; border-radius: 12px; object-fit: cover; border: 2px solid var(--primary); margin-bottom: 10px; background: #000; }
-        .player-name { font-size: 24px; font-weight: bold; margin: 5px 0; color: var(--primary); }
-        .player-pos { font-size: 14px; background: rgba(251, 191, 36, 0.1); color: var(--primary); padding: 4px 15px; border-radius: 20px; display: inline-block; font-weight: bold; border: 1px solid var(--primary); }
+        .profile-card { background: var(--card); border-radius: 12px; padding: 15px; text-align: center; border: 1px solid #1e2d4d; margin-bottom: 15px; }
+        .profile-img { width: 120px; height: 160px; border-radius: 10px; object-fit: cover; border: 2px solid var(--primary); margin-bottom: 8px; background: #000; }
+        .player-name { font-size: 20px; font-weight: bold; margin: 5px 0; color: var(--primary); }
+        .player-pos { font-size: 13px; background: rgba(251, 191, 36, 0.1); color: var(--primary); padding: 3px 12px; border-radius: 20px; display: inline-block; font-weight: bold; border: 1px solid var(--primary); }
 
-        /* Stats Grid Section */
-        .stats-title { font-size: 16px; color: var(--primary); margin: 25px 0 15px; border-left: 4px solid var(--primary); padding-left: 10px; text-transform: uppercase; letter-spacing: 1px; }
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .stat-box { display: flex; justify-content: space-between; align-items: center; background: var(--card); padding: 10px 12px; border-radius: 8px; border: 1px solid #1e2d4d; }
-        .stat-name { font-size: 11px; color: #cbd5e1; font-weight: bold; text-transform: uppercase; }
-        .stat-num { font-size: 15px; font-weight: bold; color: #000; padding: 2px 8px; border-radius: 4px; min-width: 32px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+        /* Stats Grid Section (Choto Kora Hoyeche) */
+        .stats-title { font-size: 14px; color: var(--primary); margin: 20px 0 10px; border-left: 4px solid var(--primary); padding-left: 8px; text-transform: uppercase; font-weight: bold; }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; } /* Gap 10px theke 6px kora hoyeche */
+        
+        .stat-box { display: flex; justify-content: space-between; align-items: center; background: var(--card); padding: 6px 8px; border-radius: 6px; border: 1px solid #1e2d4d; } /* Padding komano hoyeche */
+        .stat-name { font-size: 10px; color: #cbd5e1; font-weight: bold; text-transform: uppercase; } /* Font size choto kora hoyeche */
+        .stat-num { font-size: 13px; font-weight: bold; color: #000; padding: 2px 6px; border-radius: 4px; min-width: 26px; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.3); } /* Number box choto kora hoyeche */
     </style>
 </head>
 <body>
