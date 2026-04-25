@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Legends - eFootball HUB</title>
-    <script src="https://sad.adsgram.ai/js/adsgram-sdk.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --bg: #050a18; --card-dark: #121e36; --primary: #fbbf24; --text: #ffffff; --border: #1e2d4d; }
@@ -121,11 +120,6 @@
             container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>Error loading legendplayer.json</p>"; 
         }
     }
-   window.onload = () => {
-        loadLegends('CF'); 
-        
-        const bannerAd = window.Adsgram.init({ blockId: "আপনার_ব্যানার_BLOCK_ID" });
-        bannerAd.show().catch((err) => console.log(err));
     };
 </script>
 </body>
