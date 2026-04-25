@@ -60,6 +60,19 @@
         if (v >= 70) return '#eab308'; return '#ef4444';
     }
 
+  window.onload = function() {
+        // ১. ব্যানার অ্যাড লোড (ব্যানার আইডি এখানে বসাবেন)
+        const bannerAd = window.Adsgram.init({ blockId: "আপনার_ব্যানার_BLOCK_ID" });
+        bannerAd.show().catch((err) => console.log("Banner Ad Error:", err));
+
+        // ২. ভিডিও অ্যাড লোড (ভিডিও আইডি এখানে বসাবেন)
+        const videoAd = window.Adsgram.init({ blockId: "আপনার_ভিডিও_BLOCK_ID" });
+        videoAd.show().then((result) => {
+            console.log("Video Finished");
+        }).catch((err) => {
+            console.log("Video skipped or error", err);
+        });
+    
     window.onload = function() {
         const data = localStorage.getItem('selected_player');
         if (data) {
