@@ -54,49 +54,58 @@
     <div id="stats-container" class="stats-grid"></div>
     <div id="banner-container" style="display: flex; justify-content: center; margin-bottom: 15px;"></div>
 <script>
-    function getStatColor(v) {
-        if (v >= 90) return '#06b6d4'; if (v >= 80) return '#22c55e';
-        if (v >= 70) return '#eab308'; return '#ef4444';
-    }
+    function getStatColor(v) {
+        if (v >= 90) return '#06b6d4'; if (v >= 80) return '#22c55e';
+        if (v >= 70) return '#eab308'; return '#ef4444';
+    }
 
-  window.onload = function() {
-        // ১. ব্যানার অ্যাড লোড (ব্যানার আইডি এখানে বসাবেন)
-        const bannerAd = window.Adsgram.init({ blockId: "আপনার_ব্যানার_BLOCK_ID" });
-        bannerAd.show().catch((err) => console.log("Banner Ad Error:", err));
+    window.onload = function() {
+        // ১. আগে প্লেয়ার ডাটা লোড করার চেষ্টা করা
+        const data = localStorage.getItem('selected_player');
+        
+        if (data) {
+            try {
+                const p = JSON.parse(data);
+                
+                // প্রোফাইল তথ্য বসানো
+                document.getElementById('p-img').src = p.img || "";
+                document.getElementById('p-name').innerText = p.name || "Unknown";
+                document.getElementById('p-age').innerText = p.age || "N/A";
+                document.getElementById('p-country').innerText = p.country || "N/A";
+                document.getElementById('p-height').innerText = p.height || "N/A";
+                document.getElementById('p-style').innerText = p.style || "N/A";
 
-        // ২. ভিডিও অ্যাড লোড (ভিডিও আইডি এখানে বসাবেন)
-        const videoAd = window.Adsgram.init({ blockId: "আপনার_ভিডিও_BLOCK_ID" });
-        videoAd.show().then((result) => {
-            console.log("Video Finished");
-        }).catch((err) => {
-            console.log("Video skipped or error", err);
-        });
-    
-    window.onload = function() {
-        const data = localStorage.getItem('selected_player');
-        if (data) {
-            const p = JSON.parse(data);
-            document.getElementById('p-img').src = p.img;
-            document.getElementById('p-name').innerText = p.name;
-            
-            // New Info Fields
-            document.getElementById('p-age').innerText = p.age || "N/A";
-            document.getElementById('p-country').innerText = p.country || "N/A";
-            document.getElementById('p-height').innerText = p.height || "N/A";
-            document.getElementById('p-style').innerText = p.style || "N/A";
+                // স্ট্যাটাস বা এবিলিটি লোড করা
+                const container = document.getElementById('stats-container');
+                container.innerHTML = ""; // আগের ডাটা ক্লিয়ার করা
 
-            const container = document.getElementById('stats-container');
-            if (p.stats) {
-                Object.entries(p.stats).forEach(([name, val]) => {
-                    const box = document.createElement('div');
-                    box.className = 'stat-box';
-                    box.innerHTML = `<span class="stat-name">${name}</span>
-                                    <span class="stat-num" style="background:${getStatColor(val)}">${val}</span>`;
-                    container.appendChild(box);
-                });
-            }
-        }
-    };
+                if (p.stats) {
+                    Object.entries(p.stats).forEach(([name, val]) => {
+                        const box = document.createElement('div');
+                        box.className = 'stat-box';
+                        box.innerHTML = `<span class="stat-name">${name}</span>
+                                        <span class="stat-num" style="background:${getStatColor(val)}">${val}</span>`;
+                        container.appendChild(box);
+                    });
+                }
+            } catch (err) {
+                console.error("JSON Parsing Error:", err);
+            }
+        }
+
+        // ২. ডাটা লোড হওয়ার পর অ্যাড চালু করা
+        try {
+            // ব্যানার অ্যাড (আইডি বসাতে ভুলবেন না)
+            const bannerAd = window.Adsgram.init({ blockId: "আপনার_ব্যানার_BLOCK_ID" });
+            bannerAd.show().catch((e) => console.log("Banner Error"));
+
+            // ভিডিও অ্যাড (আইডি বসাতে ভুলবেন না)
+            const videoAd = window.Adsgram.init({ blockId: "আপনার_ভিডিও_BLOCK_ID" });
+            videoAd.show().catch((e) => console.log("Video Error"));
+        } catch (e) {
+            console.log("Adsgram failed");
+        }
+    };
 </script>
 </body>
 </html>
