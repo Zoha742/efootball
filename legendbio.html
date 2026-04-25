@@ -55,36 +55,53 @@
     <div id="stats-container" class="stats-grid"></div>
 
 <script>
-    function getStatColor(v) {
-        if (v >= 90) return '#06b6d4'; if (v >= 80) return '#22c55e';
-        if (v >= 70) return '#eab308'; return '#ef4444';
-    }
+    function getStatColor(v) {
+        if (v >= 90) return '#06b6d4'; 
+        if (v >= 80) return '#22c55e';
+        if (v >= 70) return '#eab308'; return '#ef4444';
+    }
 
-    window.onload = function() {
-        const data = localStorage.getItem('selected_player');
-        if (data) {
-            const p = JSON.parse(data);
-            document.getElementById('p-img').src = p.img;
-            document.getElementById('p-name').innerText = p.name;
-            
-            // New Info Fields
-            document.getElementById('p-age').innerText = p.age || "N/A";
-            document.getElementById('p-country').innerText = p.country || "N/A";
-            document.getElementById('p-height').innerText = p.height || "N/A";
-            document.getElementById('p-style').innerText = p.style || "N/A";
+    window.onload = function() {
+        // ১. সবার আগে প্লেয়ারের বায়ো ডাটা লোড করা
+        const data = localStorage.getItem('selected_player');
+        if (data) {
+            const p = JSON.parse(data);
+            document.getElementById('p-img').src = p.img || "";
+            document.getElementById('p-name').innerText = p.name || "Unknown";
+            document.getElementById('p-age').innerText = p.age || "N/A";
+            document.getElementById('p-country').innerText = p.country || "N/A";
+            document.getElementById('p-height').innerText = p.height || "N/A";
+            document.getElementById('p-style').innerText = p.style || "N/A";
 
-            const container = document.getElementById('stats-container');
-            if (p.stats) {
-                Object.entries(p.stats).forEach(([name, val]) => {
-                    const box = document.createElement('div');
-                    box.className = 'stat-box';
-                    box.innerHTML = `<span class="stat-name">${name}</span>
-                                    <span class="stat-num" style="background:${getStatColor(val)}">${val}</span>`;
-                    container.appendChild(box);
-                });
-            }
-        }
-    };
+            const container = document.getElementById('stats-container');
+            container.innerHTML = ""; // আগের ডাটা পরিষ্কার করা
+            
+            if (p.stats) {
+                Object.entries(p.stats).forEach(([name, val]) => {
+                    const box = document.createElement('div');
+                    box.className = 'stat-box';
+                    box.innerHTML = `<span class="stat-name">${name}</span>
+                                    <span class="stat-num" style="background:${getStatColor(val)}">${val}</span>`;
+                    container.appendChild(box);
+                });
+            }
+        }
+
+        // ২. ডাটা লোড হওয়ার পর সেফলি অ্যাড চালু করা
+        try {
+            if (window.Adsgram) {
+                // ব্যানার অ্যাড
+                const bannerAd = window.Adsgram.init({ blockId: "আপনার_ব্যানার_BLOCK_ID" });
+                bannerAd.show().catch((err) => console.log("Banner Error"));
+
+                // ভিডিও অ্যাড
+                const videoAd = window.Adsgram.init({ blockId: "আপনার_ভিডিও_BLOCK_ID" });
+                videoAd.show().catch((err) => console.log("Video Error"));
+            }
+        } catch (e) {
+            console.log("Adsgram issue");
+        }
+    };
 </script>
 </body>
 </html>
