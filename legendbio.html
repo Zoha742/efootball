@@ -53,9 +53,9 @@
 
     <div class="stats-title">Abilities (Stats)</div>
     
-    <div id="banner-container" style="display: flex; justify-content: center; margin-bottom: 15px;"></div>
-
     <div id="stats-container" class="stats-grid"></div>
+
+    <div id="banner-container" style="display: flex; justify-content: center; margin-top: 25px; padding-bottom: 20px;"></div>
 
 <script>
     function getStatColor(v) {
@@ -64,45 +64,47 @@
     }
 
     window.onload = function() {
-        // ১. আগে ডাটা লোড (যাতে বায়ো ক্লিয়ার আসে)
+        // ১. Player data load kora (Sobar age)
         const data = localStorage.getItem('selected_player');
         if (data) {
-            try {
-                const p = JSON.parse(data);
-                document.getElementById('p-img').src = p.img || "";
-                document.getElementById('p-name').innerText = p.name || "Unknown";
-                document.getElementById('p-age').innerText = p.age || "N/A";
-                document.getElementById('p-country').innerText = p.country || "N/A";
-                document.getElementById('p-height').innerText = p.height || "N/A";
-                document.getElementById('p-style').innerText = p.style || "N/A";
+            const p = JSON.parse(data);
+            document.getElementById('p-img').src = p.img || "";
+            document.getElementById('p-name').innerText = p.name || "Unknown";
+            document.getElementById('p-age').innerText = p.age || "N/A";
+            document.getElementById('p-country').innerText = p.country || "N/A";
+            document.getElementById('p-height').innerText = p.height || "N/A";
+            document.getElementById('p-style').innerText = p.style || "N/A";
 
-                const container = document.getElementById('stats-container');
-                container.innerHTML = ""; 
-                
-                if (p.stats) {
-                    Object.entries(p.stats).forEach(([name, val]) => {
-                        const box = document.createElement('div');
-                        box.className = 'stat-box';
-                        box.innerHTML = `<span class="stat-name">${name}</span>
-                                        <span class="stat-num" style="background:${getStatColor(val)}">${val}</span>`;
-                        container.appendChild(box);
-                    });
-                }
-            } catch (e) { console.error("Data error", e); }
+            const container = document.getElementById('stats-container');
+            container.innerHTML = "";
+            
+            if (p.stats) {
+                Object.entries(p.stats).forEach(([name, val]) => {
+                    const box = document.createElement('div');
+                    box.className = 'stat-box';
+                    box.innerHTML = `<span class="stat-name">${name}</span>
+                                    <span class="stat-num" style="background:${getStatColor(val)}">${val}</span>`;
+                    container.appendChild(box);
+                });
+            }
         }
 
-        // ২. ডাটা আসার ১ সেকেন্ড পর অ্যাড লোড হবে (যাতে স্ক্রিন ফ্রিজ না হয়)
+        // ২. Data load hobar por safe-vabe ads call kora
         setTimeout(() => {
-            if (window.Adsgram) {
-                // Banner Ad
-                const bannerAd = window.Adsgram.init({ blockId: "আপনার_ব্যানার_BLOCK_ID" });
-                bannerAd.show().catch((err) => console.log("Banner error"));
+            try {
+                if (window.Adsgram) {
+                    // Banner Ad (ID boshan)
+                    const bannerAd = window.Adsgram.init({ blockId: "APNAR_BANNER_BLOCK_ID" });
+                    bannerAd.show().catch((err) => console.log("Banner Error"));
 
-                // Video Ad
-                const videoAd = window.Adsgram.init({ blockId: "আপনার_ভিডিও_BLOCK_ID" });
-                videoAd.show().catch((err) => console.log("Video error"));
+                    // Video Ad (ID boshan)
+                    const videoAd = window.Adsgram.init({ blockId: "APNAR_VIDEO_BLOCK_ID" });
+                    videoAd.show().catch((err) => console.log("Video Error"));
+                }
+            } catch (e) {
+                console.log("Adsgram issue");
             }
-        }, 1000);
+        }, 800);
     };
 </script>
 </body>
