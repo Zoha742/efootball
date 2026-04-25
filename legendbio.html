@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Player Bio</title>
+    <script src="https://sad.adsgram.ai/js/adsgram-sdk.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --bg: #050a18; --card: #121e36; --primary: #fbbf24; --text: #ffffff; }
@@ -17,7 +18,7 @@
         .profile-img { width: 120px; border-radius: 10px; object-fit: cover; border: 2px solid var(--primary); margin-bottom: 8px; }
         .player-name { font-size: 20px; font-weight: bold; margin: 5px 0; color: var(--primary); }
 
-        /* General Info Grid (New Section) */
+        /* General Info Grid */
         .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 15px; }
         .info-box { background: rgba(251, 191, 36, 0.05); border: 1px dashed #1e2d4d; padding: 6px 10px; border-radius: 6px; display: flex; flex-direction: column; }
         .info-label { font-size: 9px; color: #fbbf24; text-transform: uppercase; opacity: 0.7; }
@@ -51,6 +52,9 @@
     </div>
 
     <div class="stats-title">Abilities (Stats)</div>
+    
+    <div id="banner-container" style="display: flex; justify-content: center; margin-bottom: 15px;"></div>
+
     <div id="stats-container" class="stats-grid"></div>
 
 <script>
@@ -60,13 +64,25 @@
     }
 
     window.onload = function() {
+        // ১. ব্যানার অ্যাড লোড (ব্যানার আইডি এখানে বসাবেন)
+        const bannerAd = window.Adsgram.init({ blockId: "আপনার_ব্যানার_BLOCK_ID" });
+        bannerAd.show().catch((err) => console.log("Banner Ad Error:", err));
+
+        // ২. ভিডিও অ্যাড লোড (ভিডিও আইডি এখানে বসাবেন)
+        const videoAd = window.Adsgram.init({ blockId: "আপনার_ভিডিও_BLOCK_ID" });
+        videoAd.show().then((result) => {
+            console.log("Video Finished");
+        }).catch((err) => {
+            console.log("Video skipped or error", err);
+        });
+
+        // ৩. প্লেয়ার ডাটা লোড
         const data = localStorage.getItem('selected_player');
         if (data) {
             const p = JSON.parse(data);
             document.getElementById('p-img').src = p.img;
             document.getElementById('p-name').innerText = p.name;
             
-            // New Info Fields
             document.getElementById('p-age').innerText = p.age || "N/A";
             document.getElementById('p-country').innerText = p.country || "N/A";
             document.getElementById('p-height').innerText = p.height || "N/A";
