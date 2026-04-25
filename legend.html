@@ -121,10 +121,9 @@
             container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>Error loading legendplayer.json</p>"; 
         }
     }
-    window.onload = () => {
-        loadLegends('CF'); // এটি আগের মতোই প্লেয়ার লিস্ট লোড করবে
+   window.onload = () => {
+        loadLegends('CF'); 
         
-        // ব্যানার অ্যাড চালু করার কোড
         const bannerAd = window.Adsgram.init({ blockId: "আপনার_ব্যানার_BLOCK_ID" });
         bannerAd.show().catch((err) => console.log(err));
     };
