@@ -1,8 +1,13 @@
 {
   "legend": [
     {
-      "name": "K. Heinz Rummenigge",
-      "pos": "CF",
+      
+  "name": "K. Heinz Rummenigge",
+  "pos": "CF",
+  "age": 28,
+  "country": "Germany",
+  "height": "182 cm",
+  "style": "Goal Poacher",
       "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777126450/K._Heinz_Rummenigge_tucqrv.png",
       "stats": {
         "Overall Rating": 104, "Offensive Awareness": 93, "Ball Control": 95, "Dribbling": 99, "Tight Possession": 96,
