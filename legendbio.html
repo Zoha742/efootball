@@ -1,105 +1,90 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Player Bio</title>
-    <script src="https://sad.adsgram.ai/js/adsgram-sdk.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root { --bg: #050a18; --card: #121e36; --primary: #fbbf24; --text: #ffffff; }
-        body { background: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; padding: 15px; padding-bottom: 50px; }
-        
-        .header { display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 15px; }
-        .back-btn { position: absolute; left: 0; font-size: 22px; color: var(--primary); text-decoration: none; }
-        
-        /* Profile Card */
-        .profile-card { background: var(--card); border-radius: 12px; padding: 15px; text-align: center; border: 1px solid #1e2d4d; margin-bottom: 15px; }
-        .profile-img { width: 120px; border-radius: 10px; object-fit: cover; border: 2px solid var(--primary); margin-bottom: 8px; }
-        .player-name { font-size: 20px; font-weight: bold; margin: 5px 0; color: var(--primary); }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player Bio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --bg: #050a18; --card: #121e36; --primary: #fbbf24; --text: #ffffff; }
+        body { background: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; padding: 15px; padding-bottom: 50px; }
+        
+        .header { display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 15px; }
+        .back-btn { position: absolute; left: 0; font-size: 22px; color: var(--primary); text-decoration: none; }
+        
+        /* Profile Card */
+        .profile-card { background: var(--card); border-radius: 12px; padding: 15px; text-align: center; border: 1px solid #1e2d4d; margin-bottom: 15px; }
+        .profile-img { width: 120px; border-radius: 10px; object-fit: cover; border: 2px solid var(--primary); margin-bottom: 8px; }
+        .player-name { font-size: 20px; font-weight: bold; margin: 5px 0; color: var(--primary); }
 
-        /* General Info Grid */
-        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 15px; }
-        .info-box { background: rgba(251, 191, 36, 0.05); border: 1px dashed #1e2d4d; padding: 6px 10px; border-radius: 6px; display: flex; flex-direction: column; }
-        .info-label { font-size: 9px; color: #fbbf24; text-transform: uppercase; opacity: 0.7; }
-        .info-value { font-size: 12px; font-weight: bold; color: #fff; margin-top: 2px; }
+        /* General Info Grid (New Section) */
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 15px; }
+        .info-box { background: rgba(251, 191, 36, 0.05); border: 1px dashed #1e2d4d; padding: 6px 10px; border-radius: 6px; display: flex; flex-direction: column; }
+        .info-label { font-size: 9px; color: #fbbf24; text-transform: uppercase; opacity: 0.7; }
+        .info-value { font-size: 12px; font-weight: bold; color: #fff; margin-top: 2px; }
 
-        /* Stats Section */
-        .stats-title { font-size: 14px; color: var(--primary); margin: 15px 0 10px; border-left: 4px solid var(--primary); padding-left: 8px; text-transform: uppercase; font-weight: bold; }
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
-        .stat-box { display: flex; justify-content: space-between; align-items: center; background: var(--card); padding: 6px 8px; border-radius: 6px; border: 1px solid #1e2d4d; }
-        .stat-name { font-size: 10px; color: #cbd5e1; font-weight: bold; text-transform: uppercase; }
-        .stat-num { font-size: 13px; font-weight: bold; color: #000; padding: 2px 6px; border-radius: 4px; min-width: 26px; text-align: center; }
-    </style>
+        /* Stats Section */
+        .stats-title { font-size: 14px; color: var(--primary); margin: 15px 0 10px; border-left: 4px solid var(--primary); padding-left: 8px; text-transform: uppercase; font-weight: bold; }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+        .stat-box { display: flex; justify-content: space-between; align-items: center; background: var(--card); padding: 6px 8px; border-radius: 6px; border: 1px solid #1e2d4d; }
+        .stat-name { font-size: 10px; color: #cbd5e1; font-weight: bold; text-transform: uppercase; }
+        .stat-num { font-size: 13px; font-weight: bold; color: #000; padding: 2px 6px; border-radius: 4px; min-width: 26px; text-align: center; }
+    </style>
 </head>
 <body>
 
-    <div class="header">
-        <a href="javascript:history.back()" class="back-btn"><i class="fas fa-arrow-left"></i></a>
-        <h2 style="font-size: 18px; color: var(--primary);">PLAYER DETAILS</h2>
-    </div>
+    <div class="header">
+        <a href="javascript:history.back()" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+        <h2 style="font-size: 18px; color: var(--primary);">PLAYER DETAILS</h2>
+    </div>
 
-    <div class="profile-card">
-        <img id="p-img" class="profile-img" src="">
-        <h2 id="p-name" class="player-name"></h2>
-    </div>
+    <div class="profile-card">
+        <img id="p-img" class="profile-img" src="">
+        <h2 id="p-name" class="player-name"></h2>
+    </div>
 
-    <div class="info-grid">
-        <div class="info-box"><span class="info-label">Age</span><span id="p-age" class="info-value">--</span></div>
-        <div class="info-box"><span class="info-label">Country</span><span id="p-country" class="info-value">--</span></div>
-        <div class="info-box"><span class="info-label">Height</span><span id="p-height" class="info-value">--</span></div>
-        <div class="info-box"><span class="info-label">Playing Style</span><span id="p-style" class="info-value">--</span></div>
-    </div>
+    <div class="info-grid">
+        <div class="info-box"><span class="info-label">Age</span><span id="p-age" class="info-value">--</span></div>
+        <div class="info-box"><span class="info-label">Country</span><span id="p-country" class="info-value">--</span></div>
+        <div class="info-box"><span class="info-label">Height</span><span id="p-height" class="info-value">--</span></div>
+        <div class="info-box"><span class="info-label">Playing Style</span><span id="p-style" class="info-value">--</span></div>
+    </div>
 
-    <div class="stats-title">Abilities (Stats)</div>
-    
-    <div id="banner-container" style="display: flex; justify-content: center; margin-bottom: 15px;"></div>
-
-    <div id="stats-container" class="stats-grid"></div>
+    <div class="stats-title">Abilities (Stats)</div>
+    <div id="banner-container" style="display: flex; justify-content: center; margin-bottom: 15px;"></div>
+    <div id="stats-container" class="stats-grid"></div>
 
 <script>
-    function getStatColor(v) {
-        if (v >= 90) return '#06b6d4'; if (v >= 80) return '#22c55e';
-        if (v >= 70) return '#eab308'; return '#ef4444';
-    }
+    function getStatColor(v) {
+        if (v >= 90) return '#06b6d4'; if (v >= 80) return '#22c55e';
+        if (v >= 70) return '#eab308'; return '#ef4444';
+    }
 
-    window.onload = function() {
-        // ১. আগে প্লেয়ারের বায়ো ডাটা লোড হবে (যাতে কোনো এরর বায়ো আটকাবে না)
-        const data = localStorage.getItem('selected_player');
-        if (data) {
-            const p = JSON.parse(data);
-            document.getElementById('p-img').src = p.img;
-            document.getElementById('p-name').innerText = p.name;
-            document.getElementById('p-age').innerText = p.age || "N/A";
-            document.getElementById('p-country').innerText = p.country || "N/A";
-            document.getElementById('p-height').innerText = p.height || "N/A";
-            document.getElementById('p-style').innerText = p.style || "N/A";
+    window.onload = function() {
+        const data = localStorage.getItem('selected_player');
+        if (data) {
+            const p = JSON.parse(data);
+            document.getElementById('p-img').src = p.img;
+            document.getElementById('p-name').innerText = p.name;
+            
+            // New Info Fields
+            document.getElementById('p-age').innerText = p.age || "N/A";
+            document.getElementById('p-country').innerText = p.country || "N/A";
+            document.getElementById('p-height').innerText = p.height || "N/A";
+            document.getElementById('p-style').innerText = p.style || "N/A";
 
-            const container = document.getElementById('stats-container');
-            if (p.stats) {
-                Object.entries(p.stats).forEach(([name, val]) => {
-                    const box = document.createElement('div');
-                    box.className = 'stat-box';
-                    box.innerHTML = `<span class="stat-name">${name}</span>
-                                    <span class="stat-num" style="background:${getStatColor(val)}">${val}</span>`;
-                    container.appendChild(box);
-                });
-            }
-        }
-
-        // ২. ডাটা লোড হওয়ার পর এখন অ্যাড ট্রাই করবে
-        try {
-            // ব্যানার অ্যাড
-            const bannerAd = window.Adsgram.init({ blockId: "আপনার_ব্যানার_BLOCK_ID" });
-            bannerAd.show().catch((err) => console.log("Banner Ad Error:", err));
-
-            // ভিডিও অ্যাড
-            const videoAd = window.Adsgram.init({ blockId: "আপনার_ভিডিও_BLOCK_ID" });
-            videoAd.show().catch((err) => console.log("Video Ad Error:", err));
-        } catch (e) {
-            console.log("Adsgram not loaded yet");
-        }
-    };
+            const container = document.getElementById('stats-container');
+            if (p.stats) {
+                Object.entries(p.stats).forEach(([name, val]) => {
+                    const box = document.createElement('div');
+                    box.className = 'stat-box';
+                    box.innerHTML = `<span class="stat-name">${name}</span>
+                                    <span class="stat-num" style="background:${getStatColor(val)}">${val}</span>`;
+                    container.appendChild(box);
+                });
+            }
+        }
+    };
 </script>
 </body>
 </html>
