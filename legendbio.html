@@ -54,69 +54,34 @@
     <div id="stats-container" class="stats-grid"></div>
     <div id="banner-container" style="display: flex; justify-content: center; margin-bottom: 15px;"></div>
 <script>
-    // স্ট্যাটাস অনুযায়ী কালার কোড
     function getStatColor(v) {
-        if (v >= 90) return '#06b6d4'; // Cyan
-        if (v >= 80) return '#22c55e'; // Green
-        if (v >= 70) return '#eab308'; // Yellow
-        return '#ef4444'; // Red
+        if (v >= 90) return '#06b6d4'; if (v >= 80) return '#22c55e';
+        if (v >= 70) return '#eab308'; return '#ef4444';
     }
 
     window.onload = function() {
-        // ১. ডাটা লোড করা (সবার আগে)
         const data = localStorage.getItem('selected_player');
-        console.log("Selected Player Data:", data); // ব্রাউজার কনসোলে চেক করার জন্য
-
         if (data) {
-            try {
-                const p = JSON.parse(data);
-                
-                // বেসিক ইনফো বসানো
-                document.getElementById('p-img').src = p.img || "";
-                document.getElementById('p-name').innerText = p.name || "Unknown";
-                document.getElementById('p-age').innerText = p.age || "N/A";
-                document.getElementById('p-country').innerText = p.country || "N/A";
-                document.getElementById('p-height').innerText = p.height || "N/A";
-                document.getElementById('p-style').innerText = p.style || "N/A";
+            const p = JSON.parse(data);
+            document.getElementById('p-img').src = p.img;
+            document.getElementById('p-name').innerText = p.name;
+            
+            document.getElementById('p-age').innerText = p.age || "N/A";
+            document.getElementById('p-country').innerText = p.country || "N/A";
+            document.getElementById('p-height').innerText = p.height || "N/A";
+            document.getElementById('p-style').innerText = p.style || "N/A";
 
-                // স্ট্যাটাস বা এবিলিটি লোড করা
-                const container = document.getElementById('stats-container');
-                container.innerHTML = ""; // আগের ডামি কন্টেন্ট মুছে ফেলা
-
-                if (p.stats) {
-                    Object.entries(p.stats).forEach(([name, val]) => {
-                        const box = document.createElement('div');
-                        box.className = 'stat-box';
-                        box.innerHTML = `
-                            <span class="stat-name">${name}</span>
-                            <span class="stat-num" style="background:${getStatColor(val)}">${val}</span>
-                        `;
-                        container.appendChild(box);
-                    });
-                }
-            } catch (err) {
-                console.error("Data Parsing Error:", err);
+            const container = document.getElementById('stats-container');
+            if (p.stats) {
+                Object.entries(p.stats).forEach(([name, val]) => {
+                    const box = document.createElement('div');
+                    box.className = 'stat-box';
+                    box.innerHTML = `<span class="stat-name">${name}</span>
+                                    <span class="stat-num" style="background:${getStatColor(val)}">${val}</span>`;
+                    container.appendChild(box);
+                });
             }
-        } else {
-            console.log("No data found in localStorage!");
         }
-
-        // ২. ডাটা লোড হওয়ার পর এখন অ্যাড ট্রাই করা (অ্যাড আসুক বা না আসুক ডাটা শো করবে)
-        setTimeout(() => {
-            try {
-                if (window.Adsgram) {
-                    // ব্যানার অ্যাড
-                    const bannerAd = window.Adsgram.init({ blockId: "আপনার_ব্যানার_BLOCK_ID" });
-                    bannerAd.show().catch((e) => console.log("Banner Ad Error"));
-
-                    // ভিডিও অ্যাড
-                    const videoAd = window.Adsgram.init({ blockId: "আপনার_ভিডিও_BLOCK_ID" });
-                    videoAd.show().catch((e) => console.log("Video Ad Error"));
-                }
-            } catch (e) {
-                console.log("Adsgram SDK issue");
-            }
-        }, 500); // ০.৫ সেকেন্ড পর অ্যাড লোড হবে যাতে ডাটা লোডে সমস্যা না হয়
     };
 </script>
 </body>
