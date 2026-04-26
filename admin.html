@@ -15,7 +15,7 @@
 
         .container { padding: 20px; }
         .manage-box { background: var(--card); border-radius: 20px; padding: 20px; border: 1px solid var(--border); margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        .manage-box h3 { font-size: 16px; margin-top: 0; margin-bottom: 15px; color: var(--yellow); display: flex; align-items: center; gap: 10px; }
+        .manage-box h3 { font-size: 16px; margin-top: 0; margin-bottom: 15px; color: var(--yellow); display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
         
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
         .stat-card { background: var(--card); border-radius: 15px; padding: 15px; border: 1px solid var(--border); text-align: center; }
@@ -23,10 +23,12 @@
 
         .input-group { margin-bottom: 15px; }
         .input-group label { display: block; font-size: 11px; color: #94a3b8; margin-bottom: 6px; text-transform: uppercase; }
-        input { width: 100%; background: #050a18; border: 1px solid var(--border); padding: 12px; border-radius: 10px; color: white; outline: none; box-sizing: border-box; font-size: 14px; }
-        
+        input, textarea { width: 100%; background: #050a18; border: 1px solid var(--border); padding: 12px; border-radius: 10px; color: white; outline: none; box-sizing: border-box; font-size: 14px; }
+        input:focus { border-color: var(--blue); }
+
         .btn { border: none; padding: 12px; border-radius: 10px; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; width: 100%; margin-top: 10px; font-size: 13px; }
         .btn-blue { background: var(--blue); } .btn-green { background: var(--green); } .btn-red { background: var(--red); } .btn-yellow { background: var(--yellow); color: #000; }
+        .btn:active { transform: scale(0.98); }
     </style>
 </head>
 <body>
@@ -39,10 +41,10 @@
     <div class="container">
         
         <div class="manage-box" style="border-color: var(--blue);">
-            <h3 style="color: var(--blue);"><i class="fas fa-search"></i> User Profile Search</h3>
+            <h3 style="color: var(--blue);"><i class="fas fa-search"></i> User Profile Control</h3>
             <div class="input-group">
                 <input type="text" id="search-uid" placeholder="Enter User ID (e.g. 774900)">
-                <button class="btn btn-blue" onclick="searchUser()">LOAD PROFILE</button>
+                <button class="btn btn-blue" onclick="searchUser()">SEARCH & LOAD PROFILE</button>
             </div>
             
             <div id="user-panel" style="display:none; margin-top:15px; border-top:1px solid var(--border); padding-top:15px;">
@@ -53,29 +55,33 @@
                 </div>
                 <div class="input-group"><label>TON Wallet</label><input type="text" id="edit-ton"></div>
                 <div class="input-group"><label>BNB Wallet</label><input type="text" id="edit-bnb"></div>
-                <button class="btn btn-green" onclick="saveUserChanges()">UPDATE DATA</button>
+                <button class="btn btn-green" onclick="saveUserChanges()">UPDATE USER DATA</button>
             </div>
         </div>
 
         <div class="stats-grid">
             <div class="stat-card"><i class="fas fa-coins" style="color: var(--yellow);"></i><span>System GP</span><b id="live-gp">0</b></div>
-            <div class="stat-card"><i class="fas fa-ad" style="color: var(--green);"></i><span>Total Ads</span><b id="live-ads">0</b></div>
+            <div class="stat-card"><i class="fas fa-eye" style="color: var(--green);"></i><span>Total Ads</span><b id="live-ads">0</b></div>
         </div>
 
         <div class="manage-box">
-            <h3><i class="fas fa-tools"></i> Global Config</h3>
+            <h3><i class="fas fa-sliders-h"></i> Global App Config</h3>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                 <div class="input-group"><label>Min Withdraw</label><input type="number" id="conf-min"></div>
                 <div class="input-group"><label>GP Rate ($1)</label><input type="number" id="conf-rate"></div>
             </div>
-            <button class="btn btn-yellow" onclick="saveConfig()">SAVE CONFIG</button>
+            <button class="btn btn-yellow" onclick="saveConfig()">SAVE APP SETTINGS</button>
         </div>
 
         <div class="manage-box" style="border-color: var(--red);">
-            <h3 style="color: var(--red);"><i class="fas fa-hand-holding-usd"></i> Withdrawal Manager</h3>
+            <h3 style="color: var(--red);"><i class="fas fa-receipt"></i> Pending Withdrawals</h3>
             <div id="admin-withdraw-list"></div>
         </div>
 
+        <div class="manage-box" style="border-color: var(--green);">
+            <h3 style="color: var(--green);"><i class="fas fa-comments"></i> User Support Inbox</h3>
+            <div id="admin-inbox-list"></div>
+        </div>
     </div>
 
     <script>
@@ -85,19 +91,22 @@
         }
 
         function saveConfig() {
-            const config = { min_limit: parseInt(document.getElementById('conf-min').value) || 10000, rate: parseInt(document.getElementById('conf-rate').value) || 10000 };
+            const config = {
+                min_limit: parseInt(document.getElementById('conf-min').value) || 10000,
+                rate: parseInt(document.getElementById('conf-rate').value) || 10000
+            };
             localStorage.setItem('admin_config', JSON.stringify(config));
-            alert("Settings Saved!");
+            alert("Settings Saved! Now Withdraw page will be fixed.");
         }
 
         function searchUser() {
             const uid = document.getElementById('search-uid').value;
-            if(!uid) return;
+            if(!uid) return alert("Please enter User ID");
             document.getElementById('user-panel').style.display = 'block';
             document.getElementById('edit-gp').value = localStorage.getItem('user_gp') || 0;
             const ads = localStorage.getItem('total_ads_watched') || 0;
             document.getElementById('edit-ads').value = ads;
-            document.getElementById('display-info').innerText = "Showing Data for ID: #" + uid;
+            document.getElementById('display-info').innerText = "Loaded Data for User: #" + uid;
             document.getElementById('edit-ton').value = localStorage.getItem('wallet_ton') || "";
             document.getElementById('edit-bnb').value = localStorage.getItem('wallet_bnb') || "";
         }
@@ -107,22 +116,25 @@
             localStorage.setItem('total_ads_watched', document.getElementById('edit-ads').value);
             localStorage.setItem('wallet_ton', document.getElementById('edit-ton').value);
             localStorage.setItem('wallet_bnb', document.getElementById('edit-bnb').value);
-            alert("Updated!"); refreshStats();
+            alert("Profile Updated Successfully!");
+            refreshStats();
         }
 
         function loadWithdrawals() {
             const list = document.getElementById('admin-withdraw-list');
             const reqs = JSON.parse(localStorage.getItem('all_withdraw_requests')) || [];
-            if(reqs.length === 0) { list.innerHTML = "<p style='font-size:12px; color:#94a3b8;'>No requests.</p>"; return; }
+            if(reqs.length === 0) { list.innerHTML = "<p style='font-size:12px; color:#94a3b8;'>No pending requests.</p>"; return; }
             list.innerHTML = reqs.reverse().map(r => `
                 <div style="background:#050a18; padding:15px; border-radius:12px; border:1px solid var(--border); margin-bottom:10px;">
-                    <div style="font-size:11px; color:var(--yellow);">ID: #${r.userId}</div>
+                    <div style="font-size:11px; color:var(--yellow);">ID: #${r.userId} | ${r.date}</div>
                     <h3 style="margin:5px 0;">${r.amount} GP</h3>
                     <div style="font-size:11px; color:#94a3b8;">TON: ${r.tonWallet}<br>BNB: ${r.bnbWallet}</div>
-                    <div style="display:flex; gap:10px; margin-top:10px;">
-                        <button onclick="handleReq(${r.id}, 'success')" style="flex:1; background:var(--green); border:none; padding:8px; border-radius:8px; color:white;">ACCEPT</button>
-                        <button onclick="handleReq(${r.id}, 'rejected')" style="flex:1; background:var(--red); border:none; padding:8px; border-radius:8px; color:white;">REJECT</button>
-                    </div>
+                    ${r.status === 'pending' ? `
+                        <div style="display:flex; gap:10px; margin-top:10px;">
+                            <button onclick="handleReq(${r.id}, 'success')" style="flex:1; background:var(--green); border:none; padding:8px; border-radius:8px; color:white;">ACCEPT</button>
+                            <button onclick="handleReq(${r.id}, 'rejected')" style="flex:1; background:var(--red); border:none; padding:8px; border-radius:8px; color:white;">REJECT</button>
+                        </div>
+                    ` : `<div style="text-align:center; font-weight:bold; margin-top:10px;">${r.status.toUpperCase()}</div>`}
                 </div>
             `).join('');
         }
@@ -141,10 +153,43 @@
             }
         }
 
+        function loadInbox() {
+            const list = document.getElementById('admin-inbox-list');
+            const msgs = JSON.parse(localStorage.getItem('admin_messages')) || [];
+            if(msgs.length === 0) { list.innerHTML = "<p style='font-size:12px; color:#94a3b8;'>No messages.</p>"; return; }
+            list.innerHTML = msgs.reverse().map(m => `
+                <div style="background:#050a18; padding:15px; border-radius:12px; border:1px solid var(--border); margin-bottom:10px;">
+                    <div style="font-size:11px; color:var(--green);">From: ${m.userName} (${m.userId})</div>
+                    <div style="margin:10px 0; font-size:13px;">${m.message}</div>
+                    ${m.reply ? `<div style="color:var(--yellow); font-size:12px;">Replied: ${m.reply}</div>` : `
+                        <textarea id="reply-${m.id}" placeholder="Type reply..."></textarea>
+                        <button onclick="sendReply(${m.id})" class="btn btn-green">Send Reply</button>
+                    `}
+                    <button onclick="deleteMsg(${m.id})" class="btn btn-red" style="padding:5px; margin-top:5px; width:auto; float:right;">Delete</button>
+                    <div style="clear:both;"></div>
+                </div>
+            `).join('');
+        }
+
+        function sendReply(id) {
+            const text = document.getElementById(`reply-${id}`).value;
+            if(!text) return;
+            let msgs = JSON.parse(localStorage.getItem('admin_messages')) || [];
+            const idx = msgs.findIndex(m => m.id === id);
+            if(idx !== -1) { msgs[idx].reply = text; localStorage.setItem('admin_messages', JSON.stringify(msgs)); loadInbox(); }
+        }
+
+        function deleteMsg(id) {
+            if(!confirm("Delete?")) return;
+            let msgs = JSON.parse(localStorage.getItem('admin_messages')) || [];
+            localStorage.setItem('admin_messages', JSON.stringify(msgs.filter(m => m.id !== id)));
+            loadInbox();
+        }
+
         window.onload = () => {
             const c = JSON.parse(localStorage.getItem('admin_config'));
             if(c) { document.getElementById('conf-min').value = c.min_limit; document.getElementById('conf-rate').value = c.rate; }
-            refreshStats(); loadWithdrawals();
+            refreshStats(); loadWithdrawals(); loadInbox();
         };
     </script>
 </body>
