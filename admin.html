@@ -3,188 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Master Admin Panel - eFootball HUB</title>
+    <title>Master Admin - eFootball HUB</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --bg: #050a18; --card: #121e36; --red: #ff4b2b; --green: #22c55e; --blue: #3b82f6; --yellow: #fbbf24; --text: #ffffff; --border: #1e2d4d; }
         body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 50px; }
-        
         .top-bar { display: flex; align-items: center; padding: 15px 20px; background: rgba(18, 30, 54, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--red); position: sticky; top: 0; z-index: 1000; justify-content: space-between; }
         .top-bar a { color: white; text-decoration: none; font-size: 18px; display: flex; align-items: center; gap: 10px; }
-        .admin-tag { background: var(--red); color: white; padding: 4px 10px; border-radius: 6px; font-size: 10px; font-weight: bold; text-transform: uppercase; }
-
         .container { padding: 20px; }
         .manage-box { background: var(--card); border-radius: 20px; padding: 20px; border: 1px solid var(--border); margin-bottom: 20px; }
-        .manage-box h3 { font-size: 16px; margin-top: 0; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
-        
         .input-group { margin-bottom: 15px; }
         .input-group label { display: block; font-size: 11px; color: #94a3b8; margin-bottom: 6px; text-transform: uppercase; }
         input, textarea { width: 100%; background: #050a18; border: 1px solid var(--border); padding: 12px; border-radius: 10px; color: white; outline: none; box-sizing: border-box; }
-        
-        .btn { border: none; padding: 12px; border-radius: 10px; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 13px; width: 100%; margin-top: 10px; }
-        .btn-blue { background: var(--blue); }
-        .btn-green { background: var(--green); }
-        .btn-red { background: var(--red); }
-        .btn-yellow { background: var(--yellow); color: #000; }
-        .btn-reset { background: transparent; border: 1px solid #94a3b8; color: #94a3b8; font-size: 11px; margin-top: 5px; }
-        .btn:active { transform: scale(0.95); }
-
+        input:focus { border-color: var(--blue); }
+        .btn { border: none; padding: 12px; border-radius: 10px; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; width: 100%; margin-top: 10px; }
+        .btn-blue { background: var(--blue); } .btn-green { background: var(--green); } .btn-red { background: var(--red); }
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
         .stat-card { background: var(--card); border-radius: 15px; padding: 15px; border: 1px solid var(--border); text-align: center; }
-        .stat-card i { font-size: 20px; margin-bottom: 8px; display: block; }
     </style>
 </head>
 <body>
 
     <div class="top-bar">
-        <a href="index.html"><i class="fas fa-chevron-left"></i> <span style="font-size: 16px;">Back to Hub</span></a>
-        <span class="admin-tag">Master Admin</span>
+        <a href="index.html"><i class="fas fa-chevron-left"></i> <span>Back to Hub</span></a>
+        <span style="background:var(--red); padding:4px 8px; border-radius:5px; font-size:10px;">MASTER ADMIN</span>
     </div>
 
     <div class="container">
-        
+        <div class="stats-grid">
+            <div class="stat-card"><i class="fas fa-coins" style="color: var(--yellow);"></i><br><span>Total GP</span><b id="live-gp" style="display:block; font-size:18px;">0</b></div>
+            <div class="stat-card"><i class="fas fa-tasks" style="color: var(--green);"></i><br><span>Ads Done</span><b id="live-ads" style="display:block; font-size:18px;">0</b></div>
+        </div>
+
         <div class="manage-box" style="border-color: var(--yellow);">
-            <h3 style="color: var(--yellow);"><i class="fas fa-cogs"></i> Global App Settings</h3>
+            <h3 style="color: var(--yellow);"><i class="fas fa-cogs"></i> App Settings</h3>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                 <div class="input-group"><label>Min Withdraw</label><input type="number" id="conf-min-limit" placeholder="10000"></div>
                 <div class="input-group"><label>GP Rate ($1)</label><input type="number" id="conf-rate" placeholder="10000"></div>
-                <div class="input-group"><label>Task Reward</label><input type="number" id="conf-task-reward" placeholder="100"></div>
-                <div class="input-group"><label>Refer Bonus</label><input type="number" id="conf-refer-bonus" placeholder="1000"></div>
             </div>
-            <button class="btn btn-yellow" onclick="saveGlobalConfig()">SAVE ALL SETTINGS</button>
-        </div>
-
-        <div class="stats-grid">
-            <div class="stat-card"><i class="fas fa-coins" style="color: var(--yellow);"></i><span>Current GP</span><b id="live-gp" style="display:block;">0</b></div>
-            <div class="stat-card"><i class="fas fa-tasks" style="color: var(--green);"></i><span>Tasks Done</span><b id="live-task" style="display:block;">0</b></div>
-        </div>
-
-        <div class="manage-box" style="border-color: var(--blue);">
-            <h3 style="color: var(--blue);"><i class="fas fa-user-edit"></i> Profile & Task Control</h3>
-            <div class="input-group">
-                <input type="text" id="search-uid" placeholder="Enter User ID (e.g. 774900)">
-                <button class="btn btn-blue" onclick="searchUser()">SEARCH & LOAD DATA</button>
-            </div>
-            
-            <div id="user-panel" style="display:none; margin-top:15px; border-top:1px solid var(--border); padding-top:15px;">
-                <h4 id="panel-title" style="color:var(--yellow); margin-bottom:5px;">User Profile</h4>
-                <p id="display-ads-count" style="font-size: 12px; color: #22c55e; margin-bottom: 15px; font-weight: bold;">0 Ads Watched</p>
-
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                    <div class="input-group"><label>Balance (GP)</label><input type="number" id="edit-gp"></div>
-                    <div class="input-group"><label>Tasks Done</label><input type="number" id="edit-tasks"></div>
-                </div>
-                <div class="input-group"><label>Total Ads Watched</label><input type="number" id="edit-total-ads"></div>
-                <div class="input-group"><label>TON Wallet</label><input type="text" id="edit-ton"></div>
-                <div class="input-group"><label>BNB Wallet</label><input type="text" id="edit-bnb"></div>
-                
-                <button class="btn btn-green" onclick="saveUserChanges()">UPDATE ALL USER DATA</button>
-                <button class="btn btn-reset" onclick="resetUserTimers()">RESET TASK & EARN TIMERS</button>
-            </div>
+            <button class="btn" style="background:var(--yellow); color:#000;" onclick="saveConfig()">SAVE CONFIG</button>
         </div>
 
         <div class="manage-box">
             <h3 style="color: var(--blue);"><i class="fas fa-plus-minus"></i> Quick GP Adjust</h3>
             <div class="input-group">
-                <label>Amount (Add/Sub)</label>
+                <label>Amount to Change</label>
                 <input type="number" id="gp-amount" placeholder="e.g. 5000">
             </div>
             <div style="display: flex; gap: 10px;">
-                <button class="btn btn-green" onclick="modifyGP('add')">Add GP</button>
-                <button class="btn btn-red" onclick="modifyGP('sub')">Remove GP</button>
+                <button class="btn btn-green" onclick="modifyGP('add')">ADD</button>
+                <button class="btn btn-red" onclick="modifyGP('sub')">SUB</button>
+            </div>
+        </div>
+
+        <div class="manage-box" style="border-color: var(--blue);">
+            <h3 style="color: var(--blue);"><i class="fas fa-user-edit"></i> Search & Edit User</h3>
+            <div class="input-group">
+                <input type="text" id="search-uid" placeholder="Enter User ID">
+                <button class="btn btn-blue" onclick="searchUser()">LOAD DATA</button>
+            </div>
+            <div id="user-panel" style="display:none; margin-top:15px; border-top:1px solid var(--border); padding-top:15px;">
+                <p id="display-ads-count" style="color:var(--green); font-weight:bold;"></p>
+                <div class="input-group"><label>Set GP Balance</label><input type="number" id="edit-gp"></div>
+                <div class="input-group"><label>TON Wallet</label><input type="text" id="edit-ton"></div>
+                <div class="input-group"><label>BNB Wallet</label><input type="text" id="edit-bnb"></div>
+                <button class="btn btn-green" onclick="saveUserChanges()">UPDATE PROFILE</button>
             </div>
         </div>
 
         <div class="manage-box" style="border-color: var(--red);">
-            <h3 style="color: var(--red);"><i class="fas fa-hand-holding-usd"></i> Withdrawal Manager</h3>
+            <h3 style="color: var(--red);"><i class="fas fa-receipt"></i> Pending Withdrawals</h3>
             <div id="admin-withdraw-list"></div>
         </div>
-
-        <div class="manage-box" style="border-color: var(--green);">
-            <h3 style="color: var(--green);"><i class="fas fa-comments"></i> Support Inbox</h3>
-            <div id="admin-inbox-list"></div>
-        </div>
-
     </div>
 
     <script>
+        // Security: Change 774900 to your real ID
         const adminID = 774900; 
         const tgUser = window.Telegram.WebApp.initDataUnsafe?.user;
         if (!tgUser || tgUser.id !== adminID) {
-            document.body.innerHTML = `<div style="background:#050a18; color:white; height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:20px;"><h1>Access Denied!</h1><a href="index.html" style="color:red;">Back to Home</a></div>`;
-            throw new Error("Unauthorized");
-        }
-
-        // --- Core Functions ---
-        function saveGlobalConfig() {
-            const config = {
-                min_limit: document.getElementById('conf-min-limit').value || 10000,
-                rate: document.getElementById('conf-rate').value || 10000,
-                task_reward: parseInt(document.getElementById('conf-task-reward').value) || 100,
-                refer_bonus: document.getElementById('conf-refer-bonus').value || 1000
-            };
-            localStorage.setItem('admin_config', JSON.stringify(config));
-            alert("Global settings updated!");
+            // Uncomment the lines below to enable security
+            // document.body.innerHTML = "<h1 style='color:white; text-align:center;'>Access Denied!</h1>";
+            // throw new Error("Unauthorized");
         }
 
         function refreshStats() {
-            document.getElementById('live-gp').innerText = (localStorage.getItem('user_gp') || 0).toLocaleString();
-            document.getElementById('live-task').innerText = localStorage.getItem('tasks_done') || 0;
+            document.getElementById('live-gp').innerText = (localStorage.getItem('user_gp') || 0);
+            document.getElementById('live-ads').innerText = (localStorage.getItem('total_ads_watched') || 0);
+        }
+
+        function saveConfig() {
+            const config = {
+                min_limit: document.getElementById('conf-min-limit').value || 10000,
+                rate: document.getElementById('conf-rate').value || 10000
+            };
+            localStorage.setItem('admin_config', JSON.stringify(config));
+            alert("Settings Saved!");
         }
 
         function modifyGP(type) {
             const amount = parseInt(document.getElementById('gp-amount').value);
-            if (!amount || amount <= 0) return alert("Enter amount");
+            if(!amount) return alert("Enter amount");
             let gp = parseInt(localStorage.getItem('user_gp')) || 0;
             localStorage.setItem('user_gp', type === 'add' ? gp + amount : Math.max(0, gp - amount));
             alert("GP Updated!"); refreshStats();
         }
 
         function searchUser() {
-            const uid = document.getElementById('search-uid').value;
-            if(!uid) return alert("Enter ID");
             document.getElementById('user-panel').style.display = 'block';
-            document.getElementById('panel-title').innerText = "Control Panel: #" + uid;
-            
-            // Load all relevant data
             document.getElementById('edit-gp').value = localStorage.getItem('user_gp') || 0;
-            document.getElementById('edit-tasks').value = localStorage.getItem('tasks_done') || 0;
-            const totalAds = localStorage.getItem('total_ads_watched') || 0;
-            document.getElementById('edit-total-ads').value = totalAds;
-            document.getElementById('display-ads-count').innerText = totalAds + " Ads Watched by User";
+            document.getElementById('display-ads-count').innerText = (localStorage.getItem('total_ads_watched') || 0) + " Ads Watched";
             document.getElementById('edit-ton').value = localStorage.getItem('wallet_ton') || "";
             document.getElementById('edit-bnb').value = localStorage.getItem('wallet_bnb') || "";
         }
 
         function saveUserChanges() {
             localStorage.setItem('user_gp', document.getElementById('edit-gp').value);
-            localStorage.setItem('tasks_done', document.getElementById('edit-tasks').value);
-            localStorage.setItem('total_ads_watched', document.getElementById('edit-total-ads').value);
             localStorage.setItem('wallet_ton', document.getElementById('edit-ton').value);
             localStorage.setItem('wallet_bnb', document.getElementById('edit-bnb').value);
-            alert("User Data Synchronized!"); refreshStats();
+            alert("Data Updated!"); refreshStats();
         }
 
-        function resetUserTimers() {
-            if(confirm("User-er sob task ebong earn timer ki reset korte chan?")) {
-                localStorage.removeItem('last_task_collect'); // Task timer reset
-                localStorage.removeItem('earn_next_time');    // Earn page timer reset
-                localStorage.removeItem('earn_ads_count');    // Earn daily limit reset
-                alert("All timers reset for this user!");
-            }
-        }
-
-        // --- Withdraw & Inbox (Existing) ---
         function loadWithdrawals() {
             const list = document.getElementById('admin-withdraw-list');
             const reqs = JSON.parse(localStorage.getItem('all_withdraw_requests')) || [];
-            if(reqs.length === 0) { list.innerHTML = "<p style='font-size:11px; color:#94a3b8;'>No pending requests.</p>"; return; }
+            if(reqs.length === 0) { list.innerHTML = "<p style='font-size:12px; color:#94a3b8;'>No requests.</p>"; return; }
             list.innerHTML = reqs.reverse().map(r => `
                 <div style="background:#050a18; padding:15px; border-radius:12px; border:1px solid var(--border); margin-bottom:10px;">
-                    <div style="font-size:10px; color:var(--yellow);">ID: #${r.userId} | ${r.date}</div>
-                    <h3 style="margin:5px 0; font-size:16px;">${r.amount} GP</h3>
-                    <div style="font-size:10px; color:#94a3b8;">TON: ${r.tonWallet}<br>BNB: ${r.bnbWallet}</div>
-                    ${r.status === 'pending' ? `<div style="display:flex; gap:10px; margin-top:10px;"><button onclick="handleWithdraw(${r.id}, 'success')" style="flex:1; background:var(--green); border:none; padding:8px; border-radius:8px; color:white;">ACCEPT</button><button onclick="handleWithdraw(${r.id}, 'rejected')" style="flex:1; background:var(--red); border:none; padding:8px; border-radius:8px; color:white;">REJECT</button></div>` : `<div style="text-align:center; font-weight:bold; margin-top:10px; font-size:12px;">${r.status.toUpperCase()}</div>`}
+                    <div style="font-size:11px; color:var(--yellow);">ID: #${r.userId} | ${r.date}</div>
+                    <h3 style="margin:5px 0;">${r.amount} GP</h3>
+                    <div style="font-size:11px; color:#94a3b8;">TON: ${r.tonWallet}<br>BNB: ${r.bnbWallet}</div>
+                    ${r.status === 'pending' ? `
+                        <div style="display:flex; gap:10px; margin-top:10px;">
+                            <button onclick="handleWithdraw(${r.id}, 'success')" style="flex:1; background:var(--green); border:none; padding:8px; border-radius:8px; color:white;">ACCEPT</button>
+                            <button onclick="handleWithdraw(${r.id}, 'rejected')" style="flex:1; background:var(--red); border:none; padding:8px; border-radius:8px; color:white;">REJECT</button>
+                        </div>
+                    ` : `<div style="text-align:center; font-weight:bold; margin-top:10px;">${r.status.toUpperCase()}</div>`}
                 </div>
             `).join('');
         }
@@ -193,49 +147,20 @@
             let reqs = JSON.parse(localStorage.getItem('all_withdraw_requests')) || [];
             const idx = reqs.findIndex(r => r.id === id);
             if(idx !== -1) {
-                if(status === 'rejected') { let gp = parseInt(localStorage.getItem('user_gp')) || 0; localStorage.setItem('user_gp', gp + reqs[idx].amount); }
-                reqs[idx].status = status; localStorage.setItem('all_withdraw_requests', JSON.stringify(reqs));
+                if(status === 'rejected') {
+                    let gp = parseInt(localStorage.getItem('user_gp')) || 0;
+                    localStorage.setItem('user_gp', gp + reqs[idx].amount);
+                }
+                reqs[idx].status = status;
+                localStorage.setItem('all_withdraw_requests', JSON.stringify(reqs));
                 loadWithdrawals(); refreshStats();
             }
         }
 
-        function loadInbox() {
-            const list = document.getElementById('admin-inbox-list');
-            const msgs = JSON.parse(localStorage.getItem('admin_messages')) || [];
-            if(msgs.length === 0) { list.innerHTML = "<p style='font-size:11px; color:#94a3b8;'>Inbox is empty.</p>"; return; }
-            list.innerHTML = msgs.reverse().map(m => `
-                <div style="background:#050a18; padding:15px; border-radius:10px; border:1px solid var(--border); margin-bottom:10px;">
-                    <div style="font-size:11px; color:var(--green);">From: ${m.userName} (${m.userId})</div>
-                    <div style="margin:8px 0; font-size:13px;">${m.message}</div>
-                    ${m.reply ? `<div style="color:var(--yellow); font-size:11px;">Replied: ${m.reply}</div>` : `<textarea id="reply-${m.id}" placeholder="Type reply..." style="width:100%; font-size:12px; background:#121e36; color:white; border-radius:5px; padding:5px;"></textarea><button onclick="sendReply(${m.id})" style="background:var(--green); border:none; padding:5px; border-radius:5px; color:white; margin-top:5px; cursor:pointer; font-size:11px;">Send</button>`}
-                    <button onclick="deleteMsg(${m.id})" style="background:var(--red); border:none; padding:5px; border-radius:5px; color:white; float:right; margin-top:5px; font-size:11px;">Delete</button><div style="clear:both;"></div>
-                </div>
-            `).join('');
-        }
-
-        function sendReply(id) {
-            const text = document.getElementById(`reply-${id}`).value;
-            if(!text) return;
-            let msgs = JSON.parse(localStorage.getItem('admin_messages')) || [];
-            const idx = msgs.findIndex(m => m.id === id);
-            if(idx !== -1) { msgs[idx].reply = text; localStorage.setItem('admin_messages', JSON.stringify(msgs)); loadInbox(); }
-        }
-
-        function deleteMsg(id) {
-            let msgs = JSON.parse(localStorage.getItem('admin_messages')) || [];
-            localStorage.setItem('admin_messages', JSON.stringify(msgs.filter(m => m.id !== id)));
-            loadInbox();
-        }
-
         window.onload = () => {
             const c = JSON.parse(localStorage.getItem('admin_config'));
-            if(c) {
-                document.getElementById('conf-min-limit').value = c.min_limit;
-                document.getElementById('conf-rate').value = c.rate;
-                document.getElementById('conf-task-reward').value = c.task_reward;
-                document.getElementById('conf-refer-bonus').value = c.refer_bonus;
-            }
-            refreshStats(); loadWithdrawals(); loadInbox();
+            if(c) { document.getElementById('conf-min-limit').value = c.min_limit; document.getElementById('conf-rate').value = c.rate; }
+            refreshStats(); loadWithdrawals();
         };
     </script>
 </body>
