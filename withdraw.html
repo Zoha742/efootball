@@ -142,6 +142,17 @@
             `).join('');
         }
 
+        // এই স্ক্রিপ্টটি withdraw.html এর স্ক্রিপ্টে বসান
+function syncWithAdmin() {
+    // অ্যাডমিন থেকে কনফিগ নিয়ে আসা (না থাকলে ডিফল্ট ১০,০০০)
+    const adminConfig = JSON.parse(localStorage.getItem('admin_config')) || { min_limit: 10000, rate: 10000 };
+    
+    window.minLimit = adminConfig.min_limit;
+    document.querySelector('.rate-info').innerHTML = `<i class="fas fa-info-circle"></i> Rate: ${adminConfig.rate} GP = $1.00 USD`;
+    checkLimit(); // বাটন আপডেট করার জন্য
+}
+window.onload = () => { updateUI(); syncWithAdmin(); };
+
         function cancelRequest(id, amount) {
             if (confirm("Are you sure to cancel this request? Points will be returned.")) {
                 let requests = JSON.parse(localStorage.getItem('withdraw_history')) || [];
