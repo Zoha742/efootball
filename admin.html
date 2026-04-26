@@ -8,126 +8,108 @@
     <style>
         :root { --bg: #050a18; --card: #121e36; --red: #ff4b2b; --green: #22c55e; --blue: #3b82f6; --yellow: #fbbf24; --text: #ffffff; --border: #1e2d4d; }
         body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 50px; }
+        
         .top-bar { display: flex; align-items: center; padding: 15px 20px; background: rgba(18, 30, 54, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--red); position: sticky; top: 0; z-index: 1000; justify-content: space-between; }
         .top-bar a { color: white; text-decoration: none; font-size: 18px; display: flex; align-items: center; gap: 10px; }
+        
         .container { padding: 20px; }
         .manage-box { background: var(--card); border-radius: 20px; padding: 20px; border: 1px solid var(--border); margin-bottom: 20px; }
+        .manage-box h3 { font-size: 16px; margin-top: 0; margin-bottom: 15px; color: var(--yellow); display: flex; align-items: center; gap: 10px; }
+        
         .input-group { margin-bottom: 15px; }
         .input-group label { display: block; font-size: 11px; color: #94a3b8; margin-bottom: 6px; text-transform: uppercase; }
-        input, textarea { width: 100%; background: #050a18; border: 1px solid var(--border); padding: 12px; border-radius: 10px; color: white; outline: none; box-sizing: border-box; }
+        input, textarea { width: 100%; background: #050a18; border: 1px solid var(--border); padding: 12px; border-radius: 10px; color: white; outline: none; box-sizing: border-box; font-size: 14px; }
         input:focus { border-color: var(--blue); }
+
         .btn { border: none; padding: 12px; border-radius: 10px; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; width: 100%; margin-top: 10px; }
-        .btn-blue { background: var(--blue); } .btn-green { background: var(--green); } .btn-red { background: var(--red); }
+        .btn-blue { background: var(--blue); }
+        .btn-green { background: var(--green); }
+        .btn-red { background: var(--red); }
+        .btn-yellow { background: var(--yellow); color: #000; }
+
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
         .stat-card { background: var(--card); border-radius: 15px; padding: 15px; border: 1px solid var(--border); text-align: center; }
+        .stat-card i { font-size: 20px; margin-bottom: 8px; display: block; }
     </style>
 </head>
 <body>
 
     <div class="top-bar">
         <a href="index.html"><i class="fas fa-chevron-left"></i> <span>Back to Hub</span></a>
-        <span style="background:var(--red); padding:4px 8px; border-radius:5px; font-size:10px;">MASTER ADMIN</span>
+        <span style="background:var(--red); padding:4px 10px; border-radius:5px; font-size:10px; font-weight: bold;">ADMIN PANEL</span>
     </div>
 
     <div class="container">
-        <div class="stats-grid">
-            <div class="stat-card"><i class="fas fa-coins" style="color: var(--yellow);"></i><br><span>Total GP</span><b id="live-gp" style="display:block; font-size:18px;">0</b></div>
-            <div class="stat-card"><i class="fas fa-tasks" style="color: var(--green);"></i><br><span>Ads Done</span><b id="live-ads" style="display:block; font-size:18px;">0</b></div>
-        </div>
-
-        <div class="manage-box" style="border-color: var(--yellow);">
-            <h3 style="color: var(--yellow);"><i class="fas fa-cogs"></i> App Settings</h3>
+        
+        <div class="manage-box">
+            <h3><i class="fas fa-cogs"></i> App Config & Management</h3>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                 <div class="input-group"><label>Min Withdraw</label><input type="number" id="conf-min-limit" placeholder="10000"></div>
                 <div class="input-group"><label>GP Rate ($1)</label><input type="number" id="conf-rate" placeholder="10000"></div>
+                <div class="input-group"><label>Task Reward</label><input type="number" id="conf-task" placeholder="100"></div>
+                <div class="input-group"><label>Refer Bonus</label><input type="number" id="conf-refer" placeholder="1000"></div>
             </div>
-            <button class="btn" style="background:var(--yellow); color:#000;" onclick="saveConfig()">SAVE CONFIG</button>
+            <button class="btn btn-yellow" onclick="saveGlobalConfig()">SAVE SETTINGS</button>
         </div>
 
-        <div class="manage-box">
-            <h3 style="color: var(--blue);"><i class="fas fa-plus-minus"></i> Quick GP Adjust</h3>
-            <div class="input-group">
-                <label>Amount to Change</label>
-                <input type="number" id="gp-amount" placeholder="e.g. 5000">
-            </div>
-            <div style="display: flex; gap: 10px;">
-                <button class="btn btn-green" onclick="modifyGP('add')">ADD</button>
-                <button class="btn btn-red" onclick="modifyGP('sub')">SUB</button>
-            </div>
+        <div class="stats-grid">
+            <div class="stat-card"><i class="fas fa-coins" style="color: var(--yellow);"></i><span>Current GP</span><b id="live-gp" style="display:block;">0</b></div>
+            <div class="stat-card"><i class="fas fa-video" style="color: var(--green);"></i><span>Ads Watched</span><b id="live-ads" style="display:block;">0</b></div>
         </div>
 
-        <div class="manage-box" style="border-color: var(--blue);">
-            <h3 style="color: var(--blue);"><i class="fas fa-user-edit"></i> Search & Edit User</h3>
+        <div class="manage-box" style="border-color: var(--green);">
+            <h3 style="color: var(--green);"><i class="fas fa-gift"></i> Gift GP to User</h3>
             <div class="input-group">
-                <input type="text" id="search-uid" placeholder="Enter User ID">
-                <button class="btn btn-blue" onclick="searchUser()">LOAD DATA</button>
+                <label>Gift Amount</label>
+                <input type="number" id="gift-amount" placeholder="Enter GP Amount">
             </div>
-            <div id="user-panel" style="display:none; margin-top:15px; border-top:1px solid var(--border); padding-top:15px;">
-                <p id="display-ads-count" style="color:var(--green); font-weight:bold;"></p>
-                <div class="input-group"><label>Set GP Balance</label><input type="number" id="edit-gp"></div>
-                <div class="input-group"><label>TON Wallet</label><input type="text" id="edit-ton"></div>
-                <div class="input-group"><label>BNB Wallet</label><input type="text" id="edit-bnb"></div>
-                <button class="btn btn-green" onclick="saveUserChanges()">UPDATE PROFILE</button>
-            </div>
+            <button class="btn btn-green" onclick="giftGP()">SEND GIFT GP</button>
         </div>
 
         <div class="manage-box" style="border-color: var(--red);">
-            <h3 style="color: var(--red);"><i class="fas fa-receipt"></i> Pending Withdrawals</h3>
+            <h3 style="color: var(--red);"><i class="fas fa-hand-holding-usd"></i> Withdraw Requests</h3>
             <div id="admin-withdraw-list"></div>
         </div>
+
+        <div class="manage-box" style="border-color: var(--blue);">
+            <h3 style="color: var(--blue);"><i class="fas fa-comments"></i> Support Inbox</h3>
+            <div id="admin-inbox-list"></div>
+        </div>
+
     </div>
 
     <script>
-        // Security: Change 774900 to your real ID
-        const adminID = 774900; 
-        const tgUser = window.Telegram.WebApp.initDataUnsafe?.user;
-        if (!tgUser || tgUser.id !== adminID) {
-            // Uncomment the lines below to enable security
-            // document.body.innerHTML = "<h1 style='color:white; text-align:center;'>Access Denied!</h1>";
-            // throw new Error("Unauthorized");
-        }
-
+        // কোড যেন ব্লক না হয় সেজন্য সিকিউরিটি আপাতত অফ রাখা হয়েছে
         function refreshStats() {
             document.getElementById('live-gp').innerText = (localStorage.getItem('user_gp') || 0);
             document.getElementById('live-ads').innerText = (localStorage.getItem('total_ads_watched') || 0);
         }
 
-        function saveConfig() {
+        function saveGlobalConfig() {
             const config = {
                 min_limit: document.getElementById('conf-min-limit').value || 10000,
-                rate: document.getElementById('conf-rate').value || 10000
+                rate: document.getElementById('conf-rate').value || 10000,
+                task_reward: document.getElementById('conf-task').value || 100,
+                refer_bonus: document.getElementById('conf-refer').value || 1000
             };
             localStorage.setItem('admin_config', JSON.stringify(config));
-            alert("Settings Saved!");
+            alert("Settings Updated!");
         }
 
-        function modifyGP(type) {
-            const amount = parseInt(document.getElementById('gp-amount').value);
-            if(!amount) return alert("Enter amount");
+        function giftGP() {
+            const amount = parseInt(document.getElementById('gift-amount').value);
+            if(!amount) return alert("পয়েন্ট লিখুন!");
             let gp = parseInt(localStorage.getItem('user_gp')) || 0;
-            localStorage.setItem('user_gp', type === 'add' ? gp + amount : Math.max(0, gp - amount));
-            alert("GP Updated!"); refreshStats();
-        }
-
-        function searchUser() {
-            document.getElementById('user-panel').style.display = 'block';
-            document.getElementById('edit-gp').value = localStorage.getItem('user_gp') || 0;
-            document.getElementById('display-ads-count').innerText = (localStorage.getItem('total_ads_watched') || 0) + " Ads Watched";
-            document.getElementById('edit-ton').value = localStorage.getItem('wallet_ton') || "";
-            document.getElementById('edit-bnb').value = localStorage.getItem('wallet_bnb') || "";
-        }
-
-        function saveUserChanges() {
-            localStorage.setItem('user_gp', document.getElementById('edit-gp').value);
-            localStorage.setItem('wallet_ton', document.getElementById('edit-ton').value);
-            localStorage.setItem('wallet_bnb', document.getElementById('edit-bnb').value);
-            alert("Data Updated!"); refreshStats();
+            localStorage.setItem('user_gp', gp + amount);
+            alert("Gift GP Added to Account!");
+            document.getElementById('gift-amount').value = "";
+            refreshStats();
         }
 
         function loadWithdrawals() {
             const list = document.getElementById('admin-withdraw-list');
             const reqs = JSON.parse(localStorage.getItem('all_withdraw_requests')) || [];
-            if(reqs.length === 0) { list.innerHTML = "<p style='font-size:12px; color:#94a3b8;'>No requests.</p>"; return; }
+            if(reqs.length === 0) { list.innerHTML = "<p style='font-size:12px; color:#94a3b8;'>No requests found.</p>"; return; }
             list.innerHTML = reqs.reverse().map(r => `
                 <div style="background:#050a18; padding:15px; border-radius:12px; border:1px solid var(--border); margin-bottom:10px;">
                     <div style="font-size:11px; color:var(--yellow);">ID: #${r.userId} | ${r.date}</div>
@@ -159,7 +141,12 @@
 
         window.onload = () => {
             const c = JSON.parse(localStorage.getItem('admin_config'));
-            if(c) { document.getElementById('conf-min-limit').value = c.min_limit; document.getElementById('conf-rate').value = c.rate; }
+            if(c) {
+                document.getElementById('conf-min-limit').value = c.min_limit;
+                document.getElementById('conf-rate').value = c.rate;
+                document.getElementById('conf-task').value = c.task_reward;
+                document.getElementById('conf-refer').value = c.refer_bonus;
+            }
             refreshStats(); loadWithdrawals();
         };
     </script>
