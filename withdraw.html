@@ -12,33 +12,34 @@
         .top-bar a { color: white; text-decoration: none; margin-right: 15px; }
         .container { padding: 20px; text-align: center; }
         .withdraw-card { background: var(--card); border-radius: 20px; padding: 25px; border: 1px solid var(--border); margin-bottom: 25px; }
-        .balance-info { margin-bottom: 20px; }
-        .balance-info span { color: #94a3b8; font-size: 14px; }
         .balance-info h2 { margin: 5px 0; font-size: 32px; color: #fbbf24; }
         .rate-info { font-size: 12px; color: #94a3b8; margin-bottom: 15px; background: rgba(255,255,255,0.05); padding: 8px; border-radius: 8px; }
-        input { width: 100%; background: #050a18; border: 1px solid var(--border); padding: 15px; border-radius: 12px; color: white; font-size: 16px; outline: none; box-sizing: border-box; text-align: center; }
-        .withdraw-btn { width: 100%; border: none; padding: 15px; border-radius: 12px; color: white; font-weight: bold; margin-top: 20px; cursor: pointer; transition: 0.3s; }
+        input { width: 100%; background: #050a18; border: 1px solid var(--border); padding: 15px; border-radius: 12px; color: white; text-align: center; outline: none; }
+        .withdraw-btn { width: 100%; border: none; padding: 15px; border-radius: 12px; color: white; font-weight: bold; margin-top: 20px; cursor: pointer; }
         .btn-gray { background: var(--gray); cursor: not-allowed; }
-        .btn-green { background: var(--green); box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3); }
+        .btn-green { background: var(--green); }
         .request-item { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 15px; margin-bottom: 12px; text-align: left; }
     </style>
 </head>
 <body>
+
     <div class="top-bar">
         <a href="profile.html"><i class="fas fa-chevron-left"></i></a>
         <span>Withdraw GP</span>
     </div>
+
     <div class="container">
         <div class="withdraw-card">
             <div class="balance-info">
-                <span>Available Balance</span>
+                <span style="color:#94a3b8; font-size:14px;">Available Balance</span>
                 <h2 id="current-gp">0 GP</h2>
             </div>
             <div class="rate-info" id="rate-text">Rate: 10,000 GP = $1.00 USD</div>
             <input type="number" id="withdraw-amount" placeholder="Enter GP Amount" oninput="checkLimit()">
-            <button id="main-btn" class="withdraw-btn btn-gray" onclick="sendRequest()" disabled>MIN 10,000 GP REQUIRED</button>
+            <button id="main-btn" class="withdraw-btn btn-gray" onclick="sendRequest()" disabled>MIN LIMIT REQUIRED</button>
         </div>
-        <div style="text-align: left; margin-top: 20px;">
+
+        <div style="text-align: left;">
             <h3 style="font-size: 16px; color: #94a3b8;">Withdrawal History</h3>
             <div id="request-list"></div>
         </div>
@@ -50,8 +51,9 @@
         let adminConfig = JSON.parse(localStorage.getItem('admin_config')) || { min_limit: 10000, rate: 10000 };
 
         function updateUI() {
+            userGP = parseInt(localStorage.getItem('user_gp')) || 0;
             document.getElementById('current-gp').innerText = userGP.toLocaleString() + " GP";
-            document.getElementById('rate-text').innerText = `Rate: ${adminConfig.rate.toLocaleString()} GP = $1.00 USD`;
+            document.getElementById('rate-text').innerText = `Rate: ${parseInt(adminConfig.rate).toLocaleString()} GP = $1.00 USD`;
             checkLimit();
             loadRequests();
         }
@@ -60,10 +62,10 @@
             const amount = parseInt(document.getElementById('withdraw-amount').value);
             const btn = document.getElementById('main-btn');
             if (amount >= adminConfig.min_limit && userGP >= amount) {
-                btn.classList.remove('btn-gray'); btn.classList.add('btn-green');
+                btn.classList.replace('btn-gray', 'btn-green');
                 btn.innerText = "SEND WITHDRAW REQUEST"; btn.disabled = false;
             } else {
-                btn.classList.remove('btn-green'); btn.classList.add('btn-gray');
+                btn.classList.add('btn-gray'); btn.classList.remove('btn-green');
                 btn.innerText = amount < adminConfig.min_limit ? `MIN ${adminConfig.min_limit} GP REQUIRED` : "INSUFFICIENT BALANCE";
                 btn.disabled = true;
             }
@@ -71,19 +73,17 @@
 
         function sendRequest() {
             const amount = parseInt(document.getElementById('withdraw-amount').value);
-            const tonWallet = localStorage.getItem('wallet_ton') || "Not Set";
-            const bnbWallet = localStorage.getItem('wallet_bnb') || "Not Set";
-            const uid = tg.initDataUnsafe?.user?.id || "774900";
+            const ton = localStorage.getItem('wallet_ton') || "Not Set";
+            const bnb = localStorage.getItem('wallet_bnb') || "Not Set";
 
-            if (tonWallet === "Not Set" && bnbWallet === "Not Set") return alert("Please setup wallet first!");
+            if (ton === "Not Set" && bnb === "Not Set") return alert("Setup Wallet First!");
 
-            const newRequest = {
+            const req = {
                 id: Date.now(),
-                userId: uid,
-                userName: tg.initDataUnsafe?.user?.first_name || "Guest",
+                userId: tg.initDataUnsafe?.user?.id || "774900",
                 amount: amount,
-                tonWallet: tonWallet,
-                bnbWallet: bnbWallet,
+                tonWallet: ton,
+                bnbWallet: bnb,
                 status: 'pending',
                 date: new Date().toLocaleString()
             };
@@ -91,29 +91,29 @@
             userGP -= amount;
             localStorage.setItem('user_gp', userGP);
             
-            let allRequests = JSON.parse(localStorage.getItem('all_withdraw_requests')) || [];
-            allRequests.push(newRequest);
-            localStorage.setItem('all_withdraw_requests', JSON.stringify(allRequests));
+            let all = JSON.parse(localStorage.getItem('all_withdraw_requests')) || [];
+            all.push(req);
+            localStorage.setItem('all_withdraw_requests', JSON.stringify(all));
 
-            alert("Request Sent! Admin will verify soon.");
+            alert("Request Sent!");
             document.getElementById('withdraw-amount').value = "";
             updateUI();
         }
 
         function loadRequests() {
             const list = document.getElementById('request-list');
-            const allRequests = JSON.parse(localStorage.getItem('all_withdraw_requests')) || [];
+            const all = JSON.parse(localStorage.getItem('all_withdraw_requests')) || [];
             const uid = tg.initDataUnsafe?.user?.id || "774900";
-            const myRequests = allRequests.filter(r => r.userId == uid);
+            const my = all.filter(r => r.userId == uid);
 
-            if (myRequests.length === 0) { list.innerHTML = "<p style='font-size:12px; color:#4b5563;'>No history.</p>"; return; }
-            list.innerHTML = myRequests.reverse().map(req => `
+            if (my.length === 0) { list.innerHTML = "<p style='color:#4b5563;'>No requests found.</p>"; return; }
+            list.innerHTML = my.reverse().map(r => `
                 <div class="request-item">
                     <div style="display:flex; justify-content:space-between;">
-                        <b>$${(req.amount / adminConfig.rate).toFixed(2)} (${req.amount} GP)</b>
-                        <span style="color:${req.status === 'pending' ? '#fbbf24' : (req.status === 'success' ? '#22c55e' : '#f87171')}">${req.status.toUpperCase()}</span>
+                        <b>${r.amount} GP</b>
+                        <span style="color:${r.status==='pending'?'#fbbf24':'#22c55e'}">${r.status.toUpperCase()}</span>
                     </div>
-                    <div style="font-size:10px; color:#94a3b8; margin-top:5px;">${req.date}</div>
+                    <div style="font-size:10px; color:#94a3b8;">${r.date}</div>
                 </div>
             `).join('');
         }
