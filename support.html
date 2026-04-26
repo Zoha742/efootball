@@ -3,23 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Support</title>
+    <title>Support Center</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { background: #050a18; color: white; font-family: sans-serif; margin: 0; text-align: center; }
-        .top-bar { display: flex; align-items: center; padding: 15px; background: #121e36; border-bottom: 1px solid #1e2d4d; text-align: left; }
+        :root { --bg: #050a18; --card: #121e36; --primary: #2dd4bf; --text: #ffffff; --border: #1e2d4d; }
+        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; }
+        .top-bar { display: flex; align-items: center; padding: 15px; background: rgba(18, 30, 54, 0.7); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); position: sticky; top: 0; }
         .top-bar a { color: white; text-decoration: none; margin-right: 15px; }
-        .btn-tg { display: inline-block; background: #0088cc; color: white; padding: 15px 30px; border-radius: 30px; text-decoration: none; font-weight: bold; margin-top: 30px; }
+        .container { padding: 20px; }
+        
+        .form-box { background: var(--card); border-radius: 20px; padding: 20px; border: 1px solid var(--border); margin-bottom: 25px; }
+        .input-group { margin-bottom: 15px; text-align: left; }
+        .input-group label { display: block; font-size: 12px; color: #94a3b8; margin-bottom: 5px; }
+        input, textarea { width: 100%; background: #050a18; border: 1px solid var(--border); padding: 12px; border-radius: 10px; color: white; outline: none; box-sizing: border-box; }
+        
+        .send-btn { width: 100%; background: var(--primary); border: none; padding: 15px; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; }
+
+        /* Inbox Style */
+        .inbox-section { margin-top: 30px; text-align: left; }
+        .msg-bubble { background: var(--card); padding: 15px; border-radius: 15px; margin-bottom: 15px; border-left: 4px solid var(--primary); }
+        .reply-box { background: rgba(45, 212, 191, 0.1); padding: 10px; border-radius: 8px; margin-top: 10px; font-size: 13px; border: 1px dashed var(--primary); }
     </style>
 </head>
 <body>
+
     <div class="top-bar">
         <a href="profile.html"><i class="fas fa-chevron-left"></i></a>
-        <span>Customer Support</span>
+        <span>Support Inbox</span>
     </div>
-    <i class="fas fa-headset" style="font-size: 80px; color: #2dd4bf; margin-top: 50px;"></i>
-    <h2>Need Help?</h2>
-    <p style="color: #94a3b8; padding: 0 20px;">যেকোনো সমস্যা বা পেমেন্ট সংক্রান্ত তথ্যের জন্য আমাদের টেলিগ্রাম সাপোর্টে যোগাযোগ করুন।</p>
-    <a href="https://t.me/YourAdminID" class="btn-tg"><i class="fab fa-telegram-plane"></i> JOIN TELEGRAM</a>
+
+    <div class="container">
+        <div class="form-box">
+            <h3 style="margin-top: 0;"><i class="fas fa-paper-plane"></i> Contact Admin</h3>
+            <div class="input-group">
+                <label>User ID</label>
+                <input type="text" id="support-uid" readonly>
+            </div>
+            <div class="input-group">
+                <label>Your Message / Comment</label>
+                <textarea id="support-msg" rows="4" placeholder="আপনার সমস্যাটি এখানে লিখুন..."></textarea>
+            </div>
+            <button class="send-btn" onclick="sendMessage()">SEND MESSAGE</button>
+        </div>
+
+        <div class="inbox-section">
+            <h3 style="color: #94a3b8;"><i class="fas fa-inbox"></i> Inbox (Replies)</h3>
+            <div id="user-inbox">
+                </div>
+        </div>
+    </div>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        const uid = tg.initDataUnsafe?.user?.id || "774900"; // ডিফল্ট আইডি
+        document.getElementById('support-uid').value = uid;
+
+        function sendMessage() {
+            const msg = document.getElementById('support-msg').value;
+            if(!msg) return alert("মেসেজ লিখুন!");
+
+            const newMessage = {
+                id: Date.now(),
+                userId: uid,
+                userName: tg.initDataUnsafe?.user?.first_name || "Guest",
+                message: msg,
+                reply: null,
+                date: new Date().toLocaleString()
+            };
+
+            // অ্যাডমিনের জন্য সেভ করা
+            let allMessages = JSON.parse(localStorage.getItem('admin_messages')) || [];
+            allMessages.push(newMessage);
+            localStorage.setItem('admin_messages', JSON.stringify(allMessages));
+
+            alert("মেসেজ পাঠানো হয়েছে! অ্যাডমিন রিপ্লাই দিলে ইনবক্সে পাবেন।");
+            document.getElementById('support-msg').value = "";
+            loadInbox();
+        }
+
+        function loadInbox() {
+            const inbox = document.getElementById('user-inbox');
+            let allMessages = JSON.parse(localStorage.getItem('admin_messages')) || [];
+            const myMessages = allMessages.filter(m => m.userId == uid);
+
+            if(myMessages.length === 0) {
+                inbox.innerHTML = "<p style='font-size:12px; color:#4b5563;'>কোনো মেসেজ নেই।</p>";
+                return;
+            }
+
+            inbox.innerHTML = myMessages.reverse().map(m => `
+                <div class="msg-bubble">
+                    <div style="font-size:11px; color:#94a3b8;">${m.date}</div>
+                    <div style="margin-top:5px;">${m.message}</div>
+                    ${m.reply ? `<div class="reply-box"><b>Admin:</b> ${m.reply}</div>` : `<div style="font-size:10px; color:#fbbf24; margin-top:5px;">Pending for reply...</div>`}
+                </div>
+            `).join('');
+        }
+
+        window.onload = loadInbox;
+    </script>
 </body>
 </html>
