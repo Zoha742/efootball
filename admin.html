@@ -1,1 +1,31 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <style>
+        :root { --bg: #050a18; --red: #ff4b2b; --text: #ffffff; }
+        body { background: var(--bg); color: var(--text); font-family: sans-serif; padding: 20px; }
+        .admin-box { background: #121e36; padding: 20px; border-radius: 15px; border: 1px solid #ff4b2b; }
+        .btn-reset { background: var(--red); color: white; border: none; padding: 10px 20px; border-radius: 8px; width: 100%; margin-top: 10px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h2 style="color: #ff4b2b;">Admin Control</h2>
+    <div class="admin-box">
+        <p>Reset User All Data</p>
+        <button class="btn-reset" onclick="resetData()">Reset Everything</button>
+    </div>
 
+    <script>
+        function resetData() {
+            if(confirm("Are you sure? This will delete all coins and tasks!")) {
+                localStorage.clear();
+                alert("Data Reset Successful!");
+                window.location.href = "index.html";
+            }
+        }
+    </script>
+</body>
+</html>
