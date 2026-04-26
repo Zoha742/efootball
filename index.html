@@ -17,93 +17,58 @@
         .hub-title span { color: var(--primary); }
 
         /* Interface Buttons */
-        .interface-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
-        .i-btn { background: var(--card-dark); border: 1px solid var(--border); border-radius: 12px; padding: 20px; text-align: center; text-decoration: none; color: white; transition: 0.3s; }
-        .i-btn i { font-size: 24px; color: var(--primary); margin-bottom: 10px; display: block; }
-        .i-btn:active { transform: scale(0.95); background: #1a2a4a; }
+        .id-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px; }
+        .id-btn { background: var(--card-dark); border: 1px solid var(--border); padding: 25px 15px; border-radius: 18px; text-align: center; cursor: pointer; text-decoration: none; color: #fff; }
+        .id-btn i { font-size: 28px; color: var(--primary); margin-bottom: 12px; display: block; }
 
-        /* Banner Slider */
-        .slider { width: 100%; height: 160px; border-radius: 15px; overflow: hidden; border: 1px solid var(--border); margin-bottom: 20px; position: relative; }
-        .slider img { width: 100%; height: 100%; object-fit: cover; }
+        /* Headline Style */
+        .headline { color: var(--text); font-size: 16px; font-weight: bold; text-transform: uppercase; margin: 25px 0 12px; border-left: 4px solid var(--primary); padding-left: 10px; }
 
-        /* Sections */
-        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .section-header h3 { font-size: 16px; border-left: 4px solid var(--primary); padding-left: 10px; }
-        .view-all { color: var(--primary); text-decoration: none; font-size: 13px; }
+        /* Quick Action Buttons (3 Column) */
+        .quick-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 25px; }
+        .quick-btn { background: var(--card-dark); border: 1px solid var(--border); padding: 15px 5px; border-radius: 12px; text-align: center; cursor: pointer; color: #fff; font-size: 12px; transition: 0.3s; }
+        .quick-btn i { display: block; margin-bottom: 8px; color: #f97316; font-size: 18px; }
 
-        .top-card-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 25px; }
-        .top-card { background: var(--card-dark); border-radius: 10px; padding: 10px; text-align: center; border: 1px solid var(--border); }
-        .top-card img { width: 60px; height: 60px; border-radius: 50%; margin-bottom: 8px; border: 2px solid var(--primary); }
-        .top-card p { font-size: 11px; font-weight: 500; }
+        /* Top Player Card View (3 Column) */
+        .player-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+        .top-card { background: var(--card-dark); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; text-align: center; padding: 5px; cursor: pointer; }
+        .top-card img { width: 100%; border-radius: 8px; display: block; }
+        .top-card p { font-size: 9px; padding: 5px; font-weight: bold; }
 
-        /* --- Updated Bottom Nav: Glass Black & Colorful Icons --- */
-        .bottom-nav { 
-            position: fixed; 
-            bottom: 0; 
-            width: 100%; 
-            background: rgba(5, 10, 24, 0.8); /* Glass Black Background */
-            backdrop-filter: blur(15px); 
-            -webkit-backdrop-filter: blur(15px);
-            display: flex; 
-            justify-content: space-around; 
-            padding: 12px 0; 
-            border-top: 1px solid rgba(255, 255, 255, 0.1); 
-            z-index: 1000; 
-        }
-
-        .nav-item { 
-            color: #94a3b8; /* Default Color */
-            text-decoration: none; 
-            font-size: 11px; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            gap: 5px; 
-            transition: 0.3s;
-        }
-
-        .nav-item i { font-size: 20px; }
-
-        /* Active & Colorful States based on Screenshot_32.png */
-        .nav-item:nth-child(1).active { color: #3b82f6 !important; } /* Home: Blue */
-        .nav-item:nth-child(2).active { color: #fbbf24 !important; } /* Legend: Gold/Yellow */
-        .nav-item:nth-child(3).active { color: #22c55e !important; } /* Task: Green */
-        .nav-item:nth-child(4).active { color: #d946ef !important; } /* Profile: Pink/Purple */
-
-        .nav-item:active { transform: scale(0.9); }
+        /* Bottom Nav */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 70px; background: #070d19; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid var(--border); z-index: 1000; }
+        .nav-item { text-align: center; color: #94a3b8; font-size: 11px; text-decoration: none; flex: 1; }
+        .nav-item i { font-size: 20px; display: block; margin-bottom: 4px; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1 class="hub-title">eFootball <span>HUB</span></h1>
+        <div class="hub-title">eFootball <span>HUB</span></div>
 
-        <div class="slider">
-            <img src="https://res.cloudinary.com/dyqegwdme/image/upload/v1777218080/6449079_mzh8u9.jpg" alt="Banner">
+        <div class="id-grid">
+            <a href="player.html" class="id-btn"><i class="fas fa-users"></i>Player</a>
+            <a href="manager.html" class="id-btn"><i class="fas fa-user-tie"></i>Manager</a>
+            <a href="event.html" class="id-btn"><i class="fas fa-trophy"></i>Events</a>
+            <a href="legend.html" class="id-btn"><i class="fas fa-crown"></i>Legend</a>
         </div>
 
-        <div class="interface-grid">
-            <a href="player.html" class="i-btn"><i class="fas fa-users"></i>Players</a>
-            <a href="manager.html" class="i-btn"><i class="fas fa-user-tie"></i>Managers</a>
-            <a href="event.html" class="i-btn"><i class="fas fa-calendar-check"></i>Events</a>
-            <a href="pack.html" class="i-btn"><i class="fas fa-box-open"></i>Packs</a>
+        <div class="headline">Quick Action</div>
+        <div class="quick-grid">
+            <div class="quick-btn" onclick="location.href='store.html'"><i class="fas fa-shopping-cart"></i>Store</div>
+            <div class="quick-btn" onclick="location.href='task.html'"><i class="fas fa-tasks"></i>Task</div>
+            <div class="quick-btn" onclick="location.href='admin.html'"><i class="fas fa-user-shield"></i>Admin Panel</div>
         </div>
 
-        <div id="ad-container-1" style="width: 100%; background: var(--card-dark); height: 60px; margin-bottom: 20px; border-radius: 10px; display: flex; justify-content: center; align-items: center; border: 1px dashed var(--border);">
-            <span style="font-size: 12px; color: #64748b;">BANNER AD SLOT</span>
-        </div>
+        <div id="banner-container" style="display: flex; justify-content: center; margin: 20px 0;"></div>
 
-        <div class="section-header">
-            <h3>LEGENDARY PLAYERS</h3>
-            <a href="legend.html" class="view-all">View All</a>
-        </div>
-
-        <div id="home-legend-view" class="top-card-grid">
+        <div class="headline">Top Player</div>
+        <div id="home-legend-view" class="player-grid">
             </div>
     </div>
 
     <nav class="bottom-nav">
-        <a href="index.html" class="nav-item active"><i class="fas fa-home"></i>Home</a>
+        <a href="index.html" class="nav-item" style="color: #3b82f6;"><i class="fas fa-home"></i>Home</a>
         <a href="legend.html" class="nav-item"><i class="fas fa-crown"></i>Legend</a>
         <a href="task.html" class="nav-item"><i class="fas fa-clipboard-check"></i>Task</a>
         <a href="profile.html" class="nav-item"><i class="fas fa-user-circle"></i>Profile</a>
@@ -113,8 +78,11 @@
     async function loadHomeLegends() {
         const container = document.getElementById('home-legend-view');
         try {
+            // আপনার ফাইলের নাম legend.json হলে সেটাই দিন
             const response = await fetch('legendplayer.json'); 
             const data = await response.json();
+            
+            // ডেটা 'legend' এর ভেতর আছে কি না চেক করে লোড করা
             const players = data.legend || data.players;
             
             container.innerHTML = "";
@@ -133,17 +101,7 @@
             container.innerHTML = "Error loading data";
         }
     }
-
-    // Adsgram logic
-    window.onload = () => {
-        loadHomeLegends();
-        try {
-            if (window.Adsgram) {
-                const ad = window.Adsgram.init({ blockId: "আপনার_ব্যানার_ID" });
-                ad.show().catch(e => console.log(e));
-            }
-        } catch (e) {}
-    };
-   </script>
+    window.onload = loadHomeLegends;
+</script>
 </body>
 </html>
