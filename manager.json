@@ -15,9 +15,9 @@
       "bio": "The tactical mastermind behind Barcelona's golden era."
     },
     {
-      "name": "L. DE LA FUENTE",
-      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1775477854/Pep_Guardiola_ymdrle.png",
-      "nationality": "Spain",
+      "name": "Zinedine_Zidane",
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1775477859/Zinedine_Zidane_ql35df.png",
+      "nationality": "France",
       "team": "Spain National Team",
       "boost_cond": "Spain Players - 150%",
       "booster1": "Passing +1",
@@ -29,9 +29,9 @@
       "bio": "Led Spain to Euro 2024 glory with modern possession tactics."
     },
     {
-      "name": "G. GASPERINI",
-      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1775477854/Pep_Guardiola_ymdrle.png",
-      "nationality": "Italy",
+      "name": "Jurgen klopp",
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1775477859/J%C3%BCrgen_Klopp_x4z8by.png",
+      "nationality": "Germany",
       "team": "Atalanta",
       "boost_cond": "Serie A Players - 120%",
       "booster1": "Speed +1",
@@ -43,9 +43,9 @@
       "bio": "Famous for high-intensity pressing and attacking 3-man defense."
     },
     {
-      "name": "JURGEN KLOPP",
-      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1775477859/J%C3%BCrgen_Klopp_x4z8by.png",
-      "nationality": "Germany",
+      "name": "Sir Alex Ferguson",
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1775477857/Sir_Alex_Ferguson_vstoay.png",
+      "nationality": "Scotland",
       "team": "Liverpool",
       "boost_cond": "Speedsters - 180%",
       "booster1": "Aggression +1",
@@ -57,9 +57,9 @@
       "bio": "The inventor of heavy metal football and intense pressing."
     },
     {
-      "name": "X. ALONSO",
-      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1775477854/Pep_Guardiola_ymdrle.png",
-      "nationality": "Spain",
+      "name": "Arsène Wenger",
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1775477776/Ars%C3%A8ne_Wenger_lkfxkt.png",
+      "nationality": "France",
       "team": "Bayer Leverkusen",
       "boost_cond": "Unbeaten Streak - 200%",
       "booster1": "Ball Control +1",
@@ -71,9 +71,9 @@
       "bio": "Transformed Leverkusen into an invincible tactical machine."
     },
     {
-      "name": "DIDIER DESCHAMPS",
-      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1775477854/Pep_Guardiola_ymdrle.png",
-      "nationality": "France",
+      "name": "Fabio Capello",
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1775477776/Fabio_Capello_vqvulv.png",
+      "nationality": "Italy",
       "team": "France National Team",
       "boost_cond": "Physical Players - 140%",
       "booster1": "Defensive Awareness +1",
@@ -85,9 +85,9 @@
       "bio": "World Cup winning manager with a focus on pragmatism."
     },
     {
-      "name": "L. SPALLETTI",
-      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1775477854/Pep_Guardiola_ymdrle.png",
-      "nationality": "Italy",
+      "name": "Johan Cruyff",
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1775477768/Johan_Cruyff_bqjtlt.png",
+      "nationality": "Netherlands",
       "team": "Italy National Team",
       "boost_cond": "Creative Players - 160%",
       "booster1": "Dribbling +1",
@@ -99,9 +99,9 @@
       "bio": "Known for fluid attacking systems and Serie A success."
     },
     {
-      "name": "G. SOUTHGATE",
-      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1775477854/Pep_Guardiola_ymdrle.png",
-      "nationality": "England",
+      "name": "Jose Mourinho",
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1775477765/Jos%C3%A9_Mourinho_acn3sj.png",
+      "nationality": "Portugal",
       "team": "England National Team",
       "boost_cond": "English League - 110%",
       "booster1": "Header +1",
@@ -112,19 +112,4 @@
       "km_pos": "CF, SS",
       "bio": "Consistent performer with England on the world stage."
     },
-    {
-      "name": "R. KOEMAN",
-      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1775477854/Pep_Guardiola_ymdrle.png",
-      "nationality": "Netherlands",
-      "team": "Netherlands",
-      "boost_cond": "Total Football - 130%",
-      "booster1": "Shot Power +1",
-      "booster2": "Set Piece +1",
-      "cp_style": "Offensive Guard",
-      "cp_pos": "GK",
-      "km_style": "Roaming Flank",
-      "km_pos": "RWF",
-      "bio": "A legendary Dutch figure with a powerful football philosophy."
-    }
-  ]
-}
+    
