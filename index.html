@@ -98,6 +98,26 @@
             container.innerHTML = "Error loading data";
         }
     }
+
+       window.addEventListener('load', () => {
+    const tg = window.Telegram.WebApp;
+    const startParam = tg.initDataUnsafe?.start_param; // Jini refer korechen tar ID ekhane thakbe
+
+    if (startParam && !localStorage.getItem('refer_bonus_claimed')) {
+        const adminConfig = JSON.parse(localStorage.getItem('admin_config')) || { refer_bonus: 1000 };
+        const bonus = parseInt(adminConfig.refer_bonus);
+
+        // Notun user-ke bonus deya
+        let currentGP = parseInt(localStorage.getItem('user_gp')) || 0;
+        localStorage.setItem('user_gp', currentGP + bonus);
+        
+        // Jate bar bar bonus na neya jay
+        localStorage.setItem('refer_bonus_claimed', 'true');
+        
+        alert(`Referral link theke join koray apni ${bonus} GP bonus peyechen!`);
+    }
+});
+       
     window.onload = loadHomeLegends;
 </script>
 </body>
