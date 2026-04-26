@@ -1,157 +1,19 @@
-<!DOCTYPE html>
-<html lang="bn">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - eFootball HUB</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root { --bg: #050a18; --card: #121e36; --red: #ff4b2b; --green: #22c55e; --blue: #3b82f6; --text: #ffffff; --border: #1e2d4d; }
-        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 50px; }
-        
-        /* Top Bar */
-        .top-bar { display: flex; align-items: center; padding: 15px 20px; background: rgba(18, 30, 54, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--red); position: sticky; top: 0; z-index: 1000; justify-content: space-between; }
-        .top-bar a { color: white; text-decoration: none; font-size: 18px; }
-        .admin-tag { background: var(--red); color: white; padding: 4px 10px; border-radius: 6px; font-size: 10px; font-weight: bold; text-transform: uppercase; }
+// --- ADMIN ACCESS CONTROL ---
+const adminID = 774900; // এখানে আপনার আসল টেলিগ্রাম ইউজার আইডি বসান
+const tgUser = window.Telegram.WebApp.initDataUnsafe?.user;
 
-        .container { padding: 20px; }
-        
-        /* Stats Card */
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
-        .stat-card { background: var(--card); border-radius: 15px; padding: 15px; border: 1px solid var(--border); text-align: center; }
-        .stat-card i { font-size: 20px; margin-bottom: 8px; display: block; }
-        .stat-card span { font-size: 11px; color: #94a3b8; display: block; }
-        .stat-card b { font-size: 18px; color: var(--text); }
-
-        /* Management Box */
-        .manage-box { background: var(--card); border-radius: 20px; padding: 20px; border: 1px solid var(--border); margin-bottom: 20px; }
-        .manage-box h3 { font-size: 16px; margin-top: 0; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; color: var(--red); }
-        
-        .input-group { margin-bottom: 15px; }
-        .input-group label { display: block; font-size: 12px; color: #94a3b8; margin-bottom: 6px; }
-        .input-group input { width: 100%; background: #050a18; border: 1px solid var(--border); padding: 12px; border-radius: 10px; color: white; outline: none; box-sizing: border-box; }
-        .input-group input:focus { border-color: var(--red); }
-
-        .action-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .btn { border: none; padding: 12px; border-radius: 10px; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 13px; }
-        .btn-add { background: var(--green); }
-        .btn-sub { background: var(--red); }
-        .btn-reset { width: 100%; background: transparent; border: 1px solid var(--red); color: var(--red); margin-top: 10px; }
-        .btn:active { transform: scale(0.95); }
-
-        /* Notification */
-        .note { font-size: 11px; color: #94a3b8; background: rgba(255, 255, 255, 0.05); padding: 10px; border-radius: 8px; margin-top: 10px; }
-    </style>
-</head>
-<body>
-
-    <div class="top-bar">
-        <a href="index.html"><i class="fas fa-chevron-left"></i> <span style="font-size: 16px; margin-left: 10px;">Admin Hub</span></a>
-        <span class="admin-tag">Master Admin</span>
-    </div>
-
-    <div class="container">
-        
-        <div class="stats-grid">
-            <div class="stat-card">
-                <i class="fas fa-coins" style="color: #fbbf24;"></i>
-                <span>User Current GP</span>
-                <b id="live-gp">0</b>
-            </div>
-            <div class="stat-card">
-                <i class="fas fa-tasks" style="color: var(--green);"></i>
-                <span>Tasks Completed</span>
-                <b id="live-task">0</b>
-            </div>
+if (!tgUser || tgUser.id !== adminID) {
+    // যদি আইডি না মিলে, তবে ইউজারকে বের করে দিবে
+    document.body.innerHTML = `
+        <div style="background: #050a18; color: white; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; font-family: sans-serif; padding: 20px;">
+            <i class="fas fa-user-shield" style="font-size: 70px; color: #ff4b2b; margin-bottom: 20px;"></i>
+            <h1 style="color: #ff4b2b;">Access Denied!</h1>
+            <p>You do not have permission to access the Admin Panel.</p>
+            <a href="index.html" style="background: #ff4b2b; color: white; text-decoration: none; padding: 12px 25px; border-radius: 10px; margin-top: 20px; font-weight: bold;">Back to Home</a>
         </div>
-
-        <div class="manage-box">
-            <h3><i class="fas fa-wallet"></i> Registered Wallet</h3>
-            <div id="user-wallet-view" style="font-size: 12px; color: var(--blue); word-break: break-all; background: #050a18; padding: 10px; border-radius: 8px;">No Wallet Set</div>
-        </div>
-
-        <div class="manage-box">
-            <h3><i class="fas fa-user-cog"></i> Balance Management</h3>
-            
-            <div class="input-group">
-                <label>Amount to Add/Subtract</label>
-                <input type="number" id="gp-amount" placeholder="e.g. 5000">
-            </div>
-
-            <div class="action-btns">
-                <button class="btn btn-add" onclick="modifyGP('add')"><i class="fas fa-plus"></i> Add GP</button>
-                <button class="btn btn-sub" onclick="modifyGP('sub')"><i class="fas fa-minus"></i> Remove GP</button>
-            </div>
-
-            <div class="input-group" style="margin-top: 15px;">
-                <label>Set Total Tasks Done</label>
-                <input type="number" id="task-count" placeholder="e.g. 10">
-            </div>
-            <button class="btn btn-add" style="width: 100%; background: var(--blue);" onclick="updateTasks()">Update Task Count</button>
-        </div>
-
-        <div class="manage-box" style="border-style: dashed;">
-            <h3><i class="fas fa-exclamation-triangle"></i> Danger Zone</h3>
-            <button class="btn btn-reset" onclick="fullReset()">Full Reset User Data</button>
-            <div class="note">এটি ক্লিক করলে ইউজারের সব GP, টাস্ক হিস্ট্রি এবং ওয়ালেট অ্যাড্রেস ডিলিট হয়ে যাবে।</div>
-        </div>
-
-    </div>
-
-    <script>
-        // Load data on start
-        function refreshStats() {
-            const gp = parseInt(localStorage.getItem('user_gp')) || 0;
-            const task = parseInt(localStorage.getItem('tasks_done')) || 0;
-            const wallet = localStorage.getItem('user_wallet') || "Not Registered Yet";
-
-            document.getElementById('live-gp').innerText = gp.toLocaleString() + " GP";
-            document.getElementById('live-task').innerText = task;
-            document.getElementById('user-wallet-view').innerText = wallet;
-        }
-
-        // Add or Subtract GP
-        function modifyGP(type) {
-            const amount = parseInt(document.getElementById('gp-amount').value);
-            if (!amount || amount <= 0) return alert("Please enter a valid amount");
-
-            let currentGP = parseInt(localStorage.getItem('user_gp')) || 0;
-
-            if (type === 'add') {
-                currentGP += amount;
-            } else {
-                currentGP = Math.max(0, currentGP - amount);
-            }
-
-            localStorage.setItem('user_gp', currentGP);
-            alert("GP Balance Updated Successfully!");
-            document.getElementById('gp-amount').value = "";
-            refreshStats();
-        }
-
-        // Update Tasks
-        function updateTasks() {
-            const tasks = document.getElementById('task-count').value;
-            if (tasks === "") return alert("Enter task count");
-
-            localStorage.setItem('tasks_done', tasks);
-            alert("Task Count Updated!");
-            document.getElementById('task-count').value = "";
-            refreshStats();
-        }
-
-        // Full Reset
-        function fullReset() {
-            if (confirm("Are you sure? This will clear everything!")) {
-                localStorage.removeItem('user_gp');
-                localStorage.removeItem('tasks_done');
-                localStorage.removeItem('user_wallet');
-                alert("All user data cleared!");
-                refreshStats();
-            }
-        }
-
-        window.onload = refreshStats;
-    </script>
-</body>
-</html>
+    `;
+    // ৫ সেকেন্ড পর অটো হোমে পাঠিয়ে দিবে
+    setTimeout(() => { window.location.href = "index.html"; }, 5000);
+    throw new Error("Unauthorized Access"); // স্ক্রিপ্ট চলা বন্ধ করে দিবে
+}
+// ----------------------------
