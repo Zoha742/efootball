@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Events - eFootball HUB</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://sad.adsgram.ai/js/adsgram-sdk.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --bg: #050a18; --primary: #fbbf24; --text: #ffffff; --card: #121e36; }
         body { background: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; padding: 15px; overflow-x: hidden; }
@@ -13,7 +13,7 @@
         .header { display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 20px; }
         .back-btn { position: absolute; left: 0; font-size: 22px; color: var(--primary); text-decoration: none; }
 
-        /* Slider Section */
+        /* Slider Section - আপনার অরিজিনাল স্টাইল */
         .event-slider {
             width: 100%;
             height: 200px;
@@ -55,6 +55,7 @@
     let slideInterval;
     let startX = 0;
 
+    // আপনার অরিজিনাল fetchEvents ফাংশন (কোনো পরিবর্তন করা হয়নি)
     async function fetchEvents() {
         const track = document.getElementById('slider-track');
         const dotsContainer = document.getElementById('dots');
@@ -88,10 +89,8 @@
 
     function startAutoSlide() {
         slideInterval = setInterval(() => {
-            if(images.length > 0) {
-                currentIndex = (currentIndex + 1) % images.length;
-                updateSlider();
-            }
+            currentIndex = (currentIndex + 1) % images.length;
+            updateSlider();
         }, 3000);
     }
 
@@ -118,24 +117,22 @@
         });
     }
 
-    // Window Load e Slider ebong Ads ekshathe call kora hoyeche
+    // উইন্ডো লোড হওয়ার সময় আপনার স্লাইডার এবং অ্যাডস একসাথে কল হবে
     window.onload = () => {
-        fetchEvents(); // Slider data load
+        fetchEvents(); // আপনার স্লাইডার ফাংশন
 
-        // Ads logic
+        // অ্যাডস লোড করার লজিক (নিচে যোগ করা হয়েছে)
         setTimeout(() => {
             try {
                 if (window.Adsgram) {
-                    // Banner Ad (Apnar Block ID bosiye din)
-                    const bannerAd = window.Adsgram.init({ blockId: "YOUR_BANNER_BLOCK_ID" });
+                    const bannerAd = window.Adsgram.init({ blockId: "আপনার_ব্যানার_BLOCK_ID" });
                     bannerAd.show().catch((err) => console.log("Banner Error"));
 
-                    // Video Ad (Apnar Block ID bosiye din)
-                    const videoAd = window.Adsgram.init({ blockId: "YOUR_VIDEO_BLOCK_ID" });
+                    const videoAd = window.Adsgram.init({ blockId: "আপনার_ভিডিও_BLOCK_ID" });
                     videoAd.show().catch((err) => console.log("Video Error"));
                 }
             } catch (e) {
-                console.log("Adsgram SDK issue");
+                console.log("Adsgram issue");
             }
         }, 1000);
     };
