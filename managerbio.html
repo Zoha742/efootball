@@ -3,57 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manager Bio - eFootball HUB</title>
+    <title>Manager Profile</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { background: #050a18; color: #fff; font-family: sans-serif; text-align: center; padding: 20px; margin: 0; }
-        
-        .header { display: flex; align-items: center; margin-bottom: 20px; text-align: left; }
-        .back-btn { color: #fbbf24; font-size: 24px; cursor: pointer; text-decoration: none; padding: 5px; }
-
-        .bio-img { width: 100%; max-width: 250px; border-radius: 15px; border: 3px solid #fbbf24; margin-top: 20px; }
-        .name { color: #fbbf24; margin-top: 20px; font-size: 26px; font-weight: bold; }
-        .info { color: #22c55e; font-size: 16px; margin: 10px 0; font-weight: bold; background: rgba(34, 197, 94, 0.1); display: inline-block; padding: 5px 15px; border-radius: 20px;}
-        .desc { margin-top: 25px; padding: 15px; color: #ccc; line-height: 1.6; text-align: justify; background: #121e36; border-radius: 15px; border: 1px solid #1e2d4d; margin-bottom: 25px; }
-
-        /* Video Container Styling */
-        .video-section { margin-top: 30px; padding-bottom: 50px; }
-        .video-title { color: #fbbf24; font-size: 18px; margin-bottom: 10px; border-left: 4px solid #fbbf24; padding-left: 10px; text-align: left; }
-        video { width: 100%; border-radius: 12px; border: 2px solid #1e2d4d; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        :root { --bg: #050a18; --primary: #fbbf24; --card: #121e36; }
+        body { background: var(--bg); color: #fff; font-family: sans-serif; text-align: center; padding: 15px; margin: 0; }
+        .header { display: flex; align-items: center; margin-bottom: 20px; }
+        .back-btn { color: var(--primary); font-size: 24px; text-decoration: none; }
+        .bio-img { width: 180px; border-radius: 12px; border: 2px solid var(--primary); margin-top: 5px; }
+        .name { color: var(--primary); margin: 10px 0; font-size: 20px; font-weight: bold; }
+        .details-container { background: var(--card); border-radius: 12px; border: 1px solid #1e2d4d; padding: 15px; text-align: left; margin-bottom: 20px; }
+        .section-title { color: var(--primary); font-size: 13px; font-weight: bold; margin: 12px 0 6px; border-bottom: 1px solid #1e2d4d; padding-bottom: 3px; letter-spacing: 1px; }
+        .row { display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .row:last-child { border-bottom: none; }
+        .subtitle { font-weight: bold; color: var(--primary); font-size: 12px; text-transform: uppercase; width: 45%; }
+        .body-text { font-size: 14px; color: #fff; text-align: right; width: 55%; }
+        video { width: 100%; border-radius: 10px; border: 1px solid #1e2d4d; margin-top: 10px; }
     </style>
 </head>
 <body>
-
     <div class="header">
         <a href="manager.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
-        <span style="flex:1; text-align:center; color:#fbbf24; font-weight:bold;">MANAGER PROFILE</span>
+        <span style="flex:1; text-align:center; color:var(--primary); font-weight:bold;">MANAGER DETAILS</span>
     </div>
-    
     <img id="m-img" class="bio-img" src="">
-    <h2 id="m-name" class="name">Loading...</h2>
-    <div><p id="m-style" class="info"></p></div>
-    <div><p id="m-formation" class="info"></p></div>
-    
-    <div id="m-bio" class="desc"></div>
-
-    <div class="video-section">
-        <div class="video-title">TACTICAL PREVIEW</div>
-        <video controls poster="https://res.cloudinary.com/dyqegwdme/image/upload/v1775477854/Pep_Guardiola_ymdrle.png">
-            <source src="https://res.cloudinary.com/dyqegwdme/video/upload/v1777198601/Screen_Recording_20260426_161047_eFootball_cckti0.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
+    <h2 id="m-name" class="name"></h2>
+    <div class="details-container">
+        <div class="row"><span class="subtitle">Nationality</span><span id="m-nat" class="body-text"></span></div>
+        <div class="row"><span class="subtitle">Team</span><span id="m-team" class="body-text"></span></div>
+        <div class="row"><span class="subtitle">Young Players+</span><span id="m-bc" class="body-text"></span></div>
+        <div class="row"><span class="subtitle">Booster 1</span><span id="m-b1" class="body-text"></span></div>
+        <div class="row"><span class="subtitle">Booster 2</span><span id="m-b2" class="body-text"></span></div>
+        <div class="section-title">CENTERPIECE</div>
+        <div class="row"><span class="subtitle">Playing Style</span><span id="m-cp-s" class="body-text"></span></div>
+        <div class="row"><span class="subtitle">Position</span><span id="m-cp-p" class="body-text"></span></div>
+        <div class="section-title">KEY MAN</div>
+        <div class="row"><span class="subtitle">Playing Style</span><span id="m-km-s" class="body-text"></span></div>
+        <div class="row"><span class="subtitle">Position</span><span id="m-km-p" class="body-text"></span></div>
     </div>
-
+    <div style="text-align: left; color: var(--primary); font-size: 14px; margin-bottom: 5px; font-weight: bold;">TACTICAL VIDEO</div>
+    <video controls poster="https://res.cloudinary.com/dyqegwdme/image/upload/v1775477854/Pep_Guardiola_ymdrle.png">
+        <source src="https://res.cloudinary.com/dyqegwdme/video/upload/v1777198601/Screen_Recording_20260426_161047_eFootball_cckti0.mp4" type="video/mp4">
+    </video>
     <script>
         window.onload = function() {
             const data = localStorage.getItem('selected_manager');
             if (data) {
-                const manager = JSON.parse(data);
-                document.getElementById('m-img').src = manager.img;
-                document.getElementById('m-name').innerText = manager.name;
-                document.getElementById('m-style').innerText = "Style: " + manager.style;
-                document.getElementById('m-formation').innerText = "Formation: " + manager.formation;
-                document.getElementById('m-bio').innerText = manager.bio;
+                const m = JSON.parse(data);
+                document.getElementById('m-img').src = m.img;
+                document.getElementById('m-name').innerText = m.name;
+                document.getElementById('m-nat').innerText = m.nationality;
+                document.getElementById('m-team').innerText = m.team;
+                document.getElementById('m-bc').innerText = m.boost_cond;
+                document.getElementById('m-b1').innerText = m.booster1;
+                document.getElementById('m-b2').innerText = m.booster2;
+                document.getElementById('m-cp-s').innerText = m.cp_style;
+                document.getElementById('m-cp-p').innerText = m.cp_pos;
+                document.getElementById('m-km-s').innerText = m.km_style;
+                document.getElementById('m-km-p').innerText = m.km_pos;
             }
         };
     </script>
