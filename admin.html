@@ -1,19 +1,58 @@
-// --- ADMIN ACCESS CONTROL ---
-const adminID = 774900; // এখানে আপনার আসল টেলিগ্রাম ইউজার আইডি বসান
-const tgUser = window.Telegram.WebApp.initDataUnsafe?.user;
-
-if (!tgUser || tgUser.id !== adminID) {
-    // যদি আইডি না মিলে, তবে ইউজারকে বের করে দিবে
-    document.body.innerHTML = `
-        <div style="background: #050a18; color: white; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; font-family: sans-serif; padding: 20px;">
-            <i class="fas fa-user-shield" style="font-size: 70px; color: #ff4b2b; margin-bottom: 20px;"></i>
-            <h1 style="color: #ff4b2b;">Access Denied!</h1>
-            <p>You do not have permission to access the Admin Panel.</p>
-            <a href="index.html" style="background: #ff4b2b; color: white; text-decoration: none; padding: 12px 25px; border-radius: 10px; margin-top: 20px; font-weight: bold;">Back to Home</a>
+<div class="manage-box" style="border-color: #22c55e;">
+    <h3><i class="fas fa-comments"></i> User Support Inbox</h3>
+    <div id="admin-inbox-list" style="max-height: 400px; overflow-y: auto;">
         </div>
-    `;
-    // ৫ সেকেন্ড পর অটো হোমে পাঠিয়ে দিবে
-    setTimeout(() => { window.location.href = "index.html"; }, 5000);
-    throw new Error("Unauthorized Access"); // স্ক্রিপ্ট চলা বন্ধ করে দিবে
-}
-// ----------------------------
+</div>
+
+<script>
+    // এই ফাংশনটি admin.html এর স্ক্রিপ্টের ভেতরে যোগ করুন
+    function loadAdminInbox() {
+        const list = document.getElementById('admin-inbox-list');
+        const messages = JSON.parse(localStorage.getItem('admin_messages')) || [];
+
+        if(messages.length === 0) {
+            list.innerHTML = "<p style='font-size:12px; color:#94a3b8;'>কোনো মেসেজ নেই।</p>";
+            return;
+        }
+
+        list.innerHTML = messages.reverse().map(m => `
+            <div style="background:#050a18; padding:15px; border-radius:10px; margin-bottom:10px; border:1px solid #1e2d4d;">
+                <div style="font-size:12px; color:#22c55e;">From: ${m.userName} (ID: ${m.userId})</div>
+                <div style="margin:10px 0; font-size:14px;">${m.message}</div>
+                
+                ${m.reply ? `<div style="color:#fbbf24; font-size:13px;">Replied: ${m.reply}</div>` : `
+                    <textarea id="reply-to-${m.id}" placeholder="Reply লিখুন..." style="width:100%; background:#121e36; color:white; border:1px solid #3b82f6; border-radius:5px; padding:5px;"></textarea>
+                    <button onclick="sendReply(${m.id})" style="background:#22c55e; color:white; border:none; padding:5px 10px; border-radius:5px; margin-top:5px; cursor:pointer;">Reply Send</button>
+                `}
+                <button onclick="deleteMsg(${m.id})" style="background:#ff4b2b; color:white; border:none; padding:5px 10px; border-radius:5px; margin-top:5px; cursor:pointer; float:right;">Delete</button>
+                <div style="clear:both;"></div>
+            </div>
+        `).join('');
+    }
+
+    function sendReply(msgId) {
+        const replyText = document.getElementById(`reply-to-${msgId}`).value;
+        if(!replyText) return alert("রিপ্লাই লিখুন!");
+
+        let messages = JSON.parse(localStorage.getItem('admin_messages')) || [];
+        const index = messages.findIndex(m => m.id === msgId);
+        if(index !== -1) {
+            messages[index].reply = replyText;
+            localStorage.setItem('admin_messages', JSON.stringify(messages));
+            alert("রিপ্লাই পাঠানো হয়েছে!");
+            loadAdminInbox();
+        }
+    }
+
+    function deleteMsg(msgId) {
+        if(confirm("Delete message?")) {
+            let messages = JSON.parse(localStorage.getItem('admin_messages')) || [];
+            messages = messages.filter(m => m.id !== msgId);
+            localStorage.setItem('admin_messages', JSON.stringify(messages));
+            loadAdminInbox();
+        }
+    }
+
+    // Admin load হলে ইনবক্স লোড হবে
+    window.addEventListener('load', loadAdminInbox);
+</script>
