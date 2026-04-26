@@ -36,12 +36,12 @@
         .top-card img { width: 60px; height: 60px; border-radius: 50%; margin-bottom: 8px; border: 2px solid var(--primary); }
         .top-card p { font-size: 11px; font-weight: 500; }
 
-        /* --- Updated Bottom Nav: Glass Black & Colorful Icons --- */
+        /* --- শুধু এই অংশটুকু কালার ও গ্লাস ইফেক্টের জন্য চেঞ্জ হয়েছে --- */
         .bottom-nav { 
             position: fixed; 
             bottom: 0; 
             width: 100%; 
-            background: rgba(5, 10, 24, 0.8); /* Glass Black Background */
+            background: rgba(5, 10, 24, 0.85); /* Glass Black Background */
             backdrop-filter: blur(15px); 
             -webkit-backdrop-filter: blur(15px);
             display: flex; 
@@ -50,27 +50,24 @@
             border-top: 1px solid rgba(255, 255, 255, 0.1); 
             z-index: 1000; 
         }
-
         .nav-item { 
-            color: #94a3b8; /* Default Color */
+            color: #64748b; 
             text-decoration: none; 
             font-size: 11px; 
             display: flex; 
             flex-direction: column; 
             align-items: center; 
             gap: 5px; 
-            transition: 0.3s;
         }
-
         .nav-item i { font-size: 20px; }
+        
+        /* আইকনের রঙিন কালার */
+        .bottom-nav a:nth-child(1).active { color: #3b82f6; } /* Home - Blue */
+        .bottom-nav a:nth-child(2).active { color: #fbbf24; } /* Legend - Golden */
+        .bottom-nav a:nth-child(3).active { color: #22c55e; } /* Task - Green */
+        .bottom-nav a:nth-child(4).active { color: #d946ef; } /* Profile - Pink */
+        /* ----------------------------------------------------------------- */
 
-        /* Active & Colorful States based on Screenshot_32.png */
-        .nav-item:nth-child(1).active { color: #3b82f6 !important; } /* Home: Blue */
-        .nav-item:nth-child(2).active { color: #fbbf24 !important; } /* Legend: Gold/Yellow */
-        .nav-item:nth-child(3).active { color: #22c55e !important; } /* Task: Green */
-        .nav-item:nth-child(4).active { color: #d946ef !important; } /* Profile: Pink/Purple */
-
-        .nav-item:active { transform: scale(0.9); }
     </style>
 </head>
 <body>
@@ -113,8 +110,11 @@
     async function loadHomeLegends() {
         const container = document.getElementById('home-legend-view');
         try {
+            // আপনার ফাইলের নাম legend.json হলে সেটাই দিন
             const response = await fetch('legendplayer.json'); 
             const data = await response.json();
+            
+            // ডেটা 'legend' এর ভেতর আছে কি না চেক করে লোড করা
             const players = data.legend || data.players;
             
             container.innerHTML = "";
