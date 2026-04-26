@@ -7,28 +7,35 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --bg: #050a18; --card-dark: #121e36; --primary: #f472b6; --text: #ffffff; --border: #1e2d4d; }
-        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; padding: 20px; text-align: center; }
-        .header { font-size: 20px; font-weight: bold; color: var(--primary); margin-bottom: 20px; }
-        .refer-card { background: var(--card-dark); border-radius: 15px; padding: 25px; border: 1px solid var(--border); }
-        .refer-card i { font-size: 50px; color: var(--primary); margin-bottom: 15px; }
-        .link-box { background: #050a18; border: 1px dashed var(--primary); padding: 12px; border-radius: 10px; margin: 20px 0; font-size: 13px; color: #94a3b8; word-break: break-all; }
-        .btn-copy { width: 100%; background: var(--primary); border: none; color: white; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; }
+        :root { --bg: #050a18; --card: #121e36; --primary: #f472b6; --text: #ffffff; --border: #1e2d4d; }
+        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 30px; }
+        .top-bar { display: flex; align-items: center; padding: 15px; background: rgba(18, 30, 54, 0.7); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; }
+        .top-bar a { color: white; text-decoration: none; font-size: 18px; margin-right: 15px; }
+        .container { padding: 20px; text-align: center; }
+        .refer-card { background: var(--card); border-radius: 20px; padding: 30px; border: 1px solid var(--border); box-shadow: 0 4px 15px rgba(244, 114, 182, 0.1); }
+        .refer-card i { font-size: 60px; color: var(--primary); margin-bottom: 15px; }
+        .link-box { background: #050a18; border: 1px dashed var(--primary); padding: 15px; border-radius: 12px; margin: 20px 0; font-size: 13px; color: #94a3b8; word-break: break-all; }
+        .btn-copy { width: 100%; background: linear-gradient(135deg, #f472b6, #db2777); border: none; color: white; padding: 14px; border-radius: 12px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .btn-copy:active { transform: scale(0.95); }
     </style>
 </head>
 <body>
-    <div class="header">REFER & EARN</div>
-    <div class="refer-card">
-        <i class="fas fa-user-plus"></i>
-        <h3>Invite Friends</h3>
-        <p style="font-size: 13px; color: #94a3b8;">Invite your friends and get 1000 GP bonus for each successful referral!</p>
-        <div class="link-box" id="refer-link">https://t.me/YourBotName?start=774900</div>
-        <button class="btn-copy" onclick="copyLink()">COPY LINK</button>
+    <div class="top-bar">
+        <a href="profile.html"><i class="fas fa-chevron-left"></i></a>
+        <span>Refer & Earn</span>
     </div>
-
+    <div class="container">
+        <div class="refer-card">
+            <i class="fas fa-user-plus"></i>
+            <h2>Invite Friends</h2>
+            <p style="font-size: 14px; color: #94a3b8;">আপনার বন্ধুদের ইনভাইট করুন এবং প্রতি রেফারে ১০০০ GP বোনাস জিতে নিন!</p>
+            <div class="link-box" id="ref-link">https://t.me/YourBotName?start=user123</div>
+            <button class="btn-copy" onclick="copyLink()">COPY REFER LINK</button>
+        </div>
+    </div>
     <script>
         function copyLink() {
-            const link = document.getElementById('refer-link').innerText;
+            const link = document.getElementById('ref-link').innerText;
             navigator.clipboard.writeText(link);
             alert("Referral link copied!");
         }
