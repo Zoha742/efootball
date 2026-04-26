@@ -39,6 +39,20 @@
             navigator.clipboard.writeText(link);
             alert("Referral link copied!");
         }
+        const tg = window.Telegram.WebApp;
+const user = tg.initDataUnsafe?.user;
+
+// Admin config theke bonus amount neya
+const adminConfig = JSON.parse(localStorage.getItem('admin_config')) || { refer_bonus: 1000 };
+
+if (user) {
+    // Apnar bot-er username ekhane bosaben
+    const botUsername = "YOUR_BOT_USERNAME"; 
+    const referLink = `https://t.me/${botUsername}?start=${user.id}`;
+    
+    document.getElementById('ref-link').innerText = referLink;
+    document.querySelector('.refer-card p').innerText = `বন্ধুদের ইনভাইট করুন এবং প্রতি রেফারে ${adminConfig.refer_bonus} GP বোনাস জিতে নিন!`;
+}
     </script>
 </body>
 </html>
