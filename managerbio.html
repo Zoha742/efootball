@@ -8,16 +8,36 @@
     <style>
         :root { --bg: #050a18; --primary: #fbbf24; --card: #121e36; }
         body { background: var(--bg); color: #fff; font-family: sans-serif; text-align: center; padding: 15px; margin: 0; }
+        
         .header { display: flex; align-items: center; margin-bottom: 20px; }
         .back-btn { color: var(--primary); font-size: 24px; text-decoration: none; }
         .bio-img { width: 180px; border-radius: 12px; border: 2px solid var(--primary); margin-top: 5px; }
         .name { color: var(--primary); margin: 10px 0; font-size: 20px; font-weight: bold; }
+        
         .details-container { background: var(--card); border-radius: 12px; border: 1px solid #1e2d4d; padding: 15px; text-align: left; margin-bottom: 20px; }
         .section-title { color: var(--primary); font-size: 13px; font-weight: bold; margin: 12px 0 6px; border-bottom: 1px solid #1e2d4d; padding-bottom: 3px; letter-spacing: 1px; }
-        .row { display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        
+        .row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .row:last-child { border-bottom: none; }
-        .subtitle { font-weight: bold; color: var(--primary); font-size: 12px; text-transform: uppercase; width: 45%; }
-        .body-text { font-size: 14px; color: #fff; text-align: right; width: 55%; }
+
+        /* --- আপনার চাওয়া পরিবর্তন এখানে --- */
+        .subtitle { 
+            font-weight: bold; 
+            color: #fbbf24; /* এখান থেকে লাল বক্সের বামের লেখাগুলোর কালার চেঞ্জ করুন */
+            font-size: 13px; /* এখান থেকে সাইজ ছোট-বড় করুন */
+            text-transform: uppercase; 
+            width: 45%; 
+        }
+
+        .body-text { 
+            font-size: 15px; /* এখান থেকে ডানের লেখার সাইজ চেঞ্জ করুন */
+            color: #ffffff; /* এখান থেকে ডানের লেখার কালার চেঞ্জ করুন */
+            text-align: right; 
+            width: 55%; 
+            font-weight: 500;
+        }
+        /* ---------------------------------- */
+
         video { width: 100%; border-radius: 10px; border: 1px solid #1e2d4d; margin-top: 10px; }
     </style>
 </head>
