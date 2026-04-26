@@ -1,1 +1,27 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wallet Setup</title>
+    <style>
+        body { background: #050a18; color: white; font-family: sans-serif; padding: 20px; }
+        .input-box { width: 100%; background: #121e36; border: 1px solid #3b82f6; padding: 12px; border-radius: 10px; color: white; margin-top: 10px; }
+        .save-btn { width: 100%; background: #3b82f6; border: none; padding: 12px; border-radius: 10px; color: white; margin-top: 20px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h3>WALLET SETUP</h3>
+    <p style="font-size: 13px; color: #94a3b8;">Enter your TON Wallet address for withdrawals.</p>
+    <input type="text" id="wallet-addr" class="input-box" placeholder="UQA123...456">
+    <button class="save-btn" onclick="saveWallet()">SAVE ADDRESS</button>
 
+    <script>
+        function saveWallet() {
+            const addr = document.getElementById('wallet-addr').value;
+            localStorage.setItem('user_wallet', addr);
+            alert("Wallet saved!");
+        }
+    </script>
+</body>
+</html>
