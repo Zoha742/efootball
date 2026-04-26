@@ -36,7 +36,7 @@
         .top-card img { width: 60px; height: 60px; border-radius: 50%; margin-bottom: 8px; border: 2px solid var(--primary); }
         .top-card p { font-size: 11px; font-weight: 500; }
 
-        /* --- শুধু এই অংশটুকু কালার ও গ্লাস ইফেক্টের জন্য চেঞ্জ হয়েছে --- */
+        /* --- Updated Bottom Nav: Glass Black & Colorful Icons --- */
         .bottom-nav { 
             position: fixed; 
             bottom: 0; 
@@ -50,6 +50,7 @@
             border-top: 1px solid rgba(255, 255, 255, 0.1); 
             z-index: 1000; 
         }
+
         .nav-item { 
             color: #64748b; 
             text-decoration: none; 
@@ -59,14 +60,14 @@
             align-items: center; 
             gap: 5px; 
         }
+
         .nav-item i { font-size: 20px; }
-        
-        /* আইকনের রঙিন কালার */
-        .bottom-nav a:nth-child(1).active { color: #3b82f6; } /* Home - Blue */
-        .bottom-nav a:nth-child(2).active { color: #fbbf24; } /* Legend - Golden */
-        .bottom-nav a:nth-child(3).active { color: #22c55e; } /* Task - Green */
-        .bottom-nav a:nth-child(4).active { color: #d946ef; } /* Profile - Pink */
-        /* ----------------------------------------------------------------- */
+
+        /* Icon Colors based on Screenshot_33.png */
+        .bottom-nav a:nth-child(1).active { color: #3b82f6 !important; } /* Home - Blue */
+        .bottom-nav a:nth-child(2).active { color: #fbbf24 !important; } /* Legend - Golden */
+        .bottom-nav a:nth-child(3).active { color: #22c55e !important; } /* Task - Green */
+        .bottom-nav a:nth-child(4).active { color: #d946ef !important; } /* Profile - Pink */
 
     </style>
 </head>
@@ -95,8 +96,7 @@
             <a href="legend.html" class="view-all">View All</a>
         </div>
 
-        <div id="home-legend-view" class="top-card-grid">
-            </div>
+        <div id="home-legend-view" class="top-card-grid"></div>
     </div>
 
     <nav class="bottom-nav">
@@ -110,11 +110,8 @@
     async function loadHomeLegends() {
         const container = document.getElementById('home-legend-view');
         try {
-            // আপনার ফাইলের নাম legend.json হলে সেটাই দিন
             const response = await fetch('legendplayer.json'); 
             const data = await response.json();
-            
-            // ডেটা 'legend' এর ভেতর আছে কি না চেক করে লোড করা
             const players = data.legend || data.players;
             
             container.innerHTML = "";
@@ -122,7 +119,6 @@
                 const card = document.createElement('div');
                 card.className = 'top-card';
                 card.innerHTML = `<img src="${p.img}"><p>${p.name}</p>`;
-                
                 card.onclick = () => {
                     localStorage.setItem('selected_player', JSON.stringify(p)); 
                     window.location.href = 'legendbio.html'; 
@@ -134,7 +130,6 @@
         }
     }
 
-    // Adsgram logic
     window.onload = () => {
         loadHomeLegends();
         try {
