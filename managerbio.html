@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manager Profile</title>
+    <script src="https://sad.adsgram.ai/js/adsgram-sdk.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --bg: #050a18; --primary: #fbbf24; --card: #121e36; }
@@ -67,6 +68,8 @@
 <video autoplay muted playsinline loop controls style="width: 100%; border-radius: 10px; border: 1px solid #1e2d4d;">
         <source src="https://res.cloudinary.com/dyqegwdme/video/upload/v1777200154/Screen_Recording_20260426_161047_eFootball_cckti0.mp4" type="video/mp4">
     </video>
+
+    <div id="banner-container" style="display: flex; justify-content: center; margin-top: 25px; padding-bottom: 30px;"></div>
     <script>
         window.onload = function() {
             const data = localStorage.getItem('selected_manager');
@@ -83,7 +86,22 @@
                 document.getElementById('m-cp-p').innerText = m.cp_pos;
                 document.getElementById('m-km-s').innerText = m.km_style;
                 document.getElementById('m-km-p').innerText = m.km_pos;
-            }
+            // ৩. অ্যাডস লোড (১ সেকেন্ড পর)
+            setTimeout(() => {
+                try {
+                    if (window.Adsgram) {
+                        // ব্যানার অ্যাড (আপনার আইডি দিন)
+                        const bannerAd = window.Adsgram.init({ blockId: "আপনার_ব্যানার_BLOCK_ID" });
+                        bannerAd.show().catch((err) => console.log("Banner Error"));
+
+                        // ভিডিও অ্যাড (আপনার আইডি দিন)
+                        const videoAd = window.Adsgram.init({ blockId: "আপনার_ভিডিও_BLOCK_ID" });
+                        videoAd.show().catch((err) => console.log("Video Error"));
+                    }
+                } catch (e) {
+                    console.log("Adsgram SDK issue");
+                }
+            }, 1000);
         };
     </script>
 </body>
