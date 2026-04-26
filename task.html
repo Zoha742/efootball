@@ -147,6 +147,18 @@
             }
         }
 
+        function collectReward() {
+    const adminConfig = JSON.parse(localStorage.getItem('admin_config')) || { task_reward: 100 };
+    const reward = adminConfig.task_reward;
+
+    let currentGP = parseInt(localStorage.getItem('user_gp')) || 0;
+    localStorage.setItem('user_gp', currentGP + reward);
+    localStorage.setItem('last_task_collect', Date.now());
+    
+    alert(`Congratulations! ${reward} GP Added to your wallet.`);
+    updateUI();
+}
+
         window.onload = updateUI;
     </script>
 </body>
