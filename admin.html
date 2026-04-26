@@ -3,99 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel - eFootball HUB</title>
+    <title>Admin Dashboard - eFootball HUB</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --bg: #050a18; --card-dark: #121e36; --red: #ff4b2b; --text: #ffffff; --border: #1e2d4d; }
-        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; padding: 20px; padding-bottom: 90px; }
+        :root { --bg: #050a18; --card: #121e36; --red: #ff4b2b; --green: #22c55e; --blue: #3b82f6; --text: #ffffff; --border: #1e2d4d; }
+        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 50px; }
         
-        .admin-header { font-size: 22px; font-weight: bold; color: var(--red); border-left: 4px solid var(--red); padding-left: 10px; margin-bottom: 25px; text-transform: uppercase; }
-        
-        .admin-card { background: var(--card-dark); border-radius: 20px; padding: 25px; border: 1px solid var(--border); box-shadow: 0 4px 20px rgba(255, 75, 43, 0.1); margin-bottom: 20px; }
-        .admin-card h3 { font-size: 16px; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
-        .admin-card h3 i { color: var(--red); }
+        /* Top Bar */
+        .top-bar { display: flex; align-items: center; padding: 15px 20px; background: rgba(18, 30, 54, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--red); position: sticky; top: 0; z-index: 1000; justify-content: space-between; }
+        .top-bar a { color: white; text-decoration: none; font-size: 18px; }
+        .admin-tag { background: var(--red); color: white; padding: 4px 10px; border-radius: 6px; font-size: 10px; font-weight: bold; text-transform: uppercase; }
 
+        .container { padding: 20px; }
+        
+        /* Stats Card */
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+        .stat-card { background: var(--card); border-radius: 15px; padding: 15px; border: 1px solid var(--border); text-align: center; }
+        .stat-card i { font-size: 20px; margin-bottom: 8px; display: block; }
+        .stat-card span { font-size: 11px; color: #94a3b8; display: block; }
+        .stat-card b { font-size: 18px; color: var(--text); }
+
+        /* Management Box */
+        .manage-box { background: var(--card); border-radius: 20px; padding: 20px; border: 1px solid var(--border); margin-bottom: 20px; }
+        .manage-box h3 { font-size: 16px; margin-top: 0; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; color: var(--red); }
+        
         .input-group { margin-bottom: 15px; }
-        .input-group label { display: block; font-size: 12px; color: #94a3b8; margin-bottom: 8px; }
-        .input-group input { width: 100%; background: #050a18; border: 1px solid var(--border); padding: 12px; border-radius: 10px; color: white; outline: none; }
-        
-        .btn-update { width: 100%; background: linear-gradient(135deg, #ff4b2b, #ff416c); border: none; color: white; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 10px; }
-        .btn-update:active { transform: scale(0.95); }
+        .input-group label { display: block; font-size: 12px; color: #94a3b8; margin-bottom: 6px; }
+        .input-group input { width: 100%; background: #050a18; border: 1px solid var(--border); padding: 12px; border-radius: 10px; color: white; outline: none; box-sizing: border-box; }
+        .input-group input:focus { border-color: var(--red); }
 
-        .btn-reset { width: 100%; background: transparent; border: 1px solid var(--red); color: var(--red); padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 15px; transition: 0.3s; }
-        .btn-reset:hover { background: rgba(255, 75, 43, 0.1); }
+        .action-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .btn { border: none; padding: 12px; border-radius: 10px; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 13px; }
+        .btn-add { background: var(--green); }
+        .btn-sub { background: var(--red); }
+        .btn-reset { width: 100%; background: transparent; border: 1px solid var(--red); color: var(--red); margin-top: 10px; }
+        .btn:active { transform: scale(0.95); }
 
-        /* Bottom Nav (Same as index) */
-        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 70px; background: rgba(5, 10, 24, 0.85); backdrop-filter: blur(15px); display: flex; justify-content: space-around; align-items: center; border-top: 1px solid rgba(255, 255, 255, 0.1); z-index: 1000; }
-        .nav-item { text-align: center; color: #64748b; text-decoration: none; font-size: 11px; }
-        .nav-item i { font-size: 20px; display: block; margin-bottom: 4px; }
+        /* Notification */
+        .note { font-size: 11px; color: #94a3b8; background: rgba(255, 255, 255, 0.05); padding: 10px; border-radius: 8px; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-    <div class="admin-header">Admin Control Panel</div>
+    <div class="top-bar">
+        <a href="index.html"><i class="fas fa-chevron-left"></i> <span style="font-size: 16px; margin-left: 10px;">Admin Hub</span></a>
+        <span class="admin-tag">Master Admin</span>
+    </div>
 
-    <div class="admin-card">
-        <h3><i class="fas fa-user-edit"></i> Manage User Data</h3>
+    <div class="container">
         
-        <div class="input-group">
-            <label>Set GP Points (Current: <span id="cur-gp">0</span>)</label>
-            <input type="number" id="gp-input" placeholder="Enter GP Amount">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <i class="fas fa-coins" style="color: #fbbf24;"></i>
+                <span>User Current GP</span>
+                <b id="live-gp">0</b>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-tasks" style="color: var(--green);"></i>
+                <span>Tasks Completed</span>
+                <b id="live-task">0</b>
+            </div>
         </div>
 
-        <div class="input-group">
-            <label>Set Tasks Done (Current: <span id="cur-task">0</span>)</label>
-            <input type="number" id="task-input" placeholder="Enter Task Count">
+        <div class="manage-box">
+            <h3><i class="fas fa-wallet"></i> Registered Wallet</h3>
+            <div id="user-wallet-view" style="font-size: 12px; color: var(--blue); word-break: break-all; background: #050a18; padding: 10px; border-radius: 8px;">No Wallet Set</div>
         </div>
 
-        <button class="btn-update" onclick="updateUserData()">Update Profile</button>
-    </div>
+        <div class="manage-box">
+            <h3><i class="fas fa-user-cog"></i> Balance Management</h3>
+            
+            <div class="input-group">
+                <label>Amount to Add/Subtract</label>
+                <input type="number" id="gp-amount" placeholder="e.g. 5000">
+            </div>
 
-    <div class="admin-card" style="border-color: rgba(255, 75, 43, 0.3);">
-        <h3><i class="fas fa-tools"></i> System Tools</h3>
-        <p style="font-size: 12px; color: #94a3b8; margin-bottom: 10px;">Warning: This will clear all progress for the user.</p>
-        <button class="btn-reset" onclick="resetSystem()">Full Reset Data</button>
-    </div>
+            <div class="action-btns">
+                <button class="btn btn-add" onclick="modifyGP('add')"><i class="fas fa-plus"></i> Add GP</button>
+                <button class="btn btn-sub" onclick="modifyGP('sub')"><i class="fas fa-minus"></i> Remove GP</button>
+            </div>
 
-    <nav class="bottom-nav">
-        <a href="index.html" class="nav-item"><i class="fas fa-home"></i>Home</a>
-        <a href="legend.html" class="nav-item"><i class="fas fa-crown"></i>Legend</a>
-        <a href="task.html" class="nav-item"><i class="fas fa-clipboard-check"></i>Task</a>
-        <a href="profile.html" class="nav-item"><i class="fas fa-user-circle"></i>Profile</a>
-    </nav>
+            <div class="input-group" style="margin-top: 15px;">
+                <label>Set Total Tasks Done</label>
+                <input type="number" id="task-count" placeholder="e.g. 10">
+            </div>
+            <button class="btn btn-add" style="width: 100%; background: var(--blue);" onclick="updateTasks()">Update Task Count</button>
+        </div>
+
+        <div class="manage-box" style="border-style: dashed;">
+            <h3><i class="fas fa-exclamation-triangle"></i> Danger Zone</h3>
+            <button class="btn btn-reset" onclick="fullReset()">Full Reset User Data</button>
+            <div class="note">এটি ক্লিক করলে ইউজারের সব GP, টাস্ক হিস্ট্রি এবং ওয়ালেট অ্যাড্রেস ডিলিট হয়ে যাবে।</div>
+        </div>
+
+    </div>
 
     <script>
-        // Load existing values from localStorage
-        function loadAdminData() {
-            const gp = localStorage.getItem('user_gp') || 0;
-            const tasks = localStorage.getItem('tasks_done') || 0;
-            document.getElementById('cur-gp').innerText = gp;
-            document.getElementById('cur-task').innerText = tasks;
+        // Load data on start
+        function refreshStats() {
+            const gp = parseInt(localStorage.getItem('user_gp')) || 0;
+            const task = parseInt(localStorage.getItem('tasks_done')) || 0;
+            const wallet = localStorage.getItem('user_wallet') || "Not Registered Yet";
+
+            document.getElementById('live-gp').innerText = gp.toLocaleString() + " GP";
+            document.getElementById('live-task').innerText = task;
+            document.getElementById('user-wallet-view').innerText = wallet;
         }
 
-        // Update data in localStorage
-        function updateUserData() {
-            const newGp = document.getElementById('gp-input').value;
-            const newTask = document.getElementById('task-input').value;
+        // Add or Subtract GP
+        function modifyGP(type) {
+            const amount = parseInt(document.getElementById('gp-amount').value);
+            if (!amount || amount <= 0) return alert("Please enter a valid amount");
 
-            if(newGp !== "") localStorage.setItem('user_gp', newGp);
-            if(newTask !== "") localStorage.setItem('tasks_done', newTask);
+            let currentGP = parseInt(localStorage.getItem('user_gp')) || 0;
 
-            alert("Data Updated! Profile-e check korun.");
-            loadAdminData(); // Refresh current display
+            if (type === 'add') {
+                currentGP += amount;
+            } else {
+                currentGP = Math.max(0, currentGP - amount);
+            }
+
+            localStorage.setItem('user_gp', currentGP);
+            alert("GP Balance Updated Successfully!");
+            document.getElementById('gp-amount').value = "";
+            refreshStats();
         }
 
-        // Clear all data
-        function resetSystem() {
-            if(confirm("Apni ki nishchit? Sob data delete hoye jabe!")) {
+        // Update Tasks
+        function updateTasks() {
+            const tasks = document.getElementById('task-count').value;
+            if (tasks === "") return alert("Enter task count");
+
+            localStorage.setItem('tasks_done', tasks);
+            alert("Task Count Updated!");
+            document.getElementById('task-count').value = "";
+            refreshStats();
+        }
+
+        // Full Reset
+        function fullReset() {
+            if (confirm("Are you sure? This will clear everything!")) {
                 localStorage.removeItem('user_gp');
                 localStorage.removeItem('tasks_done');
-                alert("Sob data reset kora hoyeche.");
-                loadAdminData();
+                localStorage.removeItem('user_wallet');
+                alert("All user data cleared!");
+                refreshStats();
             }
         }
 
-        window.onload = loadAdminData;
+        window.onload = refreshStats;
     </script>
 </body>
 </html>
