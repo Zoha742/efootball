@@ -24,35 +24,30 @@
             background: var(--card);
             touch-action: pan-y;
         }
+        .slider-track { display: flex; transition: transform 0.5s ease-in-out; height: 100%; }
+        .slider-item { min-width: 100%; height: 100%; }
+        .slider-item img { width: 100%; height: 100%; object-fit: cover; }
 
-        .slider-track { display: flex; transition: transform 0.4s ease-in-out; height: 100%; }
-        .slider-track img { width: 100%; flex-shrink: 0; object-fit: cover; height: 100%; }
-
-        .dots { display: flex; justify-content: center; margin-top: 10px; gap: 6px; }
-        .dot { width: 8px; height: 8px; background: #334155; border-radius: 50%; transition: 0.3s; }
-        .dot.active { background: var(--primary); width: 20px; border-radius: 10px; }
-
-        /* Vertical List (Niche Niche Sajanor Jonno) */
-        .list-title { color: var(--primary); margin: 25px 0 15px; font-size: 16px; font-weight: bold; border-left: 4px solid var(--primary); padding-left: 10px; }
-        .vertical-list { display: flex; flex-direction: column; gap: 15px; padding-bottom: 50px; }
-        .v-card { width: 100%; border-radius: 12px; overflow: hidden; border: 1px solid #1e2d4d; background: var(--card); }
-        .v-card img { width: 100%; height: auto; display: block; }
+        .dots { display: flex; justify-content: center; gap: 8px; margin-top: 12px; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; background: #1e2d4d; transition: 0.3s; }
+        .dot.active { background: var(--primary); transform: scale(1.2); }
     </style>
 </head>
 <body>
 
     <div class="header">
         <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
-        <h2 style="font-size: 18px; color: var(--primary);">ACTIVE EVENTS</h2>
+        <h2 style="font-size: 18px; color: var(--primary);">UPCOMING EVENTS</h2>
     </div>
 
     <div class="event-slider" id="slider">
-        <div id="slider-track" class="slider-track"></div>
+        <div class="slider-track" id="slider-track">
+            </div>
     </div>
-    <div id="dots" class="dots"></div>
 
-    <div class="list-title">MORE EVENTS</div>
-    <div id="vertical-container" class="vertical-list"></div>
+    <div class="dots" id="dots"></div>
+
+    <div id="banner-container" style="display: flex; justify-content: center; margin-top: 25px; padding-bottom: 20px;"></div>
 
 <script>
     let currentIndex = 0;
@@ -62,35 +57,24 @@
 
     async function fetchEvents() {
         const track = document.getElementById('slider-track');
-        const vContainer = document.getElementById('vertical-container');
         const dotsContainer = document.getElementById('dots');
 
         try {
-            const res = await fetch('event.json');
-            if (!res.ok) throw new Error("JSON file not found!");
-            const data = await res.json();
-            images = data.events || data.event;
+            const response = await fetch('event.json');
+            const data = await response.json();
+            images = data.events || data;
 
-            if (!images || images.length === 0) {
-                track.innerHTML = "<p style='text-align:center; padding:20px;'>No Events Found!</p>";
-                return;
-            }
+            if (images.length === 0) throw new Error("No events found");
 
-            images.forEach((ev, index) => {
-                // Slider images
-                const sImg = document.createElement('img');
-                sImg.src = ev.img;
-                track.appendChild(sImg);
+            track.innerHTML = images.map(img => `
+                <div class="slider-item">
+                    <img src="${img.image}" alt="Event">
+                </div>
+            `).join('');
 
-                // Vertical list images (Niche niche)
-                const vCard = document.createElement('div');
-                vCard.className = 'v-card';
-                vCard.innerHTML = `<img src="${ev.img}">`;
-                vContainer.appendChild(vCard);
-
-                // Dots
+            images.forEach((_, i) => {
                 const dot = document.createElement('div');
-                dot.className = index === 0 ? 'dot active' : 'dot';
+                dot.className = i === 0 ? 'dot active' : 'dot';
                 dotsContainer.appendChild(dot);
             });
 
@@ -104,8 +88,10 @@
 
     function startAutoSlide() {
         slideInterval = setInterval(() => {
-            currentIndex = (currentIndex + 1) % images.length;
-            updateSlider();
+            if(images.length > 0) {
+                currentIndex = (currentIndex + 1) % images.length;
+                updateSlider();
+            }
         }, 3000);
     }
 
@@ -132,7 +118,27 @@
         });
     }
 
-    window.onload = fetchEvents;
+    // Window Load e Slider ebong Ads ekshathe call kora hoyeche
+    window.onload = () => {
+        fetchEvents(); // Slider data load
+
+        // Ads logic
+        setTimeout(() => {
+            try {
+                if (window.Adsgram) {
+                    // Banner Ad (Apnar Block ID bosiye din)
+                    const bannerAd = window.Adsgram.init({ blockId: "YOUR_BANNER_BLOCK_ID" });
+                    bannerAd.show().catch((err) => console.log("Banner Error"));
+
+                    // Video Ad (Apnar Block ID bosiye din)
+                    const videoAd = window.Adsgram.init({ blockId: "YOUR_VIDEO_BLOCK_ID" });
+                    videoAd.show().catch((err) => console.log("Video Error"));
+                }
+            } catch (e) {
+                console.log("Adsgram SDK issue");
+            }
+        }, 1000);
+    };
 </script>
 </body>
 </html>
