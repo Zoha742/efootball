@@ -14,11 +14,10 @@
         .withdraw-card { background: var(--card); border-radius: 20px; padding: 25px; border: 1px solid var(--border); margin-bottom: 25px; }
         .balance-info h2 { margin: 5px 0; font-size: 32px; color: #fbbf24; }
         .rate-info { font-size: 12px; color: #94a3b8; margin-bottom: 15px; background: rgba(255,255,255,0.05); padding: 8px; border-radius: 8px; }
-        input { width: 100%; background: #050a18; border: 1px solid var(--border); padding: 15px; border-radius: 12px; color: white; text-align: center; outline: none; }
-        .withdraw-btn { width: 100%; border: none; padding: 15px; border-radius: 12px; color: white; font-weight: bold; margin-top: 20px; cursor: pointer; }
+        input { width: 100%; background: #050a18; border: 1px solid var(--border); padding: 15px; border-radius: 12px; color: white; text-align: center; outline: none; box-sizing: border-box; }
+        .withdraw-btn { width: 100%; border: none; padding: 15px; border-radius: 12px; color: white; font-weight: bold; margin-top: 20px; cursor: pointer; transition: 0.3s; }
         .btn-gray { background: var(--gray); cursor: not-allowed; }
         .btn-green { background: var(--green); }
-        .request-item { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 15px; margin-bottom: 12px; text-align: left; }
     </style>
 </head>
 <body>
@@ -31,38 +30,45 @@
     <div class="container">
         <div class="withdraw-card">
             <div class="balance-info">
-                <span style="color:#94a3b8; font-size:14px;">Available Balance</span>
+                <span style="color:#94a3b8; font-size:14px;">Total Balance</span>
                 <h2 id="current-gp">0 GP</h2>
             </div>
-            <div class="rate-info" id="rate-text">Rate: 10,000 GP = $1.00 USD</div>
-            <input type="number" id="withdraw-amount" placeholder="Enter GP Amount" oninput="checkLimit()">
+            <div class="rate-info" id="rate-text">Rate Loading...</div>
+            <input type="number" id="withdraw-amount" placeholder="Enter Amount" oninput="checkLimit()">
             <button id="main-btn" class="withdraw-btn btn-gray" onclick="sendRequest()" disabled>MIN LIMIT REQUIRED</button>
         </div>
 
         <div style="text-align: left;">
-            <h3 style="font-size: 16px; color: #94a3b8;">Withdrawal History</h3>
+            <h3 style="font-size: 16px; color: #94a3b8;">History</h3>
             <div id="request-list"></div>
         </div>
     </div>
 
     <script>
         const tg = window.Telegram.WebApp;
-        let userGP = parseInt(localStorage.getItem('user_gp')) || 0;
-        let adminConfig = JSON.parse(localStorage.getItem('admin_config')) || { min_limit: 10000, rate: 10000 };
 
         function updateUI() {
-            userGP = parseInt(localStorage.getItem('user_gp')) || 0;
+            // ১. অ্যাডমিন সেটিংস লোড করা
+            const adminConfig = JSON.parse(localStorage.getItem('admin_config')) || { min_limit: 10000, rate: 10000 };
+            const userGP = parseInt(localStorage.getItem('user_gp')) || 0;
+
+            // ২. ব্যালেন্স এবং রেট দেখানো
             document.getElementById('current-gp').innerText = userGP.toLocaleString() + " GP";
-            document.getElementById('rate-text').innerText = `Rate: ${parseInt(adminConfig.rate).toLocaleString()} GP = $1.00 USD`;
+            document.getElementById('rate-text').innerText = `Rate: ${adminConfig.rate.toLocaleString()} GP = $1.00 USD`;
+            
+            // ৩. বাটন স্ট্যাটাস চেক
             checkLimit();
-            loadRequests();
+            loadHistory();
         }
 
         function checkLimit() {
+            const adminConfig = JSON.parse(localStorage.getItem('admin_config')) || { min_limit: 10000, rate: 10000 };
+            const userGP = parseInt(localStorage.getItem('user_gp')) || 0;
             const amount = parseInt(document.getElementById('withdraw-amount').value);
             const btn = document.getElementById('main-btn');
+
             if (amount >= adminConfig.min_limit && userGP >= amount) {
-                btn.classList.replace('btn-gray', 'btn-green');
+                btn.classList.remove('btn-gray'); btn.classList.add('btn-green');
                 btn.innerText = "SEND WITHDRAW REQUEST"; btn.disabled = false;
             } else {
                 btn.classList.add('btn-gray'); btn.classList.remove('btn-green');
@@ -76,9 +82,9 @@
             const ton = localStorage.getItem('wallet_ton') || "Not Set";
             const bnb = localStorage.getItem('wallet_bnb') || "Not Set";
 
-            if (ton === "Not Set" && bnb === "Not Set") return alert("Setup Wallet First!");
+            if (ton === "Not Set" && bnb === "Not Set") return alert("Please setup wallet in profile first!");
 
-            const req = {
+            const newReq = {
                 id: Date.now(),
                 userId: tg.initDataUnsafe?.user?.id || "774900",
                 amount: amount,
@@ -88,32 +94,31 @@
                 date: new Date().toLocaleString()
             };
 
-            userGP -= amount;
-            localStorage.setItem('user_gp', userGP);
+            let userGP = parseInt(localStorage.getItem('user_gp')) || 0;
+            localStorage.setItem('user_gp', userGP - amount);
             
-            let all = JSON.parse(localStorage.getItem('all_withdraw_requests')) || [];
-            all.push(req);
-            localStorage.setItem('all_withdraw_requests', JSON.stringify(all));
+            let allReqs = JSON.parse(localStorage.getItem('all_withdraw_requests')) || [];
+            allReqs.push(newReq);
+            localStorage.setItem('all_withdraw_requests', JSON.stringify(allReqs));
 
-            alert("Request Sent!");
+            alert("Request Sent to Admin!");
             document.getElementById('withdraw-amount').value = "";
             updateUI();
         }
 
-        function loadRequests() {
+        function loadHistory() {
             const list = document.getElementById('request-list');
-            const all = JSON.parse(localStorage.getItem('all_withdraw_requests')) || [];
+            const allReqs = JSON.parse(localStorage.getItem('all_withdraw_requests')) || [];
             const uid = tg.initDataUnsafe?.user?.id || "774900";
-            const my = all.filter(r => r.userId == uid);
+            const myReqs = allReqs.filter(r => r.userId == uid);
 
-            if (my.length === 0) { list.innerHTML = "<p style='color:#4b5563;'>No requests found.</p>"; return; }
-            list.innerHTML = my.reverse().map(r => `
-                <div class="request-item">
+            if (myReqs.length === 0) { list.innerHTML = "<p style='font-size:12px; color:#4b5563;'>No withdraw history.</p>"; return; }
+            list.innerHTML = myReqs.reverse().map(r => `
+                <div style="background:#121e36; padding:15px; border-radius:12px; border:1px solid #1e2d4d; margin-bottom:10px;">
                     <div style="display:flex; justify-content:space-between;">
                         <b>${r.amount} GP</b>
                         <span style="color:${r.status==='pending'?'#fbbf24':'#22c55e'}">${r.status.toUpperCase()}</span>
                     </div>
-                    <div style="font-size:10px; color:#94a3b8;">${r.date}</div>
                 </div>
             `).join('');
         }
