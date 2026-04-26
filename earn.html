@@ -4,30 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Earn More</title>
-    <script src="https://sad.adsgram.ai/js/adsgram-sdk.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --bg: #050a18; --card: #121e36; --primary: #818cf8; --text: #ffffff; }
-        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; padding: 20px; }
-        .earn-btn { background: var(--card); border: 1px solid var(--primary); border-radius: 15px; padding: 20px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; cursor: pointer; }
-        .earn-btn i { font-size: 24px; color: var(--primary); }
+        :root { --bg: #050a18; --card: #121e36; --primary: #818cf8; --text: #ffffff; --border: #1e2d4d; }
+        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; }
+        .top-bar { display: flex; align-items: center; padding: 15px; background: rgba(18, 30, 54, 0.7); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); position: sticky; top: 0; }
+        .top-bar a { color: white; text-decoration: none; font-size: 18px; margin-right: 15px; }
+        .container { padding: 20px; }
+        .earn-item { background: var(--card); border-radius: 15px; padding: 20px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; cursor: pointer; }
+        .earn-item i { font-size: 28px; color: var(--primary); }
     </style>
 </head>
 <body>
-    <h3 style="margin-bottom: 20px;">EARN MORE GP</h3>
-    <div class="earn-btn" onclick="showAd()">
-        <div>
-            <h4 style="margin: 0;">Watch Video Ad</h4>
-            <span style="font-size: 12px; color: #818cf8;">Earn +200 GP</span>
-        </div>
-        <i class="fas fa-play-circle"></i>
+    <div class="top-bar">
+        <a href="profile.html"><i class="fas fa-chevron-left"></i></a>
+        <span>Earn More GP</span>
     </div>
-
-    <script>
-        function showAd() {
-            alert("Adsgram Video Ad loading...");
-            // Adsgram logic ekhane hobe
-        }
-    </script>
+    <div class="container">
+        <div class="earn-item" onclick="alert('Ads Loading...')">
+            <div>
+                <h4 style="margin: 0;">Watch Video Ad</h4>
+                <p style="margin: 5px 0 0; font-size: 12px; color: var(--primary);">Earn +500 GP Points</p>
+            </div>
+            <i class="fas fa-play-circle"></i>
+        </div>
+    </div>
 </body>
 </html>
