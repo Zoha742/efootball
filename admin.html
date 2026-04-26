@@ -3,199 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Master Admin Panel - eFootball HUB</title>
+    <title>Master Admin - eFootball HUB</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --bg: #050a18; --card: #121e36; --red: #ff4b2b; --green: #22c55e; --blue: #3b82f6; --yellow: #fbbf24; --text: #ffffff; --border: #1e2d4d; }
         body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 50px; }
-        
-        .top-bar { display: flex; align-items: center; padding: 15px 20px; background: rgba(18, 30, 54, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--red); position: sticky; top: 0; z-index: 1000; justify-content: space-between; }
-        .top-bar a { color: white; text-decoration: none; font-size: 18px; }
-        .admin-tag { background: var(--red); color: white; padding: 4px 10px; border-radius: 6px; font-size: 10px; font-weight: bold; text-transform: uppercase; }
-
+        .top-bar { display: flex; align-items: center; padding: 15px 20px; background: rgba(18, 30, 54, 0.8); border-bottom: 1px solid var(--red); position: sticky; top: 0; z-index: 1000; justify-content: space-between; }
         .container { padding: 20px; }
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
-        .stat-card { background: var(--card); border-radius: 15px; padding: 15px; border: 1px solid var(--border); text-align: center; }
-        .stat-card i { font-size: 20px; margin-bottom: 8px; display: block; }
-        .stat-card b { font-size: 18px; color: var(--text); }
-
         .manage-box { background: var(--card); border-radius: 20px; padding: 20px; border: 1px solid var(--border); margin-bottom: 20px; }
-        .manage-box h3 { font-size: 16px; margin-top: 0; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
-        
         .input-group { margin-bottom: 15px; }
-        .input-group label { display: block; font-size: 11px; color: #94a3b8; margin-bottom: 6px; text-transform: uppercase; }
-        .input-group input, textarea { width: 100%; background: #050a18; border: 1px solid var(--border); padding: 12px; border-radius: 10px; color: white; outline: none; box-sizing: border-box; }
-        .input-group input:focus { border-color: var(--blue); }
-
-        .btn { border: none; padding: 12px; border-radius: 10px; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 13px; width: 100%; }
-        .btn-blue { background: var(--blue); }
-        .btn-green { background: var(--green); }
-        .btn-red { background: var(--red); }
-        .btn-yellow { background: var(--yellow); color: #000; }
-        .btn:active { transform: scale(0.95); }
+        .input-group label { display: block; font-size: 11px; color: #94a3b8; margin-bottom: 5px; text-transform: uppercase; }
+        input, textarea { width: 100%; background: #050a18; border: 1px solid var(--border); padding: 12px; border-radius: 10px; color: white; outline: none; box-sizing: border-box; }
+        .btn { border: none; padding: 12px; border-radius: 10px; color: white; font-weight: bold; cursor: pointer; width: 100%; margin-top: 10px; }
     </style>
 </head>
 <body>
-
     <div class="top-bar">
-        <a href="index.html"><i class="fas fa-chevron-left"></i> <span style="font-size: 16px; margin-left: 10px;">Admin Hub</span></a>
-        <span class="admin-tag">Master Admin</span>
+        <span>Admin Hub</span>
+        <span style="background:var(--red); padding:4px 8px; border-radius:5px; font-size:10px;">MASTER</span>
     </div>
 
     <div class="container">
-        
-        <div class="manage-box" style="border-color: var(--yellow);">
-            <h3 style="color: var(--yellow);"><i class="fas fa-cogs"></i> Global App Settings</h3>
-            
-            <div class="input-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                <div class="input-group">
-                    <label>Min Withdraw (GP)</label>
-                    <input type="number" id="conf-min-limit" placeholder="10000">
-                </div>
-                <div class="input-group">
-                    <label>GP Rate per $1</label>
-                    <input type="number" id="conf-rate" placeholder="10000">
-                </div>
-                <div class="input-group">
-                    <label>Task Reward</label>
-                    <input type="number" id="conf-task-reward" placeholder="100">
-                </div>
-                <div class="input-group">
-                    <label>Refer Bonus</label>
-                    <input type="number" id="conf-refer-bonus" placeholder="1000">
-                </div>
-            </div>
-            <button class="btn btn-yellow" onclick="saveGlobalConfig()">SAVE ALL SETTINGS</button>
-        </div>
-
-        <div class="stats-grid">
-            <div class="stat-card">
-                <i class="fas fa-coins" style="color: var(--yellow);"></i>
-                <span>Current GP</span>
-                <b id="live-gp">0</b>
-            </div>
-            <div class="stat-card">
-                <i class="fas fa-tasks" style="color: var(--green);"></i>
-                <span>Tasks Done</span>
-                <b id="live-task">0</b>
-            </div>
-        </div>
-
-        <div class="manage-box">
-            <h3 style="color: var(--blue);"><i class="fas fa-user-cog"></i> Balance Management</h3>
+        <div class="manage-box" style="border-color: var(--blue);">
+            <h3 style="color:var(--blue);"><i class="fas fa-search"></i> User Search & Control</h3>
             <div class="input-group">
-                <label>Amount (Add/Sub)</label>
-                <input type="number" id="gp-amount" placeholder="e.g. 5000">
+                <input type="text" id="search-uid" placeholder="Enter User ID (e.g. 774900)">
+                <button class="btn" style="background:var(--blue);" onclick="searchUser()">SEARCH USER</button>
             </div>
-            <div style="display: flex; gap: 10px;">
-                <button class="btn btn-green" onclick="modifyGP('add')">Add GP</button>
-                <button class="btn btn-red" onclick="modifyGP('sub')">Remove GP</button>
+            <div id="user-panel" style="display:none; margin-top:15px; border-top:1px solid #1e2d4d; padding-top:15px;">
+                <h4 id="panel-title" style="color:var(--yellow);">User ID: #000</h4>
+                <div class="input-group"><label>GP Balance</label><input type="number" id="edit-gp"></div>
+                <div class="input-group"><label>TON Wallet</label><input type="text" id="edit-ton"></div>
+                <div class="input-group"><label>BNB Wallet</label><input type="text" id="edit-bnb"></div>
+                <button class="btn" style="background:var(--green);" onclick="saveUserChanges()">UPDATE USER DATA</button>
             </div>
+        </div>
+
+        <div class="manage-box" style="border-color: var(--red);">
+            <h3 style="color:var(--red);"><i class="fas fa-hand-holding-usd"></i> Withdrawal Requests</h3>
+            <div id="withdraw-list"></div>
+        </div>
+
+        <div class="manage-box" style="border-color: var(--yellow);">
+            <h3 style="color:var(--yellow);"><i class="fas fa-cogs"></i> App Config</h3>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                <div class="input-group"><label>Min Withdraw</label><input type="number" id="conf-min"></div>
+                <div class="input-group"><label>GP Rate ($1)</label><input type="number" id="conf-rate"></div>
+            </div>
+            <button class="btn" style="background:var(--yellow); color:black;" onclick="saveConfig()">SAVE CONFIG</button>
         </div>
 
         <div class="manage-box" style="border-color: var(--green);">
-            <h3 style="color: var(--green);"><i class="fas fa-comments"></i> User Support Inbox</h3>
-            <div id="admin-inbox-list" style="max-height: 400px; overflow-y: auto;">
-                </div>
+            <h3 style="color:var(--green);"><i class="fas fa-comments"></i> Support Inbox</h3>
+            <div id="admin-inbox-list"></div>
         </div>
-
     </div>
 
     <script>
-        // --- ADMIN ACCESS CONTROL ---
-        const adminID = 774900; // Apnar Telegram ID ekhane check korun
-        const tgUser = window.Telegram.WebApp.initDataUnsafe?.user;
-
-        if (!tgUser || tgUser.id !== adminID) {
-            document.body.innerHTML = `<div style="background:#050a18; color:white; height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:20px;">
-                <i class="fas fa-user-shield" style="font-size:70px; color:#ff4b2b; margin-bottom:20px;"></i>
-                <h1 style="color:#ff4b2b;">Access Denied!</h1>
-                <p>Only authorized admin can access this page.</p>
-                <a href="index.html" style="background:#ff4b2b; color:white; text-decoration:none; padding:12px 25px; border-radius:10px; margin-top:20px; font-weight:bold;">Back to Home</a>
-            </div>`;
-            throw new Error("Unauthorized Access");
+        // Search & Edit Logic
+        function searchUser() {
+            const uid = document.getElementById('search-uid').value;
+            if(!uid) return;
+            document.getElementById('user-panel').style.display = 'block';
+            document.getElementById('panel-title').innerText = "User ID: #" + uid;
+            document.getElementById('edit-gp').value = localStorage.getItem('user_gp') || 0;
+            document.getElementById('edit-ton').value = localStorage.getItem('wallet_ton') || "";
+            document.getElementById('edit-bnb').value = localStorage.getItem('wallet_bnb') || "";
         }
 
-        // --- GLOBAL CONFIG LOGIC ---
-        function saveGlobalConfig() {
-            const config = {
-                min_limit: document.getElementById('conf-min-limit').value || 10000,
-                rate: document.getElementById('conf-rate').value || 10000,
-                task_reward: parseInt(document.getElementById('conf-task-reward').value) || 100,
-                refer_bonus: document.getElementById('conf-refer-bonus').value || 1000
-            };
-            localStorage.setItem('admin_config', JSON.stringify(config));
-            alert("App settings updated successfully!");
+        function saveUserChanges() {
+            localStorage.setItem('user_gp', document.getElementById('edit-gp').value);
+            localStorage.setItem('wallet_ton', document.getElementById('edit-ton').value);
+            localStorage.setItem('wallet_bnb', document.getElementById('edit-bnb').value);
+            alert("User data updated!");
         }
 
-        function loadConfig() {
-            const current = JSON.parse(localStorage.getItem('admin_config'));
-            if(current) {
-                document.getElementById('conf-min-limit').value = current.min_limit;
-                document.getElementById('conf-rate').value = current.rate;
-                document.getElementById('conf-task-reward').value = current.task_reward;
-                document.getElementById('conf-refer-bonus').value = current.refer_bonus;
-            }
-        }
-
-        // --- STATS & BALANCE LOGIC ---
-        function refreshStats() {
-            const gp = parseInt(localStorage.getItem('user_gp')) || 0;
-            const task = parseInt(localStorage.getItem('tasks_done')) || 0;
-            document.getElementById('live-gp').innerText = gp.toLocaleString();
-            document.getElementById('live-task').innerText = task;
-        }
-
-        function modifyGP(type) {
-            const amount = parseInt(document.getElementById('gp-amount').value);
-            if (!amount || amount <= 0) return alert("Enter valid amount");
-            let currentGP = parseInt(localStorage.getItem('user_gp')) || 0;
-            localStorage.setItem('user_gp', type === 'add' ? currentGP + amount : Math.max(0, currentGP - amount));
-            alert("Balance Updated!");
-            refreshStats();
-        }
-
-        // --- INBOX LOGIC (From your previous code) ---
-        function loadAdminInbox() {
-            const list = document.getElementById('admin-inbox-list');
-            const messages = JSON.parse(localStorage.getItem('admin_messages')) || [];
-            if(messages.length === 0) { list.innerHTML = "<p style='font-size:12px; color:#94a3b8;'>No messages.</p>"; return; }
-            list.innerHTML = messages.reverse().map(m => `
-                <div style="background:#050a18; padding:15px; border-radius:10px; margin-bottom:10px; border:1px solid #1e2d4d;">
-                    <div style="font-size:11px; color:var(--green);">From: ${m.userName} (ID: ${m.userId})</div>
-                    <div style="margin:8px 0; font-size:13px;">${m.message}</div>
-                    ${m.reply ? `<div style="color:var(--yellow); font-size:12px;">Replied: ${m.reply}</div>` : `
-                        <textarea id="reply-to-${m.id}" placeholder="Reply write..." style="width:100%; background:#121e36; color:white; border:1px solid var(--blue); border-radius:5px; padding:5px; font-size:12px;"></textarea>
-                        <button onclick="sendReply(${m.id})" style="background:var(--green); color:white; border:none; padding:5px 10px; border-radius:5px; margin-top:5px; cursor:pointer; font-size:11px;">Send Reply</button>
-                    `}
-                    <button onclick="deleteMsg(${m.id})" style="background:var(--red); color:white; border:none; padding:5px 10px; border-radius:5px; margin-top:5px; cursor:pointer; float:right; font-size:11px;">Delete</button>
-                    <div style="clear:both;"></div>
+        // Withdraw Logic
+        function loadWithdraws() {
+            const list = document.getElementById('withdraw-list');
+            const requests = JSON.parse(localStorage.getItem('all_withdraw_requests')) || [];
+            if(requests.length === 0) { list.innerHTML = "<p style='font-size:12px; color:#94a3b8;'>No requests.</p>"; return; }
+            list.innerHTML = requests.reverse().map(r => `
+                <div style="background:#050a18; padding:15px; border-radius:10px; border:1px solid #1e2d4d; margin-bottom:10px;">
+                    <div style="font-size:12px; color:var(--yellow);">ID: #${r.userId} | ${r.date}</div>
+                    <h3 style="margin:5px 0;">${r.amount} GP</h3>
+                    <div style="font-size:11px; color:#94a3b8;">TON: ${r.tonWallet}<br>BNB: ${r.bnbWallet}</div>
+                    ${r.status === 'pending' ? `
+                        <div style="display:flex; gap:10px; margin-top:10px;">
+                            <button onclick="handleReq(${r.id}, 'success')" style="flex:1; background:var(--green); border:none; padding:8px; border-radius:5px; color:white;">ACCEPT</button>
+                            <button onclick="handleReq(${r.id}, 'rejected')" style="flex:1; background:var(--red); border:none; padding:8px; border-radius:5px; color:white;">REJECT</button>
+                        </div>
+                    ` : `<div style="text-align:center; font-weight:bold; color:white; margin-top:10px;">${r.status.toUpperCase()}</div>`}
                 </div>
             `).join('');
         }
 
-        function sendReply(msgId) {
-            const replyText = document.getElementById(`reply-to-${msgId}`).value;
-            if(!replyText) return alert("Write reply!");
-            let messages = JSON.parse(localStorage.getItem('admin_messages')) || [];
-            const index = messages.findIndex(m => m.id === msgId);
+        function handleReq(id, status) {
+            let requests = JSON.parse(localStorage.getItem('all_withdraw_requests')) || [];
+            const index = requests.findIndex(r => r.id === id);
             if(index !== -1) {
-                messages[index].reply = replyText;
-                localStorage.setItem('admin_messages', JSON.stringify(messages));
-                alert("Reply Sent!");
-                loadAdminInbox();
+                if(status === 'rejected') {
+                    let gp = parseInt(localStorage.getItem('user_gp')) || 0;
+                    localStorage.setItem('user_gp', gp + requests[index].amount);
+                }
+                requests[index].status = status;
+                localStorage.setItem('all_withdraw_requests', JSON.stringify(requests));
+                loadWithdraws();
             }
         }
 
-        function deleteMsg(msgId) {
-            if(confirm("Delete message?")) {
-                let messages = JSON.parse(localStorage.getItem('admin_messages')) || [];
-                localStorage.setItem('admin_messages', JSON.stringify(messages.filter(m => m.id !== msgId)));
-                loadAdminInbox();
-            }
+        // Config Logic
+        function saveConfig() {
+            const config = { min_limit: document.getElementById('conf-min').value, rate: document.getElementById('conf-rate').value };
+            localStorage.setItem('admin_config', JSON.stringify(config));
+            alert("Config updated!");
         }
 
-        window.onload = () => { loadConfig(); refreshStats(); loadAdminInbox(); };
+        window.onload = () => {
+            const c = JSON.parse(localStorage.getItem('admin_config'));
+            if(c) { document.getElementById('conf-min').value = c.min_limit; document.getElementById('conf-rate').value = c.rate; }
+            loadWithdraws();
+        };
     </script>
 </body>
 </html>
