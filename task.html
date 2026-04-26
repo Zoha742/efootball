@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tasks - eFootball HUB</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --bg: #050a18; --card-dark: #121e36; --text: #ffffff; --border: #1e2d4d; --green: #22c55e; }
+        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; padding: 20px; padding-bottom: 90px; }
+        
+        .header { font-size: 20px; font-weight: bold; border-left: 4px solid var(--green); padding-left: 10px; margin-bottom: 25px; }
+        
+        .task-card { background: var(--card-dark); border-radius: 15px; padding: 20px; margin-bottom: 15px; border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        .task-info h4 { font-size: 16px; margin-bottom: 5px; }
+        .task-info p { color: var(--green); font-weight: bold; font-size: 13px; }
+        
+        .claim-btn { background: linear-gradient(135deg, #11998e, #38ef7d); border: none; color: white; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .claim-btn:active { transform: scale(0.9); }
+
+        /* Bottom Nav */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 70px; background: rgba(5, 10, 24, 0.85); backdrop-filter: blur(15px); display: flex; justify-content: space-around; align-items: center; border-top: 1px solid rgba(255, 255, 255, 0.1); z-index: 1000; }
+        .nav-item { text-align: center; color: #64748b; text-decoration: none; font-size: 11px; }
+        .nav-item i { font-size: 20px; display: block; margin-bottom: 4px; }
+    </style>
+</head>
+<body>
+
+    <div class="header">AVAILABLE TASKS</div>
+
+    <div class="task-card">
+        <div class="task-info">
+            <h4>Watch Adsgram Video</h4>
+            <p>+ 500 GP Points</p>
+        </div>
+        <button class="claim-btn" onclick="addReward(500)">Claim</button>
+    </div>
+
+    <div class="task-card">
+        <div class="task-info">
+            <h4>Daily Check-in</h4>
+            <p>+ 200 GP Points</p>
+        </div>
+        <button class="claim-btn" onclick="addReward(200)">Claim</button>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item"><i class="fas fa-home"></i>Home</a>
+        <a href="legend.html" class="nav-item"><i class="fas fa-crown"></i>Legend</a>
+        <a href="task.html" class="nav-item" style="color: #22c55e;"><i class="fas fa-clipboard-check"></i>Task</a>
+        <a href="profile.html" class="nav-item"><i class="fas fa-user-circle"></i>Profile</a>
+    </nav>
+
+    <script>
+        function addReward(amount) {
+            let currentGP = parseInt(localStorage.getItem('user_gp')) || 0;
+            let totalTasks = parseInt(localStorage.getItem('tasks_done')) || 0;
+            
+            localStorage.setItem('user_gp', currentGP + amount);
+            localStorage.setItem('tasks_done', totalTasks + 1);
+            
+            alert(amount + " GP Profile-e joma hoyeche!");
+        }
+    </script>
+</body>
+</html>
