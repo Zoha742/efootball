@@ -5,7 +5,7 @@
       "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1775477854/Pep_Guardiola_ymdrle.png",
       "nationality": "Spain",
       "team": "Barcelona",
-      "boost_cond": "Young Players (≤23) - 200%",
+      "boost_cond": "Young Players 23+ - 200%",
       "booster1": "Tight Possession +1",
       "booster2": "Balance +1",
       "cp_style": "Orchestrator",
