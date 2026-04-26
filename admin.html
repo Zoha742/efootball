@@ -18,68 +18,71 @@
         
         .input-group { margin-bottom: 15px; }
         .input-group label { display: block; font-size: 11px; color: #94a3b8; margin-bottom: 6px; text-transform: uppercase; }
-        input, textarea { width: 100%; background: #050a18; border: 1px solid var(--border); padding: 12px; border-radius: 10px; color: white; outline: none; box-sizing: border-box; font-size: 14px; }
+        input { width: 100%; background: #050a18; border: 1px solid var(--border); padding: 12px; border-radius: 10px; color: white; outline: none; box-sizing: border-box; font-size: 14px; }
         input:focus { border-color: var(--blue); }
 
         .btn { border: none; padding: 12px; border-radius: 10px; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; width: 100%; margin-top: 10px; }
-        .btn-blue { background: var(--blue); }
-        .btn-green { background: var(--green); }
-        .btn-red { background: var(--red); }
-        .btn-yellow { background: var(--yellow); color: #000; }
-
+        .btn-blue { background: var(--blue); } .btn-green { background: var(--green); } .btn-red { background: var(--red); } .btn-yellow { background: var(--yellow); color: #000; }
+        
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
         .stat-card { background: var(--card); border-radius: 15px; padding: 15px; border: 1px solid var(--border); text-align: center; }
-        .stat-card i { font-size: 20px; margin-bottom: 8px; display: block; }
+        .stat-card b { display: block; font-size: 18px; margin-top: 5px; color: var(--yellow); }
     </style>
 </head>
 <body>
 
     <div class="top-bar">
         <a href="index.html"><i class="fas fa-chevron-left"></i> <span>Back to Hub</span></a>
-        <span style="background:var(--red); padding:4px 10px; border-radius:5px; font-size:10px; font-weight: bold;">ADMIN PANEL</span>
+        <span style="background:var(--red); padding:4px 10px; border-radius:5px; font-size:10px; font-weight: bold;">ADMIN</span>
     </div>
 
     <div class="container">
         
         <div class="manage-box">
-            <h3><i class="fas fa-cogs"></i> App Config & Management</h3>
+            <h3><i class="fas fa-tools"></i> App Settings & Limits</h3>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                <div class="input-group"><label>Min Withdraw</label><input type="number" id="conf-min-limit" placeholder="10000"></div>
-                <div class="input-group"><label>GP Rate ($1)</label><input type="number" id="conf-rate" placeholder="10000"></div>
-                <div class="input-group"><label>Task Reward</label><input type="number" id="conf-task" placeholder="100"></div>
-                <div class="input-group"><label>Refer Bonus</label><input type="number" id="conf-refer" placeholder="1000"></div>
+                <div class="input-group">
+                    <label>Min Withdraw (GP)</label>
+                    <input type="number" id="conf-min-limit" placeholder="e.g. 10000">
+                </div>
+                <div class="input-group">
+                    <label>GP Rate ($1)</label>
+                    <input type="number" id="conf-rate" placeholder="e.g. 10000">
+                </div>
             </div>
-            <button class="btn btn-yellow" onclick="saveGlobalConfig()">SAVE SETTINGS</button>
+            <button class="btn btn-yellow" onclick="saveGlobalConfig()">SAVE APP LIMITS</button>
         </div>
 
         <div class="stats-grid">
-            <div class="stat-card"><i class="fas fa-coins" style="color: var(--yellow);"></i><span>Current GP</span><b id="live-gp" style="display:block;">0</b></div>
-            <div class="stat-card"><i class="fas fa-video" style="color: var(--green);"></i><span>Ads Watched</span><b id="live-ads" style="display:block;">0</b></div>
+            <div class="stat-card">
+                <i class="fas fa-coins" style="color: var(--yellow);"></i>
+                <span>Current GP</span>
+                <b id="live-gp">0</b>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-video" style="color: var(--green);"></i>
+                <span>Ads Watched</span>
+                <b id="live-ads">0</b>
+            </div>
         </div>
 
         <div class="manage-box" style="border-color: var(--green);">
-            <h3 style="color: var(--green);"><i class="fas fa-gift"></i> Gift GP to User</h3>
+            <h3 style="color: var(--green);"><i class="fas fa-gift"></i> Gift GP to Account</h3>
             <div class="input-group">
                 <label>Gift Amount</label>
-                <input type="number" id="gift-amount" placeholder="Enter GP Amount">
+                <input type="number" id="gift-amount" placeholder="Enter GP to send">
             </div>
             <button class="btn btn-green" onclick="giftGP()">SEND GIFT GP</button>
         </div>
 
         <div class="manage-box" style="border-color: var(--red);">
-            <h3 style="color: var(--red);"><i class="fas fa-hand-holding-usd"></i> Withdraw Requests</h3>
+            <h3 style="color: var(--red);"><i class="fas fa-list"></i> Pending Withdrawals</h3>
             <div id="admin-withdraw-list"></div>
-        </div>
-
-        <div class="manage-box" style="border-color: var(--blue);">
-            <h3 style="color: var(--blue);"><i class="fas fa-comments"></i> Support Inbox</h3>
-            <div id="admin-inbox-list"></div>
         </div>
 
     </div>
 
     <script>
-        // কোড যেন ব্লক না হয় সেজন্য সিকিউরিটি আপাতত অফ রাখা হয়েছে
         function refreshStats() {
             document.getElementById('live-gp').innerText = (localStorage.getItem('user_gp') || 0);
             document.getElementById('live-ads').innerText = (localStorage.getItem('total_ads_watched') || 0);
@@ -87,13 +90,11 @@
 
         function saveGlobalConfig() {
             const config = {
-                min_limit: document.getElementById('conf-min-limit').value || 10000,
-                rate: document.getElementById('conf-rate').value || 10000,
-                task_reward: document.getElementById('conf-task').value || 100,
-                refer_bonus: document.getElementById('conf-refer').value || 1000
+                min_limit: parseInt(document.getElementById('conf-min-limit').value) || 10000,
+                rate: parseInt(document.getElementById('conf-rate').value) || 10000
             };
             localStorage.setItem('admin_config', JSON.stringify(config));
-            alert("Settings Updated!");
+            alert("App Limits Saved! Now Withdraw page will show this limit.");
         }
 
         function giftGP() {
@@ -101,7 +102,7 @@
             if(!amount) return alert("পয়েন্ট লিখুন!");
             let gp = parseInt(localStorage.getItem('user_gp')) || 0;
             localStorage.setItem('user_gp', gp + amount);
-            alert("Gift GP Added to Account!");
+            alert("Gift GP Added Successfully!");
             document.getElementById('gift-amount').value = "";
             refreshStats();
         }
@@ -117,8 +118,8 @@
                     <div style="font-size:11px; color:#94a3b8;">TON: ${r.tonWallet}<br>BNB: ${r.bnbWallet}</div>
                     ${r.status === 'pending' ? `
                         <div style="display:flex; gap:10px; margin-top:10px;">
-                            <button onclick="handleWithdraw(${r.id}, 'success')" style="flex:1; background:var(--green); border:none; padding:8px; border-radius:8px; color:white;">ACCEPT</button>
-                            <button onclick="handleWithdraw(${r.id}, 'rejected')" style="flex:1; background:var(--red); border:none; padding:8px; border-radius:8px; color:white;">REJECT</button>
+                            <button onclick="handleWithdraw(${r.id}, 'success')" style="flex:1; background:var(--green); border:none; padding:8px; border-radius:8px; color:white; cursor:pointer;">ACCEPT</button>
+                            <button onclick="handleWithdraw(${r.id}, 'rejected')" style="flex:1; background:var(--red); border:none; padding:8px; border-radius:8px; color:white; cursor:pointer;">REJECT</button>
                         </div>
                     ` : `<div style="text-align:center; font-weight:bold; margin-top:10px;">${r.status.toUpperCase()}</div>`}
                 </div>
@@ -144,8 +145,6 @@
             if(c) {
                 document.getElementById('conf-min-limit').value = c.min_limit;
                 document.getElementById('conf-rate').value = c.rate;
-                document.getElementById('conf-task').value = c.task_reward;
-                document.getElementById('conf-refer').value = c.refer_bonus;
             }
             refreshStats(); loadWithdrawals();
         };
