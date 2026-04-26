@@ -3,64 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tasks - eFootball HUB</title>
+    <title>Daily Tasks - eFootball HUB</title>
+    <script src="https://sad.adsgram.ai/js/adsgram-sdk.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --bg: #050a18; --card-dark: #121e36; --text: #ffffff; --border: #1e2d4d; --green: #22c55e; }
-        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; padding: 20px; padding-bottom: 90px; }
+        :root { --bg: #050a18; --card: #121e36; --primary: #3b82f6; --text: #ffffff; --border: #1e2d4d; --green: #22c55e; }
+        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 30px; }
         
-        .header { font-size: 20px; font-weight: bold; border-left: 4px solid var(--green); padding-left: 10px; margin-bottom: 25px; }
-        
-        .task-card { background: var(--card-dark); border-radius: 15px; padding: 20px; margin-bottom: 15px; border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
-        .task-info h4 { font-size: 16px; margin-bottom: 5px; }
-        .task-info p { color: var(--green); font-weight: bold; font-size: 13px; }
-        
-        .claim-btn { background: linear-gradient(135deg, #11998e, #38ef7d); border: none; color: white; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: bold; transition: 0.3s; }
-        .claim-btn:active { transform: scale(0.9); }
+        .top-bar { display: flex; align-items: center; padding: 15px; background: rgba(18, 30, 54, 0.7); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; }
+        .top-bar a { color: white; text-decoration: none; margin-right: 15px; }
 
-        /* Bottom Nav */
-        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 70px; background: rgba(5, 10, 24, 0.85); backdrop-filter: blur(15px); display: flex; justify-content: space-around; align-items: center; border-top: 1px solid rgba(255, 255, 255, 0.1); z-index: 1000; }
-        .nav-item { text-align: center; color: #64748b; text-decoration: none; font-size: 11px; }
-        .nav-item i { font-size: 20px; display: block; margin-bottom: 4px; }
+        .container { padding: 20px; text-align: center; }
+        .task-card { background: var(--card); border-radius: 20px; padding: 25px; border: 1px solid var(--border); margin-bottom: 20px; }
+        
+        .reward-info { margin-bottom: 20px; }
+        .reward-info i { font-size: 40px; color: #fbbf24; margin-bottom: 10px; }
+        .reward-info h2 { margin: 5px 0; color: var(--green); }
+
+        .ad-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0; }
+        .ad-slot { background: #050a18; border: 1px solid var(--border); padding: 15px 5px; border-radius: 12px; font-size: 12px; transition: 0.3s; }
+        .ad-slot.done { border-color: var(--green); color: var(--green); }
+        .ad-slot.done i { color: var(--green); }
+
+        .btn-main { width: 100%; border: none; padding: 15px; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 16px; }
+        .btn-blue { background: var(--primary); box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); }
+        .btn-wait { background: #4b5563; cursor: not-allowed; }
+        
+        #timer { font-size: 18px; font-weight: bold; color: #f87171; margin-top: 10px; display: none; }
     </style>
 </head>
 <body>
 
-    <div class="header">AVAILABLE TASKS</div>
-
-    <div class="task-card">
-        <div class="task-info">
-            <h4>Watch Adsgram Video</h4>
-            <p>+ 500 GP Points</p>
-        </div>
-        <button class="claim-btn" onclick="addReward(500)">Claim</button>
+    <div class="top-bar">
+        <a href="index.html"><i class="fas fa-chevron-left"></i></a>
+        <span>Daily Video Tasks</span>
     </div>
 
-    <div class="task-card">
-        <div class="task-info">
-            <h4>Daily Check-in</h4>
-            <p>+ 200 GP Points</p>
-        </div>
-        <button class="claim-btn" onclick="addReward(200)">Claim</button>
-    </div>
+    <div class="container">
+        <div class="task-card">
+            <div class="reward-info">
+                <i class="fas fa-gift"></i>
+                <span>Task Reward</span>
+                <h2>100 GP Points</h2>
+            </div>
 
-    <nav class="bottom-nav">
-        <a href="index.html" class="nav-item"><i class="fas fa-home"></i>Home</a>
-        <a href="legend.html" class="nav-item"><i class="fas fa-crown"></i>Legend</a>
-        <a href="task.html" class="nav-item" style="color: #22c55e;"><i class="fas fa-clipboard-check"></i>Task</a>
-        <a href="profile.html" class="nav-item"><i class="fas fa-user-circle"></i>Profile</a>
-    </nav>
+            <div class="ad-grid" id="ad-slots">
+                <div class="ad-slot" id="slot-1"><i class="fas fa-play"></i><br>Ad 1</div>
+                <div class="ad-slot" id="slot-2"><i class="fas fa-play"></i><br>Ad 2</div>
+                <div class="ad-slot" id="slot-3"><i class="fas fa-play"></i><br>Ad 3</div>
+                <div class="ad-slot" id="slot-4"><i class="fas fa-play"></i><br>Ad 4</div>
+                <div class="ad-slot" id="slot-5"><i class="fas fa-play"></i><br>Ad 5</div>
+                <div class="ad-slot" id="slot-6"><i class="fas fa-play"></i><br>Ad 6</div>
+            </div>
+
+            <button id="task-btn" class="btn-main btn-blue" onclick="handleTask()">WATCH AD (1/6)</button>
+            <div id="timer">Next Task In: <span id="countdown">12:00:00</span></div>
+        </div>
+    </div>
 
     <script>
-        function addReward(amount) {
-            let currentGP = parseInt(localStorage.getItem('user_gp')) || 0;
-            let totalTasks = parseInt(localStorage.getItem('tasks_done')) || 0;
-            
-            localStorage.setItem('user_gp', currentGP + amount);
-            localStorage.setItem('tasks_done', totalTasks + 1);
-            
-            alert(amount + " GP Profile-e joma hoyeche!");
+        let adsWatched = 0;
+        const cooldownTime = 12 * 60 * 60 * 1000; // 12 Hours in ms
+
+        function updateUI() {
+            const lastCollect = localStorage.getItem('last_task_collect');
+            const now = Date.now();
+
+            if (lastCollect && (now - lastCollect < cooldownTime)) {
+                startTimer(cooldownTime - (now - lastCollect));
+            } else {
+                resetTaskUI();
+            }
         }
+
+        function handleTask() {
+            if (adsWatched < 6) {
+                // Ekhane Adsgram logic hobe. Sample-er jonno ami direct count barachhi.
+                alert("Loading Ad " + (adsWatched + 1) + "...");
+                
+                adsWatched++;
+                document.getElementById(`slot-${adsWatched}`).classList.add('done');
+                document.getElementById(`slot-${adsWatched}`).innerHTML = '<i class="fas fa-check-circle"></i><br>Done';
+                
+                if (adsWatched < 6) {
+                    document.getElementById('task-btn').innerText = `WATCH AD (${adsWatched + 1}/6)`;
+                } else {
+                    document.getElementById('task-btn').innerText = "COLLECT 100 GP";
+                    document.getElementById('task-btn').style.background = "var(--green)";
+                }
+            } else {
+                collectReward();
+            }
+        }
+
+        function collectReward() {
+            let currentGP = parseInt(localStorage.getItem('user_gp')) || 0;
+            localStorage.setItem('user_gp', currentGP + 100);
+            localStorage.setItem('last_task_collect', Date.now());
+            
+            alert("Congratulations! 100 GP Added to your wallet.");
+            updateUI();
+        }
+
+        function startTimer(duration) {
+            const btn = document.getElementById('task-btn');
+            const timerDiv = document.getElementById('timer');
+            const countdownSpan = document.getElementById('countdown');
+            
+            btn.style.display = "none";
+            timerDiv.style.display = "block";
+
+            const interval = setInterval(() => {
+                duration -= 1000;
+                if (duration <= 0) {
+                    clearInterval(interval);
+                    resetTaskUI();
+                    return;
+                }
+
+                let hours = Math.floor(duration / (1000 * 60 * 60));
+                let minutes = Math.floor((duration % (1000 * 60 * 60)) / (1000 * 60));
+                let seconds = Math.floor((duration % (1000 * 60)) / 1000);
+
+                countdownSpan.innerText = 
+                    (hours < 10 ? "0" + hours : hours) + ":" + 
+                    (minutes < 10 ? "0" + minutes : minutes) + ":" + 
+                    (seconds < 10 ? "0" + seconds : seconds);
+            }, 1000);
+        }
+
+        function resetTaskUI() {
+            adsWatched = 0;
+            document.getElementById('task-btn').style.display = "block";
+            document.getElementById('task-btn').classList.add('btn-blue');
+            document.getElementById('task-btn').innerText = "WATCH AD (1/6)";
+            document.getElementById('timer').style.display = "none";
+            
+            // Slots reset
+            for (let i = 1; i <= 6; i++) {
+                const slot = document.getElementById(`slot-${i}`);
+                slot.classList.remove('done');
+                slot.innerHTML = `<i class="fas fa-play"></i><br>Ad ${i}`;
+            }
+        }
+
+        window.onload = updateUI;
     </script>
 </body>
 </html>
