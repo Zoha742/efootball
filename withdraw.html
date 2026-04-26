@@ -14,10 +14,29 @@
         .withdraw-card { background: var(--card); border-radius: 20px; padding: 25px; border: 1px solid var(--border); margin-bottom: 25px; }
         .balance-info h2 { margin: 5px 0; font-size: 32px; color: #fbbf24; }
         .rate-info { font-size: 12px; color: #94a3b8; margin-bottom: 15px; background: rgba(255,255,255,0.05); padding: 8px; border-radius: 8px; }
-        input { width: 100%; background: #050a18; border: 1px solid var(--border); padding: 15px; border-radius: 12px; color: white; text-align: center; outline: none; box-sizing: border-box; }
-        .withdraw-btn { width: 100%; border: none; padding: 15px; border-radius: 12px; color: white; font-weight: bold; margin-top: 20px; cursor: pointer; transition: 0.3s; }
+        
+        /* Input Typing Fix & Remove Arrows */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        input[type=number] { -moz-appearance: textfield; }
+        
+        input { 
+            width: 100%; background: #050a18; border: 1px solid var(--border); 
+            padding: 15px; border-radius: 12px; color: white; text-align: center; 
+            outline: none; box-sizing: border-box; font-size: 18px; font-weight: bold;
+        }
+
+        .withdraw-btn { 
+            width: 100%; border: none; padding: 16px; border-radius: 12px; 
+            color: white; font-weight: bold; margin-top: 20px; cursor: pointer; 
+            transition: 0.3s; font-size: 14px; text-transform: uppercase;
+        }
         .btn-gray { background: var(--gray); cursor: not-allowed; }
-        .btn-green { background: var(--green); }
+        .btn-green { background: var(--green) !important; box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4); }
+        
+        .history-title { text-align: left; font-size: 16px; color: #94a3b8; margin-top: 10px; }
+        #request-list { text-align: left; margin-top: 15px; }
+        .request-item { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 15px; margin-bottom: 10px; }
     </style>
 </head>
 <body>
@@ -34,29 +53,27 @@
                 <h2 id="current-gp">0 GP</h2>
             </div>
             <div class="rate-info" id="rate-text">Rate Loading...</div>
-            <input type="number" id="withdraw-amount" placeholder="Enter Amount" oninput="checkLimit()">
-            <button id="main-btn" class="withdraw-btn btn-gray" onclick="sendRequest()" disabled>MIN LIMIT REQUIRED</button>
+            
+            <input type="number" id="withdraw-amount" placeholder="0" oninput="checkLimit()" inputmode="numeric">
+            
+            <button id="main-btn" class="withdraw-btn btn-gray" onclick="sendRequest()" disabled>ENTER AMOUNT</button>
         </div>
 
-        <div style="text-align: left;">
-            <h3 style="font-size: 16px; color: #94a3b8;">History</h3>
-            <div id="request-list"></div>
-        </div>
+        <div class="history-title">Withdrawal History</div>
+        <div id="request-list"></div>
     </div>
 
     <script>
         const tg = window.Telegram.WebApp;
 
         function updateUI() {
-            // ১. অ্যাডমিন সেটিংস লোড করা
+            // Admin config ebong user balance load
             const adminConfig = JSON.parse(localStorage.getItem('admin_config')) || { min_limit: 10000, rate: 10000 };
             const userGP = parseInt(localStorage.getItem('user_gp')) || 0;
 
-            // ২. ব্যালেন্স এবং রেট দেখানো
             document.getElementById('current-gp').innerText = userGP.toLocaleString() + " GP";
-            document.getElementById('rate-text').innerText = `Rate: ${adminConfig.rate.toLocaleString()} GP = $1.00 USD`;
+            document.getElementById('rate-text').innerText = `Rate: ${Number(adminConfig.rate).toLocaleString()} GP = $1.00 USD`;
             
-            // ৩. বাটন স্ট্যাটাস চেক
             checkLimit();
             loadHistory();
         }
@@ -64,16 +81,30 @@
         function checkLimit() {
             const adminConfig = JSON.parse(localStorage.getItem('admin_config')) || { min_limit: 10000, rate: 10000 };
             const userGP = parseInt(localStorage.getItem('user_gp')) || 0;
-            const amount = parseInt(document.getElementById('withdraw-amount').value);
+            const amountInput = document.getElementById('withdraw-amount').value;
+            const amount = parseInt(amountInput) || 0;
             const btn = document.getElementById('main-btn');
 
-            if (amount >= adminConfig.min_limit && userGP >= amount) {
-                btn.classList.remove('btn-gray'); btn.classList.add('btn-green');
-                btn.innerText = "SEND WITHDRAW REQUEST"; btn.disabled = false;
-            } else {
-                btn.classList.add('btn-gray'); btn.classList.remove('btn-green');
-                btn.innerText = amount < adminConfig.min_limit ? `MIN ${adminConfig.min_limit} GP REQUIRED` : "INSUFFICIENT BALANCE";
+            const minLimit = Number(adminConfig.min_limit);
+
+            // Real-time logic check
+            if (amountInput === "" || amount === 0) {
+                btn.className = "withdraw-btn btn-gray";
+                btn.innerText = "ENTER AMOUNT";
                 btn.disabled = true;
+            } else if (amount > userGP) {
+                btn.className = "withdraw-btn btn-gray";
+                btn.innerText = "INSUFFICIENT BALANCE";
+                btn.disabled = true;
+            } else if (amount < minLimit) {
+                btn.className = "withdraw-btn btn-gray";
+                btn.innerText = `MIN ${minLimit.toLocaleString()} GP REQUIRED`;
+                btn.disabled = true;
+            } else {
+                // Condition met - Green Color
+                btn.className = "withdraw-btn btn-green";
+                btn.innerText = "SEND WITHDRAW REQUEST";
+                btn.disabled = false;
             }
         }
 
@@ -82,11 +113,12 @@
             const ton = localStorage.getItem('wallet_ton') || "Not Set";
             const bnb = localStorage.getItem('wallet_bnb') || "Not Set";
 
-            if (ton === "Not Set" && bnb === "Not Set") return alert("Please setup wallet in profile first!");
+            if (ton === "Not Set" && bnb === "Not Set") return alert("Wallet set kora nei! Profile-e giye wallet setup korun.");
 
-            const newReq = {
+            const req = {
                 id: Date.now(),
                 userId: tg.initDataUnsafe?.user?.id || "774900",
+                userName: tg.initDataUnsafe?.user?.first_name || "User",
                 amount: amount,
                 tonWallet: ton,
                 bnbWallet: bnb,
@@ -97,28 +129,35 @@
             let userGP = parseInt(localStorage.getItem('user_gp')) || 0;
             localStorage.setItem('user_gp', userGP - amount);
             
-            let allReqs = JSON.parse(localStorage.getItem('all_withdraw_requests')) || [];
-            allReqs.push(newReq);
-            localStorage.setItem('all_withdraw_requests', JSON.stringify(allReqs));
+            let all = JSON.parse(localStorage.getItem('all_withdraw_requests')) || [];
+            all.push(req);
+            localStorage.setItem('all_withdraw_requests', JSON.stringify(all));
 
-            alert("Request Sent to Admin!");
+            alert("Withdraw request pathano hoyeche!");
             document.getElementById('withdraw-amount').value = "";
             updateUI();
         }
 
         function loadHistory() {
             const list = document.getElementById('request-list');
-            const allReqs = JSON.parse(localStorage.getItem('all_withdraw_requests')) || [];
+            const all = JSON.parse(localStorage.getItem('all_withdraw_requests')) || [];
             const uid = tg.initDataUnsafe?.user?.id || "774900";
-            const myReqs = allReqs.filter(r => r.userId == uid);
+            const myReqs = all.filter(r => r.userId == uid);
 
-            if (myReqs.length === 0) { list.innerHTML = "<p style='font-size:12px; color:#4b5563;'>No withdraw history.</p>"; return; }
+            if (myReqs.length === 0) {
+                list.innerHTML = "<p style='color:#4b5563; font-size:12px;'>Kono history pawa jayni.</p>";
+                return;
+            }
+
             list.innerHTML = myReqs.reverse().map(r => `
-                <div style="background:#121e36; padding:15px; border-radius:12px; border:1px solid #1e2d4d; margin-bottom:10px;">
-                    <div style="display:flex; justify-content:space-between;">
-                        <b>${r.amount} GP</b>
-                        <span style="color:${r.status==='pending'?'#fbbf24':'#22c55e'}">${r.status.toUpperCase()}</span>
+                <div class="request-item">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <b style="color:#fbbf24;">${r.amount.toLocaleString()} GP</b>
+                        <span style="color:${r.status==='pending'?'#fbbf24':(r.status==='success'?'#22c55e':'#f87171')}; font-weight:bold; font-size:12px;">
+                            ${r.status.toUpperCase()}
+                        </span>
                     </div>
+                    <div style="font-size:10px; color:#94a3b8; margin-top:5px;">${r.date}</div>
                 </div>
             `).join('');
         }
