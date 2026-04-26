@@ -3,34 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wallet Setup</title>
+    <title>Wallet Setup - eFootball HUB</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --bg: #050a18; --card: #121e36; --primary: #3b82f6; --text: #ffffff; }
-        body { background: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; }
-        .top-bar { display: flex; align-items: center; padding: 15px; background: rgba(18, 30, 54, 0.7); border-bottom: 1px solid #1e2d4d; }
-        .top-bar a { color: white; text-decoration: none; font-size: 18px; margin-right: 15px; }
+        :root { --bg: #050a18; --card: #121e36; --primary: #3b82f6; --text: #ffffff; --border: #1e2d4d; --red: #ef4444; --green: #22c55e; }
+        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 30px; }
+        
+        .top-bar { display: flex; align-items: center; padding: 15px; background: rgba(18, 30, 54, 0.7); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; }
+        .top-bar a { color: white; text-decoration: none; margin-right: 15px; }
+
         .container { padding: 20px; }
-        .input-box { width: 100%; background: var(--card); border: 1px solid #1e2d4d; padding: 15px; border-radius: 12px; color: white; outline: none; margin-top: 10px; box-sizing: border-box; }
-        .btn-save { width: 100%; background: var(--primary); border: none; padding: 15px; border-radius: 12px; color: white; font-weight: bold; margin-top: 25px; cursor: pointer; }
+        .wallet-box { background: var(--card); border-radius: 15px; padding: 20px; border: 1px solid var(--border); margin-bottom: 20px; }
+        .wallet-box h3 { margin: 0 0 10px 0; font-size: 16px; display: flex; align-items: center; gap: 10px; }
+        
+        .input-group { position: relative; display: flex; flex-direction: column; gap: 10px; }
+        input { width: 100%; background: #050a18; border: 1px solid var(--border); padding: 12px; border-radius: 10px; color: white; outline: none; box-sizing: border-box; font-size: 14px; }
+        input:disabled { color: #94a3b8; border-color: transparent; background: rgba(255,255,255,0.02); }
+
+        .btn-group { display: flex; gap: 10px; margin-top: 10px; }
+        .btn { flex: 1; border: none; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 12px; transition: 0.3s; }
+        
+        .btn-save { background: var(--primary); color: white; }
+        .btn-edit { background: var(--green); color: white; }
+        .btn-delete { background: var(--red); color: white; }
+        .btn:active { transform: scale(0.95); }
+
+        .info-text { font-size: 11px; color: #94a3b8; margin-top: 15px; line-height: 1.4; }
     </style>
 </head>
 <body>
+
     <div class="top-bar">
         <a href="profile.html"><i class="fas fa-chevron-left"></i></a>
-        <span>Wallet Setup</span>
+        <span>Wallet Management</span>
     </div>
+
     <div class="container">
-        <h3>TON Wallet Address</h3>
-        <p style="font-size: 13px; color: #94a3b8;">পেমেন্ট নেওয়ার জন্য আপনার TON ওয়ালেট অ্যাড্রেসটি সাবমিট করুন।</p>
-        <input type="text" id="wallet" class="input-box" placeholder="UQA123...xyz">
-        <button class="btn-save" onclick="save()">SAVE WALLET</button>
+        <div class="wallet-box">
+            <h3 style="color: #0088cc;"><i class="fas fa-gem"></i> TON Wallet (TON)</h3>
+            <div class="input-group">
+                <input type="text" id="ton-input" placeholder="Enter TON Address" disabled>
+                <div class="btn-group">
+                    <button id="ton-save-btn" class="btn btn-save" onclick="saveWallet('ton')" style="display: none;">SAVE</button>
+                    <button id="ton-edit-btn" class="btn btn-edit" onclick="enableEdit('ton')">EDIT / ADD</button>
+                    <button class="btn btn-delete" onclick="deleteWallet('ton')">DELETE</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="wallet-box">
+            <h3 style="color: #f3ba2f;"><i class="fas fa-coins"></i> BNB Wallet (BEP20)</h3>
+            <div class="input-group">
+                <input type="text" id="bnb-input" placeholder="Enter BNB Address" disabled>
+                <div class="btn-group">
+                    <button id="bnb-save-btn" class="btn btn-save" onclick="saveWallet('bnb')" style="display: none;">SAVE</button>
+                    <button id="bnb-edit-btn" class="btn btn-edit" onclick="enableEdit('bnb')">EDIT / ADD</button>
+                    <button class="btn btn-delete" onclick="deleteWallet('bnb')">DELETE</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-text">
+            <i class="fas fa-exclamation-circle"></i> Wallet address thikvabe check kore save korun. Vul address-e payment request dile seta r fire pawa jabe na.
+        </div>
     </div>
+
     <script>
-        document.getElementById('wallet').value = localStorage.getItem('user_wallet') || "";
-        function save() {
-            localStorage.setItem('user_wallet', document.getElementById('wallet').value);
-            alert("Wallet Address Saved!");
+        // Load Saved Wallets
+        window.onload = function() {
+            const savedTon = localStorage.getItem('wallet_ton');
+            const savedBnb = localStorage.getItem('wallet_bnb');
+
+            if(savedTon) document.getElementById('ton-input').value = savedTon;
+            if(savedBnb) document.getElementById('bnb-input').value = savedBnb;
+        };
+
+        // Enable Input for Edit/Add
+        function enableEdit(type) {
+            const input = document.getElementById(`${type}-input`);
+            const saveBtn = document.getElementById(`${type}-save-btn`);
+            const editBtn = document.getElementById(`${type}-edit-btn`);
+
+            input.disabled = false;
+            input.focus();
+            input.style.border = "1px solid var(--primary)";
+            saveBtn.style.display = "block";
+            editBtn.style.display = "none";
+        }
+
+        // Save Logic
+        function saveWallet(type) {
+            const input = document.getElementById(`${type}-input`);
+            const saveBtn = document.getElementById(`${type}-save-btn`);
+            const editBtn = document.getElementById(`${type}-edit-btn`);
+            const value = input.value.trim();
+
+            if(!value) return alert("Please enter an address!");
+
+            localStorage.setItem(`wallet_${type}`, value);
+            
+            input.disabled = true;
+            input.style.border = "1px solid var(--border)";
+            saveBtn.style.display = "none";
+            editBtn.style.display = "block";
+            
+            alert(`${type.toUpperCase()} Wallet Saved!`);
+        }
+
+        // Delete Logic
+        function deleteWallet(type) {
+            if(confirm(`Are you sure to delete ${type.toUpperCase()} wallet?`)) {
+                localStorage.removeItem(`wallet_${type}`);
+                document.getElementById(`${type}-input`).value = "";
+                alert("Deleted successfully!");
+                location.reload();
+            }
         }
     </script>
 </body>
