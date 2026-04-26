@@ -18,15 +18,9 @@
 
         /* Interface Buttons */
         .id-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px; }
-        .i-btn { border: none; border-radius: 12px; padding: 20px; text-align: center; text-decoration: none; color: white; transition: 0.3s; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); }
-        .i-btn i { font-size: 24px; color: #ffffff; margin-bottom: 10px; display: block; }
-        .i-btn:active { transform: scale(0.95); }
-        
-        /* 4 Buttons 4 Gradient Colors */
-        .interface-grid a:nth-child(1) { background: linear-gradient(135deg, #1cb5e0 0%, #000851 100%); }
-        .interface-grid a:nth-child(2) { background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%); }
-        .interface-grid a:nth-child(3) { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
-        .interface-grid a:nth-child(4) { background: linear-gradient(135deg, #f6d365 0%, #ff8c00 100%); }
+        .i-btn { background: var(--card-dark); border: 1px solid var(--border); border-radius: 12px; padding: 20px; text-align: center; text-decoration: none; color: white; transition: 0.3s; }
+        .i-btn i { font-size: 24px; color: var(--primary); margin-bottom: 10px; display: block; }
+        .i-btn:active { transform: scale(0.95); background: #1a2a4a; }
 
         /* Headline Style */
         .headline { color: var(--text); font-size: 16px; font-weight: bold; text-transform: uppercase; margin: 25px 0 12px; border-left: 4px solid var(--primary); padding-left: 10px; }
@@ -56,11 +50,14 @@
     <div class="container">
         <div class="hub-title">eFootball <span>HUB</span></div>
 
-        <div class="id-grid">
-            <a href="player.html" class="id-btn"><i class="fas fa-users"></i>Player</a>
-            <a href="manager.html" class="id-btn"><i class="fas fa-user-tie"></i>Manager</a>
-            <a href="event.html" class="id-btn"><i class="fas fa-trophy"></i>Events</a>
-            <a href="legend.html" class="id-btn"><i class="fas fa-crown"></i>Legend</a>
+        <div class="interface-grid">
+            <a href="player.html" class="i-btn" style="background: linear-gradient(135deg, #1cb5e0, #000851); border: none;"><i class="fas fa-users" style="color: white;"></i>Players</a>
+            
+            <a href="manager.html" class="i-btn" style="background: linear-gradient(135deg, #ff416c, #ff4b2b); border: none;"><i class="fas fa-user-tie" style="color: white;"></i>Managers</a>
+            
+            <a href="event.html" class="i-btn" style="background: linear-gradient(135deg, #11998e, #38ef7d); border: none;"><i class="fas fa-calendar-check" style="color: white;"></i>Events</a>
+            
+            <a href="legend.html" class="i-btn" style="background: linear-gradient(135deg, #f6d365, #ff8c00); border: none;"><i class="fas fa-crown" style="color: white;"></i>Legend</a>
         </div>
 
         <div class="headline">Quick Action</div>
