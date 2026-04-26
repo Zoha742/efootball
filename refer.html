@@ -1,1 +1,37 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Refer & Earn</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --bg: #050a18; --card-dark: #121e36; --primary: #f472b6; --text: #ffffff; --border: #1e2d4d; }
+        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; padding: 20px; text-align: center; }
+        .header { font-size: 20px; font-weight: bold; color: var(--primary); margin-bottom: 20px; }
+        .refer-card { background: var(--card-dark); border-radius: 15px; padding: 25px; border: 1px solid var(--border); }
+        .refer-card i { font-size: 50px; color: var(--primary); margin-bottom: 15px; }
+        .link-box { background: #050a18; border: 1px dashed var(--primary); padding: 12px; border-radius: 10px; margin: 20px 0; font-size: 13px; color: #94a3b8; word-break: break-all; }
+        .btn-copy { width: 100%; background: var(--primary); border: none; color: white; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="header">REFER & EARN</div>
+    <div class="refer-card">
+        <i class="fas fa-user-plus"></i>
+        <h3>Invite Friends</h3>
+        <p style="font-size: 13px; color: #94a3b8;">Invite your friends and get 1000 GP bonus for each successful referral!</p>
+        <div class="link-box" id="refer-link">https://t.me/YourBotName?start=774900</div>
+        <button class="btn-copy" onclick="copyLink()">COPY LINK</button>
+    </div>
 
+    <script>
+        function copyLink() {
+            const link = document.getElementById('refer-link').innerText;
+            navigator.clipboard.writeText(link);
+            alert("Referral link copied!");
+        }
+    </script>
+</body>
+</html>
