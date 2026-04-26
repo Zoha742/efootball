@@ -18,9 +18,8 @@
 
         /* Interface Buttons */
         .id-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px; }
-        .i-btn { background: var(--card-dark); border: 1px solid var(--border); border-radius: 12px; padding: 20px; text-align: center; text-decoration: none; color: white; transition: 0.3s; }
-        .i-btn i { font-size: 24px; color: var(--primary); margin-bottom: 10px; display: block; }
-        .i-btn:active { transform: scale(0.95); background: #1a2a4a; }
+        .id-btn { background: var(--card-dark); border: 1px solid var(--border); padding: 25px 15px; border-radius: 18px; text-align: center; cursor: pointer; text-decoration: none; color: #fff; }
+        .id-btn i { font-size: 28px; color: var(--primary); margin-bottom: 12px; display: block; }
 
         /* Headline Style */
         .headline { color: var(--text); font-size: 16px; font-weight: bold; text-transform: uppercase; margin: 25px 0 12px; border-left: 4px solid var(--primary); padding-left: 10px; }
@@ -37,10 +36,7 @@
         .top-card p { font-size: 9px; padding: 5px; font-weight: bold; }
 
         /* Bottom Nav */
-        /* Bottom Nav */
-        /* Bottom Nav */
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 70px; background: linear-gradient(to right, #060533, #080717, #11099E, #0B0652
-); display: flex; justify-content: space-around; align-items: center; border-top: 1px solid var(--border); z-index: 1000; }
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 70px; background: #070d19; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid var(--border); z-index: 1000; }
         .nav-item { text-align: center; color: #94a3b8; font-size: 11px; text-decoration: none; flex: 1; }
         .nav-item i { font-size: 20px; display: block; margin-bottom: 4px; }
     </style>
@@ -50,15 +46,11 @@
     <div class="container">
         <div class="hub-title">eFootball <span>HUB</span></div>
 
-        <div class="interface-grid">
-    <a href="player.html" class="i-btn" style="background: linear-gradient(135deg, #1cb5e0, #000851); border: none;"><i class="fas fa-users" style="color: white;"></i>Players</a>
-    
-    <a href="manager.html" class="i-btn" style="background: linear-gradient(135deg, #ff416c, #ff4b2b); border: none;"><i class="fas fa-user-tie" style="color: white;"></i>Managers</a>
-    
-    <a href="event.html" class="i-btn" style="background: linear-gradient(135deg, #11998e, #38ef7d); border: none;"><i class="fas fa-calendar-check" style="color: white;"></i>Events</a>
-    
-    <a href="legend.html" class="i-btn" style="background: linear-gradient(135deg, #8e2de2, #4a00e0); border: none;"><i class="fas fa-box-open" style="color: white;"></i>Legend</a>
-</div>
+        <div class="id-grid">
+            <a href="player.html" class="id-btn" style="background: linear-gradient(135deg, #1cb5e0, #000851); border: none;"><i class="fas fa-users" style="color: white;"></i>Player</a>
+            <a href="manager.html" class="id-btn" style="background: linear-gradient(135deg, #ff416c, #ff4b2b); border: none;"><i class="fas fa-user-tie" style="color: white;"></i>Manager</a>
+            <a href="event.html" class="id-btn" style="background: linear-gradient(135deg, #11998e, #38ef7d); border: none;"><i class="fas fa-trophy" style="color: white;"></i>Events</a>
+            <a href="legend.html" class="id-btn" style="background: linear-gradient(135deg, #f6d365, #ff8c00); border: none;"><i class="fas fa-crown" style="color: white;"></i>Legend</a>
         </div>
 
         <div class="headline">Quick Action</div>
