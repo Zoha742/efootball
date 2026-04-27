@@ -15,7 +15,7 @@
         .manage-box h3 { font-size: 16px; margin-top: 0; margin-bottom: 15px; color: var(--yellow); display: flex; align-items: center; gap: 10px; }
         .input-group { margin-bottom: 15px; }
         .input-group label { display: block; font-size: 11px; color: #94a3b8; margin-bottom: 6px; text-transform: uppercase; }
-        input, textarea { width: 100%; background: #050a18; border: 1px solid var(--border); padding: 12px; border-radius: 10px; color: white; outline: none; box-sizing: border-box; }
+        input, textarea { width: 100%; background: #050a18; border: 1px solid var(--border); padding: 12px; border-radius: 10px; color: white; outline: none; box-sizing: border-box; font-family: inherit; }
         .btn { border: none; padding: 12px; border-radius: 10px; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; width: 100%; margin-top: 10px; }
         .btn-blue { background: var(--blue); } .btn-green { background: var(--green); } .btn-red { background: var(--red); } .btn-yellow { background: var(--yellow); color: #000; }
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
@@ -25,36 +25,36 @@
 <body>
     <div class="top-bar">
         <a href="index.html"><i class="fas fa-chevron-left"></i> <span>Back to Hub</span></a>
-        <span style="background:var(--red); padding:4px 8px; border-radius:5px; font-size:10px; font-weight:bold;">ADMIN PANEL</span>
+        <span style="background:var(--red); padding:4px 8px; border-radius:5px; font-size:10px; font-weight:bold;">ADMIN MASTER</span>
     </div>
 
     <div class="container">
         <div class="manage-box" style="border-color: var(--green);">
-            <h3 style="color: var(--green);"><i class="fas fa-gift"></i> Gift GP (Add to Wallet)</h3>
+            <h3 style="color: var(--green);"><i class="fas fa-gift"></i> Gift GP to All Users</h3>
             <div class="input-group">
-                <label>Gift Amount</label>
-                <input type="number" id="gift-amount" placeholder="Enter GP Amount">
+                <label>GP Amount</label>
+                <input type="number" id="gift-amount" placeholder="Ex: 5000">
             </div>
-            <button class="btn btn-green" onclick="sendGift()">ADD GIFT GP</button>
+            <button class="btn btn-green" onclick="sendGift()">SEND GIFT GP</button>
         </div>
 
         <div class="manage-box" style="border-color: var(--blue);">
-            <h3 style="color: var(--blue);"><i class="fas fa-search"></i> User Search & Management</h3>
+            <h3 style="color: var(--blue);"><i class="fas fa-search"></i> User Profile Search</h3>
             <div class="input-group">
-                <input type="text" id="search-uid" placeholder="Enter User ID">
-                <button class="btn btn-blue" onclick="searchUser()">SEARCH USER</button>
+                <input type="text" id="search-uid" placeholder="Enter User ID (Ex: 774900)">
+                <button class="btn btn-blue" onclick="searchUser()">LOAD USER DATA</button>
             </div>
             <div id="user-panel" style="display:none; margin-top:15px; border-top:1px solid var(--border); padding-top:15px;">
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                     <div class="input-group"><label>GP Balance</label><input type="number" id="edit-gp"></div>
-                    <div class="input-group"><label>Ads Watched</label><input type="number" id="edit-ads"></div>
+                    <div class="input-group"><label>Ads Count</label><input type="number" id="edit-ads"></div>
                 </div>
-                <button class="btn btn-green" onclick="saveUserChanges()">UPDATE USER DATA</button>
+                <button class="btn btn-green" onclick="saveUserChanges()">UPDATE USER</button>
             </div>
         </div>
 
         <div class="manage-box" style="border-color: var(--yellow);">
-            <h3 style="color: var(--yellow);"><i class="fas fa-cogs"></i> Global App Settings</h3>
+            <h3 style="color: var(--yellow);"><i class="fas fa-sliders-h"></i> System Settings</h3>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                 <div class="input-group"><label>Min Withdraw</label><input type="number" id="conf-min"></div>
                 <div class="input-group"><label>GP Rate ($1)</label><input type="number" id="conf-rate"></div>
@@ -63,31 +63,31 @@
         </div>
 
         <div class="manage-box" style="border-color: var(--red);">
-            <h3 style="color: var(--red);"><i class="fas fa-receipt"></i> Pending Withdrawals</h3>
+            <h3 style="color: var(--red);"><i class="fas fa-hand-holding-usd"></i> Withdrawal Manager</h3>
             <div id="admin-withdraw-list"></div>
+        </div>
+
+        <div class="manage-box" style="border-color: #9c27b0;">
+            <h3 style="color: #9c27b0;"><i class="fas fa-envelope"></i> Support Inbox</h3>
+            <div id="admin-inbox"></div>
         </div>
     </div>
 
     <script>
-        function refreshStats() {
-            let gp = parseInt(localStorage.getItem('user_gp')) || 0;
-            // Additional system stats can be loaded here
-        }
-
         function sendGift() {
             const amount = parseInt(document.getElementById('gift-amount').value);
-            if(!amount) return alert("Please enter amount");
+            if(!amount || isNaN(amount)) return alert("Invalid Amount!");
             let gp = parseInt(localStorage.getItem('user_gp')) || 0;
             localStorage.setItem('user_gp', gp + amount);
-            alert("Gift GP Added Successfully!");
+            alert(amount + " GP Gifted Successfully!");
             document.getElementById('gift-amount').value = "";
-            refreshStats();
         }
 
         function searchUser() {
-            document.getElementById('user-panel').style.display = 'block';
-            let gp = parseInt(localStorage.getItem('user_gp')) || 0;
-            document.getElementById('edit-gp').value = gp;
+            const panel = document.getElementById('user-panel');
+            panel.style.display = 'block';
+            let gp = parseInt(localStorage.getItem('user_gp'));
+            document.getElementById('edit-gp').value = isNaN(gp) ? 0 : gp;
             document.getElementById('edit-ads').value = localStorage.getItem('total_ads_watched') || 0;
         }
 
@@ -98,22 +98,25 @@
         }
 
         function saveConfig() {
-            const config = { min_limit: document.getElementById('conf-min').value, rate: document.getElementById('conf-rate').value };
+            const config = { 
+                min_limit: document.getElementById('conf-min').value || 10000, 
+                rate: document.getElementById('conf-rate').value || 10000 
+            };
             localStorage.setItem('admin_config', JSON.stringify(config));
-            alert("Config Saved!");
+            alert("System Config Saved!");
         }
 
         function loadWithdrawals() {
             const list = document.getElementById('admin-withdraw-list');
             const reqs = JSON.parse(localStorage.getItem('all_withdraw_requests')) || [];
-            if(reqs.length === 0) { list.innerHTML = "<p style='font-size:12px; color:#94a3b8;'>No requests.</p>"; return; }
+            if(reqs.length === 0) { list.innerHTML = "<p style='font-size:12px; color:#94a3b8;'>No requests found.</p>"; return; }
             list.innerHTML = reqs.reverse().map(r => `
                 <div style="background:#050a18; padding:15px; border-radius:12px; border:1px solid #1e2d4d; margin-bottom:10px;">
                     <div style="font-size:11px; color:var(--yellow);">ID: #${r.userId} | ${r.date}</div>
                     <h3 style="margin:5px 0;">${r.amount} GP</h3>
                     <div style="display:flex; gap:10px; margin-top:10px;">
-                        <button onclick="handleReq(${r.id}, 'success')" style="flex:1; background:var(--green); border:none; padding:8px; border-radius:5px; color:white;">ACCEPT</button>
-                        <button onclick="handleReq(${r.id}, 'rejected')" style="flex:1; background:var(--red); border:none; padding:8px; border-radius:5px; color:white;">REJECT</button>
+                        <button onclick="handleReq(${r.id}, 'success')" style="flex:1; background:var(--green); border:none; padding:8px; border-radius:8px; color:white;">ACCEPT</button>
+                        <button onclick="handleReq(${r.id}, 'rejected')" style="flex:1; background:var(--red); border:none; padding:8px; border-radius:8px; color:white;">REJECT</button>
                     </div>
                 </div>
             `).join('');
@@ -133,10 +136,22 @@
             }
         }
 
+        function loadInbox() {
+            const list = document.getElementById('admin-inbox');
+            const msgs = JSON.parse(localStorage.getItem('admin_messages')) || [];
+            if(msgs.length === 0) { list.innerHTML = "<p style='font-size:12px; color:#94a3b8;'>No messages.</p>"; return; }
+            list.innerHTML = msgs.reverse().map(m => `
+                <div style="background:#050a18; padding:15px; border-radius:12px; border:1px solid #1e2d4d; margin-bottom:10px;">
+                    <small style="color:var(--green);">${m.userName} (#${m.userId})</small>
+                    <p style="margin:8px 0; font-size:13px;">${m.message}</p>
+                </div>
+            `).join('');
+        }
+
         window.onload = () => {
             const c = JSON.parse(localStorage.getItem('admin_config'));
             if(c) { document.getElementById('conf-min').value = c.min_limit; document.getElementById('conf-rate').value = c.rate; }
-            loadWithdrawals();
+            loadWithdrawals(); loadInbox();
         };
     </script>
 </body>
