@@ -10,183 +10,79 @@
         body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 50px; }
         .top-bar { display: flex; align-items: center; padding: 15px 20px; background: rgba(18, 30, 54, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--red); position: sticky; top: 0; z-index: 1000; justify-content: space-between; }
         .top-bar a { color: white; text-decoration: none; font-size: 18px; }
+        .admin-tag { background: var(--red); color: white; padding: 4px 10px; border-radius: 6px; font-size: 10px; font-weight: bold; text-transform: uppercase; }
         .container { padding: 20px; }
         .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
         .stat-card { background: var(--card); border-radius: 15px; padding: 15px; border: 1px solid var(--border); text-align: center; }
         .stat-card i { font-size: 20px; margin-bottom: 8px; display: block; }
+        .stat-card b { font-size: 16px; color: var(--yellow); }
         .manage-box { background: var(--card); border-radius: 20px; padding: 20px; border: 1px solid var(--border); margin-bottom: 20px; }
         .manage-box h3 { font-size: 15px; margin-bottom: 15px; color: var(--yellow); display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
         .input-group { margin-bottom: 15px; }
-        input, textarea { width: 100%; background: #050a18; border: 1px solid var(--border); padding: 12px; border-radius: 10px; color: white; outline: none; box-sizing: border-box; }
+        .input-group label { display: block; font-size: 11px; color: #94a3b8; margin-bottom: 6px; text-transform: uppercase; }
+        input, textarea { width: 100%; background: #050a18; border: 1px solid var(--border); padding: 12px; border-radius: 10px; color: white; outline: none; box-sizing: border-box; font-family: inherit; }
         .btn { border: none; padding: 12px; border-radius: 10px; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; width: 100%; margin-top: 5px; font-size: 12px; }
         .btn-blue { background: var(--blue); } .btn-green { background: var(--green); } .btn-red { background: var(--red); } .btn-yellow { background: var(--yellow); color: #000; }
         .user-list { max-height: 250px; overflow-y: auto; margin-top: 10px; }
         .user-item { background: #050a18; padding: 12px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
-        #user-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; z-index: 2000; padding: 20px; box-sizing: border-box; }
+        #user-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; z-index: 2000; padding: 20px; box-sizing: border-box; overflow-y: auto; }
         .modal-content { background: var(--card); border: 1px solid var(--blue); border-radius: 20px; padding: 20px; max-width: 500px; margin: auto; }
         .msg-card { background: #050a18; padding: 15px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 12px; }
+        .reply-box { background: rgba(34, 197, 94, 0.1); padding: 10px; border-radius: 8px; margin-top: 10px; border-left: 3px solid var(--green); }
     </style>
 </head>
 <body>
+
     <div class="top-bar">
-        <a href="index.html"><i class="fas fa-chevron-left"></i> <span>HUB</span></a>
-        <span style="font-size:10px; background:var(--red); padding:4px; border-radius:4px;">ADMIN</span>
+        <a href="index.html"><i class="fas fa-chevron-left"></i> <span>Dashboard</span></a>
+        <span class="admin-tag">Super Admin</span>
     </div>
 
     <div class="container">
         <div class="stats-grid">
-            <div class="stat-card"><i class="fas fa-users" style="color:var(--blue);"></i><b id="total-users">0</b></div>
-            <div class="stat-card"><i class="fas fa-coins" style="color:var(--yellow);"></i><b id="live-gp">0</b></div>
-            <div class="stat-card"><i class="fas fa-ad" style="color:var(--green);"></i><b id="live-ads">0</b></div>
+            <div class="stat-card"><i class="fas fa-users" style="color:var(--blue);"></i><span>Users</span><b id="total-users">0</b></div>
+            <div class="stat-card"><i class="fas fa-coins" style="color:var(--yellow);"></i><span>GP</span><b id="live-gp">0</b></div>
+            <div class="stat-card"><i class="fas fa-ad" style="color:var(--green);"></i><span>Ads</span><b id="live-ads">0</b></div>
         </div>
 
         <div class="manage-box" style="border-color: var(--green);">
-            <h3 style="color: var(--green);"><i class="fas fa-gift"></i> Gift ALL Users</h3>
-            <input type="number" id="global-gift" placeholder="Enter GP Amount">
-            <button class="btn btn-green" onclick="sendGlobalGift()">SEND GIFT TO EVERYONE</button>
+            <h3 style="color: var(--green);"><i class="fas fa-gift"></i> Gift To ALL Users</h3>
+            <div class="input-group">
+                <input type="number" id="global-gift-amount" placeholder="Enter GP Amount For Everyone">
+            </div>
+            <button class="btn btn-green" onclick="sendGlobalGift()">SEND GIFT TO ALL</button>
         </div>
 
         <div class="manage-box">
-            <h3><i class="fas fa-user-shield"></i> User List</h3>
-            <input type="text" id="search-user" placeholder="Search by ID..." oninput="filterUsers()">
+            <h3><i class="fas fa-user-shield"></i> User Control Panel</h3>
+            <div class="input-group">
+                <input type="text" id="search-input" placeholder="Search by User ID..." oninput="filterUsers()">
+            </div>
             <div class="user-list" id="user-list-container"></div>
         </div>
 
         <div class="manage-box" style="border-color: #9c27b0;">
-            <h3 style="color: #9c27b0;"><i class="fas fa-envelope"></i> Support Inbox</h3>
-            <div id="support-inbox"></div>
+            <h3 style="color: #9c27b0;"><i class="fas fa-envelope-open-text"></i> Support Inbox</h3>
+            <div id="support-inbox-list"></div>
         </div>
 
         <div class="manage-box" style="border-color: var(--red);">
-            <h3 style="color: var(--red);"><i class="fas fa-hand-holding-usd"></i> Requests</h3>
+            <h3 style="color: var(--red);"><i class="fas fa-hand-holding-usd"></i> Withdrawal Manager</h3>
+            <button class="btn btn-blue" onclick="loadWithdrawals()" style="margin-bottom: 10px; padding: 8px;">REFRESH REQUESTS</button>
             <div id="admin-withdraw-list"></div>
+        </div>
+
+        <div class="manage-box">
+            <h3><i class="fas fa-cogs"></i> System Configuration</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div class="input-group"><label>Min Withdraw</label><input type="number" id="conf-min"></div>
+                <div class="input-group"><label>GP Rate ($1)</label><input type="number" id="conf-rate"></div>
+            </div>
+            <button class="btn btn-yellow" onclick="saveConfig()">SAVE CONFIGURATION</button>
         </div>
     </div>
 
     <div id="user-modal">
         <div class="modal-content">
-            <h3 id="modal-uid" style="color:var(--blue);">User Control</h3>
-            <div class="manage-box" style="background:#050a18;"><input type="number" id="modal-gp" placeholder="Balance"><button class="btn btn-blue" onclick="updateUserGP()">Update</button></div>
-            <div class="manage-box" style="background:#050a18;"><input type="text" id="modal-msg" placeholder="Message"><button class="btn btn-yellow" onclick="sendDirectMsg()">Send Msg</button></div>
-            <button id="ban-btn" class="btn btn-red" onclick="toggleBan()">BAN USER</button>
-            <button class="btn btn-gray" onclick="closeModal()" style="margin-top:10px;">Close</button>
-        </div>
-    </div>
-
-    <script>
-        let currentUserId = null;
-
-        function refreshData() {
-            let users = JSON.parse(localStorage.getItem('app_users')) || [];
-            document.getElementById('total-users').innerText = users.length;
-            document.getElementById('live-gp').innerText = (localStorage.getItem('user_gp') || 0);
-            document.getElementById('live-ads').innerText = (localStorage.getItem('total_ads_watched') || 0);
-            renderUsers(users);
-            loadWithdrawals();
-            loadInbox();
-        }
-
-        function renderUsers(users) {
-            const container = document.getElementById('user-list-container');
-            container.innerHTML = users.map(u => `
-                <div class="user-item">
-                    <span>#${u.id} (${u.name})</span>
-                    <button class="btn btn-blue" style="width:auto;" onclick="openModal('${u.id}')">MANAGE</button>
-                </div>
-            `).join('');
-        }
-
-        function filterUsers() {
-            let term = document.getElementById('search-user').value.toLowerCase();
-            let users = JSON.parse(localStorage.getItem('app_users')) || [];
-            renderUsers(users.filter(u => u.id.includes(term)));
-        }
-
-        function sendGlobalGift() {
-            let amount = parseInt(document.getElementById('global-gift').value);
-            if(!amount) return;
-            let gp = parseInt(localStorage.getItem('user_gp')) || 0;
-            localStorage.setItem('user_gp', gp + amount);
-            alert("Gift sent to all!"); refreshData();
-        }
-
-        function openModal(id) {
-            currentUserId = id;
-            document.getElementById('user-modal').style.display = 'block';
-            document.getElementById('modal-uid').innerText = "User #" + id;
-            document.getElementById('modal-gp').value = (id == "774900" || id == "123456") ? (localStorage.getItem('user_gp') || 0) : 0;
-        }
-
-        function closeModal() { document.getElementById('user-modal').style.display = 'none'; }
-
-        function updateUserGP() {
-            if(currentUserId == "774900") localStorage.setItem('user_gp', document.getElementById('modal-gp').value);
-            alert("Updated!"); refreshData();
-        }
-
-        function sendDirectMsg() {
-            let msg = document.getElementById('modal-msg').value;
-            let inbox = JSON.parse(localStorage.getItem('user_inbox_' + currentUserId)) || [];
-            inbox.push({text: "Admin: " + msg, date: new Date().toLocaleString()});
-            localStorage.setItem('user_inbox_' + currentUserId, JSON.stringify(inbox));
-            alert("Sent!"); document.getElementById('modal-msg').value = "";
-        }
-
-        function toggleBan() {
-            let status = localStorage.getItem('user_banned_' + currentUserId) === 'true';
-            localStorage.setItem('user_banned_' + currentUserId, !status);
-            alert(status ? "Unbanned!" : "Banned!"); closeModal(); refreshData();
-        }
-
-        function loadWithdrawals() {
-            const reqs = JSON.parse(localStorage.getItem('all_withdraw_requests')) || [];
-            document.getElementById('admin-withdraw-list').innerHTML = reqs.reverse().map(r => `
-                <div class="msg-card">
-                    <small>#${r.userId} - ${r.status}</small>
-                    <h3>${parseInt(r.amount).toLocaleString()} GP</h3>
-                    ${r.status === 'pending' ? `
-                        <button class="btn btn-green" onclick="handleReq(${r.id}, 'success')">ACCEPT</button>
-                        <button class="btn btn-red" onclick="handleReq(${r.id}, 'rejected')">REJECT</button>
-                    ` : ''}
-                </div>
-            `).join('');
-        }
-
-        function handleReq(id, status) {
-            let reqs = JSON.parse(localStorage.getItem('all_withdraw_requests')) || [];
-            let idx = reqs.findIndex(r => r.id == id);
-            if(idx !== -1) {
-                if(status == 'rejected') {
-                    let gp = parseInt(localStorage.getItem('user_gp')) || 0;
-                    localStorage.setItem('user_gp', gp + parseInt(reqs[idx].amount));
-                }
-                reqs[idx].status = status;
-                localStorage.setItem('all_withdraw_requests', JSON.stringify(reqs));
-                refreshData();
-            }
-        }
-
-        function loadInbox() {
-            const msgs = JSON.parse(localStorage.getItem('support_messages')) || [];
-            document.getElementById('support-inbox').innerHTML = msgs.reverse().map(m => `
-                <div class="msg-card">
-                    <small>User #${m.userId}</small>
-                    <p>${m.text}</p>
-                    <textarea id="rep-${m.id}" placeholder="Reply..."></textarea>
-                    <button class="btn btn-green" onclick="replyMsg(${m.id}, '${m.userId}')">Reply</button>
-                </div>
-            `).join('');
-        }
-
-        function replyMsg(id, uid) {
-            let text = document.getElementById('rep-' + id).value;
-            let inbox = JSON.parse(localStorage.getItem('user_inbox_' + uid)) || [];
-            inbox.push({text: "Reply: " + text, date: new Date().toLocaleString()});
-            localStorage.setItem('user_inbox_' + uid, JSON.stringify(inbox));
-            alert("Replied!"); refreshData();
-        }
-
-        window.onload = refreshData;
-    </script>
-</body>
-</html>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 id="modal-user-id" style="margin:0; color:var(--blue
