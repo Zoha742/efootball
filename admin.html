@@ -10,299 +10,155 @@
         body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 50px; }
         .top-bar { display: flex; align-items: center; padding: 15px 20px; background: rgba(18, 30, 54, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--red); position: sticky; top: 0; z-index: 1000; justify-content: space-between; }
         .top-bar a { color: white; text-decoration: none; font-size: 18px; }
-        .admin-tag { background: var(--red); color: white; padding: 4px 10px; border-radius: 6px; font-size: 10px; font-weight: bold; text-transform: uppercase; }
         .container { padding: 20px; }
         .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
         .stat-card { background: var(--card); border-radius: 15px; padding: 15px; border: 1px solid var(--border); text-align: center; }
         .stat-card i { font-size: 20px; margin-bottom: 8px; display: block; }
-        .stat-card b { font-size: 16px; color: var(--yellow); }
         .manage-box { background: var(--card); border-radius: 20px; padding: 20px; border: 1px solid var(--border); margin-bottom: 20px; }
         .manage-box h3 { font-size: 15px; margin-bottom: 15px; color: var(--yellow); display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
         .input-group { margin-bottom: 15px; }
-        .input-group label { display: block; font-size: 11px; color: #94a3b8; margin-bottom: 6px; text-transform: uppercase; }
-        input, textarea { width: 100%; background: #050a18; border: 1px solid var(--border); padding: 12px; border-radius: 10px; color: white; outline: none; box-sizing: border-box; font-family: inherit; }
+        input, textarea { width: 100%; background: #050a18; border: 1px solid var(--border); padding: 12px; border-radius: 10px; color: white; outline: none; box-sizing: border-box; }
         .btn { border: none; padding: 12px; border-radius: 10px; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; width: 100%; margin-top: 5px; font-size: 12px; }
         .btn-blue { background: var(--blue); } .btn-green { background: var(--green); } .btn-red { background: var(--red); } .btn-yellow { background: var(--yellow); color: #000; }
         .user-list { max-height: 250px; overflow-y: auto; margin-top: 10px; }
         .user-item { background: #050a18; padding: 12px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
-        #user-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; z-index: 2000; padding: 20px; box-sizing: border-box; overflow-y: auto; }
+        #user-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; z-index: 2000; padding: 20px; box-sizing: border-box; }
         .modal-content { background: var(--card); border: 1px solid var(--blue); border-radius: 20px; padding: 20px; max-width: 500px; margin: auto; }
         .msg-card { background: #050a18; padding: 15px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 12px; }
-        .reply-box { background: rgba(34, 197, 94, 0.1); padding: 10px; border-radius: 8px; margin-top: 10px; border-left: 3px solid var(--green); }
     </style>
 </head>
 <body>
-
     <div class="top-bar">
-        <a href="index.html"><i class="fas fa-chevron-left"></i> <span>Dashboard</span></a>
-        <span class="admin-tag">Super Admin</span>
+        <a href="index.html"><i class="fas fa-chevron-left"></i> <span>HUB</span></a>
+        <span style="font-size:10px; background:var(--red); padding:4px; border-radius:4px;">ADMIN</span>
     </div>
 
     <div class="container">
         <div class="stats-grid">
-            <div class="stat-card"><i class="fas fa-users" style="color:var(--blue);"></i><span>Users</span><b id="total-users">0</b></div>
-            <div class="stat-card"><i class="fas fa-coins" style="color:var(--yellow);"></i><span>GP</span><b id="live-gp">0</b></div>
-            <div class="stat-card"><i class="fas fa-ad" style="color:var(--green);"></i><span>Ads</span><b id="live-ads">0</b></div>
+            <div class="stat-card"><i class="fas fa-users" style="color:var(--blue);"></i><b id="total-users">0</b></div>
+            <div class="stat-card"><i class="fas fa-coins" style="color:var(--yellow);"></i><b id="live-gp">0</b></div>
+            <div class="stat-card"><i class="fas fa-ad" style="color:var(--green);"></i><b id="live-ads">0</b></div>
         </div>
 
         <div class="manage-box" style="border-color: var(--green);">
-            <h3 style="color: var(--green);"><i class="fas fa-gift"></i> Gift GP To ALL Users</h3>
-            <div class="input-group">
-                <input type="number" id="global-gift-amount" placeholder="Enter Amount For Everyone">
-            </div>
-            <button class="btn btn-green" onclick="sendGlobalGift()">SEND GIFT TO ALL</button>
+            <h3 style="color: var(--green);"><i class="fas fa-gift"></i> Gift ALL Users</h3>
+            <input type="number" id="global-gift" placeholder="Enter GP Amount">
+            <button class="btn btn-green" onclick="sendGlobalGift()">SEND GIFT TO EVERYONE</button>
         </div>
 
         <div class="manage-box">
-            <h3><i class="fas fa-user-shield"></i> User Control Panel</h3>
-            <div class="input-group">
-                <input type="text" id="search-input" placeholder="Search by User ID..." oninput="filterUsers()">
-            </div>
+            <h3><i class="fas fa-user-shield"></i> User List</h3>
+            <input type="text" id="search-user" placeholder="Search by ID..." oninput="filterUsers()">
             <div class="user-list" id="user-list-container"></div>
         </div>
 
         <div class="manage-box" style="border-color: #9c27b0;">
-            <h3 style="color: #9c27b0;"><i class="fas fa-envelope-open-text"></i> Support Inbox</h3>
-            <div id="support-inbox-list"></div>
+            <h3 style="color: #9c27b0;"><i class="fas fa-envelope"></i> Support Inbox</h3>
+            <div id="support-inbox"></div>
         </div>
 
         <div class="manage-box" style="border-color: var(--red);">
-            <h3 style="color: var(--red);"><i class="fas fa-hand-holding-usd"></i> Withdrawal Manager</h3>
-            <button class="btn btn-blue" onclick="loadWithdrawals()" style="margin-bottom: 10px;">REFRESH LIST</button>
+            <h3 style="color: var(--red);"><i class="fas fa-hand-holding-usd"></i> Requests</h3>
             <div id="admin-withdraw-list"></div>
-        </div>
-
-        <div class="manage-box">
-            <h3><i class="fas fa-cogs"></i> System Configuration</h3>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                <div class="input-group"><label>Min Withdraw</label><input type="number" id="conf-min"></div>
-                <div class="input-group"><label>GP Rate ($1)</label><input type="number" id="conf-rate"></div>
-            </div>
-            <button class="btn btn-yellow" onclick="saveConfig()">SAVE CONFIGURATION</button>
         </div>
     </div>
 
     <div id="user-modal">
         <div class="modal-content">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h3 id="modal-user-id" style="margin:0; color:var(--blue);">User Control</h3>
-                <button onclick="closeModal()" style="background:none; border:none; color:white; font-size:20px;"><i class="fas fa-times"></i></button>
-            </div>
-
-            <div class="manage-box" style="background:#050a18; border:none;">
-                <div class="input-group"><label>User Balance (GP)</label><input type="number" id="modal-gp"></div>
-                <button class="btn btn-blue" onclick="updateUserStats()">Update Balance</button>
-            </div>
-
-            <div class="manage-box" style="background:#050a18; border-color: var(--green);">
-                <h4 style="color: var(--green); margin-top:0;">Send Direct Gift</h4>
-                <input type="number" id="modal-gift" placeholder="Amount">
-                <button class="btn btn-green" onclick="sendSpecificGift()">Send Gift to this User</button>
-            </div>
-            
-            <div class="manage-box" style="background:#050a18; border-color: var(--yellow);">
-                <h4 style="color: var(--yellow); margin-top:0;">Send Message</h4>
-                <textarea id="modal-msg" placeholder="Type message..."></textarea>
-                <button class="btn btn-yellow" onclick="sendDirectMessage()">Send Message</button>
-            </div>
-
+            <h3 id="modal-uid" style="color:var(--blue);">User Control</h3>
+            <div class="manage-box" style="background:#050a18;"><input type="number" id="modal-gp" placeholder="Balance"><button class="btn btn-blue" onclick="updateUserGP()">Update</button></div>
+            <div class="manage-box" style="background:#050a18;"><input type="text" id="modal-msg" placeholder="Message"><button class="btn btn-yellow" onclick="sendDirectMsg()">Send Msg</button></div>
             <button id="ban-btn" class="btn btn-red" onclick="toggleBan()">BAN USER</button>
+            <button class="btn btn-gray" onclick="closeModal()" style="margin-top:10px;">Close</button>
         </div>
     </div>
 
     <script>
-        let currentEditingId = null;
+        let currentUserId = null;
 
         function refreshData() {
+            let users = JSON.parse(localStorage.getItem('app_users')) || [];
+            document.getElementById('total-users').innerText = users.length;
             document.getElementById('live-gp').innerText = (localStorage.getItem('user_gp') || 0);
             document.getElementById('live-ads').innerText = (localStorage.getItem('total_ads_watched') || 0);
-
-            // Fetch users intelligently from localStorage
-            let usersMap = {};
-            // From app_users
-            let appUsers = JSON.parse(localStorage.getItem('app_users')) || [{id: "774900", name: "You (Admin)", gp: localStorage.getItem('user_gp') || 0}];
-            appUsers.forEach(u => usersMap[u.id] = u);
-            
-            // Collect any user who requested withdrawal
-            let reqs = JSON.parse(localStorage.getItem('all_withdraw_requests')) || [];
-            reqs.forEach(r => {
-                if(!usersMap[r.userId]) {
-                    usersMap[r.userId] = { id: r.userId, name: r.userName || 'User', gp: 0 };
-                }
-            });
-
-            let finalUsers = Object.values(usersMap);
-            document.getElementById('total-users').innerText = finalUsers.length;
-            renderUserList(finalUsers);
-
-            loadSupportMessages();
+            renderUsers(users);
             loadWithdrawals();
+            loadInbox();
         }
 
-        function renderUserList(users) {
+        function renderUsers(users) {
             const container = document.getElementById('user-list-container');
             container.innerHTML = users.map(u => `
                 <div class="user-item">
-                    <div>
-                        <span style="font-size:14px;">${u.name} (#${u.id})</span><br>
-                        <small style="color:#94a3b8;">GP: ${parseInt(u.gp || 0).toLocaleString()}</small>
-                    </div>
-                    <button class="btn btn-blue" style="width:auto; padding:5px 15px;" onclick="openUserModal('${u.id}')">MANAGE</button>
+                    <span>#${u.id} (${u.name})</span>
+                    <button class="btn btn-blue" style="width:auto;" onclick="openModal('${u.id}')">MANAGE</button>
                 </div>
             `).join('');
         }
 
         function filterUsers() {
-            let term = document.getElementById('search-input').value.toLowerCase();
-            // Refilter based on current DOM to avoid complex state, or simply reload from localstorage
-            let allItems = document.querySelectorAll('.user-item');
-            allItems.forEach(item => {
-                let text = item.innerText.toLowerCase();
-                item.style.display = text.includes(term) ? 'flex' : 'none';
-            });
+            let term = document.getElementById('search-user').value.toLowerCase();
+            let users = JSON.parse(localStorage.getItem('app_users')) || [];
+            renderUsers(users.filter(u => u.id.includes(term)));
         }
 
-        // Global Gift
         function sendGlobalGift() {
-            let amount = parseInt(document.getElementById('global-gift-amount').value);
+            let amount = parseInt(document.getElementById('global-gift').value);
             if(!amount) return;
-            
-            // Add to current session
             let gp = parseInt(localStorage.getItem('user_gp')) || 0;
             localStorage.setItem('user_gp', gp + amount);
-            
-            // Add to simulated app_users db
-            let users = JSON.parse(localStorage.getItem('app_users')) || [];
-            users.forEach(u => u.gp = parseInt(u.gp || 0) + amount);
-            localStorage.setItem('app_users', JSON.stringify(users));
-
-            alert(`Successfully sent ${amount} GP to ALL users!`);
-            document.getElementById('global-gift-amount').value = '';
-            refreshData();
+            alert("Gift sent to all!"); refreshData();
         }
 
-        function openUserModal(id) {
-            currentEditingId = id;
+        function openModal(id) {
+            currentUserId = id;
             document.getElementById('user-modal').style.display = 'block';
-            document.getElementById('modal-user-id').innerText = "Manage User: #" + id;
-            document.getElementById('modal-gp').value = (id === "774900") ? (localStorage.getItem('user_gp') || 0) : 0;
-            
-            let isBanned = localStorage.getItem('user_banned_' + id) === 'true';
-            let banBtn = document.getElementById('ban-btn');
-            banBtn.innerText = isBanned ? "UNBAN USER" : "BAN USER";
-            banBtn.style.background = isBanned ? "var(--green)" : "var(--red)";
+            document.getElementById('modal-uid').innerText = "User #" + id;
+            document.getElementById('modal-gp').value = (id == "774900" || id == "123456") ? (localStorage.getItem('user_gp') || 0) : 0;
         }
 
         function closeModal() { document.getElementById('user-modal').style.display = 'none'; }
 
-        function updateUserStats() {
-            if(currentEditingId === "774900") {
-                localStorage.setItem('user_gp', document.getElementById('modal-gp').value);
-                alert("Balance Updated!"); refreshData();
-            } else {
-                alert("Simulated user balance updated.");
-            }
+        function updateUserGP() {
+            if(currentUserId == "774900") localStorage.setItem('user_gp', document.getElementById('modal-gp').value);
+            alert("Updated!"); refreshData();
         }
 
-        function sendSpecificGift() {
-            let gift = parseInt(document.getElementById('modal-gift').value);
-            if(!gift) return;
-            if(currentEditingId === "774900") {
-                let gp = parseInt(localStorage.getItem('user_gp')) || 0;
-                localStorage.setItem('user_gp', gp + gift);
-            }
-            alert(gift + " GP sent to User #" + currentEditingId);
-            document.getElementById('modal-gift').value = "";
-            refreshData();
-        }
-        
-        function sendDirectMessage() {
+        function sendDirectMsg() {
             let msg = document.getElementById('modal-msg').value;
-            if(!msg) return;
-            let inbox = JSON.parse(localStorage.getItem('user_inbox_' + currentEditingId)) || [];
+            let inbox = JSON.parse(localStorage.getItem('user_inbox_' + currentUserId)) || [];
             inbox.push({text: "Admin: " + msg, date: new Date().toLocaleString()});
-            localStorage.setItem('user_inbox_' + currentEditingId, JSON.stringify(inbox));
-            alert("Message sent to user inbox.");
-            document.getElementById('modal-msg').value = "";
+            localStorage.setItem('user_inbox_' + currentUserId, JSON.stringify(inbox));
+            alert("Sent!"); document.getElementById('modal-msg').value = "";
         }
 
         function toggleBan() {
-            let status = localStorage.getItem('user_banned_' + currentEditingId) === 'true';
-            localStorage.setItem('user_banned_' + currentEditingId, !status);
-            alert(!status ? "User has been BANNED!" : "User is UNBANNED!");
-            openUserModal(currentEditingId);
-        }
-
-        function loadSupportMessages() {
-            const list = document.getElementById('support-inbox-list');
-            const msgs = JSON.parse(localStorage.getItem('support_messages')) || [];
-            if(msgs.length === 0) { list.innerHTML = "<p style='font-size:12px; color:#94a3b8; text-align:center;'>No messages in inbox.</p>"; return; }
-
-            list.innerHTML = msgs.reverse().map(m => `
-                <div class="msg-card">
-                    <div style="display:flex; justify-content:space-between;">
-                        <small>User: #${m.userId}</small>
-                        <small style="color:#4b5563;">${m.date}</small>
-                    </div>
-                    <p style="margin:10px 0; font-size:14px;">${m.text}</p>
-                    ${m.reply ? `
-                        <div class="reply-box"><small style="color:var(--green);">Replied:</small><p style="margin:5px 0; font-size:13px;">${m.reply}</p></div>
-                    ` : `
-                        <textarea id="reply-text-${m.id}" placeholder="Type your reply here..." style="margin-top:10px; font-size:12px;"></textarea>
-                        <button class="btn btn-green" onclick="sendReply(${m.id})">Reply to User</button>
-                    `}
-                    <button onclick="deleteMsg(${m.id})" style="background:none; border:none; color:var(--red); font-size:10px; margin-top:10px; cursor:pointer;">Delete Thread</button>
-                </div>
-            `).join('');
-        }
-
-        function sendReply(msgId) {
-            const text = document.getElementById(`reply-text-${msgId}`).value;
-            if(!text) return alert("Write a reply first!");
-            let msgs = JSON.parse(localStorage.getItem('support_messages')) || [];
-            const idx = msgs.findIndex(m => m.id === msgId);
-            if(idx !== -1) {
-                msgs[idx].reply = text;
-                localStorage.setItem('support_messages', JSON.stringify(msgs));
-                let userInbox = JSON.parse(localStorage.getItem('user_inbox_' + msgs[idx].userId)) || [];
-                userInbox.push({text: "Admin Support Reply: " + text, date: new Date().toLocaleString()});
-                localStorage.setItem('user_inbox_' + msgs[idx].userId, JSON.stringify(userInbox));
-                alert("Reply sent successfully!"); loadSupportMessages();
-            }
-        }
-
-        function deleteMsg(id) {
-            let msgs = JSON.parse(localStorage.getItem('support_messages')) || [];
-            localStorage.setItem('support_messages', JSON.stringify(msgs.filter(m => m.id !== id)));
-            loadSupportMessages();
+            let status = localStorage.getItem('user_banned_' + currentUserId) === 'true';
+            localStorage.setItem('user_banned_' + currentUserId, !status);
+            alert(status ? "Unbanned!" : "Banned!"); closeModal(); refreshData();
         }
 
         function loadWithdrawals() {
-            const list = document.getElementById('admin-withdraw-list');
             const reqs = JSON.parse(localStorage.getItem('all_withdraw_requests')) || [];
-            if(reqs.length === 0) { list.innerHTML = "<p style='font-size:12px; color:#94a3b8;'>No pending requests.</p>"; return; }
-            list.innerHTML = reqs.reverse().map(r => `
-                <div style="background:#050a18; padding:15px; border-radius:12px; border:1px solid #1e2d4d; margin-bottom:10px;">
-                    <div style="font-size:11px; color:var(--yellow);">User: #${r.userId}</div>
-                    <h3 style="margin:5px 0;">${parseInt(r.amount).toLocaleString()} GP</h3>
+            document.getElementById('admin-withdraw-list').innerHTML = reqs.reverse().map(r => `
+                <div class="msg-card">
+                    <small>#${r.userId} - ${r.status}</small>
+                    <h3>${parseInt(r.amount).toLocaleString()} GP</h3>
                     ${r.status === 'pending' ? `
-                        <div style="display:flex; gap:10px;">
-                            <button onclick="handleReq(${r.id}, 'success')" class="btn btn-green">ACCEPT</button>
-                            <button onclick="handleReq(${r.id}, 'rejected')" class="btn btn-red">REJECT</button>
-                        </div>
-                    ` : `<div style="text-align:center; font-weight:bold; color:var(--yellow); font-size:12px;">${r.status.toUpperCase()}</div>`}
+                        <button class="btn btn-green" onclick="handleReq(${r.id}, 'success')">ACCEPT</button>
+                        <button class="btn btn-red" onclick="handleReq(${r.id}, 'rejected')">REJECT</button>
+                    ` : ''}
                 </div>
             `).join('');
         }
 
         function handleReq(id, status) {
             let reqs = JSON.parse(localStorage.getItem('all_withdraw_requests')) || [];
-            const idx = reqs.findIndex(r => r.id === id);
+            let idx = reqs.findIndex(r => r.id == id);
             if(idx !== -1) {
-                if(status === 'rejected') {
-                    // Refund GP back to user if admin rejects
-                    let userGP = parseInt(localStorage.getItem('user_gp')) || 0;
-                    localStorage.setItem('user_gp', userGP + parseInt(reqs[idx].amount));
+                if(status == 'rejected') {
+                    let gp = parseInt(localStorage.getItem('user_gp')) || 0;
+                    localStorage.setItem('user_gp', gp + parseInt(reqs[idx].amount));
                 }
                 reqs[idx].status = status;
                 localStorage.setItem('all_withdraw_requests', JSON.stringify(reqs));
@@ -310,18 +166,27 @@
             }
         }
 
-        function saveConfig() {
-            const config = { min_limit: document.getElementById('conf-min').value, rate: document.getElementById('conf-rate').value };
-            localStorage.setItem('admin_config', JSON.stringify(config));
-            alert("Settings successfully saved!");
+        function loadInbox() {
+            const msgs = JSON.parse(localStorage.getItem('support_messages')) || [];
+            document.getElementById('support-inbox').innerHTML = msgs.reverse().map(m => `
+                <div class="msg-card">
+                    <small>User #${m.userId}</small>
+                    <p>${m.text}</p>
+                    <textarea id="rep-${m.id}" placeholder="Reply..."></textarea>
+                    <button class="btn btn-green" onclick="replyMsg(${m.id}, '${m.userId}')">Reply</button>
+                </div>
+            `).join('');
         }
 
-        window.onload = () => {
-            const c = JSON.parse(localStorage.getItem('admin_config')) || {min_limit: 10000, rate: 10000};
-            document.getElementById('conf-min').value = c.min_limit; 
-            document.getElementById('conf-rate').value = c.rate;
-            refreshData();
-        };
+        function replyMsg(id, uid) {
+            let text = document.getElementById('rep-' + id).value;
+            let inbox = JSON.parse(localStorage.getItem('user_inbox_' + uid)) || [];
+            inbox.push({text: "Reply: " + text, date: new Date().toLocaleString()});
+            localStorage.setItem('user_inbox_' + uid, JSON.stringify(inbox));
+            alert("Replied!"); refreshData();
+        }
+
+        window.onload = refreshData;
     </script>
 </body>
 </html>
