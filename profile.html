@@ -9,21 +9,15 @@
     <style>
         :root { --bg: #050a18; --card-dark: #121e36; --pink: #d946ef; --text: #ffffff; --border: #1e2d4d; }
         body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; padding: 20px; padding-bottom: 90px; margin: 0; }
-        
-        .profile-container { background: linear-gradient(180deg, rgba(217, 70, 239, 0.15), var(--card-dark)); border-radius: 20px; padding: 30px 20px; text-align: center; border: 1px solid var(--border); margin-bottom: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); position: relative; overflow: hidden; }
+        .profile-container { background: linear-gradient(180deg, rgba(217, 70, 239, 0.15), var(--card-dark)); border-radius: 20px; padding: 30px 20px; text-align: center; border: 1px solid var(--border); margin-bottom: 25px; }
         .avatar { width: 85px; height: 85px; border-radius: 50%; border: 3px solid var(--pink); margin-bottom: 12px; box-shadow: 0 0 15px rgba(217, 70, 239, 0.4); object-fit: cover; }
-        
         .balance-card { background: var(--card-dark); border: 1px solid var(--border); border-radius: 15px; padding: 15px; display: flex; justify-content: space-around; margin-bottom: 20px; }
         .balance-card h3 { margin: 5px 0; font-size: 18px; }
         .balance-card small { color: #94a3b8; font-size: 11px; text-transform: uppercase; }
-
         .menu-list { display: flex; flex-direction: column; gap: 12px; }
         .menu-item { background: var(--card-dark); border: 1px solid var(--border); padding: 16px; border-radius: 12px; display: flex; align-items: center; text-decoration: none; color: white; transition: 0.3s; }
-        .menu-item:active { background: rgba(255,255,255,0.05); transform: scale(0.98); }
         .menu-item i { width: 35px; height: 35px; background: rgba(217, 70, 239, 0.1); border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-right: 15px; color: var(--pink); font-size: 16px; }
         .menu-item .chevron { margin-left: auto; color: #4b5563; font-size: 12px; }
-
-        /* Notification Styling */
         .p-notif-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); display: none; align-items: center; justify-content: center; z-index: 2000; }
         .p-notif-box { background: var(--card-dark); width: 85%; border-radius: 20px; padding: 25px; border: 1px solid var(--pink); text-align: center; transform: scale(0.8); transition: 0.3s; }
         .p-notif-box.show { transform: scale(1); }
@@ -41,7 +35,6 @@
 
     <div class="balance-card">
         <div><small>GP Balance</small><h3 id="gp-balance" style="color: #fbbf24;">0</h3></div>
-        <div style="width: 1px; background: var(--border);"></div>
         <div><small>Tasks Done</small><h3 id="total-tasks" style="color: #22c55e;">0</h3></div>
     </div>
 
@@ -57,7 +50,7 @@
         <div class="p-notif-box" id="pNotifBox">
             <i class="fas fa-id-badge"></i>
             <h3>Profile Ready!</h3>
-            <p style="color: #94a3b8; font-size: 13px;">Manage your GP and track your daily progress here.</p>
+            <p style="color: #94a3b8; font-size: 13px;">Manage your GP and track your progress here.</p>
             <button class="p-notif-btn" onclick="hideProfileNotif()">CONTINUE</button>
         </div>
     </div>
@@ -72,17 +65,16 @@
             if (user.photo_url) document.getElementById('user-avatar').src = user.photo_url;
         }
 
-        function updateProfileData() {
-            // ব্যালেন্স লোড করার সময় NaN চেক
-            let gp = parseInt(localStorage.getItem('user_gp'));
-            document.getElementById('gp-balance').innerText = isNaN(gp) ? 0 : gp.toLocaleString();
-            
-            let tasks = parseInt(localStorage.getItem('tasks_done'));
-            document.getElementById('total-tasks').innerText = isNaN(tasks) ? 0 : tasks;
-        }
-
         window.onload = function() {
-            updateProfileData();
+            // NaN Proof Logic
+            let rawGP = localStorage.getItem('user_gp');
+            let gp = (rawGP === null || isNaN(Number(rawGP))) ? 0 : Number(rawGP);
+            document.getElementById('gp-balance').innerText = gp.toLocaleString();
+            
+            let rawTasks = localStorage.getItem('tasks_done');
+            let tasks = (rawTasks === null || isNaN(Number(rawTasks))) ? 0 : Number(rawTasks);
+            document.getElementById('total-tasks').innerText = tasks;
+            
             if (!sessionStorage.getItem('profile_notif_shown')) {
                 setTimeout(showProfileNotif, 1500);
                 sessionStorage.setItem('profile_notif_shown', 'true');
@@ -97,8 +89,7 @@
         }
 
         function hideProfileNotif() {
-            const box = document.getElementById('pNotifBox');
-            box.classList.remove('show');
+            document.getElementById('pNotifBox').classList.remove('show');
             setTimeout(() => document.getElementById('pNotifOverlay').style.display = 'none', 400);
         }
     </script>
