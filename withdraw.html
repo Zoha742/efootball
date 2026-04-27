@@ -12,17 +12,12 @@
         .top-bar a { color: white; text-decoration: none; margin-right: 15px; }
         .container { padding: 20px; text-align: center; }
         .withdraw-card { background: var(--card); border-radius: 20px; padding: 25px; border: 1px solid var(--border); margin-bottom: 25px; }
-        
-        /* Remove Arrows from Input */
         input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
         input[type=number] { -moz-appearance: textfield; }
-        
         input { width: 100%; background: #050a18; border: 1px solid var(--border); padding: 15px; border-radius: 12px; color: white; text-align: center; outline: none; font-size: 20px; font-weight: bold; box-sizing: border-box; }
-        
         .withdraw-btn { width: 100%; border: none; padding: 16px; border-radius: 12px; color: white; font-weight: bold; margin-top: 20px; cursor: pointer; transition: 0.3s; font-size: 14px; }
         .btn-gray { background: var(--gray); cursor: not-allowed; }
         .btn-green { background: var(--green) !important; box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4); }
-        
         .history-item { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 15px; margin-bottom: 10px; text-align: left; display: flex; justify-content: space-between; align-items: center; }
     </style>
 </head>
@@ -39,14 +34,10 @@
                 <span style="color:#94a3b8; font-size:12px;">AVAILABLE BALANCE</span>
                 <h2 id="display-gp" style="color:var(--yellow); font-size:32px; margin:5px 0;">0 GP</h2>
             </div>
-            
             <div id="rate-info" style="font-size: 12px; color: #94a3b8; margin-bottom: 15px;">Rate: Loading...</div>
-            
             <input type="number" id="withdraw-amount" placeholder="Enter Amount" oninput="validateWithdraw()">
-            
             <button id="withdraw-btn" class="withdraw-btn btn-gray" onclick="processWithdraw()" disabled>ENTER AMOUNT</button>
         </div>
-
         <div style="text-align: left; margin-top: 20px;">
             <h3 style="font-size: 16px; color: #94a3b8;"><i class="fas fa-history"></i> History</h3>
             <div id="history-list"></div>
@@ -57,46 +48,33 @@
         const tg = window.Telegram.WebApp;
 
         function updateDisplay() {
-            // ১. ব্যালেন্স লোড (NaN চেকসহ)
-            let userGP = parseInt(localStorage.getItem('user_gp'));
-            if (isNaN(userGP)) userGP = 0;
-            document.getElementById('display-gp').innerText = userGP.toLocaleString() + " GP";
+            let gp = parseInt(localStorage.getItem('user_gp')) || 0;
+            document.getElementById('display-gp').innerText = gp.toLocaleString() + " GP";
 
-            // ২. অ্যাডমিন সেটিংস লোড
             const config = JSON.parse(localStorage.getItem('admin_config')) || { min_limit: 10000, rate: 10000 };
-            document.getElementById('rate-info').innerText = `Rate: ${parseInt(config.rate).toLocaleString()} GP = $1.00 USD`;
+            let rate = parseInt(config.rate) || 10000;
+            document.getElementById('rate-info').innerText = `Rate: ${rate.toLocaleString()} GP = $1.00 USD`;
             
             validateWithdraw();
             loadHistory();
         }
 
         function validateWithdraw() {
-            const config = JSON.parse(localStorage.getItem('admin_config')) || { min_limit: 10000, rate: 10000 };
-            let userGP = parseInt(localStorage.getItem('user_gp'));
-            if (isNaN(userGP)) userGP = 0;
-
+            const config = JSON.parse(localStorage.getItem('admin_config')) || { min_limit: 10000 };
+            let gp = parseInt(localStorage.getItem('user_gp')) || 0;
             const inputVal = document.getElementById('withdraw-amount').value;
             const amount = parseInt(inputVal) || 0;
             const btn = document.getElementById('withdraw-btn');
+            const min = parseInt(config.min_limit) || 10000;
 
-            const min = parseInt(config.min_limit);
-
-            if (inputVal === "") {
-                btn.className = "withdraw-btn btn-gray";
-                btn.innerText = "ENTER AMOUNT";
-                btn.disabled = true;
-            } else if (amount > userGP) {
-                btn.className = "withdraw-btn btn-gray";
-                btn.innerText = "INSUFFICIENT BALANCE";
-                btn.disabled = true;
+            if (inputVal === "" || amount === 0) {
+                btn.className = "withdraw-btn btn-gray"; btn.innerText = "ENTER AMOUNT"; btn.disabled = true;
+            } else if (amount > gp) {
+                btn.className = "withdraw-btn btn-gray"; btn.innerText = "INSUFFICIENT BALANCE"; btn.disabled = true;
             } else if (amount < min) {
-                btn.className = "withdraw-btn btn-gray";
-                btn.innerText = `MIN ${min.toLocaleString()} GP REQUIRED`;
-                btn.disabled = true;
+                btn.className = "withdraw-btn btn-gray"; btn.innerText = `MIN ${min.toLocaleString()} GP REQUIRED`; btn.disabled = true;
             } else {
-                btn.className = "withdraw-btn btn-green";
-                btn.innerText = "SEND WITHDRAW REQUEST";
-                btn.disabled = false;
+                btn.className = "withdraw-btn btn-green"; btn.innerText = "SEND WITHDRAW REQUEST"; btn.disabled = false;
             }
         }
 
@@ -104,24 +82,13 @@
             const amount = parseInt(document.getElementById('withdraw-amount').value);
             const ton = localStorage.getItem('wallet_ton') || "Not Set";
             const bnb = localStorage.getItem('wallet_bnb') || "Not Set";
-
             if (ton === "Not Set" && bnb === "Not Set") return alert("Please setup wallet in profile first!");
 
-            let userGP = parseInt(localStorage.getItem('user_gp')) || 0;
-            localStorage.setItem('user_gp', userGP - amount);
-
-            const newReq = {
-                id: Date.now(),
-                userId: tg.initDataUnsafe?.user?.id || "774900",
-                amount: amount,
-                tonWallet: ton,
-                bnbWallet: bnb,
-                status: 'pending',
-                date: new Date().toLocaleString()
-            };
+            let currentGP = parseInt(localStorage.getItem('user_gp')) || 0;
+            localStorage.setItem('user_gp', currentGP - amount);
 
             let all = JSON.parse(localStorage.getItem('all_withdraw_requests')) || [];
-            all.push(newReq);
+            all.push({ id: Date.now(), userId: tg.initDataUnsafe?.user?.id || "774900", amount, tonWallet: ton, bnbWallet: bnb, status: 'pending', date: new Date().toLocaleString() });
             localStorage.setItem('all_withdraw_requests', JSON.stringify(all));
 
             alert("Request Sent!");
@@ -130,29 +97,16 @@
         }
 
         function loadHistory() {
-            const list = document.getElementById('history-list');
             const all = JSON.parse(localStorage.getItem('all_withdraw_requests')) || [];
             const uid = tg.initDataUnsafe?.user?.id || "774900";
             const my = all.filter(r => r.userId == uid);
-
-            if (my.length === 0) {
-                list.innerHTML = "<p style='color:#4b5563; font-size:12px;'>No history found.</p>";
-                return;
-            }
-
-            list.innerHTML = my.reverse().map(r => `
+            document.getElementById('history-list').innerHTML = my.length === 0 ? "<p style='color:#4b5563; font-size:12px;'>No history found.</p>" : my.reverse().map(r => `
                 <div class="history-item">
-                    <div>
-                        <b style="color:var(--yellow);">${r.amount.toLocaleString()} GP</b><br>
-                        <small style="color:#94a3b8; font-size:10px;">${r.date}</small>
-                    </div>
-                    <span style="color:${r.status==='pending'?'#fbbf24':'#22c55e'}; font-weight:bold; font-size:12px;">
-                        ${r.status.toUpperCase()}
-                    </span>
+                    <div><b style="color:var(--yellow);">${r.amount.toLocaleString()} GP</b><br><small style="color:#94a3b8; font-size:10px;">${r.date}</small></div>
+                    <span style="color:${r.status==='pending'?'#fbbf24':'#22c55e'}; font-weight:bold; font-size:12px;">${r.status.toUpperCase()}</span>
                 </div>
             `).join('');
         }
-
         window.onload = updateDisplay;
     </script>
 </body>
