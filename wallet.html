@@ -4,133 +4,119 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wallet Management - eFootball HUB</title>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
+    
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --bg: #050a18; --card: #121e36; --primary: #3b82f6; --text: #ffffff; --border: #1e2d4d; --red: #ef4444; --green: #22c55e; }
         body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 30px; }
         
-        /* Top Bar */
+        /* Top Bar - Design Unchanged */
         .top-bar { display: flex; align-items: center; padding: 15px 20px; background: rgba(18, 30, 54, 0.7); backdrop-filter: blur(15px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; }
         .top-bar a { color: white; text-decoration: none; margin-right: 15px; font-size: 18px; }
-
         .container { padding: 20px; }
-        
-        .wallet-box { background: var(--card); border-radius: 20px; padding: 20px; border: 1px solid var(--border); margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-        .wallet-box h3 { margin: 0 0 15px 0; font-size: 16px; display: flex; align-items: center; gap: 10px; font-weight: 600; }
-        
-        input { 
-            width: 100%; background: #050a18; border: 1px solid var(--border); 
-            padding: 14px; border-radius: 12px; color: white; outline: none; 
-            box-sizing: border-box; font-size: 14px; transition: 0.3s;
-            margin-bottom: 15px;
-        }
-        input:focus { border-color: var(--primary); box-shadow: 0 0 10px rgba(59, 130, 246, 0.2); }
-        input:disabled { opacity: 0.6; cursor: not-allowed; background: rgba(255,255,255,0.02); border-color: transparent; }
 
-        .btn-group { display: flex; gap: 10px; }
-        .btn { flex: 1; border: none; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 13px; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 5px; }
-        
-        .btn-save { background: var(--primary); color: white; display: none; }
-        .btn-edit { background: var(--green); color: white; }
-        .btn-delete { background: var(--red); color: white; }
-        .btn:active { transform: scale(0.95); }
-
-        .info-note { font-size: 11px; color: #94a3b8; background: rgba(59, 130, 246, 0.05); padding: 12px; border-radius: 10px; border-left: 3px solid var(--primary); margin-top: 10px; line-height: 1.5; }
+        .wallet-item { background: var(--card); border-radius: 20px; padding: 20px; border: 1px solid var(--border); margin-bottom: 20px; position: relative; }
+        .wallet-item label { display: block; font-size: 12px; color: #94a3b8; margin-bottom: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        .input-group { position: relative; display: flex; align-items: center; gap: 10px; }
+        input { background: #0f172a; border: 1px solid var(--border); border-radius: 12px; padding: 14px 15px; color: white; font-size: 14px; width: 100%; outline: none; transition: 0.3s; }
+        input:disabled { opacity: 0.7; color: #94a3b8; }
+        .action-btn { background: #1e293b; border: none; color: white; width: 45px; height: 45px; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; transition: 0.3s; }
+        .btn-save { background: var(--primary); width: auto; padding: 0 20px; font-weight: bold; font-size: 13px; display: none; }
+        .btn-delete { color: var(--red); }
     </style>
 </head>
 <body>
 
     <div class="top-bar">
-        <a href="profile.html"><i class="fas fa-arrow-left"></i></a>
-        <span style="font-weight: 600;">Wallet Setup</span>
+        <a href="profile.html"><i class="fas fa-chevron-left"></i></a>
+        <span>Wallet Management</span>
     </div>
 
     <div class="container">
-        <div class="wallet-box">
-            <h3 style="color: #0088cc;"><i class="fas fa-gem"></i> TON Wallet (TON)</h3>
-            <input type="text" id="ton-input" placeholder="Enter TON Address" disabled>
-            <div class="btn-group">
-                <button id="ton-edit-btn" class="btn btn-edit" onclick="enableField('ton')"><i class="fas fa-edit"></i> EDIT / ADD</button>
-                <button id="ton-save-btn" class="btn btn-save" onclick="saveField('ton')"><i class="fas fa-save"></i> SAVE</button>
-                <button class="btn btn-delete" onclick="clearField('ton')"><i class="fas fa-trash"></i> DELETE</button>
+        <div class="wallet-item">
+            <label><i class="fas fa-id-card"></i> eFootball ID</label>
+            <div class="input-group">
+                <input type="text" id="efootball-input" placeholder="Enter ID" disabled>
+                <button class="action-btn" id="efootball-edit-btn" onclick="enableEdit('efootball')"><i class="fas fa-edit"></i></button>
+                <button class="action-btn btn-save" id="efootball-save-btn" onclick="saveField('efootball')">SAVE</button>
+                <button class="action-btn btn-delete" onclick="clearField('efootball')"><i class="fas fa-trash-alt"></i></button>
             </div>
         </div>
 
-        <div class="wallet-box">
-            <h3 style="color: #f3ba2f;"><i class="fas fa-coins"></i> BNB Wallet (BEP20)</h3>
-            <input type="text" id="bnb-input" placeholder="Enter BNB Address" disabled>
-            <div class="btn-group">
-                <button id="bnb-edit-btn" class="btn btn-edit" onclick="enableField('bnb')"><i class="fas fa-edit"></i> EDIT / ADD</button>
-                <button id="bnb-save-btn" class="btn btn-save" onclick="saveField('bnb')"><i class="fas fa-save"></i> SAVE</button>
-                <button class="btn btn-delete" onclick="clearField('bnb')"><i class="fas fa-trash"></i> DELETE</button>
+        <div class="wallet-item">
+            <label><i class="fas fa-wallet"></i> Binance ID (Optional)</label>
+            <div class="input-group">
+                <input type="text" id="binance-input" placeholder="Enter Binance ID" disabled>
+                <button class="action-btn" id="binance-edit-btn" onclick="enableEdit('binance')"><i class="fas fa-edit"></i></button>
+                <button class="action-btn btn-save" id="binance-save-btn" onclick="saveField('binance')">SAVE</button>
+                <button class="action-btn btn-delete" onclick="clearField('binance')"><i class="fas fa-trash-alt"></i></button>
             </div>
-        </div>
-
-        <div class="info-note">
-            <i class="fas fa-shield-alt"></i> <b>Security Note:</b> পেমেন্ট রিকোয়েস্ট করার আগে ওয়ালেট অ্যাড্রেসটি ভালো করে চেক করুন। ভুল অ্যাড্রেস সেভ করলে আপনার অর্জিত GP লস হতে পারে।
         </div>
     </div>
 
     <script>
-        // ১. পেজ লোড হলে সেভ করা ডেটা দেখাবে
-        window.onload = function() {
-            const savedTon = localStorage.getItem('wallet_ton');
-            const savedBnb = localStorage.getItem('wallet_bnb');
+        // Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyAy2nEcb--kbjU7tSIm6lJG5ZpEFSus7sg",
+            authDomain: "efootball-57d9b.firebaseapp.com",
+            projectId: "efootball-57d9b",
+            storageBucket: "efootball-57d9b.firebasestorage.app",
+            messagingSenderId: "1031993322489",
+            appId: "1:1031993322489:web:0336c8e1869318a8222b28"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
 
-            if (savedTon) document.getElementById('ton-input').value = savedTon;
-            if (savedBnb) document.getElementById('bnb-input').value = savedBnb;
+        const tg = window.Telegram.WebApp;
+        const userId = String(tg.initDataUnsafe?.user?.id || "774900");
+
+        // ১. লোড হওয়ার সময় ফায়ারবেস থেকে ওয়ালেট ডেটা আনা
+        window.onload = function() {
+            db.ref('users/' + userId + '/wallets').once('value').then((snap) => {
+                if (snap.exists()) {
+                    const data = snap.val();
+                    if(data.efootball) document.getElementById('efootball-input').value = data.efootball;
+                    if(data.binance) document.getElementById('binance-input').value = data.binance;
+                }
+            });
         };
 
-        // ২. এডিট মোড অন করার ফাংশন
-        function enableField(type) {
-            const input = document.getElementById(type + '-input');
-            const editBtn = document.getElementById(type + '-edit-btn');
-            const saveBtn = document.getElementById(type + '-save-btn');
-
-            input.disabled = false;
-            input.focus();
-            
-            editBtn.style.display = 'none';
-            saveBtn.style.display = 'flex';
+        function enableEdit(type) {
+            document.getElementById(type + '-input').disabled = false;
+            document.getElementById(type + '-input').focus();
+            document.getElementById(type + '-edit-btn').style.display = 'none';
+            document.getElementById(type + '-save-btn').style.display = 'flex';
         }
 
-        // ৩. সেভ করার ফাংশন
+        // ২. ফায়ারবেস সার্ভারে সেভ করা
         function saveField(type) {
-            const input = document.getElementById(type + '-input');
-            const editBtn = document.getElementById(type + '-edit-btn');
-            const saveBtn = document.getElementById(type + '-save-btn');
-            const address = input.value.trim();
-
+            const address = document.getElementById(type + '-input').value.trim();
             if (!address) {
-                alert("দয়া করে একটি ওয়ালেট অ্যাড্রেস লিখুন!");
+                alert("Please enter an address!");
                 return;
             }
 
-            // LocalStorage-এ সেভ করা
-            localStorage.setItem('wallet_' + type, address);
-
-            // UI লক করা
-            input.disabled = true;
-            editBtn.style.display = 'flex';
-            saveBtn.style.display = 'none';
-
-            alert(type.toUpperCase() + " Wallet Saved Successfully!");
+            db.ref('users/' + userId + '/wallets/' + type).set(address).then(() => {
+                document.getElementById(type + '-input').disabled = true;
+                document.getElementById(type + '-edit-btn').style.display = 'flex';
+                document.getElementById(type + '-save-btn').style.display = 'none';
+                alert(type.toUpperCase() + " Saved to Firebase!");
+            });
         }
 
-        // ৪. ডিলিট বা রিসেট করার ফাংশন
+        // ৩. ফায়ারবেস থেকে ডিলিট করা
         function clearField(type) {
-            if (confirm("আপনি কি নিশ্চিতভাবে এই অ্যাড্রেসটি ডিলিট করতে চান?")) {
-                localStorage.removeItem('wallet_' + type);
-                const input = document.getElementById(type + '-input');
-                const editBtn = document.getElementById(type + '-edit-btn');
-                const saveBtn = document.getElementById(type + '-save-btn');
-
-                input.value = "";
-                input.disabled = true;
-                editBtn.style.display = 'flex';
-                saveBtn.style.display = 'none';
-                
-                alert("Address Deleted!");
+            if (confirm("Delete this address?")) {
+                db.ref('users/' + userId + '/wallets/' + type).remove().then(() => {
+                    document.getElementById(type + '-input').value = "";
+                    document.getElementById(type + '-input').disabled = true;
+                    document.getElementById(type + '-edit-btn').style.display = 'flex';
+                    document.getElementById(type + '-save-btn').style.display = 'none';
+                    alert("Deleted!");
+                });
             }
         }
     </script>
