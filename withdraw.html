@@ -59,7 +59,7 @@
             document.getElementById('display-gp').innerText = gp.toLocaleString() + " GP";
             
             // 10000 point = $1 default
-            const config = JSON.parse(localStorage.getItem('admin_config')) || { min_limit: 10000, rate: 10000 };
+            const config = JSON.parse(localStorage.getItem('admin_config')) || { min_limit: 100, rate: 10000 };
             document.getElementById('rate-info').innerText = `Rate: ${Number(config.rate).toLocaleString()} GP = $1.00 USD`;
             
             validateWithdraw();
@@ -67,7 +67,7 @@
         }
 
         function validateWithdraw() {
-            const config = JSON.parse(localStorage.getItem('admin_config')) || { min_limit: 10000 };
+            const config = JSON.parse(localStorage.getItem('admin_config')) || { min_limit: 100 };
             let gp = parseInt(localStorage.getItem('user_gp')) || 0;
             const amount = parseInt(document.getElementById('withdraw-amount').value) || 0;
             const btn = document.getElementById('withdraw-btn');
