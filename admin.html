@@ -24,26 +24,29 @@
         
         .input-group { margin-bottom: 15px; }
         .input-group label { display: block; font-size: 11px; color: #94a3b8; margin-bottom: 6px; text-transform: uppercase; }
-        input, textarea { width: 100%; background: #050a18; border: 1px solid var(--border); padding: 12px; border-radius: 10px; color: white; outline: none; box-sizing: border-box; }
+        input, textarea { width: 100%; background: #050a18; border: 1px solid var(--border); padding: 12px; border-radius: 10px; color: white; outline: none; box-sizing: border-box; font-family: inherit; }
         
         .btn { border: none; padding: 12px; border-radius: 10px; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; width: 100%; margin-top: 5px; font-size: 12px; }
         .btn-blue { background: var(--blue); } .btn-green { background: var(--green); } .btn-red { background: var(--red); } .btn-yellow { background: var(--yellow); color: #000; }
 
-        /* User List Styling */
-        .user-list { max-height: 300px; overflow-y: auto; }
+        /* User List */
+        .user-list { max-height: 250px; overflow-y: auto; margin-top: 10px; }
         .user-item { background: #050a18; padding: 12px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
-        .user-item span { font-size: 13px; font-weight: bold; }
-        .user-item small { color: #94a3b8; font-size: 10px; }
         
-        /* Modal Style for User Control */
+        /* Modal */
         #user-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; z-index: 2000; padding: 20px; box-sizing: border-box; overflow-y: auto; }
-        .modal-content { background: var(--card); border: 1px solid var(--blue); border-radius: 20px; padding: 20px; }
+        .modal-content { background: var(--card); border: 1px solid var(--blue); border-radius: 20px; padding: 20px; max-width: 500px; margin: auto; }
+
+        /* Inbox */
+        .msg-card { background: #050a18; padding: 15px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 12px; }
+        .msg-card small { color: var(--blue); font-weight: bold; }
+        .reply-box { background: rgba(34, 197, 94, 0.1); padding: 10px; border-radius: 8px; margin-top: 10px; border-left: 3px solid var(--green); }
     </style>
 </head>
 <body>
 
     <div class="top-bar">
-        <a href="index.html"><i class="fas fa-chevron-left"></i> <span>HUB</span></a>
+        <a href="index.html"><i class="fas fa-chevron-left"></i> <span>Dashboard</span></a>
         <span class="admin-tag">Super Admin</span>
     </div>
 
@@ -56,26 +59,30 @@
         </div>
 
         <div class="manage-box">
-            <h3><i class="fas fa-user-cog"></i> User Management</h3>
+            <h3><i class="fas fa-user-shield"></i> User Control Panel</h3>
             <div class="input-group">
-                <input type="text" id="search-input" placeholder="Search by User ID..." oninput="filterUsers()">
+                <input type="text" id="search-input" placeholder="সার্চ ইউজার আইডি..." oninput="filterUsers()">
             </div>
-            <div class="user-list" id="user-list-container">
-                </div>
+            <div class="user-list" id="user-list-container"></div>
+        </div>
+
+        <div class="manage-box" style="border-color: #9c27b0;">
+            <h3 style="color: #9c27b0;"><i class="fas fa-envelope-open-text"></i> Support Inbox</h3>
+            <div id="support-inbox-list"></div>
+        </div>
+
+        <div class="manage-box" style="border-color: var(--red);">
+            <h3 style="color: var(--red);"><i class="fas fa-hand-holding-usd"></i> Withdrawal Manager</h3>
+            <div id="admin-withdraw-list"></div>
         </div>
 
         <div class="manage-box">
-            <h3><i class="fas fa-sliders-h"></i> App Config</h3>
+            <h3><i class="fas fa-cogs"></i> System Configuration</h3>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                 <div class="input-group"><label>Min Withdraw</label><input type="number" id="conf-min"></div>
                 <div class="input-group"><label>GP Rate ($1)</label><input type="number" id="conf-rate"></div>
             </div>
-            <button class="btn btn-yellow" onclick="saveConfig()">SAVE SETTINGS</button>
-        </div>
-
-        <div class="manage-box" style="border-color: var(--red);">
-            <h3 style="color: var(--red);"><i class="fas fa-hand-holding-usd"></i> Withdraw Requests</h3>
-            <div id="admin-withdraw-list"></div>
+            <button class="btn btn-yellow" onclick="saveConfig()">SAVE CONFIGURATION</button>
         </div>
 
     </div>
@@ -83,99 +90,82 @@
     <div id="user-modal">
         <div class="modal-content">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h2 id="modal-user-id" style="margin:0; font-size: 18px; color: var(--blue);">User #000</h2>
+                <h3 id="modal-user-id" style="margin:0; color:var(--blue);">User Control</h3>
                 <button onclick="closeModal()" style="background:none; border:none; color:white; font-size:20px;"><i class="fas fa-times"></i></button>
             </div>
 
-            <div class="manage-box" style="background:#050a18;">
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                    <div class="input-group"><label>Balance (GP)</label><input type="number" id="modal-gp"></div>
-                    <div class="input-group"><label>Ads Watch</label><input type="number" id="modal-ads"></div>
-                </div>
-                <button class="btn btn-blue" onclick="updateUserStats()">Update Balance/Ads</button>
+            <div class="manage-box" style="background:#050a18; border:none;">
+                <div class="input-group"><label>ব্যালেন্স (GP)</label><input type="number" id="modal-gp"></div>
+                <button class="btn btn-blue" onclick="updateUserStats()">Update Balance</button>
             </div>
 
             <div class="manage-box" style="background:#050a18; border-color: var(--green);">
-                <h3 style="color: var(--green); border:none;">Gift GP</h3>
-                <input type="number" id="modal-gift" placeholder="Enter Gift Amount">
-                <button class="btn btn-green" onclick="sendGift()">SEND GIFT</button>
+                <h4 style="color: var(--green); margin-top:0;">গিফট জিপি (Gift GP)</h4>
+                <input type="number" id="modal-gift" placeholder="অ্যামাউন্ট লিখুন">
+                <button class="btn btn-green" onclick="sendGift()">গিফট পাঠান</button>
             </div>
 
-            <div class="manage-box" style="background:#050a18; border-color: var(--yellow);">
-                <h3 style="color: var(--yellow); border:none;">Message User</h3>
-                <textarea id="modal-msg" placeholder="Type message to user..."></textarea>
-                <button class="btn btn-yellow" onclick="sendMessage()">SEND MESSAGE</button>
-            </div>
-
-            <button id="ban-btn" class="btn btn-red" style="padding: 15px;" onclick="toggleBan()">BAN USER</button>
+            <button id="ban-btn" class="btn btn-red" onclick="toggleBan()">BAN USER</button>
         </div>
     </div>
 
     <script>
         let currentEditingId = null;
 
-        // ১. ডেটা লোড এবং রিফ্রেশ
+        // ডেটা লোড ও আপডেট
         function refreshData() {
-            // সিমুলেটেড ইউজার লিস্ট (বাস্তবে ডাটাবেস থেকে আসবে, এখানে লোকাল স্টোরেজ থেকে ডামি ইউজার তৈরি করছি)
-            let users = JSON.parse(localStorage.getItem('app_users')) || [
-                {id: "774900", name: "User 1", gp: 5000, ads: 12, banned: false},
-                {id: "123456", name: "Guest User", gp: 200, ads: 2, banned: false}
-            ];
-            
-            document.getElementById('total-users').innerText = users.length;
+            // ইউজারের ব্যালেন্স ও অ্যাডস
             document.getElementById('live-gp').innerText = (localStorage.getItem('user_gp') || 0);
             document.getElementById('live-ads').innerText = (localStorage.getItem('total_ads_watched') || 0);
 
+            // ইউজার লিস্ট (সিমুলেটেড)
+            let users = JSON.parse(localStorage.getItem('app_users')) || [{id: "774900", name: "You", gp: localStorage.getItem('user_gp') || 0}];
+            document.getElementById('total-users').innerText = users.length;
             renderUserList(users);
+
+            loadSupportMessages();
             loadWithdrawals();
         }
 
-        // ২. ইউজার লিস্ট রেন্ডার
+        // ইউজার লিস্ট রেন্ডার
         function renderUserList(users) {
             const container = document.getElementById('user-list-container');
             container.innerHTML = users.map(u => `
                 <div class="user-item">
                     <div>
-                        <span>#${u.id} ${u.banned ? '<small style="color:red;">(BANNED)</small>' : ''}</span><br>
-                        <small>Balance: ${u.gp} GP</small>
+                        <span style="font-size:14px;">#${u.id}</span><br>
+                        <small style="color:#94a3b8;">GP: ${parseInt(u.gp).toLocaleString()}</small>
                     </div>
-                    <button class="btn btn-blue" style="width:auto;" onclick="openUserModal('${u.id}')">MANAGE</button>
+                    <button class="btn btn-blue" style="width:auto; padding:5px 15px;" onclick="openUserModal('${u.id}')">প্রবেশ করুন</button>
                 </div>
             `).join('');
         }
 
-        // ৩. সার্চ ফিল্টার
         function filterUsers() {
             let term = document.getElementById('search-input').value;
-            let users = JSON.parse(localStorage.getItem('app_users')) || [{id: "774900", gp: 5000}];
-            let filtered = users.filter(u => u.id.includes(term));
-            renderUserList(filtered);
+            let users = JSON.parse(localStorage.getItem('app_users')) || [{id: "774900"}];
+            renderUserList(users.filter(u => u.id.includes(term)));
         }
 
-        // ৪. ইউজার প্রোফাইলে প্রবেশ (Modal)
+        // মোডাল কন্ট্রোল
         function openUserModal(id) {
             currentEditingId = id;
             document.getElementById('user-modal').style.display = 'block';
-            document.getElementById('modal-user-id').innerText = "Managing User #" + id;
-            
-            // ডেটা ফিল করা
+            document.getElementById('modal-user-id').innerText = "ইউজার আইডি: #" + id;
             document.getElementById('modal-gp').value = (id === "774900") ? (localStorage.getItem('user_gp') || 0) : 0;
-            document.getElementById('modal-ads').value = (id === "774900") ? (localStorage.getItem('total_ads_watched') || 0) : 0;
             
             let isBanned = localStorage.getItem('user_banned_' + id) === 'true';
-            let btn = document.getElementById('ban-btn');
-            btn.innerText = isBanned ? "UNBAN USER" : "BAN USER";
-            btn.className = isBanned ? "btn btn-green" : "btn btn-red";
+            document.getElementById('ban-btn').innerText = isBanned ? "UNBAN USER" : "BAN USER";
+            document.getElementById('ban-btn').style.background = isBanned ? "var(--green)" : "var(--red)";
         }
 
         function closeModal() { document.getElementById('user-modal').style.display = 'none'; }
 
-        // ৫. কন্ট্রোল ফাংশনস (Gift, Ban, Msg, Stats)
+        // গিফট ও আপডেট ফাংশন
         function updateUserStats() {
             if(currentEditingId === "774900") {
                 localStorage.setItem('user_gp', document.getElementById('modal-gp').value);
-                localStorage.setItem('total_ads_watched', document.getElementById('modal-ads').value);
-                alert("Stats Updated!"); refreshData();
+                alert("ব্যালেন্স আপডেট হয়েছে!"); refreshData();
             }
         }
 
@@ -184,38 +174,84 @@
             if(!gift) return;
             let gp = parseInt(localStorage.getItem('user_gp')) || 0;
             localStorage.setItem('user_gp', gp + gift);
-            alert(gift + " GP Gifted!");
+            alert(gift + " GP গিফট পাঠানো হয়েছে!");
             document.getElementById('modal-gift').value = "";
             refreshData();
-        }
-
-        function sendMessage() {
-            let msg = document.getElementById('modal-msg').value;
-            if(!msg) return;
-            let inbox = JSON.parse(localStorage.getItem('user_inbox_' + currentEditingId)) || [];
-            inbox.push({text: msg, date: new Date().toLocaleString()});
-            localStorage.setItem('user_inbox_' + currentEditingId, JSON.stringify(inbox));
-            alert("Message Sent to User!");
-            document.getElementById('modal-msg').value = "";
         }
 
         function toggleBan() {
             let status = localStorage.getItem('user_banned_' + currentEditingId) === 'true';
             localStorage.setItem('user_banned_' + currentEditingId, !status);
-            alert(!status ? "User Banned!" : "User Unbanned!");
-            openUserModal(currentEditingId); // Refresh modal UI
-            refreshData();
+            alert(!status ? "ইউজার ব্যান করা হয়েছে!" : "ইউজার আনব্যান করা হয়েছে!");
+            openUserModal(currentEditingId);
         }
 
-        // ৬. উইথড্র ম্যানেজার (আপনার আগের ফিক্সড কোড অনুযায়ী)
+        // সাপোর্ট ইনবক্স লজিক (মেসেজ ও উত্তর)
+        function loadSupportMessages() {
+            const list = document.getElementById('support-inbox-list');
+            const msgs = JSON.parse(localStorage.getItem('support_messages')) || [];
+            
+            if(msgs.length === 0) {
+                list.innerHTML = "<p style='font-size:12px; color:#94a3b8; text-align:center;'>কোন ইনবক্স মেসেজ নেই।</p>";
+                return;
+            }
+
+            list.innerHTML = msgs.reverse().map(m => `
+                <div class="msg-card">
+                    <div style="display:flex; justify-content:space-between;">
+                        <small>ইউজার: #${m.userId}</small>
+                        <small style="color:#4b5563;">${m.date}</small>
+                    </div>
+                    <p style="margin:10px 0; font-size:14px;">${m.text}</p>
+                    ${m.reply ? `
+                        <div class="reply-box">
+                            <small style="color:var(--green);">আপনার উত্তর:</small>
+                            <p style="margin:5px 0; font-size:13px;">${m.reply}</p>
+                        </div>
+                    ` : `
+                        <textarea id="reply-text-${m.id}" placeholder="মেসেজের উত্তর লিখুন..." style="margin-top:10px; font-size:12px;"></textarea>
+                        <button class="btn btn-green" onclick="sendReply(${m.id})">উত্তর দিন</button>
+                    `}
+                    <button onclick="deleteMsg(${m.id})" style="background:none; border:none; color:var(--red); font-size:10px; margin-top:10px; cursor:pointer;">ডিলিট মেসেজ</button>
+                </div>
+            `).join('');
+        }
+
+        function sendReply(msgId) {
+            const text = document.getElementById(`reply-text-${msgId}`).value;
+            if(!text) return alert("উত্তর লিখুন!");
+            
+            let msgs = JSON.parse(localStorage.getItem('support_messages')) || [];
+            const idx = msgs.findIndex(m => m.id === msgId);
+            if(idx !== -1) {
+                msgs[idx].reply = text;
+                localStorage.setItem('support_messages', JSON.stringify(msgs));
+                
+                // ইউজারের ইনবক্সেও কপি পাঠানো (User Notification)
+                let userInbox = JSON.parse(localStorage.getItem('user_inbox_' + msgs[idx].userId)) || [];
+                userInbox.push({text: "অ্যাডমিন উত্তর: " + text, date: new Date().toLocaleString()});
+                localStorage.setItem('user_inbox_' + msgs[idx].userId, JSON.stringify(userInbox));
+                
+                alert("উত্তর পাঠানো হয়েছে!");
+                loadSupportMessages();
+            }
+        }
+
+        function deleteMsg(id) {
+            let msgs = JSON.parse(localStorage.getItem('support_messages')) || [];
+            localStorage.setItem('support_messages', JSON.stringify(msgs.filter(m => m.id !== id)));
+            loadSupportMessages();
+        }
+
+        // উইথড্র রিকোয়েস্ট লোড
         function loadWithdrawals() {
             const list = document.getElementById('admin-withdraw-list');
             const reqs = JSON.parse(localStorage.getItem('all_withdraw_requests')) || [];
-            if(reqs.length === 0) { list.innerHTML = "<p style='font-size:12px; color:#94a3b8;'>No requests.</p>"; return; }
+            if(reqs.length === 0) { list.innerHTML = "<p style='font-size:12px; color:#94a3b8;'>কোন রিকোয়েস্ট নেই।</p>"; return; }
             list.innerHTML = reqs.reverse().map(r => `
                 <div style="background:#050a18; padding:15px; border-radius:12px; border:1px solid #1e2d4d; margin-bottom:10px;">
-                    <div style="font-size:11px; color:var(--yellow);">User: #${r.userId}</div>
-                    <h3 style="margin:5px 0;">${r.amount.toLocaleString()} GP</h3>
+                    <div style="font-size:11px; color:var(--yellow);">ইউজার: #${r.userId}</div>
+                    <h3 style="margin:5px 0;">${parseInt(r.amount).toLocaleString()} GP</h3>
                     ${r.status === 'pending' ? `
                         <div style="display:flex; gap:10px;">
                             <button onclick="handleReq(${r.id}, 'success')" class="btn btn-green">ACCEPT</button>
@@ -231,8 +267,8 @@
             const idx = reqs.findIndex(r => r.id === id);
             if(idx !== -1) {
                 if(status === 'rejected') {
-                    let userGP = parseInt(localStorage.getItem('user_gp')) || 0;
-                    localStorage.setItem('user_gp', userGP + reqs[idx].amount);
+                    let gp = parseInt(localStorage.getItem('user_gp')) || 0;
+                    localStorage.setItem('user_gp', gp + parseInt(reqs[idx].amount));
                 }
                 reqs[idx].status = status;
                 localStorage.setItem('all_withdraw_requests', JSON.stringify(reqs));
@@ -243,7 +279,7 @@
         function saveConfig() {
             const config = { min_limit: document.getElementById('conf-min').value, rate: document.getElementById('conf-rate').value };
             localStorage.setItem('admin_config', JSON.stringify(config));
-            alert("Settings Saved!");
+            alert("কনফিগ সেভ হয়েছে!");
         }
 
         window.onload = () => {
