@@ -4,8 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Player Bio</title>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* আপনার অরিজিনাল ডিজাইন হুবহু ১:১ রাখা হয়েছে */
         body { background: #050a18; color: #fff; font-family: 'Segoe UI', sans-serif; text-align: center; padding: 20px; margin: 0; }
         .back-btn { position: absolute; left: 15px; top: 20px; color: #3b82f6; font-size: 24px; cursor: pointer; }
         .bio-container { margin-top: 50px; animation: fadeIn 0.5s; }
@@ -26,20 +30,31 @@
     </div>
 
     <div class="ad-space">
-        <p>[BANNER AD AREA - int-42]</p>
+        ADVERTISEMENT SPACE
     </div>
 
     <script>
-        // LocalStorage থেকে ডাটা রিসিভ করা
-        const playerData = JSON.parse(localStorage.getItem('selected_player'));
-        
-        if (playerData) {
-            document.getElementById('p-img').src = playerData.img;
-            document.getElementById('p-name').innerText = playerData.name;
-            document.getElementById('p-bio').innerText = playerData.bio;
-        } else {
-            document.body.innerHTML = "<h2>Player data not found!</h2>";
-        }
+        // Firebase Configuration (Only for server link)
+        const firebaseConfig = {
+            apiKey: "AIzaSyAy2nEcb--kbjU7tSIm6lJG5ZpEFSus7sg",
+            authDomain: "efootball-57d9b.firebaseapp.com",
+            projectId: "efootball-57d9b",
+            storageBucket: "efootball-57d9b.firebasestorage.app",
+            messagingSenderId: "1031993322489",
+            appId: "1:1031993322489:web:0336c8e1869318a8222b28"
+        };
+        firebase.initializeApp(firebaseConfig);
+
+        window.onload = function() {
+            // আপনার অরিজিনাল কমান্ড: localStorage থেকে ডাটা নেওয়া
+            const data = localStorage.getItem('selected_player');
+            if (data) {
+                const p = JSON.parse(data);
+                document.getElementById('p-img').src = p.img;
+                document.getElementById('p-name').innerText = p.name;
+                document.getElementById('p-bio').innerText = p.bio || "No biography available.";
+            }
+        };
     </script>
 </body>
 </html>
