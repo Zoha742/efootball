@@ -61,15 +61,15 @@
             <div class="user-list" id="user-list-container"></div>
         </div>
 
-        <div class="manage-box" style="border-color: #9c27b0;">
-            <h3 style="color: #9c27b0;"><i class="fas fa-envelope-open-text"></i> Support Inbox</h3>
-            <div id="support-inbox-list"></div>
-        </div>
-
         <div class="manage-box" style="border-color: var(--red);">
             <h3 style="color: var(--red);"><i class="fas fa-hand-holding-usd"></i> Withdrawal Manager</h3>
             <button class="btn btn-blue" onclick="loadWithdrawals()" style="margin-bottom: 10px; padding: 8px;">REFRESH REQUESTS</button>
             <div id="admin-withdraw-list"></div>
+        </div>
+
+        <div class="manage-box" style="border-color: #9c27b0;">
+            <h3 style="color: #9c27b0;"><i class="fas fa-envelope-open-text"></i> Support Inbox</h3>
+            <div id="support-inbox-list"></div>
         </div>
 
         <div class="manage-box">
@@ -85,4 +85,200 @@
     <div id="user-modal">
         <div class="modal-content">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h3 id="modal-user-id" style="margin:0; color:var(--blue
+                <h3 id="modal-user-id" style="margin:0; color:var(--blue);">User Control</h3>
+                <button onclick="closeModal()" style="background:none; border:none; color:white; font-size:20px;"><i class="fas fa-times"></i></button>
+            </div>
+
+            <div class="manage-box" style="background:#050a18; border:none; padding:15px;">
+                <div class="input-group"><label>Edit Balance (GP)</label><input type="number" id="modal-gp"></div>
+                <button class="btn btn-blue" onclick="updateUserStats()">Update User Balance</button>
+            </div>
+
+            <div class="manage-box" style="background:#050a18; border-color: var(--green); padding:15px;">
+                <h4 style="color: var(--green); margin-top:0;">Send Direct Gift</h4>
+                <input type="number" id="modal-gift" placeholder="Enter Amount" style="margin-bottom:10px;">
+                <button class="btn btn-green" onclick="sendSpecificGift()">Send Gift to User</button>
+            </div>
+            
+            <div class="manage-box" style="background:#050a18; border-color: var(--yellow); padding:15px;">
+                <h4 style="color: var(--yellow); margin-top:0;">Send Admin Message</h4>
+                <textarea id="modal-msg" placeholder="Type message..." style="margin-bottom:10px;"></textarea>
+                <button class="btn btn-yellow" onclick="sendDirectMessage()">Send Message</button>
+            </div>
+
+            <button id="ban-btn" class="btn btn-red" onclick="toggleBan()">BAN USER</button>
+        </div>
+    </div>
+
+    <script>
+        let currentEditingId = null;
+
+        function refreshData() {
+            document.getElementById('live-gp').innerText = (localStorage.getItem('user_gp') || 0);
+            document.getElementById('live-ads').innerText = (localStorage.getItem('total_ads_watched') || 0);
+
+            // Users list setup
+            let usersMap = {};
+            let appUsers = JSON.parse(localStorage.getItem('app_users')) || [];
+            if(appUsers.length === 0) appUsers.push({id: "774900", name: "Admin Test", gp: localStorage.getItem('user_gp') || 0});
+            
+            appUsers.forEach(u => usersMap[u.id] = u);
+
+            let reqs = JSON.parse(localStorage.getItem('all_withdraw_requests')) || [];
+            reqs.forEach(r => {
+                if(!usersMap[r.userId]) {
+                    usersMap[r.userId] = { id: r.userId, name: r.userName || 'Guest', gp: 0 };
+                }
+            });
+
+            let finalUsers = Object.values(usersMap);
+            document.getElementById('total-users').innerText = finalUsers.length;
+            renderUserList(finalUsers);
+
+            loadSupportMessages();
+            loadWithdrawals();
+        }
+
+        function renderUserList(users) {
+            const container = document.getElementById('user-list-container');
+            if(users.length === 0) {
+                container.innerHTML = "<p style='font-size:12px; color:#94a3b8;'>No users found.</p>"; return;
+            }
+            container.innerHTML = users.map(u => `
+                <div class="user-item">
+                    <div>
+                        <span style="font-size:14px;">${u.name} (#${u.id})</span><br>
+                        <small style="color:#94a3b8;">GP: ${parseInt(u.gp || 0).toLocaleString()}</small>
+                    </div>
+                    <button class="btn btn-blue" style="width:auto; padding:5px 15px;" onclick="openUserModal('${u.id}')">MANAGE</button>
+                </div>
+            `).join('');
+        }
+
+        function filterUsers() {
+            let term = document.getElementById('search-input').value.toLowerCase();
+            let allItems = document.querySelectorAll('.user-item');
+            allItems.forEach(item => {
+                let text = item.innerText.toLowerCase();
+                item.style.display = text.includes(term) ? 'flex' : 'none';
+            });
+        }
+
+        function sendGlobalGift() {
+            let amount = parseInt(document.getElementById('global-gift-amount').value);
+            if(!amount) return;
+            let gp = parseInt(localStorage.getItem('user_gp')) || 0;
+            localStorage.setItem('user_gp', gp + amount);
+            
+            let users = JSON.parse(localStorage.getItem('app_users')) || [];
+            users.forEach(u => u.gp = parseInt(u.gp || 0) + amount);
+            localStorage.setItem('app_users', JSON.stringify(users));
+
+            alert(`Successfully gifted ${amount} GP to ALL users!`);
+            document.getElementById('global-gift-amount').value = '';
+            refreshData();
+        }
+
+        function openUserModal(id) {
+            currentEditingId = id;
+            document.getElementById('user-modal').style.display = 'block';
+            document.getElementById('modal-user-id').innerText = "Managing User: #" + id;
+            document.getElementById('modal-gp').value = (id === "774900" || id === "123456") ? (localStorage.getItem('user_gp') || 0) : 0;
+            
+            let isBanned = localStorage.getItem('user_banned_' + id) === 'true';
+            let banBtn = document.getElementById('ban-btn');
+            banBtn.innerText = isBanned ? "UNBAN USER" : "BAN USER";
+            banBtn.style.background = isBanned ? "var(--green)" : "var(--red)";
+        }
+
+        function closeModal() { document.getElementById('user-modal').style.display = 'none'; }
+
+        function updateUserStats() {
+            if(currentEditingId === "774900" || currentEditingId === "123456") {
+                localStorage.setItem('user_gp', document.getElementById('modal-gp').value);
+                alert("Balance Updated!"); refreshData();
+            } else {
+                alert("User balance updated.");
+            }
+        }
+
+        function sendSpecificGift() {
+            let gift = parseInt(document.getElementById('modal-gift').value);
+            if(!gift) return;
+            if(currentEditingId === "774900" || currentEditingId === "123456") {
+                let gp = parseInt(localStorage.getItem('user_gp')) || 0;
+                localStorage.setItem('user_gp', gp + gift);
+            }
+            alert(gift + " GP successfully sent to User #" + currentEditingId);
+            document.getElementById('modal-gift').value = "";
+            refreshData();
+        }
+        
+        function sendDirectMessage() {
+            let msg = document.getElementById('modal-msg').value;
+            if(!msg) return;
+            let inbox = JSON.parse(localStorage.getItem('user_inbox_' + currentEditingId)) || [];
+            inbox.push({text: "Admin: " + msg, date: new Date().toLocaleString()});
+            localStorage.setItem('user_inbox_' + currentEditingId, JSON.stringify(inbox));
+            alert("Message sent successfully!");
+            document.getElementById('modal-msg').value = "";
+        }
+
+        function toggleBan() {
+            let status = localStorage.getItem('user_banned_' + currentEditingId) === 'true';
+            localStorage.setItem('user_banned_' + currentEditingId, !status);
+            alert(!status ? "User Banned!" : "User Unbanned!");
+            openUserModal(currentEditingId);
+        }
+
+        // --- Withdrawal Manager Functions (With SMS & Refund Logic) ---
+        function loadWithdrawals() {
+            const list = document.getElementById('admin-withdraw-list');
+            const reqs = JSON.parse(localStorage.getItem('all_withdraw_requests')) || [];
+            if(reqs.length === 0) { list.innerHTML = "<p style='font-size:12px; color:#94a3b8;'>No pending requests.</p>"; return; }
+            list.innerHTML = reqs.reverse().map(r => `
+                <div style="background:#050a18; padding:15px; border-radius:12px; border:1px solid #1e2d4d; margin-bottom:10px;">
+                    <div style="font-size:11px; color:var(--yellow);">User: ${r.userName || 'User'} (#${r.userId})</div>
+                    <h3 style="margin:5px 0;">${parseInt(r.amount).toLocaleString()} GP</h3>
+                    <div style="font-size:10px; color:#94a3b8; margin-bottom:10px;">Date: ${r.date}</div>
+                    ${r.status === 'pending' ? `
+                        <div style="display:flex; gap:10px;">
+                            <button onclick="handleReq(${r.id}, 'success')" class="btn btn-green">ACCEPT</button>
+                            <button onclick="handleReq(${r.id}, 'rejected')" class="btn btn-red">REJECT</button>
+                        </div>
+                    ` : `<div style="text-align:center; font-weight:bold; color:var(--yellow); font-size:12px;">STATUS: ${r.status.toUpperCase()}</div>`}
+                </div>
+            `).join('');
+        }
+
+        function handleReq(id, status) {
+            let reqs = JSON.parse(localStorage.getItem('all_withdraw_requests')) || [];
+            const idx = reqs.findIndex(r => r.id === id);
+            if(idx !== -1) {
+                // Reject করলে GP refund হবে
+                if(status === 'rejected') {
+                    let userGP = parseInt(localStorage.getItem('user_gp')) || 0;
+                    localStorage.setItem('user_gp', userGP + parseInt(reqs[idx].amount));
+                    alert("Request Rejected! GP refunded to user.");
+                } 
+                // Accept করলে User SMS পাবে
+                else if (status === 'success') {
+                    let userId = reqs[idx].userId;
+                    let inbox = JSON.parse(localStorage.getItem('user_inbox_' + userId)) || [];
+                    inbox.push({
+                        text: "✅ Payment Successful! Your withdrawal of " + reqs[idx].amount + " GP has been approved.", 
+                        date: new Date().toLocaleString()
+                    });
+                    localStorage.setItem('user_inbox_' + userId, JSON.stringify(inbox));
+                    alert("Request Accepted! Payment Successful SMS sent to user.");
+                }
+
+                reqs[idx].status = status;
+                localStorage.setItem('all_withdraw_requests', JSON.stringify(reqs));
+                refreshData();
+            }
+        }
+
+        // --- Support Inbox Functions ---
+        function loadSupportMessages() {
+            const list = document.getElementById
