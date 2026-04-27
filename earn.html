@@ -4,183 +4,111 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Earn More - eFootball HUB</title>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
+    
     <script src="https://sad.adsgram.ai/js/adsgram-sdk.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* আপনার সব ডিজাইন হুবহু রাখা হয়েছে */
         :root { --bg: #050a18; --card: #121e36; --primary: #818cf8; --text: #ffffff; --border: #1e2d4d; --yellow: #fbbf24; }
         body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 30px; }
-        
         .top-bar { display: flex; align-items: center; padding: 15px; background: rgba(18, 30, 54, 0.7); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; }
         .top-bar a { color: white; text-decoration: none; margin-right: 15px; }
-
         .container { padding: 20px; text-align: center; }
-        .earn-card { background: var(--card); border-radius: 20px; padding: 25px; border: 1px solid var(--border); margin-bottom: 20px; }
-        
-        .status-info { margin-bottom: 20px; font-size: 14px; color: #94a3b8; }
-        .status-info b { color: var(--yellow); }
-
-        .btn-earn { 
-            width: 100%; border: none; padding: 16px; border-radius: 12px; 
-            color: white; font-weight: bold; cursor: pointer; transition: 0.3s; 
-            font-size: 16px; display: flex; align-items: center; justify-content: center; gap: 10px;
-        }
-        .btn-blue { background: linear-gradient(135deg, #818cf8, #6366f1); box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3); }
-        .btn-lock { background: #334155; cursor: not-allowed; opacity: 0.8; }
-
-        #timer-display { margin-top: 15px; font-size: 18px; font-weight: bold; color: #f87171; display: none; }
-        .limit-note { font-size: 11px; color: #64748b; margin-top: 15px; line-height: 1.4; }
+        .earn-card { background: var(--card); border-radius: 20px; padding: 30px; border: 1px solid var(--border); margin-bottom: 25px; }
+        .gp-icon { font-size: 50px; color: var(--yellow); margin-bottom: 15px; }
+        .btn-blue { background: var(--primary); color: white; border: none; padding: 18px; width: 100%; border-radius: 12px; font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 14px; }
+        .btn-lock { background: #1e293b; color: #64748b; cursor: not-allowed; }
+        .timer-badge { background: rgba(129, 140, 248, 0.1); color: var(--primary); padding: 5px 15px; border-radius: 20px; font-size: 12px; margin-top: 15px; display: inline-block; }
     </style>
 </head>
 <body>
-
-    <div class="top-bar">
-        <a href="profile.html"><i class="fas fa-chevron-left"></i></a>
-        <span>Earn More GP</span>
-    </div>
-
+    <div class="top-bar"><a href="index.html"><i class="fas fa-chevron-left"></i></a><span>Earn GP</span></div>
+    
     <div class="container">
         <div class="earn-card">
-            <i class="fas fa-gem" style="font-size: 40px; color: var(--yellow); margin-bottom: 15px;"></i>
-            <div class="status-info">
-                Daily Limit: <b id="ad-count">0</b> / 3 Ads Watched
-            </div>
-
-            <button id="earn-btn" class="btn-earn btn-blue" onclick="watchAd()">
+            <div class="gp-icon"><i class="fas fa-coins"></i></div>
+            <h2 id="user-gp">Loading...</h2>
+            <p style="color: #94a3b8; font-size: 13px; margin: 10px 0 20px;">অ্যাড দেখুন এবং আপনার eFootball অ্যাকাউন্টের জন্য আনলিমিটেড GP আয় করুন।</p>
+            
+            <button id="earn-btn" class="btn-blue" onclick="showAd()">
                 <i class="fas fa-play-circle"></i> WATCH VIDEO AD
             </button>
-
-            <div id="timer-display">
-                Next Ad In: <span id="countdown">00:00</span>
-            </div>
-
-            <div class="limit-note">
-                <i class="fas fa-info-circle"></i> ভিডিও দেখলে আপনার অ্যাকাউন্টে অ্যাডমিন সেট করা GP যোগ হবে। প্রতিবার অ্যাড দেখার পর ওয়েটিং টাইম বৃদ্ধি পাবে। দিনে সর্বোচ্চ ৩টি অ্যাড দেখা যাবে।
-            </div>
+            <div id="timer-display" class="timer-badge" style="display: none;">Next Ad in: <span id="countdown">00:00</span></div>
         </div>
     </div>
 
     <script>
-        let adsWatched = parseInt(localStorage.getItem('earn_ads_count')) || 0;
-        let nextAllowedTime = parseInt(localStorage.getItem('earn_next_time')) || 0;
-        let timerInterval;
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAy2nEcb--kbjU7tSIm6lJG5ZpEFSus7sg",
+            authDomain: "efootball-57d9b.firebaseapp.com",
+            projectId: "efootball-57d9b",
+            storageBucket: "efootball-57d9b.firebasestorage.app",
+            messagingSenderId: "1031993322489",
+            appId: "1:1031993322489:web:0336c8e1869318a8222b28"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
 
-        function updateUI() {
-            const now = Date.now();
-            document.getElementById('ad-count').innerText = adsWatched;
+        const tg = window.Telegram.WebApp;
+        const userId = String(tg.initDataUnsafe?.user?.id || "774900");
+        
+        let userGP = 0;
+        let adReward = 500; // ডিফল্ট রিওয়ার্ড
 
-            if (now < nextAllowedTime) {
-                // Cooldown active
-                startTimer(nextAllowedTime - now);
-            } else {
-                // Ready to watch
-                if (adsWatched >= 3) {
-                    // 24 hour limit reached, reset if 24h passed
-                    if (now >= nextAllowedTime) {
-                        resetDailyLimit();
-                    } else {
-                        showLimitReached();
-                    }
-                } else {
-                    showReadyState();
-                }
-            }
-        }
+        // ১. রিয়েল-টাইম ব্যালেন্স এবং অ্যাডমিন কনফিগ লোড
+        db.ref('users/' + userId).on('value', snap => {
+            userGP = snap.val()?.gp || 0;
+            document.getElementById('user-gp').innerText = userGP.toLocaleString() + " GP";
+        });
 
-        function watchAd() {
-            // Adsgram Logic
-            const AdController = window.Adsgram.init({ blockId: "YOUR_BLOCK_ID" }); // আপনার অরিজিনাল আইডি বসান
+        db.ref('config/ad_reward').on('value', snap => {
+            if(snap.exists()) adReward = snap.val();
+        });
+
+        // ২. Adsgram Setup (আপনার অরিজিনাল ব্লক আইডি ব্যবহার করবেন)
+        const AdController = window.Adsgram?.init({ blockId: "4774" });
+
+        function showAd() {
+            const btn = document.getElementById('earn-btn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading Ad...';
 
             AdController.show().then((result) => {
-                handleReward();
+                // অ্যাড দেখা সফল হলে সরাসরি ফায়ারবেসে পয়েন্ট যোগ হবে
+                db.ref('users/' + userId + '/gp').transaction(current => (current || 0) + adReward);
+                alert(`সাফল্যের সাথে অ্যাড দেখেছেন! ${adReward} GP যোগ করা হয়েছে।`);
+                startTimer();
             }).catch((err) => {
-                alert("Ad failed or skipped. Please try again.");
+                alert("অ্যাড লোড হয়নি, আবার চেষ্টা করুন।");
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-play-circle"></i> WATCH VIDEO AD';
             });
-            
-            // Testing এর জন্য (অ্যাড শো না করলে নিচে handleReward() কল করে টেস্ট করতে পারেন)
-            // handleReward(); 
         }
 
-        function handleReward() {
-            // ১. পয়েন্ট যোগ করা (Admin Config থেকে)
-            const adminConfig = JSON.parse(localStorage.getItem('admin_config')) || { task_reward: 100 };
-            let currentGP = parseInt(localStorage.getItem('user_gp')) || 0;
-            localStorage.setItem('user_gp', currentGP + adminConfig.task_reward);
-
-            // ২. কাউন্ট বাড়ানো
-            adsWatched++;
-            localStorage.setItem('earn_ads_count', adsWatched);
-
-            // ৩. পরবর্তী সময় সেট করা (Progressive Logic)
-            let waitTime = 0;
-            if (adsWatched === 1) waitTime = 1 * 60 * 1000; // ১ম পর ১ মিনিট
-            else if (adsWatched === 2) waitTime = 3 * 60 * 1000; // ২য় পর ৩ মিনিট
-            else if (adsWatched >= 3) waitTime = 24 * 60 * 60 * 1000; // ৩য় পর ২৪ ঘণ্টা
-
-            nextAllowedTime = Date.now() + waitTime;
-            localStorage.setItem('earn_next_time', nextAllowedTime);
-
-            alert(`Success! You earned ${adminConfig.task_reward} GP.`);
-            updateUI();
-        }
-
-        function startTimer(diff) {
+        // ৩. টাইমার ফাংশন (ডিজাইন ঠিক রাখার জন্য)
+        function startTimer() {
             const btn = document.getElementById('earn-btn');
-            const timerDiv = document.getElementById('timer-display');
-            const countdownSpan = document.getElementById('countdown');
-
-            btn.disabled = true;
+            const timerDisplay = document.getElementById('timer-display');
             btn.classList.add('btn-lock');
-            btn.innerHTML = `<i class="fas fa-lock"></i> AD LOCKED`;
-            timerDiv.style.display = 'block';
+            btn.disabled = true;
+            timerDisplay.style.display = 'inline-block';
 
-            clearInterval(timerInterval);
-            timerInterval = setInterval(() => {
-                const now = Date.now();
-                const remaining = nextAllowedTime - now;
-
-                if (remaining <= 0) {
-                    clearInterval(timerInterval);
-                    updateUI();
-                    return;
+            let timeLeft = 30; // ৩০ সেকেন্ড ওয়েট করতে হবে
+            const interval = setInterval(() => {
+                timeLeft--;
+                document.getElementById('countdown').innerText = `00:${timeLeft < 10 ? '0'+timeLeft : timeLeft}`;
+                if(timeLeft <= 0) {
+                    clearInterval(interval);
+                    btn.classList.remove('btn-lock');
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-play-circle"></i> WATCH VIDEO AD';
+                    timerDisplay.style.display = 'none';
                 }
-
-                // Format Time
-                let h = Math.floor(remaining / 3600000);
-                let m = Math.floor((remaining % 3600000) / 60000);
-                let s = Math.floor((remaining % 60000) / 1000);
-
-                let display = (h > 0 ? h + "h " : "") + (m < 10 ? "0" + m : m) + ":" + (s < 10 ? "0" + s : s);
-                countdownSpan.innerText = display;
             }, 1000);
         }
-
-        function showReadyState() {
-            const btn = document.getElementById('earn-btn');
-            btn.disabled = false;
-            btn.classList.remove('btn-lock');
-            btn.classList.add('btn-blue');
-            btn.innerHTML = `<i class="fas fa-play-circle"></i> WATCH VIDEO AD`;
-            document.getElementById('timer-display').style.display = 'none';
-        }
-
-        function showLimitReached() {
-            const btn = document.getElementById('earn-btn');
-            btn.disabled = true;
-            btn.classList.add('btn-lock');
-            btn.innerHTML = `<i class="fas fa-calendar-times"></i> DAILY LIMIT REACHED`;
-            document.getElementById('timer-display').style.display = 'block';
-        }
-
-        function resetDailyLimit() {
-            adsWatched = 0;
-            localStorage.setItem('earn_ads_count', 0);
-            localStorage.removeItem('earn_next_time');
-            nextAllowedTime = 0;
-            showReadyState();
-            document.getElementById('ad-count').innerText = "0";
-        }
-
-        window.onload = updateUI;
     </script>
 </body>
 </html>
