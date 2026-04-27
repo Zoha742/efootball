@@ -12,19 +12,14 @@
         .top-bar { display: flex; align-items: center; padding: 15px; background: rgba(18, 30, 54, 0.7); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; }
         .top-bar a { color: white; text-decoration: none; margin-right: 15px; }
         .container { padding: 20px; text-align: center; }
-        .task-card { background: var(--card); border-radius: 20px; padding: 25px; border: 1px solid var(--border); margin-bottom: 20px; }
-        .task-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0; }
-        .slot { background: #050a18; border: 1px solid var(--border); border-radius: 12px; padding: 15px 5px; font-size: 11px; color: #94a3b8; transition: 0.3s; }
-        .slot.done { border-color: var(--green); color: var(--green); background: rgba(34, 197, 94, 0.1); }
-        .slot i { font-size: 18px; margin-bottom: 5px; }
-        .btn { width: 100%; border: none; padding: 15px; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 14px; margin-top: 10px; }
-        .btn-blue { background: var(--primary); box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); }
-        .btn-green { background: var(--green); box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3); }
-        #timer { color: #f87171; font-weight: bold; margin-top: 15px; display: none; background: rgba(248, 113, 113, 0.1); padding: 10px; border-radius: 10px; border: 1px solid rgba(248, 113, 113, 0.2); }
+        .task-card { background: var(--card); border-radius: 20px; padding: 25px; border: 1px solid var(--border); }
+        .slot { background: #050a18; border: 1px solid var(--border); border-radius: 12px; padding: 10px; font-size: 11px; }
+        .btn { width: 100%; border: none; padding: 15px; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; }
+        .btn-blue { background: var(--primary); }
+        .btn-green { background: var(--green); }
     </style>
 </head>
 <body>
-
     <div class="top-bar">
         <a href="index.html"><i class="fas fa-chevron-left"></i></a>
         <span>Daily Tasks</span>
@@ -33,121 +28,38 @@
 
     <div class="container">
         <div class="task-card">
-            <h2 style="margin: 0; font-size: 20px;">Watch Ads & Earn</h2>
-            <p style="color: #94a3b8; font-size: 13px;">Complete 6 ads to collect your daily GP reward!</p>
-            
-            <div class="task-grid">
-                <div class="slot" id="slot-1"><i class="fas fa-play"></i><br>Ad 1</div>
-                <div class="slot" id="slot-2"><i class="fas fa-play"></i><br>Ad 2</div>
-                <div class="slot" id="slot-3"><i class="fas fa-play"></i><br>Ad 3</div>
-                <div class="slot" id="slot-4"><i class="fas fa-play"></i><br>Ad 4</div>
-                <div class="slot" id="slot-5"><i class="fas fa-play"></i><br>Ad 5</div>
-                <div class="slot" id="slot-6"><i class="fas fa-play"></i><br>Ad 6</div>
-            </div>
-
-            <button id="task-btn" class="btn btn-blue" onclick="showAd()">WATCH AD (0/6)</button>
-            <button id="collect-btn" class="btn btn-green" style="display: none;" onclick="collectReward()">COLLECT REWARD</button>
-            
-            <div id="timer">Next reset in: <span id="countdown">00:00:00</span></div>
+            <button id="task-btn" class="btn btn-blue" onclick="collectReward()">WATCH AD & EARN GP</button>
         </div>
     </div>
 
     <script>
-        const AdController = window.Adsgram.init({ blockId: "int-7463" }); // Replace with your Block ID
-        let adsWatched = 0;
-
         function updateUI() {
-            // ব্যালেন্স লোড করার সময় NaN চেক
+            let gp = parseInt(localStorage.getItem('user_gp'));
+            if (isNaN(gp)) gp = 0;
+            document.getElementById('user-gp').innerText = gp.toLocaleString() + " GP";
+        }
+
+        function collectReward() {
+            // Admin config reward check
+            const adminConfig = JSON.parse(localStorage.getItem('admin_config')) || { task_reward: 100 };
+            const reward = parseInt(adminConfig.task_reward) || 100;
+
             let currentGP = parseInt(localStorage.getItem('user_gp'));
             if (isNaN(currentGP)) currentGP = 0;
-            document.getElementById('user-gp').innerText = currentGP.toLocaleString() + " GP";
 
-            // ডেইলি টাইমার চেক
-            const lastCollect = localStorage.getItem('last_task_collect');
-            if (lastCollect) {
-                const now = Date.now();
-                const diff = now - parseInt(lastCollect);
-                const dayInMs = 24 * 60 * 60 * 1000;
-
-                if (diff < dayInMs) {
-                    showTimer(dayInMs - diff);
-                    return;
-                }
-            }
-        }
-
-        function showAd() {
-            AdController.show().then(() => {
-                adsWatched++;
-                updateSlots();
-            }).catch((err) => {
-                alert("Ad failed to load. Please try again.");
-            });
-        }
-
-        function updateSlots() {
-            for (let i = 1; i <= adsWatched; i++) {
-                const slot = document.getElementById(`slot-${i}`);
-                if (slot) {
-                    slot.classList.add('done');
-                    slot.innerHTML = `<i class="fas fa-check-circle"></i><br>Done`;
-                }
-            }
-
-            const btn = document.getElementById('task-btn');
-            btn.innerText = `WATCH AD (${adsWatched}/6)`;
-
-            if (adsWatched >= 6) {
-                btn.style.display = "none";
-                document.getElementById('collect-btn').style.display = "block";
-            }
-        }
-
-        // --- আপনার দেওয়া নতুন লজিক এখানে অ্যাড করা হয়েছে ---
-        function collectReward() {
-            const adminConfig = JSON.parse(localStorage.getItem('admin_config')) || { task_reward: 100 };
-            const rewardAmount = parseInt(adminConfig.task_reward);
-
-            // আগে চেক করে নেওয়া যে ব্যালেন্স সংখ্যা কি না
-            let currentGP = parseInt(localStorage.getItem('user_gp'));
-            
-            // যদি ডাটা না থাকে বা NaN থাকে তবে ০ ধরে নিবে
-            if (isNaN(currentGP)) {
-                currentGP = 0;
-            }
-
-            let newTotal = currentGP + rewardAmount;
+            let newTotal = currentGP + reward;
             localStorage.setItem('user_gp', newTotal);
-            localStorage.setItem('last_task_collect', Date.now()); // টাইমার সেভ
+            localStorage.setItem('last_task_collect', Date.now());
             
-            // UI আপডেট
+            // Increment tasks done count
+            let done = parseInt(localStorage.getItem('tasks_done')) || 0;
+            localStorage.setItem('tasks_done', done + 1);
+
             document.getElementById('user-gp').innerText = newTotal.toLocaleString() + " GP";
-            
-            alert("Task Complete! You earned " + rewardAmount + " GP");
-            location.reload(); // পেজ রিফ্রেশ করে টাইমার চালু করা
+            alert(`Success! ${reward} GP added to your wallet.`);
+            updateUI();
         }
-
-        function showTimer(duration) {
-            document.getElementById('task-btn').style.display = "none";
-            document.getElementById('collect-btn').style.display = "none";
-            document.getElementById('timer').style.display = "block";
-            
-            const countdownSpan = document.getElementById('countdown');
-            const timer = setInterval(() => {
-                duration -= 1000;
-                if (duration <= 0) {
-                    clearInterval(timer);
-                    location.reload();
-                }
-
-                let hours = Math.floor((duration % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                let minutes = Math.floor((duration % (1000 * 60 * 60)) / (1000 * 60));
-                let seconds = Math.floor((duration % (1000 * 60)) / 1000);
-
-                countdownSpan.innerText = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-            }, 1000);
-        }
-
+        
         window.onload = updateUI;
     </script>
 </body>
