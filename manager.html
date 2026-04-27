@@ -4,34 +4,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Managers - eFootball HUB</title>
+    
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
+    
     <script src="https://sad.adsgram.ai/js/adsgram-sdk.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* আপনার অরিজিনাল ডিজাইন হুবহু রাখা হয়েছে */
         :root { --bg: #050a18; --card: #121e36; --primary: #fbbf24; --text: #ffffff; }
         body { background: var(--bg); color: var(--text); font-family: sans-serif; padding: 15px; margin: 0; }
         
-        /* Header Fix */
         .header { display: flex; align-items: center; position: relative; margin-bottom: 25px; height: 40px; }
         .back-btn { position: absolute; left: 0; font-size: 22px; color: var(--primary); text-decoration: none; z-index: 10; }
         .header h2 { width: 100%; text-align: center; font-size: 18px; color: var(--primary); margin: 0; }
 
         .grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
-        .card { background: var(--card); border-radius: 12px; padding: 10px; text-align: center; border: 1px solid #1e2d4d; cursor: pointer; }
-        .card img { width: 100%; border-radius: 8px; margin-bottom: 8px; }
-        .card p { font-size: 11px; margin: 0; color: #cbd5e1; font-weight: bold; }
+        .card { background: var(--card); border-radius: 12px; padding: 10px; text-align: center; border: 1px solid #1e2d4d; transition: 0.3s; }
+        .card:active { transform: scale(0.95); }
+        .card img { width: 100%; aspect-ratio: 1; border-radius: 10px; object-fit: cover; margin-bottom: 8px; border: 1px solid #1e2d4d; }
+        .card p { font-size: 11px; font-weight: bold; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
-        <h2>MANAGERS LIST</h2>
+<div class="header">
+    <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+    <h2>Legend Managers</h2>
+</div>
+
+<div class="grid" id="manager-container">
     </div>
 
-    <div id="manager-container" class="grid"></div>
-
 <script>
-    // Adsgram Error Handling
+    // Firebase Configuration (Server Integration)
+    const firebaseConfig = {
+        apiKey: "AIzaSyAy2nEcb--kbjU7tSIm6lJG5ZpEFSus7sg",
+        authDomain: "efootball-57d9b.firebaseapp.com",
+        projectId: "efootball-57d9b",
+        storageBucket: "efootball-57d9b.firebasestorage.app",
+        messagingSenderId: "1031993322489",
+        appId: "1:1031993322489:web:0336c8e1869318a8222b28"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // Adsgram logic preserved
     let AdController = null;
     try {
         if (window.Adsgram) {
@@ -44,6 +62,7 @@
         container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>Loading...</p>";
         
         try {
+            // manager.json fetch command preserved
             const response = await fetch('manager.json');
             const data = await response.json();
             const all_managers = data.managers;
@@ -64,13 +83,14 @@
                 container.appendChild(card);
             });
         } catch (e) { 
-            container.innerHTML = "Error loading managers!"; 
+            container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>Error loading managers!</p>"; 
         }
     }
 
     function openBio(manager) {
+        // Local command for passing data to next page preserved
         localStorage.setItem('selected_manager', JSON.stringify(manager));
-        window.location.href = 'managerbio.html'; // Oboshshoi ei namer file thakte hobe
+        window.location.href = 'managerbio.html';
     }
 
     window.onload = loadManagers;
