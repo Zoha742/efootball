@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Withdraw - eFootball HUB</title>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -13,145 +15,36 @@
         .top-bar a { color: white; text-decoration: none; margin-right: 15px; }
         .container { padding: 20px; text-align: center; }
         .withdraw-card { background: var(--card); border-radius: 20px; padding: 25px; border: 1px solid var(--border); margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
         input { width: 100%; background: #050a18; border: 1px solid var(--border); padding: 15px; border-radius: 12px; color: white; text-align: center; outline: none; font-size: 20px; font-weight: bold; box-sizing: border-box; }
         .withdraw-btn { width: 100%; border: none; padding: 16px; border-radius: 12px; color: white; font-weight: bold; margin-top: 20px; cursor: pointer; transition: 0.3s; font-size: 14px; text-transform: uppercase; }
         .btn-gray { background: var(--gray); cursor: not-allowed; opacity: 0.6; }
         .btn-green { background: var(--green) !important; box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4); }
-        .history-section { text-align: left; margin-top: 20px; }
-        .history-title { font-size: 16px; color: #94a3b8; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
         .history-item { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
         .status-badge { font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 6px; text-transform: uppercase; }
         .pending { background: rgba(251, 191, 36, 0.1); color: var(--yellow); }
         .success { background: rgba(34, 197, 94, 0.1); color: var(--green); }
         .rejected { background: rgba(248, 113, 113, 0.1); color: var(--red); }
-        .cancelled { background: rgba(148, 163, 184, 0.1); color: #94a3b8; }
         .cancel-btn { background: var(--red); color: white; border: none; padding: 5px 10px; border-radius: 5px; font-size: 10px; cursor: pointer; margin-top: 8px; }
     </style>
 </head>
 <body>
     <div class="top-bar"><a href="profile.html"><i class="fas fa-chevron-left"></i></a><span>Withdraw GP</span></div>
-    
     <div class="container">
         <div class="withdraw-card">
-            <div style="margin-bottom: 20px;">
-                <span style="color:#94a3b8; font-size:12px;">AVAILABLE BALANCE</span>
-                <h2 id="display-gp" style="color:var(--yellow); font-size:36px; margin:5px 0;">0 GP</h2>
-            </div>
-            
-            <div id="rate-info" style="font-size: 12px; color: #94a3b8; margin-bottom: 20px; background: rgba(255,255,255,0.05); padding: 8px; border-radius: 8px;">Loading Rate...</div>
-            
-            <input type="number" id="withdraw-amount" placeholder="0" oninput="validateWithdraw()" inputmode="numeric">
-            
+            <span style="color:#94a3b8; font-size:12px;">AVAILABLE BALANCE</span>
+            <h2 id="display-gp" style="color:var(--yellow); font-size:36px; margin:5px 0;">Loading...</h2>
+            <div id="rate-info" style="font-size: 12px; color: #94a3b8; margin-bottom: 20px;">Loading Rate...</div>
+            <input type="number" id="withdraw-amount" placeholder="Enter GP Amount" oninput="validateWithdraw()">
             <button id="withdraw-btn" class="withdraw-btn btn-gray" onclick="processWithdraw()" disabled>ENTER AMOUNT</button>
         </div>
-
-        <div class="history-section">
-            <div class="history-title"><i class="fas fa-history"></i> Withdrawal History</div>
-            <div id="history-list"></div>
-        </div>
+        <div id="history-list"></div>
     </div>
 
     <script>
-        const tg = window.Telegram.WebApp;
-        
-        function updateDisplay() {
-            // Register user if new
-            registerUser();
-
-            let gp = parseInt(localStorage.getItem('user_gp')) || 0;
-            document.getElementById('display-gp').innerText = gp.toLocaleString() + " GP";
-            
-            const config = JSON.parse(localStorage.getItem('admin_config')) || { min_limit: 10000, rate: 10000 };
-            document.getElementById('rate-info').innerText = `Rate: ${Number(config.rate).toLocaleString()} GP = $1.00 USD`;
-            
-            validateWithdraw();
-            loadHistory();
-        }
-
-        function registerUser() {
-            const user = tg.initDataUnsafe?.user;
-            if(!user) return;
-            let users = JSON.parse(localStorage.getItem('app_users')) || [];
-            let exists = users.find(u => u.id == user.id);
-            if(!exists) {
-                users.push({ id: user.id, name: user.first_name, gp: 0, ads: 0, banned: false });
-                localStorage.setItem('app_users', JSON.stringify(users));
-            }
-        }
-
-        function validateWithdraw() {
-            const config = JSON.parse(localStorage.getItem('admin_config')) || { min_limit: 10000 };
-            let gp = parseInt(localStorage.getItem('user_gp')) || 0;
-            const amountInput = document.getElementById('withdraw-amount');
-            const amount = parseInt(amountInput.value) || 0;
-            const btn = document.getElementById('withdraw-btn');
-            const min = parseInt(config.min_limit);
-
-            if (amountInput.value === "") { btn.className = "withdraw-btn btn-gray"; btn.innerText = "ENTER AMOUNT"; btn.disabled = true; }
-            else if (amount > gp) { btn.className = "withdraw-btn btn-gray"; btn.innerText = "INSUFFICIENT BALANCE"; btn.disabled = true; }
-            else if (amount < min) { btn.className = "withdraw-btn btn-gray"; btn.innerText = `MIN ${min.toLocaleString()} GP REQUIRED`; btn.disabled = true; }
-            else { btn.className = "withdraw-btn btn-green"; btn.innerText = "SEND WITHDRAW REQUEST"; btn.disabled = false; }
-        }
-
-        function processWithdraw() {
-            const amount = parseInt(document.getElementById('withdraw-amount').value);
-            let gp = parseInt(localStorage.getItem('user_gp')) || 0;
-            
-            localStorage.setItem('user_gp', gp - amount);
-
-            const req = {
-                id: Date.now(),
-                userId: String(tg.initDataUnsafe?.user?.id || "774900"),
-                userName: tg.initDataUnsafe?.user?.first_name || "Guest",
-                amount: amount,
-                status: 'pending',
-                date: new Date().toLocaleString()
-            };
-
-            let all = JSON.parse(localStorage.getItem('all_withdraw_requests')) || [];
-            all.push(req);
-            localStorage.setItem('all_withdraw_requests', JSON.stringify(all));
-            
-            alert("Withdraw request successful!");
-            document.getElementById('withdraw-amount').value = "";
-            updateDisplay();
-        }
-
-        function cancelRequest(reqId, reqAmount) {
-            if(!confirm("Cancel this request? GP will be refunded.")) return;
-            let all = JSON.parse(localStorage.getItem('all_withdraw_requests')) || [];
-            let idx = all.findIndex(r => r.id === reqId);
-            if(idx !== -1) {
-                let gp = parseInt(localStorage.getItem('user_gp')) || 0;
-                localStorage.setItem('user_gp', gp + parseInt(reqAmount));
-                all[idx].status = 'cancelled';
-                localStorage.setItem('all_withdraw_requests', JSON.stringify(all));
-                updateDisplay();
-            }
-        }
-
-        function loadHistory() {
-            const all = JSON.parse(localStorage.getItem('all_withdraw_requests')) || [];
-            const uid = String(tg.initDataUnsafe?.user?.id || "774900");
-            const my = all.filter(r => String(r.userId) === uid);
-
-            document.getElementById('history-list').innerHTML = my.length === 0 ? 
-                "<p style='color:#4b5563; font-size:12px; text-align:center;'>No history found.</p>" : 
-                my.reverse().map(r => `
-                <div class="history-item">
-                    <div>
-                        <b style="color:var(--yellow);">${parseInt(r.amount).toLocaleString()} GP</b><br>
-                        <small style="color:#94a3b8; font-size:10px;">${r.date}</small>
-                    </div>
-                    <div style="text-align: right;">
-                        <span class="status-badge ${r.status}">${r.status}</span>
-                        ${r.status === 'pending' ? `<br><button class="cancel-btn" onclick="cancelRequest(${r.id}, ${r.amount})">CANCEL</button>` : ''}
-                    </div>
-                </div>
-            `).join('');
-        }
-        window.onload = updateDisplay;
-    </script>
-</body>
-</html>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAy2nEcb--kbjU7tSIm6lJG5ZpEFSus7sg",
+            authDomain: "efootball-57d9b.firebaseapp.com",
+            projectId: "efootball-57d9b",
+            storageBucket: "efootball-57d9b.firebasestorage.app",
+            messagingSenderId: "1031993322489",
+            appId: "1:1031993322489:web:0336c8e1869318a8222b
