@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Withdraw - eFootball HUB</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --bg: #050a18; --card: #121e36; --border: #1e2d4d; --text: #ffffff; --green: #22c55e; --gray: #4b5563; --yellow: #fbbf24; --red: #f87171; }
@@ -25,7 +26,7 @@
         .success { background: rgba(34, 197, 94, 0.1); color: var(--green); }
         .rejected { background: rgba(248, 113, 113, 0.1); color: var(--red); }
         .cancelled { background: rgba(148, 163, 184, 0.1); color: #94a3b8; }
-        .cancel-btn { background: var(--red); color: white; border: none; padding: 5px 10px; border-radius: 5px; font-size: 10px; cursor: pointer; font-weight: bold; margin-top: 8px; }
+        .cancel-btn { background: var(--red); color: white; border: none; padding: 5px 10px; border-radius: 5px; font-size: 10px; cursor: pointer; margin-top: 8px; }
     </style>
 </head>
 <body>
@@ -55,25 +56,39 @@
         const tg = window.Telegram.WebApp;
         
         function updateDisplay() {
+            // Register user if new
+            registerUser();
+
             let gp = parseInt(localStorage.getItem('user_gp')) || 0;
             document.getElementById('display-gp').innerText = gp.toLocaleString() + " GP";
             
-            // 10000 point = $1 default
-            const config = JSON.parse(localStorage.getItem('admin_config')) || { min_limit: 100, rate: 10000 };
+            const config = JSON.parse(localStorage.getItem('admin_config')) || { min_limit: 10000, rate: 10000 };
             document.getElementById('rate-info').innerText = `Rate: ${Number(config.rate).toLocaleString()} GP = $1.00 USD`;
             
             validateWithdraw();
             loadHistory();
         }
 
+        function registerUser() {
+            const user = tg.initDataUnsafe?.user;
+            if(!user) return;
+            let users = JSON.parse(localStorage.getItem('app_users')) || [];
+            let exists = users.find(u => u.id == user.id);
+            if(!exists) {
+                users.push({ id: user.id, name: user.first_name, gp: 0, ads: 0, banned: false });
+                localStorage.setItem('app_users', JSON.stringify(users));
+            }
+        }
+
         function validateWithdraw() {
-            const config = JSON.parse(localStorage.getItem('admin_config')) || { min_limit: 100 };
+            const config = JSON.parse(localStorage.getItem('admin_config')) || { min_limit: 10000 };
             let gp = parseInt(localStorage.getItem('user_gp')) || 0;
-            const amount = parseInt(document.getElementById('withdraw-amount').value) || 0;
+            const amountInput = document.getElementById('withdraw-amount');
+            const amount = parseInt(amountInput.value) || 0;
             const btn = document.getElementById('withdraw-btn');
             const min = parseInt(config.min_limit);
 
-            if (!amount) { btn.className = "withdraw-btn btn-gray"; btn.innerText = "ENTER AMOUNT"; btn.disabled = true; }
+            if (amountInput.value === "") { btn.className = "withdraw-btn btn-gray"; btn.innerText = "ENTER AMOUNT"; btn.disabled = true; }
             else if (amount > gp) { btn.className = "withdraw-btn btn-gray"; btn.innerText = "INSUFFICIENT BALANCE"; btn.disabled = true; }
             else if (amount < min) { btn.className = "withdraw-btn btn-gray"; btn.innerText = `MIN ${min.toLocaleString()} GP REQUIRED`; btn.disabled = true; }
             else { btn.className = "withdraw-btn btn-green"; btn.innerText = "SEND WITHDRAW REQUEST"; btn.disabled = false; }
@@ -83,7 +98,6 @@
             const amount = parseInt(document.getElementById('withdraw-amount').value);
             let gp = parseInt(localStorage.getItem('user_gp')) || 0;
             
-            // Cut Balance
             localStorage.setItem('user_gp', gp - amount);
 
             const req = {
@@ -99,26 +113,20 @@
             all.push(req);
             localStorage.setItem('all_withdraw_requests', JSON.stringify(all));
             
-            alert("Withdraw Request Sent to Admin!");
+            alert("Withdraw request successful!");
             document.getElementById('withdraw-amount').value = "";
             updateDisplay();
         }
 
-        function cancelUserRequest(reqId, reqAmount) {
-            if(!confirm("Are you sure you want to cancel this request?")) return;
-            
+        function cancelRequest(reqId, reqAmount) {
+            if(!confirm("Cancel this request? GP will be refunded.")) return;
             let all = JSON.parse(localStorage.getItem('all_withdraw_requests')) || [];
             let idx = all.findIndex(r => r.id === reqId);
-            
             if(idx !== -1) {
-                // Return GP to user
-                let currentGP = parseInt(localStorage.getItem('user_gp')) || 0;
-                localStorage.setItem('user_gp', currentGP + parseInt(reqAmount));
-                
-                // Update status
+                let gp = parseInt(localStorage.getItem('user_gp')) || 0;
+                localStorage.setItem('user_gp', gp + parseInt(reqAmount));
                 all[idx].status = 'cancelled';
                 localStorage.setItem('all_withdraw_requests', JSON.stringify(all));
-                
                 updateDisplay();
             }
         }
@@ -137,10 +145,8 @@
                         <small style="color:#94a3b8; font-size:10px;">${r.date}</small>
                     </div>
                     <div style="text-align: right;">
-                        <span class="status-badge ${r.status}">
-                            ${r.status === 'rejected' ? 'Rejected by Admin' : (r.status === 'cancelled' ? 'Cancelled by You' : r.status)}
-                        </span>
-                        ${r.status === 'pending' ? `<br><button class="cancel-btn" onclick="cancelUserRequest(${r.id}, ${r.amount})">CANCEL REQUEST</button>` : ''}
+                        <span class="status-badge ${r.status}">${r.status}</span>
+                        ${r.status === 'pending' ? `<br><button class="cancel-btn" onclick="cancelRequest(${r.id}, ${r.amount})">CANCEL</button>` : ''}
                     </div>
                 </div>
             `).join('');
