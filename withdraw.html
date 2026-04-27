@@ -6,40 +6,68 @@
     <title>Withdraw - eFootball HUB</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --bg: #050a18; --card: #121e36; --border: #1e2d4d; --text: #ffffff; --green: #22c55e; --gray: #4b5563; --yellow: #fbbf24; }
+        :root { --bg: #050a18; --card: #121e36; --border: #1e2d4d; --text: #ffffff; --green: #22c55e; --gray: #4b5563; --yellow: #fbbf24; --red: #f87171; }
         body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 30px; }
-        .top-bar { display: flex; align-items: center; padding: 15px; background: rgba(18, 30, 54, 0.7); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); }
+        .top-bar { display: flex; align-items: center; padding: 15px; background: rgba(18, 30, 54, 0.7); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; }
         .top-bar a { color: white; text-decoration: none; margin-right: 15px; }
         .container { padding: 20px; text-align: center; }
-        .withdraw-card { background: var(--card); border-radius: 20px; padding: 25px; border: 1px solid var(--border); margin-bottom: 25px; }
+        .withdraw-card { background: var(--card); border-radius: 20px; padding: 25px; border: 1px solid var(--border); margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        
+        /* Remove Arrows from Input */
         input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
         input[type=number] { -moz-appearance: textfield; }
-        input { width: 100%; background: #050a18; border: 1px solid var(--border); padding: 15px; border-radius: 12px; color: white; text-align: center; outline: none; font-size: 20px; font-weight: bold; box-sizing: border-box; }
-        .withdraw-btn { width: 100%; border: none; padding: 16px; border-radius: 12px; color: white; font-weight: bold; margin-top: 20px; cursor: pointer; transition: 0.3s; font-size: 14px; }
-        .btn-gray { background: var(--gray); cursor: not-allowed; }
+        
+        input { 
+            width: 100%; background: #050a18; border: 1px solid var(--border); 
+            padding: 15px; border-radius: 12px; color: white; text-align: center; 
+            outline: none; font-size: 20px; font-weight: bold; box-sizing: border-box;
+        }
+
+        .withdraw-btn { 
+            width: 100%; border: none; padding: 16px; border-radius: 12px; 
+            color: white; font-weight: bold; margin-top: 20px; cursor: pointer; 
+            transition: 0.3s; font-size: 14px; text-transform: uppercase;
+        }
+        .btn-gray { background: var(--gray); cursor: not-allowed; opacity: 0.6; }
         .btn-green { background: var(--green) !important; box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4); }
-        .history-item { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 15px; margin-bottom: 10px; text-align: left; display: flex; justify-content: space-between; align-items: center; }
+
+        /* History Styling */
+        .history-section { text-align: left; margin-top: 20px; }
+        .history-title { font-size: 16px; color: #94a3b8; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        .history-item { 
+            background: var(--card); border: 1px solid var(--border); 
+            border-radius: 12px; padding: 15px; margin-bottom: 10px; 
+            display: flex; justify-content: space-between; align-items: center; 
+        }
+        .status-badge { font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 6px; text-transform: uppercase; }
+        .pending { background: rgba(251, 191, 36, 0.1); color: var(--yellow); }
+        .success { background: rgba(34, 197, 94, 0.1); color: var(--green); }
+        .rejected { background: rgba(248, 113, 113, 0.1); color: var(--red); }
     </style>
 </head>
 <body>
 
     <div class="top-bar">
         <a href="profile.html"><i class="fas fa-chevron-left"></i></a>
-        <span>Withdraw GP</span>
+        <span style="font-weight: bold;">Withdraw GP</span>
     </div>
 
     <div class="container">
         <div class="withdraw-card">
             <div style="margin-bottom: 20px;">
-                <span style="color:#94a3b8; font-size:12px;">AVAILABLE BALANCE</span>
-                <h2 id="display-gp" style="color:var(--yellow); font-size:32px; margin:5px 0;">0 GP</h2>
+                <span style="color:#94a3b8; font-size:12px; letter-spacing: 1px;">AVAILABLE BALANCE</span>
+                <h2 id="display-gp" style="color:var(--yellow); font-size:36px; margin:5px 0;">0 GP</h2>
             </div>
-            <div id="rate-info" style="font-size: 12px; color: #94a3b8; margin-bottom: 15px;">Rate: Loading...</div>
-            <input type="number" id="withdraw-amount" placeholder="Enter Amount" oninput="validateWithdraw()">
+            
+            <div id="rate-info" style="font-size: 12px; color: #94a3b8; margin-bottom: 20px; background: rgba(255,255,255,0.05); padding: 8px; border-radius: 8px;">Rate Loading...</div>
+            
+            <input type="number" id="withdraw-amount" placeholder="0" oninput="validateWithdraw()" inputmode="numeric">
+            
             <button id="withdraw-btn" class="withdraw-btn btn-gray" onclick="processWithdraw()" disabled>ENTER AMOUNT</button>
         </div>
-        <div style="text-align: left; margin-top: 20px;">
-            <h3 style="font-size: 16px; color: #94a3b8;"><i class="fas fa-history"></i> History</h3>
+
+        <div class="history-section">
+            <div class="history-title"><i class="fas fa-history"></i> Withdrawal History</div>
             <div id="history-list"></div>
         </div>
     </div>
@@ -48,11 +76,14 @@
         const tg = window.Telegram.WebApp;
 
         function updateDisplay() {
-            let gp = parseInt(localStorage.getItem('user_gp')) || 0;
+            // ১. ব্যালেন্স লোড করা (NaN চেকসহ)
+            let rawGP = localStorage.getItem('user_gp');
+            let gp = (rawGP === null || isNaN(Number(rawGP))) ? 0 : Number(rawGP);
             document.getElementById('display-gp').innerText = gp.toLocaleString() + " GP";
 
+            // ২. অ্যাডমিন কনফিগ লোড করা
             const config = JSON.parse(localStorage.getItem('admin_config')) || { min_limit: 10000, rate: 10000 };
-            let rate = parseInt(config.rate) || 10000;
+            const rate = Number(config.rate) || 10000;
             document.getElementById('rate-info').innerText = `Rate: ${rate.toLocaleString()} GP = $1.00 USD`;
             
             validateWithdraw();
@@ -61,52 +92,92 @@
 
         function validateWithdraw() {
             const config = JSON.parse(localStorage.getItem('admin_config')) || { min_limit: 10000 };
-            let gp = parseInt(localStorage.getItem('user_gp')) || 0;
+            let rawGP = localStorage.getItem('user_gp');
+            let gp = (rawGP === null || isNaN(Number(rawGP))) ? 0 : Number(rawGP);
+            
             const inputVal = document.getElementById('withdraw-amount').value;
-            const amount = parseInt(inputVal) || 0;
+            const amount = Number(inputVal) || 0;
             const btn = document.getElementById('withdraw-btn');
-            const min = parseInt(config.min_limit) || 10000;
+            const minLimit = Number(config.min_limit) || 10000;
 
             if (inputVal === "" || amount === 0) {
-                btn.className = "withdraw-btn btn-gray"; btn.innerText = "ENTER AMOUNT"; btn.disabled = true;
+                btn.className = "withdraw-btn btn-gray";
+                btn.innerText = "ENTER AMOUNT";
+                btn.disabled = true;
             } else if (amount > gp) {
-                btn.className = "withdraw-btn btn-gray"; btn.innerText = "INSUFFICIENT BALANCE"; btn.disabled = true;
-            } else if (amount < min) {
-                btn.className = "withdraw-btn btn-gray"; btn.innerText = `MIN ${min.toLocaleString()} GP REQUIRED`; btn.disabled = true;
+                btn.className = "withdraw-btn btn-gray";
+                btn.innerText = "INSUFFICIENT BALANCE";
+                btn.disabled = true;
+            } else if (amount < minLimit) {
+                btn.className = "withdraw-btn btn-gray";
+                btn.innerText = `MIN ${minLimit.toLocaleString()} GP REQUIRED`;
+                btn.disabled = true;
             } else {
-                btn.className = "withdraw-btn btn-green"; btn.innerText = "SEND WITHDRAW REQUEST"; btn.disabled = false;
+                // সথিক হলে সবুজ হবে
+                btn.className = "withdraw-btn btn-green";
+                btn.innerText = "SEND WITHDRAW REQUEST";
+                btn.disabled = false;
             }
         }
 
         function processWithdraw() {
-            const amount = parseInt(document.getElementById('withdraw-amount').value);
-            const ton = localStorage.getItem('wallet_ton') || "Not Set";
-            const bnb = localStorage.getItem('wallet_bnb') || "Not Set";
-            if (ton === "Not Set" && bnb === "Not Set") return alert("Please setup wallet in profile first!");
+            const amountInput = document.getElementById('withdraw-amount');
+            const amount = Number(amountInput.value);
+            
+            let rawGP = localStorage.getItem('user_gp');
+            let currentGP = (rawGP === null || isNaN(Number(rawGP))) ? 0 : Number(rawGP);
 
-            let currentGP = parseInt(localStorage.getItem('user_gp')) || 0;
-            localStorage.setItem('user_gp', currentGP - amount);
+            // ব্যালেন্স কাটা
+            const newBalance = currentGP - amount;
+            localStorage.setItem('user_gp', newBalance);
 
+            // রিকোয়েস্ট ডেটা তৈরি
+            const newReq = {
+                id: Date.now(),
+                userId: tg.initDataUnsafe?.user?.id || "774900",
+                userName: tg.initDataUnsafe?.user?.first_name || "Guest",
+                amount: amount,
+                status: 'pending', // ডিফল্ট পেন্ডিং
+                date: new Date().toLocaleString()
+            };
+
+            // লোকাল স্টোরেজে সেভ করা
             let all = JSON.parse(localStorage.getItem('all_withdraw_requests')) || [];
-            all.push({ id: Date.now(), userId: tg.initDataUnsafe?.user?.id || "774900", amount, tonWallet: ton, bnbWallet: bnb, status: 'pending', date: new Date().toLocaleString() });
+            all.push(newReq);
             localStorage.setItem('all_withdraw_requests', JSON.stringify(all));
 
-            alert("Request Sent!");
-            document.getElementById('withdraw-amount').value = "";
+            alert("উইথড্র রিকোয়েস্ট সফলভাবে পাঠানো হয়েছে!");
+            amountInput.value = "";
             updateDisplay();
         }
 
         function loadHistory() {
+            const list = document.getElementById('history-list');
             const all = JSON.parse(localStorage.getItem('all_withdraw_requests')) || [];
             const uid = tg.initDataUnsafe?.user?.id || "774900";
-            const my = all.filter(r => r.userId == uid);
-            document.getElementById('history-list').innerHTML = my.length === 0 ? "<p style='color:#4b5563; font-size:12px;'>No history found.</p>" : my.reverse().map(r => `
+            
+            // শুধু এই ইউজারের রিকোয়েস্টগুলো ফিল্টার করা
+            const myRequests = all.filter(r => r.userId == uid);
+
+            if (myRequests.length === 0) {
+                list.innerHTML = "<p style='color:#4b5563; font-size:12px; text-align:center;'>No history found.</p>";
+                return;
+            }
+
+            list.innerHTML = myRequests.reverse().map(r => `
                 <div class="history-item">
-                    <div><b style="color:var(--yellow);">${r.amount.toLocaleString()} GP</b><br><small style="color:#94a3b8; font-size:10px;">${r.date}</small></div>
-                    <span style="color:${r.status==='pending'?'#fbbf24':'#22c55e'}; font-weight:bold; font-size:12px;">${r.status.toUpperCase()}</span>
+                    <div>
+                        <b style="color:var(--yellow); font-size:16px;">${r.amount.toLocaleString()} GP</b><br>
+                        <small style="color:#94a3b8; font-size:10px;">${r.date}</small>
+                    </div>
+                    <span class="status-badge ${r.status}">
+                        ${r.status === 'rejected' ? 'Cancelled' : r.status}
+                    </span>
                 </div>
             `).join('');
         }
+
+        // পেজ ওপেন হলে রান হবে
         window.onload = updateDisplay;
     </script>
 </body>
