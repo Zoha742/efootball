@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Player Bio</title>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
+    
     <script src="https://sad.adsgram.ai/js/adsgram-sdk.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -13,65 +16,77 @@
         .header { display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 15px; }
         .back-btn { position: absolute; left: 0; font-size: 22px; color: var(--primary); text-decoration: none; }
         
-        /* Profile Card */
+        /* Profile Card - Design Unchanged */
         .profile-card { background: var(--card); border-radius: 12px; padding: 15px; text-align: center; border: 1px solid #1e2d4d; margin-bottom: 15px; }
-        .profile-img { width: 120px; border-radius: 10px; object-fit: cover; border: 2px solid var(--primary); margin-bottom: 8px; }
-        .player-name { font-size: 20px; font-weight: bold; margin: 5px 0; color: var(--primary); }
+        .profile-img { width: 120px; border-radius: 12px; border: 2px solid var(--primary); margin-bottom: 10px; }
+        .profile-name { font-size: 18px; font-weight: bold; color: var(--primary); }
 
-        /* General Info Grid */
-        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 15px; }
-        .info-box { background: rgba(251, 191, 36, 0.05); border: 1px dashed #1e2d4d; padding: 6px 10px; border-radius: 6px; display: flex; flex-direction: column; }
-        .info-label { font-size: 9px; color: #fbbf24; text-transform: uppercase; opacity: 0.7; }
-        .info-value { font-size: 12px; font-weight: bold; color: #fff; margin-top: 2px; }
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .info-box { background: var(--card); padding: 10px; border-radius: 8px; border: 1px solid #1e2d4d; }
+        .info-label { font-size: 10px; color: #94a3b8; display: block; margin-bottom: 30px; }
+        .info-value { font-size: 13px; font-weight: bold; }
 
-        /* Stats Section */
-        .stats-title { font-size: 14px; color: var(--primary); margin: 15px 0 10px; border-left: 4px solid var(--primary); padding-left: 8px; text-transform: uppercase; font-weight: bold; }
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
-        .stat-box { display: flex; justify-content: space-between; align-items: center; background: var(--card); padding: 6px 8px; border-radius: 6px; border: 1px solid #1e2d4d; }
-        .stat-name { font-size: 10px; color: #cbd5e1; font-weight: bold; text-transform: uppercase; }
-        .stat-num { font-size: 13px; font-weight: bold; color: #000; padding: 2px 6px; border-radius: 4px; min-width: 26px; text-align: center; }
+        .stats-container { display: flex; flex-direction: column; gap: 8px; }
+        .stat-box { display: flex; justify-content: space-between; align-items: center; background: #0f172a; padding: 8px 12px; border-radius: 6px; border: 1px solid #1e2d4d; }
+        .stat-name { font-size: 12px; color: #cbd5e1; }
+        .stat-num { font-size: 14px; font-weight: bold; color: #000; padding: 2px 8px; border-radius: 4px; min-width: 35px; text-align: center; }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <a href="javascript:history.back()" class="back-btn"><i class="fas fa-arrow-left"></i></a>
-        <h2 style="font-size: 18px; color: var(--primary);">PLAYER DETAILS</h2>
+<div class="header">
+    <a href="legend (2).html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+    <h3 style="margin:0;">Player Statistics</h3>
+</div>
+
+<div class="profile-card">
+    <img id="p-img" src="" class="profile-img">
+    <div id="p-name" class="profile-name">Loading...</div>
+</div>
+
+<div class="info-grid">
+    <div class="info-box"><span class="info-label">Nationality</span><span class="info-value" id="p-nation">--</span></div>
+    <div class="info-box"><span class="info-label">Team</span><span class="info-value" id="p-team">--</span></div>
+    <div class="info-box"><span class="info-label">Position</span><span class="info-value" id="p-pos">--</span></div>
+    <div class="info-box"><span class="info-label">Foot</span><span class="info-value" id="p-foot">--</span></div>
+    <div class="info-box"><span class="info-label">Height</span><span class="info-value" id="p-height">--</span></div>
+    <div class="info-box"><span class="info-label">Playing Style</span><span class="info-value" id="p-style">--</span></div>
+</div>
+
+<div class="stats-container" id="stats-container">
     </div>
-
-    <div class="profile-card">
-        <img id="p-img" class="profile-img" src="">
-        <h2 id="p-name" class="player-name"></h2>
-    </div>
-
-    <div class="info-grid">
-        <div class="info-box"><span class="info-label">Age</span><span id="p-age" class="info-value">--</span></div>
-        <div class="info-box"><span class="info-label">Country</span><span id="p-country" class="info-value">--</span></div>
-        <div class="info-box"><span class="info-label">Height</span><span id="p-height" class="info-value">--</span></div>
-        <div class="info-box"><span class="info-label">Playing Style</span><span id="p-style" class="info-value">--</span></div>
-    </div>
-
-    <div class="stats-title">Abilities (Stats)</div>
-    
-    <div id="stats-container" class="stats-grid"></div>
-
-    <div id="banner-container" style="display: flex; justify-content: center; margin-top: 25px; padding-bottom: 20px;"></div>
 
 <script>
-    function getStatColor(v) {
-        if (v >= 90) return '#06b6d4'; if (v >= 80) return '#22c55e';
-        if (v >= 70) return '#eab308'; return '#ef4444';
+    // Firebase Configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyAy2nEcb--kbjU7tSIm6lJG5ZpEFSus7sg",
+        authDomain: "efootball-57d9b.firebaseapp.com",
+        projectId: "efootball-57d9b",
+        storageBucket: "efootball-57d9b.firebasestorage.app",
+        messagingSenderId: "1031993322489",
+        appId: "1:1031993322489:web:0336c8e1869318a8222b28"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    function getStatColor(val) {
+        if (val >= 95) return "#ff0000"; // Red/Epic
+        if (val >= 90) return "#ff8c00"; // Orange
+        if (val >= 80) return "#ffff00"; // Yellow
+        if (val >= 70) return "#adff2f"; // Light Green
+        return "#ffffff";
     }
 
-    window.onload = function() {
-        // ১. Player data load kora (Sobar age)
-        const data = localStorage.getItem('selected_player');
-        if (data) {
-            const p = JSON.parse(data);
-            document.getElementById('p-img').src = p.img || "";
-            document.getElementById('p-name').innerText = p.name || "Unknown";
-            document.getElementById('p-age').innerText = p.age || "N/A";
-            document.getElementById('p-country').innerText = p.country || "N/A";
+    window.onload = () => {
+        const pData = localStorage.getItem('selected_player');
+        if (pData) {
+            const p = JSON.parse(pData);
+            document.getElementById('p-img').src = p.img;
+            document.getElementById('p-name').innerText = p.name;
+            document.getElementById('p-nation').innerText = p.nationality || "N/A";
+            document.getElementById('p-team').innerText = p.team || "N/A";
+            document.getElementById('p-pos').innerText = p.pos || "N/A";
+            document.getElementById('p-foot').innerText = p.foot || "N/A";
             document.getElementById('p-height').innerText = p.height || "N/A";
             document.getElementById('p-style').innerText = p.style || "N/A";
 
@@ -89,21 +104,14 @@
             }
         }
 
-        // ২. Data load hobar por safe-vabe ads call kora
+        // Adsgram Integration (Preserved)
         setTimeout(() => {
             try {
                 if (window.Adsgram) {
-                    // Banner Ad (ID boshan)
-                    const bannerAd = window.Adsgram.init({ blockId: "APNAR_BANNER_BLOCK_ID" });
-                    bannerAd.show().catch((err) => console.log("Banner Error"));
-
-                    // Video Ad (ID boshan)
-                    const videoAd = window.Adsgram.init({ blockId: "APNAR_VIDEO_BLOCK_ID" });
-                    videoAd.show().catch((err) => console.log("Video Error"));
+                    const bannerAd = window.Adsgram.init({ blockId: "4774" });
+                    bannerAd.show().catch((err) => console.log("Ads Error"));
                 }
-            } catch (e) {
-                console.log("Adsgram issue");
-            }
+            } catch (e) {}
         }, 800);
     };
 </script>
