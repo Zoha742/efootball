@@ -23,6 +23,7 @@
         .menu-item i { width: 35px; height: 35px; background: rgba(217, 70, 239, 0.1); border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-right: 15px; color: var(--pink); font-size: 16px; }
         .menu-item .chevron { margin-left: auto; color: #4b5563; font-size: 12px; }
 
+        /* Notification Styling */
         .p-notif-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); display: none; align-items: center; justify-content: center; z-index: 2000; }
         .p-notif-box { background: var(--card-dark); width: 85%; border-radius: 20px; padding: 25px; border: 1px solid var(--pink); text-align: center; transform: scale(0.8); transition: 0.3s; }
         .p-notif-box.show { transform: scale(1); }
@@ -67,18 +68,21 @@
 
         if (user) {
             document.getElementById('user-name').innerText = user.first_name;
-            document.getElementById('user-id').innerText = \"ID: #\" + user.id;
+            document.getElementById('user-id').innerText = "ID: #" + user.id;
             if (user.photo_url) document.getElementById('user-avatar').src = user.photo_url;
         }
 
-        window.onload = function() {
-            // Fix NaN issues
+        function updateProfileData() {
+            // ব্যালেন্স লোড করার সময় NaN চেক
             let gp = parseInt(localStorage.getItem('user_gp'));
             document.getElementById('gp-balance').innerText = isNaN(gp) ? 0 : gp.toLocaleString();
             
             let tasks = parseInt(localStorage.getItem('tasks_done'));
             document.getElementById('total-tasks').innerText = isNaN(tasks) ? 0 : tasks;
-            
+        }
+
+        window.onload = function() {
+            updateProfileData();
             if (!sessionStorage.getItem('profile_notif_shown')) {
                 setTimeout(showProfileNotif, 1500);
                 sessionStorage.setItem('profile_notif_shown', 'true');
