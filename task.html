@@ -22,7 +22,11 @@
     </style>
 </head>
 <body>
-    <div class="top-bar"><a href="index.html"><i class="fas fa-chevron-left"></i></a><span>Daily Tasks</span><div style="margin-left: auto; color: #fbbf24; font-weight: bold;" id="user-gp">0 GP</div></div>
+    <div class="top-bar">
+        <a href="index.html"><i class="fas fa-chevron-left"></i></a>
+        <span>Daily Tasks</span>
+        <div style="margin-left: auto; color: #fbbf24; font-weight: bold;" id="user-gp">0 GP</div>
+    </div>
 
     <div class="container">
         <div class="task-card">
@@ -37,7 +41,7 @@
             </div>
             <button id="task-btn" class="btn btn-blue" onclick="showAd()">WATCH AD (0/6)</button>
             <button id="collect-btn" class="btn btn-green" style="display: none;" onclick="collectReward()">COLLECT REWARD</button>
-            <div id="timer">Reset in: <span id="countdown">00:00:00</span></div>
+            <div id="timer">Next reset in: <span id="countdown">00:00:00</span></div>
         </div>
     </div>
 
@@ -61,7 +65,7 @@
             AdController.show().then(() => {
                 adsWatched++;
                 updateSlots();
-            }).catch(() => alert("Ad failed. Try again!"));
+            }).catch(() => alert("Ad failed to load. Try again!"));
         }
 
         function updateSlots() {
@@ -74,27 +78,31 @@
         }
 
         function collectReward() {
-            const reward = 100; // Fixed reward or from admin
-            let gp = parseInt(localStorage.getItem('user_gp')) || 0;
-            localStorage.setItem('user_gp', gp + reward);
+            const adminConfig = JSON.parse(localStorage.getItem('admin_config')) || { task_reward: 100 };
+            const reward = parseInt(adminConfig.task_reward) || 100;
+            
+            let currentGP = parseInt(localStorage.getItem('user_gp'));
+            if (isNaN(currentGP)) currentGP = 0;
+
+            localStorage.setItem('user_gp', currentGP + reward);
             localStorage.setItem('last_task_collect', Date.now());
             
             let done = parseInt(localStorage.getItem('tasks_done')) || 0;
             localStorage.setItem('tasks_done', done + 1);
 
-            alert("Earned " + reward + " GP!");
+            alert("Reward Collected: " + reward + " GP");
             location.reload();
         }
 
         function showTimer(ms) {
             document.getElementById('task-btn').style.display = "none";
             document.getElementById('timer').style.display = "block";
-            const timerDiv = document.getElementById('countdown');
+            const countdownSpan = document.getElementById('countdown');
             const interval = setInterval(() => {
                 ms -= 1000;
                 if (ms <= 0) { clearInterval(interval); location.reload(); }
                 let h = Math.floor(ms / 3600000), m = Math.floor((ms % 3600000) / 60000), s = Math.floor((ms % 60000) / 1000);
-                timerDiv.innerText = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+                countdownSpan.innerText = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
             }, 1000);
         }
 
