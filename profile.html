@@ -151,15 +151,19 @@
         }
 
         window.onload = function() {
-            document.getElementById('gp-balance').innerText = localStorage.getItem('user_gp') || 0;
-            document.getElementById('total-tasks').innerText = localStorage.getItem('tasks_done') || 0;
-            
-            // Session-e prothombar holei notification dekhabe
-            if (!sessionStorage.getItem('profile_notif_shown')) {
-                setTimeout(showProfileNotif, 1500);
-                sessionStorage.setItem('profile_notif_shown', 'true');
-            }
-        }
+    // NaN Fix logic
+    let gp = parseInt(localStorage.getItem('user_gp'));
+    document.getElementById('gp-balance').innerText = isNaN(gp) ? 0 : gp.toLocaleString();
+    
+    let tasks = parseInt(localStorage.getItem('tasks_done'));
+    document.getElementById('total-tasks').innerText = isNaN(tasks) ? 0 : tasks;
+    
+    // Notification logic
+    if (!sessionStorage.getItem('profile_notif_shown')) {
+        setTimeout(showProfileNotif, 1500);
+        sessionStorage.setItem('profile_notif_shown', 'true');
+    }
+}
 
         function showProfileNotif() {
             const overlay = document.getElementById('pNotifOverlay');
