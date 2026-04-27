@@ -4,18 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Refer & Earn</title>
+    
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
+    
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* Apnar original design hoboho 1:1 rakha hoyeche */
         :root { --bg: #050a18; --card: #121e36; --primary: #f472b6; --text: #ffffff; --border: #1e2d4d; }
         body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 30px; }
         .top-bar { display: flex; align-items: center; padding: 15px; background: rgba(18, 30, 54, 0.7); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; }
         .top-bar a { color: white; text-decoration: none; font-size: 18px; margin-right: 15px; }
         .container { padding: 20px; text-align: center; }
-        .refer-card { background: var(--card); border-radius: 20px; padding: 30px; border: 1px solid var(--border); box-shadow: 0 4px 15px rgba(244, 114, 182, 0.1); }
-        .refer-card i { font-size: 60px; color: var(--primary); margin-bottom: 15px; }
-        .link-box { background: #050a18; border: 1px dashed var(--primary); padding: 15px; border-radius: 12px; margin: 20px 0; font-size: 13px; color: #94a3b8; word-break: break-all; }
-        .btn-copy { width: 100%; background: linear-gradient(135deg, #f472b6, #db2777); border: none; color: white; padding: 14px; border-radius: 12px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        
+        .refer-card { background: var(--card); border-radius: 20px; padding: 30px; border: 1px solid var(--border); margin-top: 20px; }
+        .refer-card i { font-size: 50px; color: var(--primary); margin-bottom: 20px; }
+        .refer-card h2 { margin-bottom: 10px; font-size: 22px; }
+        
+        .link-box { background: #0f172a; padding: 15px; border-radius: 12px; border: 1px dashed var(--border); color: #94a3b8; font-size: 13px; word-break: break-all; margin: 20px 0; }
+        .btn-copy { background: var(--primary); color: white; border: none; padding: 15px 30px; border-radius: 12px; font-weight: bold; width: 100%; cursor: pointer; transition: 0.3s; }
         .btn-copy:active { transform: scale(0.95); }
     </style>
 </head>
@@ -24,35 +32,59 @@
         <a href="profile.html"><i class="fas fa-chevron-left"></i></a>
         <span>Refer & Earn</span>
     </div>
+
     <div class="container">
         <div class="refer-card">
             <i class="fas fa-user-plus"></i>
             <h2>Invite Friends</h2>
-            <p style="font-size: 14px; color: #94a3b8;">আপনার বন্ধুদের ইনভাইট করুন এবং প্রতি রেফারে ১০০০ GP বোনাস জিতে নিন!</p>
-            <div class="link-box" id="ref-link">https://t.me/YourBotName?start=user123</div>
+            <p style="font-size: 14px; color: #94a3b8;">Apnar bondhuder invite korun ebong proti refer-e <span id="bonus-amt">1000</span> GP bonus jite nin!</p>
+            
+            <div class="link-box" id="ref-link">Generating link...</div>
+            
             <button class="btn-copy" onclick="copyLink()">COPY REFER LINK</button>
         </div>
     </div>
+
     <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAy2nEcb--kbjU7tSIm6lJG5ZpEFSus7sg",
+            authDomain: "efootball-57d9b.firebaseapp.com",
+            projectId: "efootball-57d9b",
+            storageBucket: "efootball-57d9b.firebasestorage.app",
+            messagingSenderId: "1031993322489",
+            appId: "1:1031993322489:web:0336c8e1869318a8222b28"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        const tg = window.Telegram.WebApp;
+        const user = tg.initDataUnsafe?.user;
+        const userId = String(user?.id || "774900");
+
+        // 1. Firebase theke bonus amount neya (Admin Config)
+        db.ref('admin_config/refer_bonus').on('value', (snap) => {
+            if(snap.exists()) {
+                document.getElementById('bonus-amt').innerText = snap.val();
+            }
+        });
+
+        // 2. Referral Link Generate kora (Apnar original logic)
+        if (user) {
+            const botUsername = "efootball_hub_bot"; // Apnar bot-er username ekhane thik vabe bosaben
+            const referLink = `https://t.me/${botUsername}?start=${userId}`;
+            document.getElementById('ref-link').innerText = referLink;
+        }
+
+        // 3. Copy Function (Unchanged)
         function copyLink() {
             const link = document.getElementById('ref-link').innerText;
-            navigator.clipboard.writeText(link);
-            alert("Referral link copied!");
+            if(link === "Generating link...") return;
+            
+            navigator.clipboard.writeText(link).then(() => {
+                alert("Referral link copied!");
+            });
         }
-        const tg = window.Telegram.WebApp;
-const user = tg.initDataUnsafe?.user;
-
-// Admin config theke bonus amount neya
-const adminConfig = JSON.parse(localStorage.getItem('admin_config')) || { refer_bonus: 1000 };
-
-if (user) {
-    // Apnar bot-er username ekhane bosaben
-    const botUsername = "YOUR_BOT_USERNAME"; 
-    const referLink = `https://t.me/${botUsername}?start=${user.id}`;
-    
-    document.getElementById('ref-link').innerText = referLink;
-    document.querySelector('.refer-card p').innerText = `বন্ধুদের ইনভাইট করুন এবং প্রতি রেফারে ${adminConfig.refer_bonus} GP বোনাস জিতে নিন!`;
-}
     </script>
 </body>
 </html>
