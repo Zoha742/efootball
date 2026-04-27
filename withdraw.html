@@ -24,20 +24,27 @@
         .pending { background: rgba(251, 191, 36, 0.1); color: var(--yellow); }
         .success { background: rgba(34, 197, 94, 0.1); color: var(--green); }
         .rejected { background: rgba(248, 113, 113, 0.1); color: var(--red); }
+        .cancelled { background: rgba(148, 163, 184, 0.1); color: #94a3b8; }
+        .cancel-btn { background: var(--red); color: white; border: none; padding: 5px 10px; border-radius: 5px; font-size: 10px; cursor: pointer; font-weight: bold; margin-top: 8px; }
     </style>
 </head>
 <body>
     <div class="top-bar"><a href="profile.html"><i class="fas fa-chevron-left"></i></a><span>Withdraw GP</span></div>
+    
     <div class="container">
         <div class="withdraw-card">
             <div style="margin-bottom: 20px;">
                 <span style="color:#94a3b8; font-size:12px;">AVAILABLE BALANCE</span>
                 <h2 id="display-gp" style="color:var(--yellow); font-size:36px; margin:5px 0;">0 GP</h2>
             </div>
-            <div id="rate-info" style="font-size: 12px; color: #94a3b8; margin-bottom: 20px; background: rgba(255,255,255,0.05); padding: 8px; border-radius: 8px;">Rate Loading...</div>
+            
+            <div id="rate-info" style="font-size: 12px; color: #94a3b8; margin-bottom: 20px; background: rgba(255,255,255,0.05); padding: 8px; border-radius: 8px;">Loading Rate...</div>
+            
             <input type="number" id="withdraw-amount" placeholder="0" oninput="validateWithdraw()" inputmode="numeric">
+            
             <button id="withdraw-btn" class="withdraw-btn btn-gray" onclick="processWithdraw()" disabled>ENTER AMOUNT</button>
         </div>
+
         <div class="history-section">
             <div class="history-title"><i class="fas fa-history"></i> Withdrawal History</div>
             <div id="history-list"></div>
@@ -50,8 +57,11 @@
         function updateDisplay() {
             let gp = parseInt(localStorage.getItem('user_gp')) || 0;
             document.getElementById('display-gp').innerText = gp.toLocaleString() + " GP";
+            
+            // 10000 point = $1 default
             const config = JSON.parse(localStorage.getItem('admin_config')) || { min_limit: 10000, rate: 10000 };
             document.getElementById('rate-info').innerText = `Rate: ${Number(config.rate).toLocaleString()} GP = $1.00 USD`;
+            
             validateWithdraw();
             loadHistory();
         }
@@ -73,19 +83,18 @@
             const amount = parseInt(document.getElementById('withdraw-amount').value);
             let gp = parseInt(localStorage.getItem('user_gp')) || 0;
             
-            // ব্যালেন্স কাটা
+            // Cut Balance
             localStorage.setItem('user_gp', gp - amount);
 
             const req = {
                 id: Date.now(),
-                userId: String(tg.initDataUnsafe?.user?.id || "774900"), // আইডি স্ট্রিং হিসেবে সেভ করছি
+                userId: String(tg.initDataUnsafe?.user?.id || "774900"),
                 userName: tg.initDataUnsafe?.user?.first_name || "Guest",
                 amount: amount,
                 status: 'pending',
                 date: new Date().toLocaleString()
             };
 
-            // ডাটা সেভ করা (Key: all_withdraw_requests)
             let all = JSON.parse(localStorage.getItem('all_withdraw_requests')) || [];
             all.push(req);
             localStorage.setItem('all_withdraw_requests', JSON.stringify(all));
@@ -95,17 +104,44 @@
             updateDisplay();
         }
 
+        function cancelUserRequest(reqId, reqAmount) {
+            if(!confirm("Are you sure you want to cancel this request?")) return;
+            
+            let all = JSON.parse(localStorage.getItem('all_withdraw_requests')) || [];
+            let idx = all.findIndex(r => r.id === reqId);
+            
+            if(idx !== -1) {
+                // Return GP to user
+                let currentGP = parseInt(localStorage.getItem('user_gp')) || 0;
+                localStorage.setItem('user_gp', currentGP + parseInt(reqAmount));
+                
+                // Update status
+                all[idx].status = 'cancelled';
+                localStorage.setItem('all_withdraw_requests', JSON.stringify(all));
+                
+                updateDisplay();
+            }
+        }
+
         function loadHistory() {
             const all = JSON.parse(localStorage.getItem('all_withdraw_requests')) || [];
             const uid = String(tg.initDataUnsafe?.user?.id || "774900");
-            const my = all.filter(r => String(r.userId) === uid); // আইডি স্ট্রিং কম্পারিজন
+            const my = all.filter(r => String(r.userId) === uid);
 
             document.getElementById('history-list').innerHTML = my.length === 0 ? 
                 "<p style='color:#4b5563; font-size:12px; text-align:center;'>No history found.</p>" : 
                 my.reverse().map(r => `
                 <div class="history-item">
-                    <div><b style="color:var(--yellow);">${r.amount.toLocaleString()} GP</b><br><small style="color:#94a3b8; font-size:10px;">${r.date}</small></div>
-                    <span class="status-badge ${r.status}">${r.status === 'rejected' ? 'Cancelled' : r.status}</span>
+                    <div>
+                        <b style="color:var(--yellow);">${parseInt(r.amount).toLocaleString()} GP</b><br>
+                        <small style="color:#94a3b8; font-size:10px;">${r.date}</small>
+                    </div>
+                    <div style="text-align: right;">
+                        <span class="status-badge ${r.status}">
+                            ${r.status === 'rejected' ? 'Rejected by Admin' : (r.status === 'cancelled' ? 'Cancelled by You' : r.status)}
+                        </span>
+                        ${r.status === 'pending' ? `<br><button class="cancel-btn" onclick="cancelUserRequest(${r.id}, ${r.amount})">CANCEL REQUEST</button>` : ''}
+                    </div>
                 </div>
             `).join('');
         }
