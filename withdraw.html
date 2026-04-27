@@ -6,53 +6,85 @@
     <title>Withdraw GP - eFootball HUB</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --bg: #050a18; --card: #121e36; --border: #1e2d4d; --text: #ffffff; --red: #f87171; --green: #22c55e; --gray: #4b5563; }
+        :root { --bg: #050a18; --card: #121e36; --border: #1e2d4d; --text: #ffffff; --red: #f87171; --green: #22c55e; --gray: #4b5563; --yellow: #fbbf24; }
         body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 30px; }
-        .top-bar { display: flex; align-items: center; padding: 15px; background: rgba(18, 30, 54, 0.7); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; }
-        .top-bar a { color: white; text-decoration: none; margin-right: 15px; }
-        .container { padding: 20px; text-align: center; }
-        .withdraw-card { background: var(--card); border-radius: 20px; padding: 25px; border: 1px solid var(--border); margin-bottom: 25px; }
-        .balance-info h2 { margin: 5px 0; font-size: 32px; color: #fbbf24; }
-        .rate-info { font-size: 12px; color: #94a3b8; margin-bottom: 15px; background: rgba(255,255,255,0.05); padding: 8px; border-radius: 8px; }
         
-        /* Remove Arrows & Spinner */
+        .top-bar { display: flex; align-items: center; padding: 15px; background: rgba(18, 30, 54, 0.7); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; }
+        .top-bar a { color: white; text-decoration: none; margin-right: 15px; font-size: 18px; }
+        
+        .container { padding: 20px; text-align: center; }
+        
+        /* Balance Card */
+        .withdraw-card { background: var(--card); border-radius: 20px; padding: 25px; border: 1px solid var(--border); margin-bottom: 25px; box-shadow: 0 8px 20px rgba(0,0,0,0.4); }
+        .balance-info span { color: #94a3b8; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+        .balance-info h2 { margin: 10px 0; font-size: 36px; color: var(--yellow); text-shadow: 0 0 10px rgba(251, 191, 36, 0.3); }
+        
+        .rate-info { font-size: 12px; color: #94a3b8; margin-bottom: 20px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px; display: inline-block; }
+
+        /* Input Styling (No arrows) */
         input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
         input[type=number] { -moz-appearance: textfield; }
         
-        input { width: 100%; background: #050a18; border: 1px solid var(--border); padding: 15px; border-radius: 12px; color: white; text-align: center; outline: none; font-size: 18px; font-weight: bold; }
-        
-        .withdraw-btn { width: 100%; border: none; padding: 16px; border-radius: 12px; color: white; font-weight: bold; margin-top: 20px; cursor: pointer; transition: 0.3s; font-size: 14px; text-transform: uppercase; }
-        .btn-gray { background: var(--gray); cursor: not-allowed; }
-        .btn-green { background: var(--green) !important; box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4); }
-        
-        #history-list { text-align: left; margin-top: 20px; }
+        input { 
+            width: 100%; background: #050a18; border: 1px solid var(--border); 
+            padding: 15px; border-radius: 12px; color: white; text-align: center; 
+            outline: none; box-sizing: border-box; font-size: 20px; font-weight: bold;
+            transition: 0.3s;
+        }
+        input:focus { border-color: var(--blue); box-shadow: 0 0 10px rgba(59, 130, 246, 0.2); }
+
+        /* Button Styling */
+        .withdraw-btn { 
+            width: 100%; border: none; padding: 16px; border-radius: 12px; 
+            color: white; font-weight: bold; margin-top: 25px; cursor: pointer; 
+            transition: 0.4s; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .btn-gray { background: var(--gray); cursor: not-allowed; opacity: 0.6; }
+        .btn-green { background: var(--green) !important; box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4); transform: translateY(-2px); }
+        .btn-green:active { transform: translateY(0); }
+
+        .history-section { text-align: left; margin-top: 30px; }
+        .history-title { font-size: 16px; color: #94a3b8; margin-bottom: 15px; padding-left: 5px; }
+        .request-item { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 15px; margin-bottom: 12px; }
     </style>
 </head>
 <body>
 
-    <div class="top-bar"><a href="profile.html"><i class="fas fa-chevron-left"></i></a><span>Withdraw GP</span></div>
+    <div class="top-bar">
+        <a href="profile.html"><i class="fas fa-chevron-left"></i></a>
+        <span style="font-weight: bold;">Withdraw GP</span>
+    </div>
 
     <div class="container">
         <div class="withdraw-card">
-            <div class="balance-info"><span>Total Balance</span><h2 id="current-gp">0 GP</h2></div>
-            <div class="rate-info" id="rate-text">Rate Loading...</div>
+            <div class="balance-info">
+                <span>Your Total Balance</span>
+                <h2 id="current-gp">0 GP</h2>
+            </div>
+            <div class="rate-info" id="rate-text"><i class="fas fa-sync fa-spin"></i> Loading Rate...</div>
+            
             <input type="number" id="withdraw-amount" placeholder="0" oninput="checkLimit()" inputmode="numeric">
+            
             <button id="main-btn" class="withdraw-btn btn-gray" onclick="sendRequest()" disabled>ENTER AMOUNT</button>
         </div>
-        <div id="history-list"></div>
+
+        <div class="history-section">
+            <div class="history-title"><i class="fas fa-history"></i> Withdrawal History</div>
+            <div id="request-list"></div>
+        </div>
     </div>
 
     <script>
         const tg = window.Telegram.WebApp;
 
         function updateUI() {
-            // ১. অ্যাডমিন থেকে কনফিগ লোড করা
+            // ১. অ্যাডমিন সেটিংস এবং ইউজার ব্যালেন্স লোড করা
             const adminConfig = JSON.parse(localStorage.getItem('admin_config')) || { min_limit: 10000, rate: 10000 };
             const userGP = parseInt(localStorage.getItem('user_gp')) || 0;
 
-            // ২. ব্যালেন্স এবং রেট দেখানো
+            // ২. জিপি এবং রেট দেখানো (Fixed Loading issue)
             document.getElementById('current-gp').innerText = userGP.toLocaleString() + " GP";
-            document.getElementById('rate-text').innerText = `Rate: ${Number(adminConfig.rate).toLocaleString()} GP = $1.00 USD`;
+            document.getElementById('rate-text').innerHTML = `<i class="fas fa-info-circle"></i> Rate: ${Number(adminConfig.rate).toLocaleString()} GP = $1.00 USD`;
             
             checkLimit();
             loadHistory();
@@ -65,14 +97,26 @@
             const amount = parseInt(amountInput) || 0;
             const btn = document.getElementById('main-btn');
 
+            const minLimit = Number(adminConfig.min_limit);
+
+            // বাটন লজিক ফিক্সড
             if (amountInput === "" || amount === 0) {
-                btn.className = "withdraw-btn btn-gray"; btn.innerText = "ENTER AMOUNT"; btn.disabled = true;
+                btn.className = "withdraw-btn btn-gray";
+                btn.innerText = "ENTER AMOUNT";
+                btn.disabled = true;
             } else if (amount > userGP) {
-                btn.className = "withdraw-btn btn-gray"; btn.innerText = "INSUFFICIENT BALANCE"; btn.disabled = true;
-            } else if (amount < adminConfig.min_limit) {
-                btn.className = "withdraw-btn btn-gray"; btn.innerText = `MIN ${adminConfig.min_limit.toLocaleString()} GP REQUIRED`; btn.disabled = true;
+                btn.className = "withdraw-btn btn-gray";
+                btn.innerText = "INSUFFICIENT BALANCE";
+                btn.disabled = true;
+            } else if (amount < minLimit) {
+                btn.className = "withdraw-btn btn-gray";
+                btn.innerText = `MIN ${minLimit.toLocaleString()} GP REQUIRED`;
+                btn.disabled = true;
             } else {
-                btn.className = "withdraw-btn btn-green"; btn.innerText = "SEND WITHDRAW REQUEST"; btn.disabled = false;
+                // সব কন্ডিশন ঠিক থাকলে সবুজ হবে
+                btn.className = "withdraw-btn btn-green";
+                btn.innerText = "SEND WITHDRAW REQUEST";
+                btn.disabled = false;
             }
         }
 
@@ -80,22 +124,62 @@
             const amount = parseInt(document.getElementById('withdraw-amount').value);
             const ton = localStorage.getItem('wallet_ton') || "Not Set";
             const bnb = localStorage.getItem('wallet_bnb') || "Not Set";
-            if (ton === "Not Set" && bnb === "Not Set") return alert("Setup Wallet First!");
 
+            if (ton === "Not Set" && bnb === "Not Set") {
+                return alert("ওয়ালেট সেট করা নেই! দয়া করে প্রোফাইল থেকে TON বা BNB ওয়ালেট সেভ করুন।");
+            }
+
+            const req = {
+                id: Date.now(),
+                userId: tg.initDataUnsafe?.user?.id || "774900",
+                userName: tg.initDataUnsafe?.user?.first_name || "Guest",
+                amount: amount,
+                tonWallet: ton,
+                bnbWallet: bnb,
+                status: 'pending',
+                date: new Date().toLocaleString()
+            };
+
+            // পয়েন্ট কাটা এবং সেভ করা
             let userGP = parseInt(localStorage.getItem('user_gp')) || 0;
             localStorage.setItem('user_gp', userGP - amount);
             
+            // রিকোয়েস্ট লিস্টে সেভ করা
             let all = JSON.parse(localStorage.getItem('all_withdraw_requests')) || [];
-            all.push({ id: Date.now(), userId: tg.initDataUnsafe?.user?.id || "774900", amount, tonWallet: ton, bnbWallet: bnb, status: 'pending', date: new Date().toLocaleString() });
+            all.push(req);
             localStorage.setItem('all_withdraw_requests', JSON.stringify(all));
 
-            alert("Request Sent!");
+            alert("উইথড্র রিকোয়েস্ট অ্যাডমিনের কাছে পাঠানো হয়েছে!");
             document.getElementById('withdraw-amount').value = "";
             updateUI();
         }
 
         function loadHistory() {
+            const list = document.getElementById('request-list');
             const all = JSON.parse(localStorage.getItem('all_withdraw_requests')) || [];
             const uid = tg.initDataUnsafe?.user?.id || "774900";
-            const my = all.filter(r => r.userId == uid);
-            document.getElementById('history-list
+            const myReqs = all.filter(r => r.userId == uid);
+
+            if (myReqs.length === 0) {
+                list.innerHTML = "<p style='color:#4b5563; font-size:12px; text-align:center;'>No history found.</p>";
+                return;
+            }
+
+            list.innerHTML = myReqs.reverse().map(r => `
+                <div class="request-item">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <b style="color:var(--yellow);">${r.amount.toLocaleString()} GP</b>
+                        <span style="color:${r.status==='pending'?'#fbbf24':(r.status==='success'?'#22c55e':'#f87171')}; font-weight:bold; font-size:12px; text-transform:uppercase;">
+                            ${r.status}
+                        </span>
+                    </div>
+                    <div style="font-size:10px; color:#94a3b8; margin-top:8px;">${r.date}</div>
+                </div>
+            `).join('');
+        }
+
+        // পেজ লোড হওয়ার সাথে সাথে ডেটা রিফ্রেশ
+        window.onload = updateUI;
+    </script>
+</body>
+</html>
