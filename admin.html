@@ -8,116 +8,220 @@
     <style>
         :root { --bg: #050a18; --card: #121e36; --red: #ff4b2b; --green: #22c55e; --blue: #3b82f6; --yellow: #fbbf24; --text: #ffffff; --border: #1e2d4d; }
         body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 50px; }
+        
         .top-bar { display: flex; align-items: center; padding: 15px 20px; background: rgba(18, 30, 54, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--red); position: sticky; top: 0; z-index: 1000; justify-content: space-between; }
         .top-bar a { color: white; text-decoration: none; font-size: 18px; }
+        .admin-tag { background: var(--red); color: white; padding: 4px 10px; border-radius: 6px; font-size: 10px; font-weight: bold; text-transform: uppercase; }
+
         .container { padding: 20px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
+        .stat-card { background: var(--card); border-radius: 15px; padding: 15px; border: 1px solid var(--border); text-align: center; }
+        .stat-card i { font-size: 20px; margin-bottom: 8px; display: block; }
+        .stat-card b { font-size: 16px; color: var(--yellow); }
+
         .manage-box { background: var(--card); border-radius: 20px; padding: 20px; border: 1px solid var(--border); margin-bottom: 20px; }
-        .manage-box h3 { font-size: 16px; margin-top: 0; margin-bottom: 15px; color: var(--yellow); display: flex; align-items: center; gap: 10px; }
+        .manage-box h3 { font-size: 15px; margin-bottom: 15px; color: var(--yellow); display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+        
         .input-group { margin-bottom: 15px; }
         .input-group label { display: block; font-size: 11px; color: #94a3b8; margin-bottom: 6px; text-transform: uppercase; }
-        input, textarea { width: 100%; background: #050a18; border: 1px solid var(--border); padding: 12px; border-radius: 10px; color: white; outline: none; box-sizing: border-box; font-family: inherit; }
-        .btn { border: none; padding: 12px; border-radius: 10px; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; width: 100%; margin-top: 10px; }
+        input, textarea { width: 100%; background: #050a18; border: 1px solid var(--border); padding: 12px; border-radius: 10px; color: white; outline: none; box-sizing: border-box; }
+        
+        .btn { border: none; padding: 12px; border-radius: 10px; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; width: 100%; margin-top: 5px; font-size: 12px; }
         .btn-blue { background: var(--blue); } .btn-green { background: var(--green); } .btn-red { background: var(--red); } .btn-yellow { background: var(--yellow); color: #000; }
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
-        .stat-card { background: var(--card); border-radius: 15px; padding: 15px; border: 1px solid var(--border); text-align: center; }
+
+        /* User List Styling */
+        .user-list { max-height: 300px; overflow-y: auto; }
+        .user-item { background: #050a18; padding: 12px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+        .user-item span { font-size: 13px; font-weight: bold; }
+        .user-item small { color: #94a3b8; font-size: 10px; }
+        
+        /* Modal Style for User Control */
+        #user-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; z-index: 2000; padding: 20px; box-sizing: border-box; overflow-y: auto; }
+        .modal-content { background: var(--card); border: 1px solid var(--blue); border-radius: 20px; padding: 20px; }
     </style>
 </head>
 <body>
+
     <div class="top-bar">
-        <a href="index.html"><i class="fas fa-chevron-left"></i> <span>Back to Hub</span></a>
-        <span style="background:var(--red); padding:4px 8px; border-radius:5px; font-size:10px; font-weight:bold;">ADMIN MASTER</span>
+        <a href="index.html"><i class="fas fa-chevron-left"></i> <span>HUB</span></a>
+        <span class="admin-tag">Super Admin</span>
     </div>
 
     <div class="container">
-        <div class="manage-box" style="border-color: var(--green);">
-            <h3 style="color: var(--green);"><i class="fas fa-gift"></i> Gift GP to All Users</h3>
-            <div class="input-group">
-                <label>GP Amount</label>
-                <input type="number" id="gift-amount" placeholder="Ex: 5000">
-            </div>
-            <button class="btn btn-green" onclick="sendGift()">SEND GIFT GP</button>
+        
+        <div class="stats-grid">
+            <div class="stat-card"><i class="fas fa-users" style="color:var(--blue);"></i><span>Users</span><b id="total-users">0</b></div>
+            <div class="stat-card"><i class="fas fa-coins" style="color:var(--yellow);"></i><span>GP</span><b id="live-gp">0</b></div>
+            <div class="stat-card"><i class="fas fa-ad" style="color:var(--green);"></i><span>Ads</span><b id="live-ads">0</b></div>
         </div>
 
-        <div class="manage-box" style="border-color: var(--blue);">
-            <h3 style="color: var(--blue);"><i class="fas fa-search"></i> User Profile Search</h3>
+        <div class="manage-box">
+            <h3><i class="fas fa-user-cog"></i> User Management</h3>
             <div class="input-group">
-                <input type="text" id="search-uid" placeholder="Enter User ID (Ex: 774900)">
-                <button class="btn btn-blue" onclick="searchUser()">LOAD USER DATA</button>
+                <input type="text" id="search-input" placeholder="Search by User ID..." oninput="filterUsers()">
             </div>
-            <div id="user-panel" style="display:none; margin-top:15px; border-top:1px solid var(--border); padding-top:15px;">
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                    <div class="input-group"><label>GP Balance</label><input type="number" id="edit-gp"></div>
-                    <div class="input-group"><label>Ads Count</label><input type="number" id="edit-ads"></div>
+            <div class="user-list" id="user-list-container">
                 </div>
-                <button class="btn btn-green" onclick="saveUserChanges()">UPDATE USER</button>
-            </div>
         </div>
 
-        <div class="manage-box" style="border-color: var(--yellow);">
-            <h3 style="color: var(--yellow);"><i class="fas fa-sliders-h"></i> System Settings</h3>
+        <div class="manage-box">
+            <h3><i class="fas fa-sliders-h"></i> App Config</h3>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                 <div class="input-group"><label>Min Withdraw</label><input type="number" id="conf-min"></div>
                 <div class="input-group"><label>GP Rate ($1)</label><input type="number" id="conf-rate"></div>
             </div>
-            <button class="btn btn-yellow" onclick="saveConfig()">SAVE CONFIG</button>
+            <button class="btn btn-yellow" onclick="saveConfig()">SAVE SETTINGS</button>
         </div>
 
         <div class="manage-box" style="border-color: var(--red);">
-            <h3 style="color: var(--red);"><i class="fas fa-hand-holding-usd"></i> Withdrawal Manager</h3>
+            <h3 style="color: var(--red);"><i class="fas fa-hand-holding-usd"></i> Withdraw Requests</h3>
             <div id="admin-withdraw-list"></div>
         </div>
 
-        <div class="manage-box" style="border-color: #9c27b0;">
-            <h3 style="color: #9c27b0;"><i class="fas fa-envelope"></i> Support Inbox</h3>
-            <div id="admin-inbox"></div>
+    </div>
+
+    <div id="user-modal">
+        <div class="modal-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 id="modal-user-id" style="margin:0; font-size: 18px; color: var(--blue);">User #000</h2>
+                <button onclick="closeModal()" style="background:none; border:none; color:white; font-size:20px;"><i class="fas fa-times"></i></button>
+            </div>
+
+            <div class="manage-box" style="background:#050a18;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <div class="input-group"><label>Balance (GP)</label><input type="number" id="modal-gp"></div>
+                    <div class="input-group"><label>Ads Watch</label><input type="number" id="modal-ads"></div>
+                </div>
+                <button class="btn btn-blue" onclick="updateUserStats()">Update Balance/Ads</button>
+            </div>
+
+            <div class="manage-box" style="background:#050a18; border-color: var(--green);">
+                <h3 style="color: var(--green); border:none;">Gift GP</h3>
+                <input type="number" id="modal-gift" placeholder="Enter Gift Amount">
+                <button class="btn btn-green" onclick="sendGift()">SEND GIFT</button>
+            </div>
+
+            <div class="manage-box" style="background:#050a18; border-color: var(--yellow);">
+                <h3 style="color: var(--yellow); border:none;">Message User</h3>
+                <textarea id="modal-msg" placeholder="Type message to user..."></textarea>
+                <button class="btn btn-yellow" onclick="sendMessage()">SEND MESSAGE</button>
+            </div>
+
+            <button id="ban-btn" class="btn btn-red" style="padding: 15px;" onclick="toggleBan()">BAN USER</button>
         </div>
     </div>
 
     <script>
+        let currentEditingId = null;
+
+        // ১. ডেটা লোড এবং রিফ্রেশ
+        function refreshData() {
+            // সিমুলেটেড ইউজার লিস্ট (বাস্তবে ডাটাবেস থেকে আসবে, এখানে লোকাল স্টোরেজ থেকে ডামি ইউজার তৈরি করছি)
+            let users = JSON.parse(localStorage.getItem('app_users')) || [
+                {id: "774900", name: "User 1", gp: 5000, ads: 12, banned: false},
+                {id: "123456", name: "Guest User", gp: 200, ads: 2, banned: false}
+            ];
+            
+            document.getElementById('total-users').innerText = users.length;
+            document.getElementById('live-gp').innerText = (localStorage.getItem('user_gp') || 0);
+            document.getElementById('live-ads').innerText = (localStorage.getItem('total_ads_watched') || 0);
+
+            renderUserList(users);
+            loadWithdrawals();
+        }
+
+        // ২. ইউজার লিস্ট রেন্ডার
+        function renderUserList(users) {
+            const container = document.getElementById('user-list-container');
+            container.innerHTML = users.map(u => `
+                <div class="user-item">
+                    <div>
+                        <span>#${u.id} ${u.banned ? '<small style="color:red;">(BANNED)</small>' : ''}</span><br>
+                        <small>Balance: ${u.gp} GP</small>
+                    </div>
+                    <button class="btn btn-blue" style="width:auto;" onclick="openUserModal('${u.id}')">MANAGE</button>
+                </div>
+            `).join('');
+        }
+
+        // ৩. সার্চ ফিল্টার
+        function filterUsers() {
+            let term = document.getElementById('search-input').value;
+            let users = JSON.parse(localStorage.getItem('app_users')) || [{id: "774900", gp: 5000}];
+            let filtered = users.filter(u => u.id.includes(term));
+            renderUserList(filtered);
+        }
+
+        // ৪. ইউজার প্রোফাইলে প্রবেশ (Modal)
+        function openUserModal(id) {
+            currentEditingId = id;
+            document.getElementById('user-modal').style.display = 'block';
+            document.getElementById('modal-user-id').innerText = "Managing User #" + id;
+            
+            // ডেটা ফিল করা
+            document.getElementById('modal-gp').value = (id === "774900") ? (localStorage.getItem('user_gp') || 0) : 0;
+            document.getElementById('modal-ads').value = (id === "774900") ? (localStorage.getItem('total_ads_watched') || 0) : 0;
+            
+            let isBanned = localStorage.getItem('user_banned_' + id) === 'true';
+            let btn = document.getElementById('ban-btn');
+            btn.innerText = isBanned ? "UNBAN USER" : "BAN USER";
+            btn.className = isBanned ? "btn btn-green" : "btn btn-red";
+        }
+
+        function closeModal() { document.getElementById('user-modal').style.display = 'none'; }
+
+        // ৫. কন্ট্রোল ফাংশনস (Gift, Ban, Msg, Stats)
+        function updateUserStats() {
+            if(currentEditingId === "774900") {
+                localStorage.setItem('user_gp', document.getElementById('modal-gp').value);
+                localStorage.setItem('total_ads_watched', document.getElementById('modal-ads').value);
+                alert("Stats Updated!"); refreshData();
+            }
+        }
+
         function sendGift() {
-            const amount = parseInt(document.getElementById('gift-amount').value);
-            if(!amount || isNaN(amount)) return alert("Invalid Amount!");
+            let gift = parseInt(document.getElementById('modal-gift').value);
+            if(!gift) return;
             let gp = parseInt(localStorage.getItem('user_gp')) || 0;
-            localStorage.setItem('user_gp', gp + amount);
-            alert(amount + " GP Gifted Successfully!");
-            document.getElementById('gift-amount').value = "";
+            localStorage.setItem('user_gp', gp + gift);
+            alert(gift + " GP Gifted!");
+            document.getElementById('modal-gift').value = "";
+            refreshData();
         }
 
-        function searchUser() {
-            const panel = document.getElementById('user-panel');
-            panel.style.display = 'block';
-            let gp = parseInt(localStorage.getItem('user_gp'));
-            document.getElementById('edit-gp').value = isNaN(gp) ? 0 : gp;
-            document.getElementById('edit-ads').value = localStorage.getItem('total_ads_watched') || 0;
+        function sendMessage() {
+            let msg = document.getElementById('modal-msg').value;
+            if(!msg) return;
+            let inbox = JSON.parse(localStorage.getItem('user_inbox_' + currentEditingId)) || [];
+            inbox.push({text: msg, date: new Date().toLocaleString()});
+            localStorage.setItem('user_inbox_' + currentEditingId, JSON.stringify(inbox));
+            alert("Message Sent to User!");
+            document.getElementById('modal-msg').value = "";
         }
 
-        function saveUserChanges() {
-            localStorage.setItem('user_gp', document.getElementById('edit-gp').value);
-            localStorage.setItem('total_ads_watched', document.getElementById('edit-ads').value);
-            alert("User data updated!");
+        function toggleBan() {
+            let status = localStorage.getItem('user_banned_' + currentEditingId) === 'true';
+            localStorage.setItem('user_banned_' + currentEditingId, !status);
+            alert(!status ? "User Banned!" : "User Unbanned!");
+            openUserModal(currentEditingId); // Refresh modal UI
+            refreshData();
         }
 
-        function saveConfig() {
-            const config = { 
-                min_limit: document.getElementById('conf-min').value || 10000, 
-                rate: document.getElementById('conf-rate').value || 10000 
-            };
-            localStorage.setItem('admin_config', JSON.stringify(config));
-            alert("System Config Saved!");
-        }
-
+        // ৬. উইথড্র ম্যানেজার (আপনার আগের ফিক্সড কোড অনুযায়ী)
         function loadWithdrawals() {
             const list = document.getElementById('admin-withdraw-list');
             const reqs = JSON.parse(localStorage.getItem('all_withdraw_requests')) || [];
-            if(reqs.length === 0) { list.innerHTML = "<p style='font-size:12px; color:#94a3b8;'>No requests found.</p>"; return; }
+            if(reqs.length === 0) { list.innerHTML = "<p style='font-size:12px; color:#94a3b8;'>No requests.</p>"; return; }
             list.innerHTML = reqs.reverse().map(r => `
                 <div style="background:#050a18; padding:15px; border-radius:12px; border:1px solid #1e2d4d; margin-bottom:10px;">
-                    <div style="font-size:11px; color:var(--yellow);">ID: #${r.userId} | ${r.date}</div>
-                    <h3 style="margin:5px 0;">${r.amount} GP</h3>
-                    <div style="display:flex; gap:10px; margin-top:10px;">
-                        <button onclick="handleReq(${r.id}, 'success')" style="flex:1; background:var(--green); border:none; padding:8px; border-radius:8px; color:white;">ACCEPT</button>
-                        <button onclick="handleReq(${r.id}, 'rejected')" style="flex:1; background:var(--red); border:none; padding:8px; border-radius:8px; color:white;">REJECT</button>
-                    </div>
+                    <div style="font-size:11px; color:var(--yellow);">User: #${r.userId}</div>
+                    <h3 style="margin:5px 0;">${r.amount.toLocaleString()} GP</h3>
+                    ${r.status === 'pending' ? `
+                        <div style="display:flex; gap:10px;">
+                            <button onclick="handleReq(${r.id}, 'success')" class="btn btn-green">ACCEPT</button>
+                            <button onclick="handleReq(${r.id}, 'rejected')" class="btn btn-red">CANCEL</button>
+                        </div>
+                    ` : `<div style="text-align:center; font-weight:bold; color:var(--yellow); font-size:12px;">${r.status.toUpperCase()}</div>`}
                 </div>
             `).join('');
         }
@@ -127,31 +231,25 @@
             const idx = reqs.findIndex(r => r.id === id);
             if(idx !== -1) {
                 if(status === 'rejected') {
-                    let gp = parseInt(localStorage.getItem('user_gp')) || 0;
-                    localStorage.setItem('user_gp', gp + reqs[idx].amount);
+                    let userGP = parseInt(localStorage.getItem('user_gp')) || 0;
+                    localStorage.setItem('user_gp', userGP + reqs[idx].amount);
                 }
                 reqs[idx].status = status;
                 localStorage.setItem('all_withdraw_requests', JSON.stringify(reqs));
-                loadWithdrawals();
+                refreshData();
             }
         }
 
-        function loadInbox() {
-            const list = document.getElementById('admin-inbox');
-            const msgs = JSON.parse(localStorage.getItem('admin_messages')) || [];
-            if(msgs.length === 0) { list.innerHTML = "<p style='font-size:12px; color:#94a3b8;'>No messages.</p>"; return; }
-            list.innerHTML = msgs.reverse().map(m => `
-                <div style="background:#050a18; padding:15px; border-radius:12px; border:1px solid #1e2d4d; margin-bottom:10px;">
-                    <small style="color:var(--green);">${m.userName} (#${m.userId})</small>
-                    <p style="margin:8px 0; font-size:13px;">${m.message}</p>
-                </div>
-            `).join('');
+        function saveConfig() {
+            const config = { min_limit: document.getElementById('conf-min').value, rate: document.getElementById('conf-rate').value };
+            localStorage.setItem('admin_config', JSON.stringify(config));
+            alert("Settings Saved!");
         }
 
         window.onload = () => {
             const c = JSON.parse(localStorage.getItem('admin_config'));
             if(c) { document.getElementById('conf-min').value = c.min_limit; document.getElementById('conf-rate').value = c.rate; }
-            loadWithdrawals(); loadInbox();
+            refreshData();
         };
     </script>
 </body>
