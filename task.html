@@ -3,157 +3,163 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Withdraw - eFootball HUB</title>
+    <title>Daily Tasks - eFootball HUB</title>
+    <script src="https://sad.adsgram.ai/js/adsgram-sdk.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --bg: #050a18; --card: #121e36; --border: #1e2d4d; --text: #ffffff; --green: #22c55e; --gray: #4b5563; --yellow: #fbbf24; }
+        :root { --bg: #050a18; --card: #121e36; --primary: #3b82f6; --text: #ffffff; --border: #1e2d4d; --green: #22c55e; }
         body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 30px; }
-        .top-bar { display: flex; align-items: center; padding: 15px; background: rgba(18, 30, 54, 0.7); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); }
+        
+        .top-bar { display: flex; align-items: center; padding: 15px; background: rgba(18, 30, 54, 0.7); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; }
         .top-bar a { color: white; text-decoration: none; margin-right: 15px; }
+
         .container { padding: 20px; text-align: center; }
-        .withdraw-card { background: var(--card); border-radius: 20px; padding: 25px; border: 1px solid var(--border); margin-bottom: 25px; }
+        .task-card { background: var(--card); border-radius: 20px; padding: 25px; border: 1px solid var(--border); margin-bottom: 20px; }
         
-        /* Remove Arrows from Input */
-        input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-        input[type=number] { -moz-appearance: textfield; }
+        .reward-info { margin-bottom: 20px; }
+        .reward-info i { font-size: 40px; color: #fbbf24; margin-bottom: 10px; }
+        .reward-info h2 { margin: 5px 0; color: var(--green); }
+
+        .ad-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0; }
+        .ad-slot { background: #050a18; border: 1px solid var(--border); padding: 15px 5px; border-radius: 12px; font-size: 12px; transition: 0.3s; }
+        .ad-slot.done { border-color: var(--green); color: var(--green); }
+        .ad-slot.done i { color: var(--green); }
+
+        .btn-main { width: 100%; border: none; padding: 15px; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 16px; }
+        .btn-blue { background: var(--primary); box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); }
+        .btn-wait { background: #4b5563; cursor: not-allowed; }
         
-        input { width: 100%; background: #050a18; border: 1px solid var(--border); padding: 15px; border-radius: 12px; color: white; text-align: center; outline: none; font-size: 20px; font-weight: bold; box-sizing: border-box; }
-        
-        .withdraw-btn { width: 100%; border: none; padding: 16px; border-radius: 12px; color: white; font-weight: bold; margin-top: 20px; cursor: pointer; transition: 0.3s; font-size: 14px; }
-        .btn-gray { background: var(--gray); cursor: not-allowed; }
-        .btn-green { background: var(--green) !important; box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4); }
-        
-        .history-item { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 15px; margin-bottom: 10px; text-align: left; display: flex; justify-content: space-between; align-items: center; }
+        #timer { font-size: 18px; font-weight: bold; color: #f87171; margin-top: 10px; display: none; }
     </style>
 </head>
 <body>
 
     <div class="top-bar">
-        <a href="profile.html"><i class="fas fa-chevron-left"></i></a>
-        <span>Withdraw GP</span>
+        <a href="index.html"><i class="fas fa-chevron-left"></i></a>
+        <span>Daily Video Tasks</span>
     </div>
 
     <div class="container">
-        <div class="withdraw-card">
-            <div style="margin-bottom: 20px;">
-                <span style="color:#94a3b8; font-size:12px;">AVAILABLE BALANCE</span>
-                <h2 id="display-gp" style="color:var(--yellow); font-size:32px; margin:5px 0;">0 GP</h2>
+        <div class="task-card">
+            <div class="reward-info">
+                <i class="fas fa-gift"></i>
+                <span>Task Reward</span>
+                <h2>100 GP Points</h2>
             </div>
-            
-            <div id="rate-info" style="font-size: 12px; color: #94a3b8; margin-bottom: 15px;">Rate: Loading...</div>
-            
-            <input type="number" id="withdraw-amount" placeholder="Enter Amount" oninput="validateWithdraw()">
-            
-            <button id="withdraw-btn" class="withdraw-btn btn-gray" onclick="processWithdraw()" disabled>ENTER AMOUNT</button>
-        </div>
 
-        <div style="text-align: left; margin-top: 20px;">
-            <h3 style="font-size: 16px; color: #94a3b8;"><i class="fas fa-history"></i> History</h3>
-            <div id="history-list"></div>
+            <div class="ad-grid" id="ad-slots">
+                <div class="ad-slot" id="slot-1"><i class="fas fa-play"></i><br>Ad 1</div>
+                <div class="ad-slot" id="slot-2"><i class="fas fa-play"></i><br>Ad 2</div>
+                <div class="ad-slot" id="slot-3"><i class="fas fa-play"></i><br>Ad 3</div>
+                <div class="ad-slot" id="slot-4"><i class="fas fa-play"></i><br>Ad 4</div>
+                <div class="ad-slot" id="slot-5"><i class="fas fa-play"></i><br>Ad 5</div>
+                <div class="ad-slot" id="slot-6"><i class="fas fa-play"></i><br>Ad 6</div>
+            </div>
+
+            <button id="task-btn" class="btn-main btn-blue" onclick="handleTask()">WATCH AD (1/6)</button>
+            <div id="timer">Next Task In: <span id="countdown">12:00:00</span></div>
         </div>
     </div>
 
     <script>
-        const tg = window.Telegram.WebApp;
+        let adsWatched = 0;
+        const cooldownTime = 12 * 60 * 60 * 1000; // 12 Hours in ms
 
-        function updateDisplay() {
-            // ১. ব্যালেন্স লোড (NaN চেকসহ)
-            let userGP = parseInt(localStorage.getItem('user_gp'));
-            if (isNaN(userGP)) userGP = 0;
-            document.getElementById('display-gp').innerText = userGP.toLocaleString() + " GP";
+        function updateUI() {
+            const lastCollect = localStorage.getItem('last_task_collect');
+            const now = Date.now();
 
-            // ২. অ্যাডমিন সেটিংস লোড
-            const config = JSON.parse(localStorage.getItem('admin_config')) || { min_limit: 10000, rate: 10000 };
-            document.getElementById('rate-info').innerText = `Rate: ${parseInt(config.rate).toLocaleString()} GP = $1.00 USD`;
-            
-            validateWithdraw();
-            loadHistory();
-        }
-
-        function validateWithdraw() {
-            const config = JSON.parse(localStorage.getItem('admin_config')) || { min_limit: 10000, rate: 10000 };
-            let userGP = parseInt(localStorage.getItem('user_gp'));
-            if (isNaN(userGP)) userGP = 0;
-
-            const inputVal = document.getElementById('withdraw-amount').value;
-            const amount = parseInt(inputVal) || 0;
-            const btn = document.getElementById('withdraw-btn');
-
-            const min = parseInt(config.min_limit);
-
-            if (inputVal === "") {
-                btn.className = "withdraw-btn btn-gray";
-                btn.innerText = "ENTER AMOUNT";
-                btn.disabled = true;
-            } else if (amount > userGP) {
-                btn.className = "withdraw-btn btn-gray";
-                btn.innerText = "INSUFFICIENT BALANCE";
-                btn.disabled = true;
-            } else if (amount < min) {
-                btn.className = "withdraw-btn btn-gray";
-                btn.innerText = `MIN ${min.toLocaleString()} GP REQUIRED`;
-                btn.disabled = true;
+            if (lastCollect && (now - lastCollect < cooldownTime)) {
+                startTimer(cooldownTime - (now - lastCollect));
             } else {
-                btn.className = "withdraw-btn btn-green";
-                btn.innerText = "SEND WITHDRAW REQUEST";
-                btn.disabled = false;
+                resetTaskUI();
             }
         }
 
-        function processWithdraw() {
-            const amount = parseInt(document.getElementById('withdraw-amount').value);
-            const ton = localStorage.getItem('wallet_ton') || "Not Set";
-            const bnb = localStorage.getItem('wallet_bnb') || "Not Set";
-
-            if (ton === "Not Set" && bnb === "Not Set") return alert("Please setup wallet in profile first!");
-
-            let userGP = parseInt(localStorage.getItem('user_gp')) || 0;
-            localStorage.setItem('user_gp', userGP - amount);
-
-            const newReq = {
-                id: Date.now(),
-                userId: tg.initDataUnsafe?.user?.id || "774900",
-                amount: amount,
-                tonWallet: ton,
-                bnbWallet: bnb,
-                status: 'pending',
-                date: new Date().toLocaleString()
-            };
-
-            let all = JSON.parse(localStorage.getItem('all_withdraw_requests')) || [];
-            all.push(newReq);
-            localStorage.setItem('all_withdraw_requests', JSON.stringify(all));
-
-            alert("Request Sent!");
-            document.getElementById('withdraw-amount').value = "";
-            updateDisplay();
-        }
-
-        function loadHistory() {
-            const list = document.getElementById('history-list');
-            const all = JSON.parse(localStorage.getItem('all_withdraw_requests')) || [];
-            const uid = tg.initDataUnsafe?.user?.id || "774900";
-            const my = all.filter(r => r.userId == uid);
-
-            if (my.length === 0) {
-                list.innerHTML = "<p style='color:#4b5563; font-size:12px;'>No history found.</p>";
-                return;
+        function handleTask() {
+            if (adsWatched < 6) {
+                // Ekhane Adsgram logic hobe. Sample-er jonno ami direct count barachhi.
+                alert("Loading Ad " + (adsWatched + 1) + "...");
+                
+                adsWatched++;
+                document.getElementById(`slot-${adsWatched}`).classList.add('done');
+                document.getElementById(`slot-${adsWatched}`).innerHTML = '<i class="fas fa-check-circle"></i><br>Done';
+                
+                if (adsWatched < 6) {
+                    document.getElementById('task-btn').innerText = `WATCH AD (${adsWatched + 1}/6)`;
+                } else {
+                    document.getElementById('task-btn').innerText = "COLLECT 100 GP";
+                    document.getElementById('task-btn').style.background = "var(--green)";
+                }
+            } else {
+                collectReward();
             }
-
-            list.innerHTML = my.reverse().map(r => `
-                <div class="history-item">
-                    <div>
-                        <b style="color:var(--yellow);">${r.amount.toLocaleString()} GP</b><br>
-                        <small style="color:#94a3b8; font-size:10px;">${r.date}</small>
-                    </div>
-                    <span style="color:${r.status==='pending'?'#fbbf24':'#22c55e'}; font-weight:bold; font-size:12px;">
-                        ${r.status.toUpperCase()}
-                    </span>
-                </div>
-            `).join('');
         }
 
-        window.onload = updateDisplay;
+        function collectReward() {
+            let currentGP = parseInt(localStorage.getItem('user_gp')) || 0;
+            localStorage.setItem('user_gp', currentGP + 100);
+            localStorage.setItem('last_task_collect', Date.now());
+            
+            alert("Congratulations! 100 GP Added to your wallet.");
+            updateUI();
+        }
+
+        function startTimer(duration) {
+            const btn = document.getElementById('task-btn');
+            const timerDiv = document.getElementById('timer');
+            const countdownSpan = document.getElementById('countdown');
+            
+            btn.style.display = "none";
+            timerDiv.style.display = "block";
+
+            const interval = setInterval(() => {
+                duration -= 1000;
+                if (duration <= 0) {
+                    clearInterval(interval);
+                    resetTaskUI();
+                    return;
+                }
+
+                let hours = Math.floor(duration / (1000 * 60 * 60));
+                let minutes = Math.floor((duration % (1000 * 60 * 60)) / (1000 * 60));
+                let seconds = Math.floor((duration % (1000 * 60)) / 1000);
+
+                countdownSpan.innerText = 
+                    (hours < 10 ? "0" + hours : hours) + ":" + 
+                    (minutes < 10 ? "0" + minutes : minutes) + ":" + 
+                    (seconds < 10 ? "0" + seconds : seconds);
+            }, 1000);
+        }
+
+        function resetTaskUI() {
+            adsWatched = 0;
+            document.getElementById('task-btn').style.display = "block";
+            document.getElementById('task-btn').classList.add('btn-blue');
+            document.getElementById('task-btn').innerText = "WATCH AD (1/6)";
+            document.getElementById('timer').style.display = "none";
+            
+            // Slots reset
+            for (let i = 1; i <= 6; i++) {
+                const slot = document.getElementById(`slot-${i}`);
+                slot.classList.remove('done');
+                slot.innerHTML = `<i class="fas fa-play"></i><br>Ad ${i}`;
+            }
+        }
+
+        function collectReward() {
+    const adminConfig = JSON.parse(localStorage.getItem('admin_config')) || { task_reward: 100 };
+    const reward = adminConfig.task_reward;
+
+    let currentGP = parseInt(localStorage.getItem('user_gp')) || 0;
+    localStorage.setItem('user_gp', currentGP + reward);
+    localStorage.setItem('last_task_collect', Date.now());
+    
+    alert(`Congratulations! ${reward} GP Added to your wallet.`);
+    updateUI();
+}
+
+        window.onload = updateUI;
     </script>
 </body>
 </html>
