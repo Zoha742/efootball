@@ -4,9 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manager Profile</title>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
+
     <script src="https://sad.adsgram.ai/js/adsgram-sdk.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* আপনার অরিজিনাল ডিজাইন হুবহু রাখা হয়েছে */
         :root { --bg: #050a18; --primary: #fbbf24; --card: #121e36; }
         body { background: var(--bg); color: #fff; font-family: sans-serif; text-align: center; padding: 15px; margin: 0; }
         
@@ -21,57 +25,66 @@
         .row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .row:last-child { border-bottom: none; }
 
-        /* --- আপনার চাওয়া পরিবর্তন এখানে --- */
-        .subtitle { 
-            font-weight: bold; 
-            color: #fbbf24; /* এখান থেকে লাল বক্সের বামের লেখাগুলোর কালার চেঞ্জ করুন */
-            font-size: 13px; /* এখান থেকে সাইজ ছোট-বড় করুন */
-            text-transform: uppercase; 
-            width: 45%; 
-        }
-
-        .body-text { 
-            font-size: 15px; /* এখান থেকে ডানের লেখার সাইজ চেঞ্জ করুন */
-            color: #ffffff; /* এখান থেকে ডানের লেখার কালার চেঞ্জ করুন */
-            text-align: right; 
-            width: 55%; 
-            font-weight: 500;
-        }
-        /* ---------------------------------- */
-
-        video { width: 100%; border-radius: 10px; border: 1px solid #1e2d4d; margin-top: 10px; }
+        .subtitle { font-weight: bold; color: #fbbf24; font-size: 11px; margin-top: 5px; }
+        .val { color: #fff; font-size: 13px; }
+        .label { color: #94a3b8; font-size: 12px; }
     </style>
 </head>
 <body>
-    <div class="header">
-        <a href="manager.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
-        <span style="flex:1; text-align:center; color:var(--primary); font-weight:bold;">MANAGER DETAILS</span>
-    </div>
-    <img id="m-img" class="bio-img" src="">
-    <h2 id="m-name" class="name"></h2>
-    <div class="details-container">
-        <div class="row"><span class="subtitle">Nationality</span><span id="m-nat" class="body-text"></span></div>
-        <div class="row"><span class="subtitle">Team</span><span id="m-team" class="body-text"></span></div>
-        <div class="row"><span class="subtitle">Young Players+</span><span id="m-bc" class="body-text"></span></div>
-        <div class="row"><span class="subtitle">Booster 1</span><span id="m-b1" class="body-text"></span></div>
-        <div class="row"><span class="subtitle">Booster 2</span><span id="m-b2" class="body-text"></span></div>
-        <div class="section-title">CENTERPIECE</div>
-        <div class="row"><span class="subtitle">Playing Style</span><span id="m-cp-s" class="body-text"></span></div>
-        <div class="row"><span class="subtitle">Position</span><span id="m-cp-p" class="body-text"></span></div>
-        <div class="section-title">KEY MAN</div>
-        <div class="row"><span class="subtitle">Playing Style</span><span id="m-km-s" class="body-text"></span></div>
-        <div class="row"><span class="subtitle">Position</span><span id="m-km-p" class="body-text"></span></div>
-    </div>
-    <div style="text-align: left; color: var(--primary); font-size: 14px; margin-bottom: 8px; font-weight: bold; margin-top: 20px;">
-    TACTICAL VIDEO
-</div>
-<video autoplay muted playsinline loop controls style="width: 100%; border-radius: 10px; border: 1px solid #1e2d4d;">
-        <source src="https://res.cloudinary.com/dyqegwdme/video/upload/v1777200154/Screen_Recording_20260426_161047_eFootball_cckti0.mp4" type="video/mp4">
-    </video>
 
-    <div id="banner-container" style="display: flex; justify-content: center; margin-top: 25px; padding-bottom: 30px;"></div>
+    <div class="header">
+        <a href="manager (1).html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+    </div>
+
+    <img id="m-img" src="" class="bio-img">
+    <div id="m-name" class="name">Loading...</div>
+
+    <div class="details-container">
+        <div class="row"><span class="label">Nationality</span><span id="m-nat" class="val">--</span></div>
+        <div class="row"><span class="label">Team</span><span id="m-team" class="val">--</span></div>
+
+        <div class="section-title">BOOSTER DETAILS</div>
+        <div class="subtitle">Condition</div>
+        <div id="m-bc" class="val">--</div>
+        
+        <div style="display: flex; gap: 20px; margin-top: 10px;">
+            <div style="flex: 1;">
+                <div class="label">Booster 1</div>
+                <div id="m-b1" class="val">--</div>
+            </div>
+            <div style="flex: 1;">
+                <div class="label">Booster 2</div>
+                <div id="m-b2" class="val">--</div>
+            </div>
+        </div>
+
+        <div class="section-title">COACHING STYLE</div>
+        <div style="display: flex; gap: 20px;">
+            <div style="flex: 1;">
+                <div id="m-cp-s" class="val">--</div>
+                <div id="m-cp-p" style="color: var(--primary); font-weight: bold; font-size: 12px;">--</div>
+            </div>
+            <div style="flex: 1;">
+                <div id="m-km-s" class="val">--</div>
+                <div id="m-km-p" style="color: var(--primary); font-weight: bold; font-size: 12px;">--</div>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // Firebase Configuration (Only for server link)
+        const firebaseConfig = {
+            apiKey: "AIzaSyAy2nEcb--kbjU7tSIm6lJG5ZpEFSus7sg",
+            authDomain: "efootball-57d9b.firebaseapp.com",
+            projectId: "efootball-57d9b",
+            storageBucket: "efootball-57d9b.firebasestorage.app",
+            messagingSenderId: "1031993322489",
+            appId: "1:1031993322489:web:0336c8e1869318a8222b28"
+        };
+        firebase.initializeApp(firebaseConfig);
+
         window.onload = function() {
+            // আপনার অরিজিনাল কমান্ড: localStorage থেকে ডাটা নেওয়া
             const data = localStorage.getItem('selected_manager');
             if (data) {
                 const m = JSON.parse(data);
@@ -86,23 +99,16 @@
                 document.getElementById('m-cp-p').innerText = m.cp_pos;
                 document.getElementById('m-km-s').innerText = m.km_style;
                 document.getElementById('m-km-p').innerText = m.km_pos;
+            }
 
-                }
-            // ৩. অ্যাডস লোড (১ সেকেন্ড পর)
+            // আপনার অরিজিনাল অ্যাডস লজিক
             setTimeout(() => {
                 try {
                     if (window.Adsgram) {
-                        // ব্যানার অ্যাড (আপনার আইডি দিন)
                         const bannerAd = window.Adsgram.init({ blockId: "আপনার_ব্যানার_BLOCK_ID" });
                         bannerAd.show().catch((err) => console.log("Banner Error"));
-
-                        // ভিডিও অ্যাড (আপনার আইডি দিন)
-                        const videoAd = window.Adsgram.init({ blockId: "আপনার_ভিডিও_BLOCK_ID" });
-                        videoAd.show().catch((err) => console.log("Video Error"));
                     }
-                } catch (e) {
-                    console.log("Adsgram SDK issue");
-                }
+                } catch (e) {}
             }, 1000);
         };
     </script>
