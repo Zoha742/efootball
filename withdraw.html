@@ -9,87 +9,157 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --bg: #050a18; --card: #121e36; --border: #1e2d4d; --text: #ffffff; --green: #22c55e; --gray: #4b5563; --yellow: #fbbf24; --red: #f87171; }
-        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 30px; }
-        .top-bar { display: flex; align-items: center; padding: 15px; background: rgba(18, 30, 54, 0.7); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; }
-        .top-bar a { color: white; text-decoration: none; margin-right: 15px; }
-        .container { padding: 20px; text-align: center; }
-        .withdraw-card { background: var(--card); border-radius: 20px; padding: 25px; border: 1px solid var(--border); margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        input { width: 100%; background: #050a18; border: 1px solid var(--border); padding: 15px; border-radius: 12px; color: white; text-align: center; outline: none; font-size: 20px; font-weight: bold; box-sizing: border-box; }
-        .withdraw-btn { width: 100%; border: none; padding: 16px; border-radius: 12px; color: white; font-weight: bold; margin-top: 20px; cursor: pointer; transition: 0.3s; font-size: 14px; text-transform: uppercase; }
-        .btn-gray { background: var(--gray); cursor: not-allowed; opacity: 0.6; }
-        .btn-green { background: var(--green) !important; box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4); }
-        .history-item { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
-        .status-badge { font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 6px; text-transform: uppercase; }
-        .pending { background: rgba(251, 191, 36, 0.1); color: var(--yellow); }
-        .success { background: rgba(34, 197, 94, 0.1); color: var(--green); }
-        .rejected { background: rgba(248, 113, 113, 0.1); color: var(--red); }
+        :root { --bg: #050a18; --card: #121e36; --border: #1e2d4d; --text: #ffffff; --green: #22c55e; --red: #f87171; --blue: #3b82f6; }
+        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding: 15px; }
+        .card { background: var(--card); padding: 20px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 20px; }
+        .balance-box { text-align: center; margin-bottom: 20px; }
+        .balance-box h1 { font-size: 32px; margin: 5px 0; color: var(--green); }
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; font-size: 14px; color: #94a3b8; margin-bottom: 8px; }
+        .input-group input, .input-group select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); background: #0a1226; color: white; outline: none; box-sizing: border-box; }
+        .withdraw-btn { width: 100%; padding: 15px; border-radius: 8px; border: none; background: var(--blue); color: white; font-weight: bold; cursor: pointer; }
+        .withdraw-btn:disabled { background: #2d3748; cursor: not-allowed; }
+        .history-item { background: #0a1226; padding: 12px; border-radius: 8px; margin-bottom: 10px; border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .status-pending { color: var(--blue); }
+        .cancel-btn { background: var(--red); color: white; border: none; padding: 5px 10px; border-radius: 4px; font-size: 12px; cursor: pointer; }
     </style>
 </head>
 <body>
-    <div class="top-bar"><a href="profile.html"><i class="fas fa-chevron-left"></i></a><span>Withdraw GP</span></div>
-    <div class="container">
-        <div class="withdraw-card">
-            <span style="color:#94a3b8; font-size:12px;">AVAILABLE BALANCE</span>
-            <h2 id="display-gp" style="color:var(--yellow); font-size:36px; margin:5px 0;">0 GP</h2>
-            <div id="rate-info" style="font-size: 12px; color: #94a3b8; margin-bottom: 20px;">Rate Loading...</div>
-            <input type="number" id="withdraw-amount" placeholder="Enter GP Amount" oninput="validateWithdraw()" inputmode="numeric">
-            <button id="withdraw-btn" class="withdraw-btn btn-gray" onclick="processWithdraw()" disabled>ENTER AMOUNT</button>
+
+    <div class="balance-box">
+        <p style="color: #94a3b8;">Your Current Balance</p>
+        <h1 id="user-gp">0 GP</h1>
+        <p id="rate-info" style="font-size: 12px; color: #64748b;">Loading limits...</p>
+    </div>
+
+    <div class="card">
+        <div class="input-group">
+            <label>Withdraw Amount (GP)</label>
+            <input type="number" id="withdraw-amount" placeholder="Min: 0" oninput="validateWithdraw()">
         </div>
-        <div id="history-list" style="text-align: left;"></div>
+        <div class="input-group">
+            <label>Payment Method</label>
+            <select id="payment-method">
+                <option value="Bkash">Bkash</option>
+                <option value="Nagad">Nagad</option>
+                <option value="Rocket">Rocket</option>
+            </select>
+        </div>
+        <div class="input-group">
+            <label>Account Number</label>
+            <input type="text" id="account-number" placeholder="017xxxxxxxx">
+        </div>
+        <button id="withdraw-btn" class="withdraw-btn" onclick="submitWithdraw()" disabled>ENTER AMOUNT</button>
+    </div>
+
+    <div id="history-section">
+        <h3 style="font-size: 16px; margin-bottom: 15px;"><i class="fas fa-history"></i> Withdraw History</h3>
+        <div id="history-list">No history found.</div>
     </div>
 
     <script>
+        // --- Firebase Config ---
         const firebaseConfig = {
-            apiKey: "AIzaSyAy2nEcb--kbjU7tSIm6lJG5ZpEFSus7sg",
-            authDomain: "efootball-57d9b.firebaseapp.com",
-            projectId: "efootball-57d9b",
-            storageBucket: "efootball-57d9b.firebasestorage.app",
-            messagingSenderId: "1031993322489",
-            appId: "1:1031993322489:web:0336c8e1869318a8222b28"
+            // APNAR ACTUAL CONFIG EKHANE BOSAN
         };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
         const tg = window.Telegram.WebApp;
-        const userId = String(tg.initDataUnsafe?.user?.id || "774900");
-        const userName = tg.initDataUnsafe?.user?.first_name || "Guest";
+        const userId = tg.initDataUnsafe?.user?.id || "test_user";
 
-        let userGP = 0;
-        let adminConfig = { min_limit: 10000, rate: 10000 };
+        let userCurrentGP = 0;
+        let minLimit = 5000;
+        let exchangeRate = 10000;
 
-        // Real-time Balance
-        db.ref('users/' + userId).on('value', snap => {
-            userGP = snap.val()?.gp || 0;
-            document.getElementById('display-gp').innerText = userGP.toLocaleString() + " GP";
-            validateWithdraw();
-        });
-
-        // Load Admin Config (Min Withdraw & Rate)
+        // 1. Fetch Admin Settings (Min Limit & Rate)
         db.ref('config').on('value', snap => {
-            if(snap.exists()) adminConfig = snap.val();
-            document.getElementById('rate-info').innerText = `Min: ${adminConfig.min_limit.toLocaleString()} GP | Rate: ${adminConfig.rate.toLocaleString()} GP = $1`;
+            if(snap.exists()) {
+                minLimit = snap.val().min_limit || 5000;
+                exchangeRate = snap.val().rate || 10000;
+                document.getElementById('rate-info').innerText = `Min: ${minLimit.toLocaleString()} GP | Rate: ${exchangeRate.toLocaleString()} GP = $1`;
+            }
+        });
+
+        // 2. Fetch User Real-time GP
+        db.ref('users/' + userId + '/gp').on('value', snap => {
+            userCurrentGP = snap.val() || 0;
+            document.getElementById('user-gp').innerText = userCurrentGP.toLocaleString() + " GP";
             validateWithdraw();
         });
 
-        // Real-time History
+        // 3. Real-time History & Cancel Option
         db.ref('withdraw_requests').on('value', snap => {
-            let html = "<h4 style='color:#94a3b8; font-size:14px; margin-bottom:10px;'>Withdraw History</h4>";
-            let found = false;
+            let html = "";
+            let hasData = false;
             snap.forEach(child => {
                 let r = child.val();
-                if(r.userId === userId) {
-                    found = true;
+                if(r.userId == userId) {
+                    hasData = true;
+                    let cancelBtn = (r.status === 'pending') ? `<button class="cancel-btn" onclick="cancelWithdraw('${child.key}', ${r.amount})">Cancel</button>` : "";
                     html += `<div class="history-item">
-                        <div><b>${parseInt(r.amount).toLocaleString()} GP</b><br><small style="font-size:10px; color:#94a3b8;">${r.date}</small></div>
-                        <span class="status-badge ${r.status}">${r.status}</span>
+                        <div>
+                            <b>${r.amount.toLocaleString()} GP</b><br>
+                            <small class="status-pending">${r.status.toUpperCase()}</small>
+                        </div>
+                        ${cancelBtn}
                     </div>`;
                 }
             });
-            document.getElementById('history-list').innerHTML = found ? html : "";
+            document.getElementById('history-list').innerHTML = hasData ? html : "No history found.";
         });
 
         function validateWithdraw() {
-            let amt = parseInt(document.getElementById('withdraw-amount').value);
+            let amount = parseInt(document.getElementById('withdraw-amount').value);
             let btn = document.getElementById('withdraw-btn');
-            if(!amt) { btn.innerText = "ENTER AMOUNT"; btn.disabled = true; btn.className = "withdraw-btn btn-gray"; }
-            else if(
+            if(!amount || amount < minLimit) {
+                btn.innerText = `MIN WITHDRAW ${minLimit} GP`;
+                btn.disabled = true;
+            } else if(amount > userCurrentGP) {
+                btn.innerText = "INSUFFICIENT BALANCE";
+                btn.disabled = true;
+            } else {
+                btn.innerText = "WITHDRAW NOW";
+                btn.disabled = false;
+            }
+        }
+
+        // 4. Submit Withdraw (Points Minus hobe)
+        function submitWithdraw() {
+            let amount = parseInt(document.getElementById('withdraw-amount').value);
+            let method = document.getElementById('payment-method').value;
+            let number = document.getElementById('account-number').value;
+
+            if(!number) { alert("Enter Account Number!"); return; }
+
+            // GP Minus kora hobe
+            let newBalance = userCurrentGP - amount;
+            
+            db.ref('withdraw_requests').push({
+                userId: userId,
+                amount: amount,
+                method: method,
+                number: number,
+                status: 'pending',
+                date: new Date().toLocaleString()
+            }).then(() => {
+                return db.ref('users/' + userId + '/gp').set(newBalance);
+            }).then(() => {
+                alert("Withdraw Request Submitted!");
+                document.getElementById('withdraw-amount').value = "";
+            }).catch(err => alert("Error: " + err.message));
+        }
+
+        // 5. Cancel Withdraw (Points Refund hobe)
+        function cancelWithdraw(key, amount) {
+            if(confirm("Are you sure you want to cancel?")) {
+                db.ref('withdraw_requests/' + key).remove().then(() => {
+                    let refundBalance = userCurrentGP + amount;
+                    return db.ref('users/' + userId + '/gp').set(refundBalance);
+                }).then(() => {
+                    alert("Request Cancelled & GP Refunded!");
+                });
+            }
+        }
+    </script>
+</body>
+</html>
