@@ -8,6 +8,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
     <script src="https://sad.adsgram.ai/js/adsgram-sdk.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="config.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --bg: #050a18; --card-dark: #121e36; --pink: #d946ef; --text: #ffffff; --border: #1e2d4d; }
@@ -140,24 +141,7 @@
     </nav>
 
     <script>
-
-        // আপনার সঠিক ফায়ারবেস কনফিগ
-    const firebaseConfig = {
-      apiKey: "AIzaSyAy2nEcb--kbjU7tSIm6lJG5ZpEFSus7sg",
-      authDomain: "efootball-57d9b.firebaseapp.com",
-      databaseURL: "https://efootball-57d9b-default-rtdb.firebaseio.com",
-      projectId: "efootball-57d9b",
-      storageBucket: "efootball-57d9b.firebasestorage.app",
-      messagingSenderId: "1031993322489",
-      appId: "1:1031993322489:web:0336c8e1869318a8222b28",
-      measurementId: "G-1SLL8RNP5M"
-    };
-
-    // ফায়ারবেস চালু করা (Initialize)
-    if (!firebase.apps.length) {
-        firebase.initializeApp(firebaseConfig);
-    }
-    const db = firebase.database();
+console.log("Database connected successfully!");
         
         const tg = window.Telegram.WebApp;
         tg.expand();
