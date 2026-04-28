@@ -7,6 +7,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="config.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --bg: #050a18; --card: #121e36; --border: #1e2d4d; --text: #ffffff; --green: #22c55e; --red: #f87171; --blue: #3b82f6; }
@@ -58,23 +59,8 @@
     </div>
 
     <script>
-        // আপনার ফায়ারবেস কনফিগ (নতুন প্রজেক্ট আইডি অনুযায়ী)
-        const firebaseConfig = {
-          apiKey: "AIzaSyAy2nEcb--kbjU7tSIm6lJG5ZpEFSus7sg",
-          authDomain: "efootball-57d9b.firebaseapp.com",
-          databaseURL: "https://efootball-57d9b-default-rtdb.firebaseio.com",
-          projectId: "efootball-57d9b",
-          storageBucket: "efootball-57d9b.firebasestorage.app",
-          messagingSenderId: "1031993322489",
-          appId: "1:1031993322489:web:0336c8e1869318a8222b28",
-          measurementId: "G-1SLL8RNP5M"
-        };
-
-        // ফায়ারবেস ইনিশিয়ালাইজেশন
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        }
-        const db = firebase.database();
+        console.log("Database connected successfully!");
+        
         const tg = window.Telegram.WebApp;
         const userId = tg.initDataUnsafe?.user?.id || "test_user";
 
