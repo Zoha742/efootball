@@ -58,29 +58,22 @@
     </div>
 
     <script>
-       // আপনার ফায়ারবেস কনফিগ (নতুন প্রজেক্ট আইডি অনুযায়ী)
-const firebaseConfig = {
-  apiKey: "AIzaSyAy2nEcb--kbjU7tSIm6lJG5ZpEFSus7sg",
-  authDomain: "efootball-57d9b.firebaseapp.com",
-  databaseURL: "https://efootball-57d9b-default-rtdb.firebaseio.com",
-  projectId: "efootball-57d9b",
-  storageBucket: "efootball-57d9b.firebasestorage.app",
-  messagingSenderId: "1031993322489",
-  appId: "1:1031993322489:web:0336c8e1869318a8222b28",
-  measurementId: "G-1SLL8RNP5M"
-};
-
-// ফায়ারবেস ইনিশিয়ালাইজেশন
-if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
-}
-const db = firebase.database();
-        
-        // --- Firebase Config ---
+        // আপনার ফায়ারবেস কনফিগ (নতুন প্রজেক্ট আইডি অনুযায়ী)
         const firebaseConfig = {
-            // APNAR ACTUAL CONFIG EKHANE BOSAN
+          apiKey: "AIzaSyAy2nEcb--kbjU7tSIm6lJG5ZpEFSus7sg",
+          authDomain: "efootball-57d9b.firebaseapp.com",
+          databaseURL: "https://efootball-57d9b-default-rtdb.firebaseio.com",
+          projectId: "efootball-57d9b",
+          storageBucket: "efootball-57d9b.firebasestorage.app",
+          messagingSenderId: "1031993322489",
+          appId: "1:1031993322489:web:0336c8e1869318a8222b28",
+          measurementId: "G-1SLL8RNP5M"
         };
-        firebase.initializeApp(firebaseConfig);
+
+        // ফায়ারবেস ইনিশিয়ালাইজেশন
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
         const db = firebase.database();
         const tg = window.Telegram.WebApp;
         const userId = tg.initDataUnsafe?.user?.id || "test_user";
@@ -89,7 +82,7 @@ const db = firebase.database();
         let minLimit = 5000;
         let exchangeRate = 10000;
 
-        // 1. Fetch Admin Settings (Min Limit & Rate)
+        // 1. Fetch Admin Settings
         db.ref('config').on('value', snap => {
             if(snap.exists()) {
                 minLimit = snap.val().min_limit || 5000;
@@ -98,14 +91,14 @@ const db = firebase.database();
             }
         });
 
-        // 2. Fetch User Real-time GP
+        // 2. Fetch User GP
         db.ref('users/' + userId + '/gp').on('value', snap => {
             userCurrentGP = snap.val() || 0;
             document.getElementById('user-gp').innerText = userCurrentGP.toLocaleString() + " GP";
             validateWithdraw();
         });
 
-        // 3. Real-time History & Cancel Option
+        // 3. Withdraw History
         db.ref('withdraw_requests').on('value', snap => {
             let html = "";
             let hasData = false;
@@ -141,17 +134,13 @@ const db = firebase.database();
             }
         }
 
-        // 4. Submit Withdraw (Points Minus hobe)
         function submitWithdraw() {
             let amount = parseInt(document.getElementById('withdraw-amount').value);
             let method = document.getElementById('payment-method').value;
             let number = document.getElementById('account-number').value;
-
             if(!number) { alert("Enter Account Number!"); return; }
 
-            // GP Minus kora hobe
             let newBalance = userCurrentGP - amount;
-            
             db.ref('withdraw_requests').push({
                 userId: userId,
                 amount: amount,
@@ -167,7 +156,6 @@ const db = firebase.database();
             }).catch(err => alert("Error: " + err.message));
         }
 
-        // 5. Cancel Withdraw (Points Refund hobe)
         function cancelWithdraw(key, amount) {
             if(confirm("Are you sure you want to cancel?")) {
                 db.ref('withdraw_requests/' + key).remove().then(() => {
