@@ -1,0 +1,934 @@
+{
+  "legend": [
+    {
+      
+  "name": "K. Heinz Rummenigge",
+  "pos": "CF",
+  "age": 28,
+  "country": "Germany",
+  "height": "182 cm",
+  "style": "Adv. Striker",
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777126450/K._Heinz_Rummenigge_tucqrv.png",
+      "stats": {
+        "Overall Rating": 104, "Offensive Awareness": 93, "Ball Control": 95, "Dribbling": 99, "Tight Possession": 96,
+        "Low Pass": 70, "Lofted Pass": 80, "Finishing": 95, "Heading": 88,
+        "Curl": 88, "Speed": 81, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
+        "Stamina": 90
+      }
+
+},
+{
+  "name": "Johan Cruyff",
+  "pos": "CF",
+  "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470945/Johan_Cruyff_fiynct.png",
+  "bio": "Johan Cruyff was the architect of Total Football. A visionary forward whose technical skill changed the game forever."
+},
+{
+  "name": "Andriy Shevchenko",
+  "pos": "CF",
+  "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470945/Andriy_Shevchenko_cgut92.png",
+  "bio": "The Ukrainian legend Shevchenko was a nightmare for defenders, winning the Ballon d'Or in 2004 with AC Milan."
+},
+{
+  "name": "Eric Cantona",
+  "pos": "CF",
+  "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470945/Eric_Cantona_m7ih4d.png",
+  "bio": "Known as 'The King', Cantona was a charismatic and powerful forward who led Manchester United to dominance in the 90s."
+},
+{
+  "name": "Samuel Eto'o",
+  "pos": "CF",
+  "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777124560/Samuel_Eto_o_cqyfhb.png",
+  "bio": "Samuel Eto'o is a four-time African Player of the Year, known for his lightning speed and clinical finishing."
+},
+{
+  "name": "Christian Vieri",
+  "pos": "CF",
+  "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470944/Christian_Vieri_wusdgc.png",
+  "bio": "Christian Vieri was a physical powerhouse and a prolific Italian striker, feared for his aerial ability and strength."
+},
+{
+  "name": "Ferenc Puskas",
+  "pos": "CF",
+  "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470944/Ferenc_Puskas_b3jqdo.png",
+  "bio": "Ferenc Puskas was a Hungarian legend and one of the greatest scorers ever, famously leading Real Madrid to multiple titles."
+},
+{
+  "name": "Denis Law",
+  "pos": "CF",
+  "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470944/Denis_Law_jauilc.png",
+  "bio": "Denis Law, the 'Lawman', is a Manchester United legend and the only Scottish player to win the Ballon d'Or."
+},
+{
+  "name": "Romario",
+  "pos": "CF",
+  "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470944/Romario_nutoc6.png",
+  "bio": "Romario was a master of efficiency in the box, a clinical finisher who scored over 1,000 goals in his career."
+},
+{
+  "name": "Alessandro Del Piero",
+  "pos": "CF",
+  "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470944/Alessandro_Del_Piero_a69bty.png",
+  "bio": "Del Piero is a Juventus icon, known for his technical brilliance and spectacular goals from his trademark 'Del Piero Zone'."
+},
+{
+  "name": "Didier Drogba",
+  "pos": "CF",
+  "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470943/Didier_Drogba_ivejm5.png",
+  "bio": "Didier Drogba was the ultimate big-game player for Chelsea, famously leading them to their first Champions League title."
+},
+{
+  "name": "Ruud van Nistelrooij",
+  "pos": "CF",
+  "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470943/Ruud_van_Nistelrooij_chqxcw.png",
+  "bio": "Ruud van Nistelrooy was a pure goal-poacher, known for his incredible positioning and finishing inside the penalty area."
+},
+{
+  "name": "Gerd Muller",
+  "pos": "CF",
+  "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470943/Gerd_Muller_a8s7ip.png",
+  "bio": "Gerd Muller, 'Der Bomber', was one of the most efficient goalscorers in history, starring for Bayern Munich and West Germany."
+},
+  {
+    "name": "Pele",
+    "pos": "SS",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470969/Pele_wudkac.png",
+    "bio": "Pele was a Brazilian legend, widely regarded as one of the greatest footballers of all time, known for his creativity, flair, and goal-scoring ability."
+  },
+  {
+    "name": "Gianfranco Zola",
+    "pos": "SS",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470969/Gianfranco_Zola_svjo2f.png",
+    "bio": "Gianfranco Zola was an Italian playmaker famous for his technique, vision, and creativity, especially during his time at Chelsea."
+  },
+  {
+    "name": "Wayne Rooney",
+    "pos": "SS",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470968/Wayne_Rooney_c95ozq.png",
+    "bio": "Wayne Rooney was a powerful and versatile forward, Manchester United's all-time top scorer, known for his work rate and finishing."
+  },
+  {
+    "name": "Hristo Stoichkov",
+    "pos": "SS",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470968/Hristo_Stoichkov_kaviw0.png",
+    "bio": "Hristo Stoichkov was a Bulgarian icon, known for his aggressive style, powerful left foot, and key role in Barcelona's success."
+  },
+  {
+    "name": "Lionel Messi",
+    "pos": "SS",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470967/Lionel_Messi_cjusph.png",
+    "bio": "Lionel Messi is widely considered one of the greatest players ever, known for his dribbling, vision, and incredible goal-scoring records."
+  },
+  {
+
+    "name": "Diego Maradona",
+    "pos": "SS",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470966/Diego_Maradona_xjo0gg.png",
+    "bio": "Diego Maradona was an Argentine legend, famous for his dribbling, vision, and leading Argentina to World Cup glory in 1986."
+  },
+  {
+
+    "name": "Dennis Bergkamp",
+    "pos": "SS",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470967/Dennis_Bergkamp_egt1y3.png",
+    "bio": "Dennis Bergkamp was a Dutch maestro known for his elegant touch, creativity, and memorable goals during his time at Arsenal."
+  },
+  {
+
+    "name": "Raul",
+    "pos": "SS",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470967/Raul_gstyse.png",
+    "bio": "Raul was a Real Madrid legend, known for his intelligence, positioning, and consistent goal-scoring throughout his career."
+  },
+
+    {
+
+    "name": "Ronaldinho Gaucho",
+    "pos": "AMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777124731/Ronaldinho_Gaucho_u87qug.png",
+    "bio": "Francesco Totti was a Roma legend, known for his vision, creativity, and loyalty, spending his entire career at one club."
+  },
+
+{
+
+    "name": "Francesco Totti",
+    "pos": "AMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777124661/Francesco_Totti_mb8lyu.png",
+    "bio": "Francesco Totti was a Roma legend, known for his vision, creativity, and loyalty, spending his entire career at one club."
+  },
+  {
+
+    "name": "Michel Platini",
+    "pos": "AMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471034/Michel_Platini_ofioqt.png",
+    "bio": "Michel Platini was a French maestro, famous for his playmaking, leadership, and winning three consecutive Ballon d'Or awards."
+  },
+  {
+
+    "name": "Zico",
+    "pos": "AMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471033/Zico_erq6a8.png",
+    "bio": "Zico was a Brazilian legend, known for his technical brilliance, free-kick ability, and attacking creativity."
+  },
+  {
+
+    "name": "Pavel Nedved",
+    "pos": "AMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471033/Pavel_Nedved_xldyek.png",
+    "bio": "Pavel Nedved was a tireless midfielder, known for his energy, long-range shooting, and leadership on the pitch."
+  },
+  {
+
+    "name": "Eden Hazard",
+    "pos": "AMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471032/Eden_Hazard_vbd5oh.png",
+    "bio": "Eden Hazard was a dazzling playmaker, known for his dribbling, creativity, and match-winning performances."
+  },
+  {
+
+    "name": "Kaka",
+    "pos": "AMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471031/Kaka_v87qem.png",
+    "bio": "Kaka was a Brazilian star, famous for his elegance, pace, and winning the Ballon d'Or in 2007."
+  },
+  {
+
+    "name": "Juan Sebastian Veron",
+    "pos": "AMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471030/Juan_Sebastian_Veron_yfkknk.png",
+    "bio": "Juan Sebastian Veron was an Argentine playmaker known for his passing range, vision, and midfield control."
+  },
+  {
+ 
+    "name": "Rivaldo",
+    "pos": "AMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471030/Rivaldo_e5xhwq.png",
+    "bio": "Rivaldo was a Brazilian superstar, known for his powerful shots, technique, and crucial goals for club and country."
+  },
+  {
+
+    "name": "Roberto Baggio",
+    "pos": "AMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471029/Roberto_Baggio_tmtgsd.png",
+    "bio": "Roberto Baggio was an Italian icon, admired for his skill, vision, and creativity as one of football's greatest playmakers."
+  },
+  {
+
+    "name": "Andres Iniesta",
+    "pos": "AMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471028/Andres_Iniesta_o98hid.png",
+    "bio": "Andres Iniesta was a Spanish legend, known for his intelligence, control, and scoring the winning goal in the 2010 World Cup final."
+  },
+
+{
+
+    "name": "Luis Figo",
+    "pos": "RWF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471160/Luis_Figo_btsf31.png",
+    "bio": "Luis Figo was a Portuguese legend, known for his dribbling, crossing, and creativity on the right wing."
+  },
+  {
+
+    "name": "Franck Ribery",
+    "pos": "RWF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471159/Franck_Ribery_rtfmdh.png",
+    "bio": "Franck Ribery was a dynamic winger, famous for his pace, dribbling, and key role in Bayern Munich's success."
+  },
+  {
+
+    "name": "Ludovic Giuly",
+    "pos": "RWF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471158/Ludovic_Giuly_dvluiu.png",
+    "bio": "Ludovic Giuly was a quick and intelligent winger, known for his movement and contributions at Barcelona."
+  },
+  {
+
+    "name": "Bojan Krkic",
+    "pos": "RWF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471157/Bojan_Krkic_sa9i44.png",
+    "bio": "Bojan Krkic was a talented forward, known for his technical ability and early promise at Barcelona."
+  },
+  {
+
+    "name": "Dirk Kuyt",
+    "pos": "RWF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471156/Dirk_Kuyt_n0laqp.png",
+    "bio": "Dirk Kuyt was known for his work rate, versatility, and crucial goals, especially during his time at Liverpool."
+  },
+  {
+
+    "name": "Paulo Sergio",
+    "pos": "RWF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471155/Paulo_Sergio_chwofn.png",
+    "bio": "Paulo Sergio was a Brazilian forward known for his pace, movement, and contributions in European football."
+  },
+  {
+
+    "name": "Shinji Okazaki",
+    "pos": "RWF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471154/Shinji_Okazaki_hl1vfn.png",
+    "bio": "Shinji Okazaki was a hardworking forward, known for his pressing, movement, and role in Leicester City's title win."
+  },
+  {
+
+    "name": "Luis Garcia",
+    "pos": "RWF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471153/Luis_Garcia_na1yqj.png",
+    "bio": "Luis Garcia was a skillful attacker, known for his flair and memorable goals for Liverpool."
+  },
+  {
+
+    "name": "Roberto Donadoni",
+    "pos": "RWF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471152/Roberto_Donadoni_yhlldq.png",
+    "bio": "Roberto Donadoni was an elegant winger, known for his technique and success with AC Milan."
+  },
+  {
+
+    "name": "Uli Hoeness",
+    "pos": "RWF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471151/Uli_HoeneSS_xnzcvl.png",
+    "bio": "Uli Hoeness was a German forward known for his intelligence and contributions to Bayern Munich."
+  },
+  {
+
+    "name": "Takefusa Kubo",
+    "pos": "RWF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471150/Takefusa_Kubo_ybquil.png",
+    "bio": "Takefusa Kubo is a Japanese talent, known for his dribbling, creativity, and attacking flair."
+  },
+  {
+
+    "name": "Junya Ito",
+    "pos": "RWF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471149/Junya_Ito_vgqdya.png",
+    "bio": "Junya Ito is a Japanese winger known for his speed, crossing ability, and attacking contributions."
+  },
+
+{
+
+    "name": "Franck Ribery",
+    "pos": "LWF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471167/Franck_Ribery_kfskxt.png",
+    "bio": "Franck Ribery was a world-class winger, known for his pace, dribbling, and creativity on the left flank."
+  },
+  {
+
+    "name": "David Villa",
+    "pos": "LWF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471166/David_Villa_opqael.png",
+    "bio": "David Villa was a prolific Spanish forward, known for his finishing, movement, and key role in Spain's golden era."
+  },
+  {
+
+    "name": "Denilson",
+    "pos": "LWF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471165/Denilson_dfnbjh.png",
+    "bio": "Denilson was a Brazilian winger famous for his flair, dribbling skills, and entertaining style of play."
+  },
+  {
+
+    "name": "Rafael van der Vaart",
+    "pos": "LWF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471164/Rafael_van_der_Vaart_uagq4j.png",
+    "bio": "Rafael van der Vaart was a technically gifted Dutch player, known for his vision, passing, and attacking contributions."
+  },
+  {
+
+    "name": "Shinji Okazaki",
+    "pos": "LWF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471164/Shinji_Okazaki_hydt0t.png",
+    "bio": "Shinji Okazaki was a hardworking attacker, known for his pressing, intelligent movement, and team play."
+  },
+  {
+
+    "name": "Atep Rizal",
+    "pos": "LWF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471163/Atep_Rizal_srqqys.png",
+    "bio": "Atep Rizal is an Indonesian winger known for his speed, dribbling ability, and contributions on the left wing."
+  },
+
+
+ {
+
+    "name": "Cafu",
+    "pos": "RMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471191/Cafu_u4ctam.png",
+    "bio": "Cafu was a legendary Brazilian right-sided player known for his stamina, speed, and leadership."
+  },
+  {
+
+    "name": "David Beckham",
+    "pos": "RMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471190/David_Beckham_sy3eyq.png",
+    "bio": "David Beckham was famous for his pinpoint crosses, free-kicks, and passing accuracy."
+  },
+  {
+
+    "name": "Takefusa Kubo",
+    "pos": "RMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471189/Takefusa_Kubo_puojbp.png",
+    "bio": "Takefusa Kubo is a Japanese winger known for his dribbling, agility, and creativity."
+  },
+  {
+
+    "name": "Steve McManaman",
+    "pos": "RMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471187/Steve_McManaman_dgxnls.png",
+    "bio": "Steve McManaman was an English winger known for his dribbling, movement, and versatility."
+  },
+  {
+
+    "name": "Stefano Fiore",
+    "pos": "RMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471186/Stefano_Fiore_w8pkoh.png",
+    "bio": "Stefano Fiore was an Italian midfielder known for his passing, vision, and attacking support."
+  },
+  {
+
+    "name": "Ray Parlour",
+    "pos": "RMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471185/Ray_Parlour_qsoyjj.png",
+    "bio": "Ray Parlour was an Arsenal midfielder known for his work rate, energy, and consistency."
+  },
+  {
+
+    "name": "Freddie Ljungberg",
+    "pos": "RMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471184/Freddie_Ljungberg_tsxrdf.png",
+    "bio": "Freddie Ljungberg was a Swedish winger known for his intelligent runs and goal-scoring ability."
+  },
+  {
+
+    "name": "Gaizka Mendieta",
+    "pos": "RMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471183/Gaizka_Mendieta_nkrbmg.png",
+    "bio": "Gaizka Mendieta was a Spanish midfielder known for his technique, passing, and leadership."
+  },
+  {
+
+    "name": "Hasan Salihamidzic",
+    "pos": "RMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471182/Hasan_Salihamidzic_zaf3oc.png",
+    "bio": "Hasan Salihamidzic was a versatile Bosnian player known for his work rate and attacking support."
+  },
+{
+
+    "name": "Gareth Bale",
+    "pos": "LMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471200/Gareth_Bale_vxoe6t.png",
+    "bio": "Gareth Bale was a Welsh superstar known for his pace, power, and long-range goals."
+  },
+  {
+
+    "name": "Pavel Nedved",
+    "pos": "LMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471195/Pavel_Nedved_sjiq5h.png",
+    "bio": "Pavel Nedved was a tireless midfielder known for his energy, shooting, and leadership."
+  },
+  {
+
+    "name": "Roberto Donadoni",
+    "pos": "LMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471199/Roberto_Donadoni_xn1ujr.png",
+    "bio": "Roberto Donadoni was an elegant Italian winger known for his technique and creativity."
+  },
+  {
+
+    "name": "Park Ji-Sung",
+    "pos": "LMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471198/Park_Ji-Sung_qbo7vz.png",
+    "bio": "Park Ji-Sung was a hardworking midfielder known for his stamina, pressing, and team play."
+  },
+  {
+
+    "name": "Ze Roberto",
+    "pos": "LMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471197/Ze_Roberto_burgvp.png",
+    "bio": "Ze Roberto was a versatile Brazilian midfielder known for his dribbling and consistency."
+  },
+  {
+
+    "name": "Robert Pires",
+    "pos": "LMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471196/Robert_Pires_t1aynr.png",
+    "bio": "Robert Pires was a French winger known for his intelligence, finishing, and creativity."
+  },
+  {
+
+    "name": "Serginho",
+    "pos": "LMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471194/Serginho_i5jpgu.png",
+    "bio": "Serginho was a Brazilian winger known for his speed, dribbling, and attacking runs."
+  },
+  {
+
+    "name": "Shinji Ono",
+    "pos": "LMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471193/Shinji_Ono_kor7xs.png",
+    "bio": "Shinji Ono was a Japanese playmaker known for his vision, passing, and technical skill."
+  },
+
+ {
+
+    "name": "Andres Iniesta",
+    "pos": "CMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471223/Andres_Iniesta_f6djcy.png",
+    "bio": "Andres Iniesta was a Spanish legend known for his dribbling, intelligence, and match-winning vision."
+  },
+  {
+
+    "name": "Lothar Matthaus",
+    "pos": "CMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471220/Lothar_Matthaus_fwdviw.png",
+    "bio": "Lothar Matthaus was a complete midfielder known for leadership, tackling, and long-range shooting."
+  },
+  {
+
+    "name": "Juan Sebastian Veron",
+    "pos": "CMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471219/Juan_Sebastian_Veron_bgioaq.png",
+    "bio": "Juan Sebastian Veron was an Argentine playmaker known for passing range and vision."
+  },
+  {
+
+    "name": "Steven Gerrard",
+    "pos": "CMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471218/Steven_Gerrard_rj8b5k.png",
+    "bio": "Steven Gerrard was a Liverpool icon known for leadership, long shots, and all-round midfield power."
+  },
+  {
+
+    "name": "Clarence Seedorf",
+    "pos": "CMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471218/Clarence_Seedorf_cwdxxz.png",
+    "bio": "Clarence Seedorf was a complete midfielder known for strength, technique, and Champions League success."
+  },
+  {
+
+    "name": "Paul Scholes",
+    "pos": "CMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471216/Paul_Scholes_ug4p2v.png",
+    "bio": "Paul Scholes was a Manchester United legend known for passing accuracy and long-range shooting."
+  },
+  {
+
+    "name": "Rui Costa",
+    "pos": "CMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471215/Rui_Costa_qyc4po.png",
+    "bio": "Rui Costa was a Portuguese playmaker known for elegance, vision, and creative passing."
+  },
+  {
+
+    "name": "Frank Lampard",
+    "pos": "CMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777125745/Frank_Lampard_kj2ra0.png",
+    "bio": "Frank Lampard was a goal-scoring midfielder known for late runs and finishing ability."
+  },
+  {
+
+    "name": "Xabi Alonso",
+    "pos": "CMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471212/Xabi_Alonso_fljxbo.png",
+    "bio": "Xabi Alonso was a deep-lying playmaker known for passing range and tactical intelligence."
+  },
+  {
+
+    "name": "Edgar Davids",
+    "pos": "CMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471211/Edgar_Davids_nnjpie.png",
+    "bio": "Edgar Davids was a tough midfielder known for energy, aggression, and ball recovery."
+  },
+  {
+
+    "name": "David Beckham",
+    "pos": "CMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471210/David_Beckham_d6okuz.png",
+    "bio": "David Beckham was famous for his crossing, passing, and set-piece delivery."
+  },
+  {
+
+    "name": "Guti",
+    "pos": "CMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471209/Guti_b5n13n.png",
+    "bio": "Guti was a Real Madrid playmaker known for creativity and unpredictable passing."
+  },
+  {
+
+    "name": "Mark van Bommel",
+    "pos": "CMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471208/Mark_van_Bommel_wdpctx.png",
+    "bio": "Mark van Bommel was a strong midfielder known for leadership and defensive contribution."
+  },
+  {
+
+    "name": "Bryan Robson",
+    "pos": "CMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471207/Bryan_Robson_d7yudy.png",
+    "bio": "Bryan Robson was a Manchester United captain known for stamina and box-to-box play."
+  },
+  {
+
+    "name": "Thiago Alcantara",
+    "pos": "CMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471205/Thiago_Alcantara_mcpxfd.png",
+    "bio": "Thiago Alcantara is a Spanish midfielder known for technique, control, and passing creativity."
+  },
+  {
+
+    "name": "Roberto Donadoni",
+    "pos": "CMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471204/Roberto_Donadoni_oh8b7c.png",
+    "bio": "Roberto Donadoni was an elegant Italian midfielder known for dribbling and balance."
+  },
+
+ {
+
+    "name": "Andrea Pirlo",
+    "pos": "DMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471237/Andrea_Pirlo_psnvig.png",
+    "bio": "Andrea Pirlo was a deep-lying playmaker known for his vision, passing, and set-piece mastery."
+  },
+  {
+
+    "name": "Patrick Vieira",
+    "pos": "DMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471236/Patrick_Vieira_ggsvop.png",
+    "bio": "Patrick Vieira was a dominant midfielder known for strength, leadership, and box-to-box ability."
+  },
+  {
+
+    "name": "Frank Rijkaard",
+    "pos": "DMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471237/Frank_Rijkaard_lhgdjs.png",
+    "bio": "Frank Rijkaard was a legendary defensive midfielder known for composure, intelligence, and defensive control."
+  },
+  {
+
+    "name": "Vitinha",
+    "pos": "DMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471234/Vitinha_meqlbk.png",
+    "bio": "Vitinha is a modern midfielder known for passing, movement, and ball control."
+  },
+  {
+
+    "name": "Gennaro Gattuso",
+    "pos": "DMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471233/Gennaro_Gattuso_mbjpr4.png",
+    "bio": "Gennaro Gattuso was a fierce midfielder known for aggression, tackling, and work rate."
+  },
+  {
+
+    "name": "Clarence Seedorf",
+    "pos": "DMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471232/Clarence_Seedorf_cdkw3d.png",
+    "bio": "Clarence Seedorf was a versatile midfielder known for strength, technique, and big-game performance."
+  },
+  {
+
+    "name": "Franz Beckenbauer",
+    "pos": "DMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471230/Franz_Beckenbauer_ms0nfb.png",
+    "bio": "Franz Beckenbauer was a football icon known for elegance, leadership, and redefining the sweeper role."
+  },
+  {
+  
+    "name": "Philipp Lahm",
+    "pos": "DMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471228/Philipp_Lahm_zwymji.png",
+    "bio": "Philipp Lahm was a tactically intelligent midfielder and defender known for consistency and leadership."
+  },
+    
+  {
+
+    "name": "Xavi",
+    "pos": "DMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471227/Xavi_aozngo.png",
+    "bio": "Xavi was a Barcelona legend known for passing, control, and midfield dominance."
+  },
+  {
+ 
+    "name": "Claude Makelele",
+    "pos": "DMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471226/Claude_Makelele_lplqxo.png",
+    "bio": "Claude Makelele was a defensive midfield specialist known for interceptions and positioning."
+  },
+  {
+ 
+    "name": "Yaya Toure",
+    "pos": "DMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471225/Yaya_Toure_sxbnxn.png",
+    "bio": "Yaya Toure was a powerful midfielder known for driving runs, shooting, and physical dominance."
+  }, 
+
+ {
+   
+    "name": "Roberto Carlos",
+    "pos": "LB",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472226/Roberto_Carlos_hcxkok.png",
+    "bio": "Roberto Carlos was a legendary Brazilian left-back known for his powerful shots, speed, and attacking runs."
+  },
+  {
+    
+    "name": "Martin Caceres",
+    "pos": "LB",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472221/Martin_Caceres_sbmmyl.png",
+    "bio": "Martin Caceres is a versatile defender known for his ability to play across the backline."
+  },
+  {
+    
+    "name": "Javier Zanetti",
+    "pos": "LB",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472226/Javier_Zanetti_ej0eqo.png",
+    "bio": "Javier Zanetti was a legendary defender known for leadership, consistency, and versatility."
+  },
+  {
+  
+    "name": "Gareth Bale",
+    "pos": "LB",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472225/Gareth_Bale_u89xpu.png",
+    "bio": "Gareth Bale started as a left-back before becoming a world-class winger known for pace and power."
+  },
+  {
+   
+    "name": "Paolo Maldini",
+    "pos": "LB",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472224/Paolo_Maldini_yr9pd6.png",
+    "bio": "Paolo Maldini was an iconic defender known for elegance, positioning, and loyalty to AC Milan."
+  },
+  {
+   
+    "name": "G. van Bronckhorst",
+    "pos": "LB",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472224/G._van_Bronckhorst_eglzu6.png",
+    "bio": "Giovanni van Bronckhorst was a Dutch left-back known for technique, leadership, and long-range goals."
+  },
+  {
+   
+    "name": "Sergi Barjuan",
+    "pos": "LB",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472223/Sergi_Barjuan_zzb16r.png",
+    "bio": "Sergi Barjuan was a Spanish left-back known for attacking support and consistency."
+  },
+  {
+   
+    "name": "Denis Irwin",
+    "pos": "LB",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472222/Denis_Irwin_jlprxg.png",
+    "bio": "Denis Irwin was a reliable full-back known for defensive solidity and set-piece ability."
+  },
+  {
+    
+    "name": "A. Costacurta",
+    "pos": "LB",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472222/A._Costacurta_wvdtrp.png",
+    "bio": "Alessandro Costacurta was an Italian defender known for intelligence, positioning, and discipline."
+  },
+  {
+    
+    "name": "Bixente Lizarazu",
+    "pos": "LB",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472221/Bixente_Lizarazu_iyikqc.png",
+    "bio": "Bixente Lizarazu was a French left-back known for pace, aggression, and defensive strength."
+  },
+  {
+   
+    "name": "Yuto Nagatomo",
+    "pos": "LB",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472220/Yuto_Nagatomo_xqnh3i.png",
+    "bio": "Yuto Nagatomo is a Japanese full-back known for energy, stamina, and attacking support."
+  },
+  {
+   
+    "name": "Mikael Silvestre",
+    "pos": "LB",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472220/Mikael_Silvestre_ovphto.png",
+    "bio": "Mikael Silvestre was a French defender known for versatility and composure at the back."
+  },
+
+ {
+   
+    "name": "Cafu",
+    "pos": "RB",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471251/Cafu_q8ip7b.png",
+    "bio": "Cafu was a legendary Brazilian right-back known for his stamina, speed, and attacking runs."
+  },
+  {
+   
+    "name": "Giuseppe Bergomi",
+    "pos": "RB",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471249/Giuseppe_Bergomi_i32uuk.png",
+    "bio": "Giuseppe Bergomi was an Italian defender known for leadership, positioning, and consistency."
+  },
+  {
+   
+    "name": "A. Costacurta",
+    "pos": "RB",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471248/A._Costacurta_izj5dg.png",
+    "bio": "Alessandro Costacurta was a disciplined defender known for intelligence and tactical awareness."
+  },
+  {
+   
+    "name": "Massimo Oddo",
+    "pos": "RB",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471248/Massimo_Oddo_xpck4f.png",
+    "bio": "Massimo Oddo was an Italian right-back known for crossing ability and attacking support."
+  },
+  {
+   
+    "name": "Albert Ferrer",
+    "pos": "RB",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471246/Albert_Ferrer_qng0fo.png",
+    "bio": "Albert Ferrer was a Spanish defender known for reliability and defensive discipline."
+  },
+  {
+   
+    "name": "Maicon",
+    "pos": "RB",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471245/Maicon_rvq53y.png",
+    "bio": "Maicon was a powerful Brazilian right-back known for strength, pace, and attacking runs."
+  },
+  {
+    
+    "name": "Christian Panucci",
+    "pos": "RB",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471243/Christian_Panucci_as9dsc.png",
+    "bio": "Christian Panucci was an Italian defender known for versatility and experience at top clubs."
+  },
+  {
+    
+    "name": "Lee Dixon",
+    "pos": "RB",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471242/Lee_Dixon_qjoxxh.png",
+    "bio": "Lee Dixon was an Arsenal right-back known for consistency and defensive awareness."
+  },
+  {
+    
+    "name": "Juliano Belletti",
+    "pos": "RB",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471241/Belletti_ftlmo8.png",
+    "bio": "Juliano Belletti was a Brazilian full-back known for important goals and attacking support."
+  },
+  {
+   
+    "name": "Lilian Thuram",
+    "pos": "RB",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471240/Lilian_Thuram_phfoad.png",
+    "bio": "Lilian Thuram was a legendary defender known for strength, intelligence, and defensive leadership."
+  },
+
+ {
+   
+    "name": "Franco Baresi",
+    "pos": "CB",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472137/Franco_Baresi_n7ftqj.png",
+    "bio": "Franco Baresi was an Italian defensive legend known for positioning, leadership, and reading the game."
+  },
+  {
+    
+    "name": "Jaap Stam",
+    "pos": "CB",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472137/Jaap_Stam_lotymx.png",
+    "bio": "Jaap Stam was a powerful Dutch defender known for strength, tackling, and aerial dominance."
+  },
+  {
+   
+    "name": "Marcel Desailly",
+    "pos": "CB",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472137/Marcel_Desailly_kka0he.png",
+    "bio": "Marcel Desailly was a French defender known for physical strength, versatility, and composure."
+  },
+  {
+   
+    "name": "Rio Ferdinand",
+    "pos": "CB",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472137/Rio_Ferdinand_giigds.png",
+    "bio": "Rio Ferdinand was a modern defender known for pace, ball control, and clean defending."
+  },
+  {
+    
+    "name": "Frank Rijkaard",
+    "pos": "CB",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472137/Frank_Rijkaard_eivbuh.png",
+    "bio": "Frank Rijkaard was a versatile defender known for intelligence, calmness, and tactical awareness."
+  },
+  {
+    
+    "name": "Ronald Koeman",
+    "pos": "CB",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472137/Ronald_Koeman_xuoi48.png",
+    "bio": "Ronald Koeman was a ball-playing defender known for powerful shooting and passing ability."
+  },
+
+    {
+   
+    "name": "Angelo Peruzzi",
+    "pos": "GK",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777123018/Angelo_Peruzzi_jsvsmi.png",
+    "bio": "Angelo Peruzzi was a fierce German goalkeeper known for leadership, aggression, and shot-stopping."
+  },
+
+ {
+   
+    "name": "Gianluigi Buffon",
+    "pos": "GK",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472278/Gianluigi_Buffon_owhxfv.png",
+    "bio": "Gianluigi Buffon was an Italian goalkeeping legend known for his reflexes, leadership, and consistency."
+  },
+  {
+   
+    "name": "Peter Schmeichel",
+    "pos": "GK",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472276/Peter_Schmeichel_lnpuvq.png",
+    "bio": "Peter Schmeichel was a dominant goalkeeper known for his presence, saves, and leadership at Manchester United."
+  },
+  {
+    
+    "name": "Iker Casillas",
+    "pos": "GK",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472275/Iker_Casillas_kux68y.png",
+    "bio": "Iker Casillas was a Spanish legend known for quick reflexes and crucial saves in big matches."
+  },
+  {
+    
+    "name": "Petr Cech",
+    "pos": "GK",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472274/Petr_Cech_pqj4gn.png",
+    "bio": "Petr Cech was a Chelsea legend known for shot-stopping, consistency, and calmness under pressure."
+  },
+  {
+   
+    "name": "Hugo Lloris",
+    "pos": "GK",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472273/Hugo_Lloris_qnjud0.png",
+    "bio": "Hugo Lloris is a French goalkeeper known for reflexes, leadership, and World Cup success."
+  },
+  {
+    
+    "name": "Dida",
+    "pos": "GK",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472272/Dida_n3glms.png",
+    "bio": "Dida was a Brazilian goalkeeper known for composure, penalty saves, and success with AC Milan."
+  },
+  {
+    
+    "name": "Christian Abbiati",
+    "pos": "GK",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472272/Christian_Abbiati_kahurw.png",
+    "bio": "Christian Abbiati was an Italian goalkeeper known for reliability and long career at AC Milan."
+  },
+  {
+    
+    "name": "Oliver Kahn",
+    "pos": "GK",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472272/Oliver_Kahn_zkzlbr.png",
+    "bio": "Oliver Kahn was a fierce German goalkeeper known for leadership, aggression, and shot-stopping."
+  }
+    
+],
+  "ads_config": {
+    "reward_id": "int-41",
+    "banner_id": "int-42"
+  }
+}

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - eFootball HUB</title>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
+    <script src="https://sad.adsgram.ai/js/adsgram-sdk.js"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --bg: #050a18; --card-dark: #121e36; --pink: #d946ef; --text: #ffffff; --border: #1e2d4d; }
+        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; padding: 20px; padding-bottom: 90px; margin: 0; }
+        
+        .profile-container { background: linear-gradient(180deg, rgba(217, 70, 239, 0.15), var(--card-dark)); border-radius: 20px; padding: 30px 20px; text-align: center; border: 1px solid var(--border); margin-bottom: 25px; }
+        .avatar { width: 85px; height: 85px; border-radius: 50%; border: 3px solid var(--pink); margin-bottom: 12px; box-shadow: 0 0 15px rgba(217, 70, 239, 0.4); object-fit: cover; }
+        .name { font-size: 20px; font-weight: bold; margin-bottom: 5px; }
+        .user-id { color: #94a3b8; font-size: 11px; }
+
+        /* 8 Grid Boxes (2 Columns) */
+        .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        
+        .action-box { background: var(--card-dark); border-radius: 15px; padding: 18px 10px; text-align: center; border: 1px solid var(--border); text-decoration: none; color: white; transition: 0.3s; cursor: pointer; }
+        .action-box:active { transform: scale(0.95); }
+        .action-box i { font-size: 24px; margin-bottom: 8px; display: block; }
+        .action-box span { font-size: 11px; font-weight: bold; text-transform: uppercase; }
+        .action-box .value { font-size: 15px; font-weight: bold; margin-top: 4px; color: #e2e8f0; }
+
+        /* Modern Box Colors */
+        .box-gp i { color: #fbbf24; }
+        .box-task i { color: #22c55e; }
+        .box-refer i { color: #f472b6; } 
+        .box-earn i { color: #818cf8; }  
+        .box-wallet i { color: #3b82f6; }
+        .box-withdraw i { color: #f87171; }
+        .box-history i { color: #a78bfa; }
+        .box-support i { color: #2dd4bf; }
+
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 70px; background: rgba(5, 10, 24, 0.9); backdrop-filter: blur(15px); display: flex; justify-content: space-around; align-items: center; border-top: 1px solid rgba(255, 255, 255, 0.1); z-index: 1000; }
+        .nav-item { text-align: center; color: #64748b; text-decoration: none; font-size: 11px; }
+        .nav-item i { font-size: 20px; display: block; margin-bottom: 4px; }
+
+        /* Notification Style */
+        .notif-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(5, 10, 24, 0.9); backdrop-filter: blur(10px);
+            display: none; justify-content: center; align-items: center; z-index: 5000;
+        }
+        .notif-box {
+            background: #121e36; width: 85%; max-width: 320px; border-radius: 25px;
+            padding: 30px 20px; border: 1px solid #d946ef; text-align: center;
+            box-shadow: 0 0 40px rgba(217, 70, 239, 0.2); transform: translateY(50px); opacity: 0; transition: 0.4s ease;
+        }
+        .notif-box.show { transform: translateY(0); opacity: 1; }
+        .notif-icon { font-size: 55px; color: #d946ef; margin-bottom: 15px; text-shadow: 0 0 10px rgba(217, 70, 239, 0.5); }
+        .notif-btn {
+            background: linear-gradient(135deg, #d946ef, #a21caf);
+            color: white; border: none; padding: 12px; border-radius: 12px;
+            font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div style="display: flex; align-items: center; padding: 15px 20px; background: rgba(18, 30, 54, 0.6); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); position: sticky; top: 0; z-index: 2000;">
+        <a href="index.html" style="color: white; text-decoration: none; font-size: 18px; display: flex; align-items: center; gap: 10px;">
+            <i class="fas fa-chevron-left"></i>
+            <span style="font-size: 16px; font-weight: 600; letter-spacing: 0.5px;">Back</span>
+        </a>
+    </div>
+
+    <div class="profile-container">
+        <img src="https://via.placeholder.com/100" class="avatar" id="user-avatar">
+        <div class="name" id="user-name">Loading...</div>
+        <div class="user-id" id="user-id">ID: Fetching...</div>
+    </div>
+
+    <div class="action-grid">
+        <div class="action-box box-gp">
+            <i class="fas fa-coins"></i>
+            <span>Total GP</span>
+            <div class="value" id="gp-balance">0</div>
+        </div>
+        <div class="action-box box-task">
+            <i class="fas fa-check-circle"></i>
+            <span>Task Done</span>
+            <div class="value" id="total-tasks">0</div>
+        </div>
+
+        <a href="refer.html" class="action-box box-refer">
+            <i class="fas fa-user-plus"></i>
+            <span>Refer Friends</span>
+            <div class="value" style="font-size: 10px; color: #94a3b8;">Get GP Rewards</div>
+        </a>
+        <a href="earn.html" class="action-box box-earn">
+            <i class="fas fa-gem"></i>
+            <span>Earn More</span>
+            <div class="value" style="font-size: 10px; color: #94a3b8;">Extra Offers</div>
+        </a>
+
+        <a href="wallet.html" class="action-box box-wallet">
+            <i class="fas fa-wallet"></i>
+            <span>Wallet Setup</span>
+            <div class="value" style="font-size: 10px; color: #94a3b8;">TON Connect</div>
+        </a>
+        <a href="withdraw.html" class="action-box box-withdraw">
+            <i class="fas fa-hand-holding-usd"></i>
+            <span>Withdraw</span>
+            <div class="value" style="font-size: 10px; color: #94a3b8;">GP Cashout</div>
+        </a>
+
+        <a href="history.html" class="action-box box-history">
+            <i class="fas fa-list-alt"></i>
+            <span>History</span>
+            <div class="value" style="font-size: 10px; color: #94a3b8;">Log Details</div>
+        </a>
+        <a href="support.html" class="action-box box-support">
+            <i class="fas fa-headset"></i>
+            <span>Support</span>
+            <div class="value" style="font-size: 10px; color: #94a3b8;">Get Help</div>
+        </a>
+    </div>
+
+    <div class="notif-overlay" id="pNotifOverlay">
+        <div class="notif-box" id="pNotifBox">
+            <i class="fas fa-id-badge notif-icon"></i>
+            <h3 style="margin: 0; color: #fff;">Profile Update!</h3>
+            <p style="color: #94a3b8; font-size: 13px; line-height: 1.6; margin-top: 10px;">
+                Apnar profile details ebong payment wallet update kora hoyeche. Sothik payment pete apnar **Wallet Setup** check korun.
+            </p>
+            <button class="notif-btn" onclick="hideProfileNotif()">CONTINUE</button>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item"><i class="fas fa-home"></i>Home</a>
+        <a href="legend.html" class="nav-item"><i class="fas fa-crown"></i>Legend</a>
+        <a href="task.html" class="nav-item"><i class="fas fa-clipboard-check"></i>Task</a>
+        <a href="profile.html" class="nav-item" style="color: #d946ef;"><i class="fas fa-user-circle"></i>Profile</a>
+    </nav>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+        const user = tg.initDataUnsafe?.user;
+
+        if (user) {
+            document.getElementById('user-name').innerText = user.first_name + (user.last_name ? " " + user.last_name : "");
+            document.getElementById('user-id').innerText = "ID: #" + user.id;
+            if (user.photo_url) document.getElementById('user-avatar').src = user.photo_url;
+        } else {
+            document.getElementById('user-name').innerText = "Guest Player";
+            document.getElementById('user-id').innerText = "ID: #000000";
+        }
+
+        window.onload = function() {
+            document.getElementById('gp-balance').innerText = localStorage.getItem('user_gp') || 0;
+            document.getElementById('total-tasks').innerText = localStorage.getItem('tasks_done') || 0;
+            
+            // Session-e prothombar holei notification dekhabe
+            if (!sessionStorage.getItem('profile_notif_shown')) {
+                setTimeout(showProfileNotif, 1500);
+                sessionStorage.setItem('profile_notif_shown', 'true');
+            }
+        }
+
+        function showProfileNotif() {
+            const overlay = document.getElementById('pNotifOverlay');
+            const box = document.getElementById('pNotifBox');
+            overlay.style.display = 'flex';
+            setTimeout(() => {
+                box.classList.add('show');
+            }, 100);
+        }
+
+        function hideProfileNotif() {
+            const overlay = document.getElementById('pNotifOverlay');
+            const box = document.getElementById('pNotifBox');
+            box.classList.remove('show');
+            setTimeout(() => {
+                overlay.style.display = 'none';
+            }, 400);
+        }
+    </script>
+</body>
+</html>

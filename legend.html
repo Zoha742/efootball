@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legends - eFootball HUB</title>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
+    <script src="https://sad.adsgram.ai/js/adsgram-sdk.js"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --bg: #050a18; --card-dark: #121e36; --primary: #fbbf24; --text: #ffffff; --border: #1e2d4d; }
+        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; padding: 15px; margin: 0; }
+        
+        .header { display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 25px; }
+        .back-btn { position: absolute; left: 0; font-size: 22px; color: var(--primary); text-decoration: none; }
+        
+        /* All Position Buttons - Unchanged */
+        .pos-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 25px; }
+        .pos-btn { background: var(--card-dark); border: 1px solid var(--primary); padding: 12px; text-align: center; border-radius: 8px; cursor: pointer; color: var(--primary); font-weight: bold; font-size: 14px; }
+        
+        .player-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr 1fr; 
+            gap: 12px; 
+            padding-bottom: 100px; 
+        }
+
+        /* Card Design like Screenshot 6 */
+        .top-card { 
+            background: var(--card-dark); 
+            border-radius: 10px; 
+            overflow: hidden; 
+            border: 1.5px solid var(--primary); /* Gold border like example */
+            text-align: center; 
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s;
+        }
+        
+        .top-card:active { transform: scale(0.95); }
+
+        /* Image View Fix */
+        .top-card img { 
+            width: 100%; 
+            object-fit: cover; /* Fill the card area */
+            object-position: top; /* Keep player face visible */
+            display: block;
+        }
+
+        .top-card p { 
+            font-size: 11px; 
+            padding: 8px 2px; 
+            margin: 0; 
+            color: var(--text); 
+            background: rgba(18, 30, 54, 0.9); /* Card dark color background for name */
+            font-weight: bold;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .bottom-ad-banner { position: fixed; bottom: 0; left: 0; width: 100%; height: 50px; background: rgba(0,0,0,0.8); display: flex; justify-content: center; align-items: center; z-index: 1000; border-top: 1px solid #334155; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+        <h2 style="font-size: 18px; color: var(--primary);">LEGENDARY PLAYERS</h2>
+    </div>
+
+    <div class="pos-grid">
+        <div class="pos-btn" onclick="loadLegends('CF')">CF</div>
+        <div class="pos-btn" onclick="loadLegends('SS')">SS</div>
+        <div class="pos-btn" onclick="loadLegends('LWF')">LWF</div>
+        <div class="pos-btn" onclick="loadLegends('RWF')">RWF</div>
+        <div class="pos-btn" onclick="loadLegends('AMF')">AMF</div>
+        <div class="pos-btn" onclick="loadLegends('CMF')">CMF</div>
+        <div class="pos-btn" onclick="loadLegends('DMF')">DMF</div>
+        <div class="pos-btn" onclick="loadLegends('LB')">LB</div>
+        <div class="pos-btn" onclick="loadLegends('RB')">RB</div>
+        <div class="pos-btn" onclick="loadLegends('CB')">CB</div>
+        <div class="pos-btn" onclick="loadLegends('GK')">GK</div>
+
+    </div>
+
+    <div id="legend-container" class="player-grid"></div>
+    </div> <div id="banner-container" style="display: flex; justify-content: center; margin-top: 20px; padding-bottom: 20px;"></div>
+
+
+<script>
+    async function loadLegends(pos) {
+        const container = document.getElementById('legend-container');
+        container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>Loading...</p>";
+        
+        try {
+            const response = await fetch('legendplayer.json'); 
+            const data = await response.json();
+            const all_legends = data.legend || data.players || data; 
+            
+            const filtered = all_legends.filter(legend => legend.pos === pos);
+            container.innerHTML = "";
+
+            if(!filtered || filtered.length === 0) {
+                container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>No Data Found!</p>";
+                return;
+            }
+
+            filtered.forEach(legend => {
+                const card = document.createElement('div');
+                card.className = 'top-card';
+                card.innerHTML = `<img src="${legend.img}"><p>${legend.name}</p>`;
+                
+                card.onclick = () => {
+                    localStorage.setItem('selected_player', JSON.stringify(legend));
+                    window.location.href = 'legendbio.html';
+                };
+                container.appendChild(card);
+            });
+        } catch (e) { 
+            container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>Error loading legendplayer.json</p>"; 
+        }
+    } // এখানে loadLegends ফাংশন শেষ হয়েছে
+
+    // window.onload ফাংশনটি সবসময় ফাংশনের বাইরে আলাদাভাবে থাকবে
+    window.onload = () => {
+        // ১. প্লেয়ার লিস্ট লোড করা
+        loadLegends('CF'); 
+
+        // ২. ব্যানার অ্যাড লোড করা
+        try {
+            if (window.Adsgram) {
+                const bannerAd = window.Adsgram.init({ blockId: "আপনার_ব্যানার_BLOCK_ID" });
+                bannerAd.show().catch((err) => console.log("Banner Error:", err));
+            }
+        } catch (e) {
+            console.log("Adsgram SDK not found");
+        }
+    };
+</script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eFootball HUB</title>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
+    <script src="https://sad.adsgram.ai/js/adsgram-sdk.js"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --bg: #050a18; --card-dark: #121e36; --primary: #3b82f6; --text: #ffffff; --border: #1e2d4d; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; padding-bottom: 80px; overflow-x: hidden; }
+        
+        .container { padding: 15px; }
+        .hub-title { text-align: center; margin: 15px 0 25px; font-weight: bold; font-size: 20px; text-transform: uppercase; }
+        .hub-title span { color: var(--primary); }
+
+        /* Interface Buttons */
+        .id-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px; }
+        .id-btn { background: var(--card-dark); border: 1px solid var(--border); padding: 25px 15px; border-radius: 18px; text-align: center; cursor: pointer; text-decoration: none; color: #fff; }
+        .id-btn i { font-size: 28px; color: var(--primary); margin-bottom: 12px; display: block; }
+
+        /* Headline Style */
+        .headline { color: var(--text); font-size: 16px; font-weight: bold; text-transform: uppercase; margin: 25px 0 12px; border-left: 4px solid var(--primary); padding-left: 10px; }
+
+        /* Quick Action Buttons (3 Column) */
+        .quick-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 25px; }
+        .quick-btn { background: var(--card-dark); border: 1px solid var(--border); padding: 15px 5px; border-radius: 12px; text-align: center; cursor: pointer; color: #fff; font-size: 12px; transition: 0.3s; }
+        .quick-btn i { display: block; margin-bottom: 8px; color: #f97316; font-size: 18px; }
+
+        /* Top Player Card View (3 Column) */
+        .player-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+        .top-card { background: var(--card-dark); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; text-align: center; padding: 5px; cursor: pointer; }
+        .top-card img { width: 100%; border-radius: 8px; display: block; }
+        .top-card p { font-size: 9px; padding: 5px; font-weight: bold; }
+
+        /* Bottom Nav */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 70px; background: #070d19; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid var(--border); z-index: 1000; }
+        .nav-item { text-align: center; color: #94a3b8; font-size: 11px; text-decoration: none; flex: 1; }
+        .nav-item i { font-size: 20px; display: block; margin-bottom: 4px; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="hub-title">eFootball <span>HUB</span></div>
+
+        <div class="id-grid">
+            <a href="player.html" class="id-btn" style="background: linear-gradient(135deg, #1cb5e0, #000851); border: none;"><i class="fas fa-users" style="color: white;"></i>Player</a>
+            <a href="manager.html" class="id-btn" style="background: linear-gradient(135deg, #ff416c, #ff4b2b); border: none;"><i class="fas fa-user-tie" style="color: white;"></i>Manager</a>
+            <a href="event.html" class="id-btn" style="background: linear-gradient(135deg, #11998e, #38ef7d); border: none;"><i class="fas fa-trophy" style="color: white;"></i>Events</a>
+            <a href="legend.html" class="id-btn" style="background: linear-gradient(135deg, #f6d365, #ff8c00); border: none;"><i class="fas fa-crown" style="color: white;"></i>Legend</a>
+        </div>
+
+        <div class="headline">Quick Action</div>
+        <div class="quick-grid">
+            <div class="quick-btn" onclick="location.href='store.html'" style="background: linear-gradient(135deg, #6a11cb, #2575fc); border: none;"><i class="fas fa-shopping-cart" style="color: white;"></i>Store</div>
+            <div class="quick-btn" onclick="location.href='daily.html'" style="background: linear-gradient(135deg, #11998e, #38ef7d); border: none;"><i class="fas fa-tasks" style="color: white;"></i>Daily</div>
+            <div class="quick-btn" onclick="location.href='admin.html'" style="background: linear-gradient(135deg, #ff4b2b, #ff416c); border: none;"><i class="fas fa-user-shield" style="color: white;"></i>Admin</div>
+        </div>
+
+        <div id="banner-container" style="display: flex; justify-content: center; margin: 20px 0;"></div>
+
+        <div class="headline">Top Player</div>
+        <div id="home-legend-view" class="player-grid">
+            </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item" style="color: #3b82f6;"><i class="fas fa-home"></i>Home</a>
+        <a href="legend.html" class="nav-item"><i class="fas fa-crown"></i>Legend</a>
+        <a href="task.html" class="nav-item"><i class="fas fa-clipboard-check"></i>Task</a>
+        <a href="profile.html" class="nav-item"><i class="fas fa-user-circle"></i>Profile</a>
+    </nav>
+
+   <script>
+    async function loadHomeLegends() {
+        const container = document.getElementById('home-legend-view');
+        try {
+            const response = await fetch('legendplayer.json'); 
+            const data = await response.json();
+            const players = data.legend || data.players;
+            
+            container.innerHTML = "";
+            players.slice(0, 6).forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'top-card';
+                card.innerHTML = `<img src="${p.img}"><p>${p.name}</p>`;
+                
+                card.onclick = () => {
+                    localStorage.setItem('selected_player', JSON.stringify(p)); 
+                    window.location.href = 'legendbio.html'; 
+                };
+                container.appendChild(card);
+            });
+        } catch (e) {
+            container.innerHTML = "Error loading data";
+        }
+    }
+
+       window.addEventListener('load', () => {
+    const tg = window.Telegram.WebApp;
+    const startParam = tg.initDataUnsafe?.start_param; // Jini refer korechen tar ID ekhane thakbe
+
+    if (startParam && !localStorage.getItem('refer_bonus_claimed')) {
+        const adminConfig = JSON.parse(localStorage.getItem('admin_config')) || { refer_bonus: 1000 };
+        const bonus = parseInt(adminConfig.refer_bonus);
+
+        // Notun user-ke bonus deya
+        let currentGP = parseInt(localStorage.getItem('user_gp')) || 0;
+        localStorage.setItem('user_gp', currentGP + bonus);
+        
+        // Jate bar bar bonus na neya jay
+        localStorage.setItem('refer_bonus_claimed', 'true');
+        
+        alert(`Referral link theke join koray apni ${bonus} GP bonus peyechen!`);
+    }
+});
+       
+    window.onload = loadHomeLegends;
+</script>
+</body>
+</html>

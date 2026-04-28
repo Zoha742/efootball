@@ -1,0 +1,69 @@
+{
+  "players": [
+    { 
+      "id": 1, 
+      "name": "Mohamed Salah", 
+      "pos": "CF", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775845455/Mohamed_Salah_ppqmqz.jpg" 
+    },
+    { 
+      "id": 2, 
+      "name": "K Benzema", 
+      "pos": "CF", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775845455/K_benzema_dneowp.jpg" 
+    },
+    { 
+      "id": 3, 
+      "name": "Kylian Mbappe", 
+      "pos": "CF", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775845455/Kylian_Mbappe_xtyk9y.jpg" 
+    },
+    { 
+      "id": 4, 
+      "name": "Haaland", 
+      "pos": "CF", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775765539/Lionel_Messi_gqr4ew.png" 
+    },
+    { 
+      "id": 5, 
+      "name": "Lewandowski", 
+      "pos": "CF", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775845455/K_benzema_dneowp.jpg" 
+    },
+    { 
+      "id": 6, 
+      "name": "K Benzema", 
+      "pos": "SS", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775845455/K_benzema_dneowp.jpg" 
+    },
+    { 
+      "id": 7, 
+      "name": "K Benzema", 
+      "pos": "CB", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775845455/K_benzema_dneowp.jpg" 
+    },
+    { 
+      "id": 8, 
+      "name": "K Benzema", 
+      "pos": "LB", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775845455/K_benzema_dneowp.jpg" 
+    },
+    { 
+      "id": 9, 
+      "name": "K Benzema", 
+      "pos": "RB", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775845455/K_benzema_dneowp.jpg" 
+    },
+
+    { 
+      "id": 10, 
+      "name": "K Benzema", 
+      "pos": "GK", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775845455/K_benzema_dneowp.jpg" 
+    }
+  ],
+  "ads_config": {
+    "reward_id": "int-41",
+    "banner_id": "int-42"
+  }
+}
