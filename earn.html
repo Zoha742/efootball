@@ -64,6 +64,8 @@
     </div>
 
     <script>
+        console.log("Database connected successfully!");
+        
         let adsWatched = parseInt(localStorage.getItem('earn_ads_count')) || 0;
         let nextAllowedTime = parseInt(localStorage.getItem('earn_next_time')) || 0;
         let timerInterval;
