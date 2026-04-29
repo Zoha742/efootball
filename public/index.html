@@ -123,6 +123,47 @@
         alert(`Referral link theke join koray apni ${bonus} GP bonus peyechen!`);
     }
 });
+       window.addEventListener('load', () => {
+    const tg = window.Telegram.WebApp;
+    tg.expand();
+    const user = tg.initDataUnsafe?.user;
+    
+    if (user) {
+        const userId = user.id;
+        const userRef = db.ref('users/' + userId);
+
+        // ১. মেইনটেন্যান্স চেক (অ্যাডমিন প্যানেল থেকে কন্ট্রোল হবে)
+        db.ref('config/maintenance').on('value', snap => {
+            if (snap.val() === true) {
+                document.body.innerHTML = "<div style='background:#050a18; height:100vh; display:flex; align-items:center; justify-content:center; color:white; text-align:center;'><h1>Server Maintenance... <br> Please wait!</h1></div>";
+                return;
+            }
+        });
+
+        // ২. ইউজার রেজিস্ট্রেশন এবং ব্যান চেক
+        userRef.on('value', snap => {
+            if (!snap.exists()) {
+                // নতুন ইউজার ডাটাবেসে সেভ করা
+                let welcomeBonus = 0;
+                const startParam = tg.initDataUnsafe?.start_param;
+                
+                if (startParam) { welcomeBonus = 1000; } // রেফারেল বোনাস (যদি থাকে)
+
+                userRef.set({
+                    name: user.first_name + " " + (user.last_name || ""),
+                    gp: welcomeBonus,
+                    banned: false,
+                    joinDate: new Date().toLocaleString()
+                }).then(() => console.log("New User Registered!"));
+            } else {
+                // ইউজার যদি ব্যান থাকে তবে অ্যাপ বন্ধ হয়ে যাবে
+                if (snap.val().banned === true) {
+                    document.body.innerHTML = "<div style='background:#050a18; height:100vh; display:flex; align-items:center; justify-content:center; color:red; text-align:center;'><h1>You are BANNED! <br> Contact Admin for help.</h1></div>";
+                }
+            }
+        });
+    }
+});
        
     window.onload = loadHomeLegends;
 </script>
