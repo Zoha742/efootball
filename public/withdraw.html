@@ -8,63 +8,84 @@
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="config.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --bg: #050a18; --card: #121e36; --border: #1e2d4d; --text: #ffffff; --green: #22c55e; --blue: #3b82f6; --orange: #f59e0b; }
+        :root { --bg: #050a18; --card: #121e36; --border: #1e2d4d; --text: #ffffff; --green: #22c55e; --blue: #3b82f6; --orange: #f59e0b; --red: #ef4444; }
         body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding: 15px; }
+        
+        .header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
+        .back-btn { background: none; border: none; color: white; font-size: 20px; cursor: pointer; }
+        
         .card { background: var(--card); padding: 20px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 20px; }
         .balance-box { text-align: center; margin-bottom: 20px; }
         .balance-box h1 { font-size: 32px; margin: 5px 0; color: var(--green); }
+        
         .input-group { margin-bottom: 15px; }
         .input-group label { display: block; font-size: 14px; color: #94a3b8; margin-bottom: 8px; }
         .input-group input, .input-group select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); background: #0a1226; color: white; box-sizing: border-box; }
-        .withdraw-btn { width: 100%; padding: 15px; border-radius: 8px; border: none; background: var(--blue); color: white; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        
+        .withdraw-btn { width: 100%; padding: 15px; border-radius: 8px; border: none; background: var(--blue); color: white; font-weight: bold; cursor: pointer; }
         .withdraw-btn:disabled { background: #2d3748; cursor: not-allowed; }
-        .history-item { background: #0a1226; padding: 15px; border-radius: 8px; margin-bottom: 10px; border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-        .status-pending { color: var(--orange); font-weight: bold; }
+        
+        .history-item { background: #0a1226; padding: 15px; border-radius: 10px; margin-bottom: 10px; border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .status-pending { color: var(--orange); font-weight: bold; font-size: 12px; }
+        .cancel-btn { background: var(--red); color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 11px; cursor: pointer; }
     </style>
 </head>
 <body>
 
+    <div class="header">
+        <button class="back-btn" onclick="window.history.back()"><i class="fas fa-arrow-left"></i></button>
+        <h3 style="margin: 0;">Withdraw GP</h3>
+    </div>
+
     <div class="balance-box">
-        <p>ব্যালেন্স: <span id="user-gp">0 GP</span></p>
-        <p id="rate-info" style="font-size: 12px; color: #64748b;">Loading limits...</p>
+        <p style="color: #94a3b8;">Current Balance</p>
+        <h1 id="user-gp">0 GP</h1>
     </div>
 
     <div class="card">
         <div class="input-group">
-            <label>উইথড্র পরিমাণ (GP)</label>
-            <input type="number" id="withdraw-amount" placeholder="Min Limit অনুযায়ী লিখুন" oninput="validate()">
+            <label>Amount (GP)</label>
+            <input type="number" id="withdraw-amount" placeholder="Enter amount" oninput="validate()">
         </div>
         <div class="input-group">
-            <label>ওয়ালেট সিলেক্ট করুন</label>
-            <select id="wallet-type" onchange="updateWalletDisplay()">
+            <label>Select Wallet</label>
+            <select id="wallet-type" onchange="updateAddr()">
                 <option value="ton">TON Wallet</option>
                 <option value="usdt">USDT (Binance)</option>
             </select>
         </div>
         <div class="input-group">
-            <label>আপনার সেভ করা অ্যাড্রেস:</label>
-            <input type="text" id="wallet-address" readonly style="background: #1e2d4d; color: #cbd5e1;" placeholder="ওয়ালেটে অ্যাড্রেস সেট করুন">
+            <label>Wallet Address</label>
+            <input type="text" id="wallet-address" readonly style="color: #94a3b8;">
         </div>
-        <button id="withdraw-btn" class="withdraw-btn" onclick="submitWithdraw()" disabled>অ্যামাউন্ট লিখুন</button>
+        <button id="withdraw-btn" class="withdraw-btn" onclick="submitWithdraw()" disabled>Enter Amount</button>
     </div>
 
-    <div id="history-list"></div>
+    <h4 style="margin-bottom: 10px;"><i class="fas fa-history"></i> Withdraw History</h4>
+    <div id="history-list">Loading...</div>
 
     <script>
         const tg = window.Telegram.WebApp;
         const userId = tg.initDataUnsafe?.user?.id || "test_user";
-        let userGP = 0, minLimit = 5000, userWallets = {};
+        let userGP = 0, userWallets = {}, minLimit = 5000;
 
-        // ১. ডাটা আনা
-        db.ref('config').on('value', s => { if(s.exists()){ minLimit = s.val().min_limit; document.getElementById('rate-info').innerText = "Min Withdraw: "+minLimit+" GP"; }});
-        db.ref('users/'+userId+'/gp').on('value', s => { userGP = s.val() || 0; document.getElementById('user-gp').innerText = userGP + " GP"; });
-        db.ref('users/'+userId+'/wallets').on('value', s => { userWallets = s.val() || {}; updateWalletDisplay(); });
+        // 1. Real-time Listeners
+        db.ref('config/min_limit').on('value', s => minLimit = s.val() || 5000);
+        db.ref('users/'+userId+'/gp').on('value', s => {
+            userGP = s.val() || 0;
+            document.getElementById('user-gp').innerText = userGP.toLocaleString() + " GP";
+            validate();
+        });
+        db.ref('users/'+userId+'/wallets').on('value', s => {
+            userWallets = s.val() || {};
+            updateAddr();
+        });
 
-        function updateWalletDisplay() {
+        function updateAddr() {
             const type = document.getElementById('wallet-type').value;
-            const addr = userWallets[type] || "";
-            document.getElementById('wallet-address').value = addr;
+            document.getElementById('wallet-address').value = userWallets[type] || "Address not set in wallet page";
             validate();
         }
 
@@ -73,9 +94,9 @@
             const addr = document.getElementById('wallet-address').value;
             const btn = document.getElementById('withdraw-btn');
             
-            if(!addr) { btn.innerText = "আগে ওয়ালেট সেট করুন"; btn.disabled = true; }
-            else if(amt >= minLimit && amt <= userGP) { btn.innerText = "উইথড্র রিকোয়েস্ট দিন"; btn.disabled = false; }
-            else { btn.innerText = "সঠিক অ্যামাউন্ট লিখুন"; btn.disabled = true; }
+            if(addr.includes("not set")) { btn.innerText = "Set wallet first"; btn.disabled = true; }
+            else if(amt >= minLimit && amt <= userGP) { btn.innerText = "Withdraw Now"; btn.disabled = false; }
+            else { btn.innerText = "Check Amount/Limit"; btn.disabled = true; }
         }
 
         function submitWithdraw() {
@@ -85,24 +106,32 @@
 
             db.ref('withdraw_requests').push({
                 userId: userId, amount: amt, method: type.toUpperCase(), address: addr, status: 'pending', date: new Date().toLocaleString()
-            }).then(() => db.ref('users/'+userId+'/gp').set(userGP - amt))
-              .then(() => alert("Request Sent!"));
+            }).then(() => db.ref('users/'+userId+'/gp').set(userGP - amt));
         }
 
-        // হিস্ট্রি লোড করা
+        // History with Cancel Button
         db.ref('withdraw_requests').on('value', snap => {
-            let html = "<h3>History</h3>";
+            let html = "";
             snap.forEach(c => {
                 let r = c.val();
                 if(r.userId == userId) {
+                    let cancelBtn = (r.status === 'pending') ? `<button class="cancel-btn" onclick="cancelReq('${c.key}', ${r.amount})">Cancel</button>` : "";
                     html += `<div class="history-item">
-                        <div><b>${r.amount} GP</b><br><small>${r.method}: ${r.address.substring(0,10)}...</small></div>
-                        <div class="status-pending">${r.status}</div>
+                        <div><b>${r.amount} GP</b><br><span class="status-pending">${r.status.toUpperCase()}</span></div>
+                        ${cancelBtn}
                     </div>`;
                 }
             });
-            document.getElementById('history-list').innerHTML = html;
+            document.getElementById('history-list').innerHTML = html || "No history found.";
         });
+
+        function cancelReq(key, amt) {
+            if(confirm("Cancel withdraw and refund GP?")) {
+                db.ref('withdraw_requests/'+key).remove().then(() => {
+                    db.ref('users/'+userId+'/gp').set(userGP + amt);
+                });
+            }
+        }
     </script>
 </body>
 </html>
