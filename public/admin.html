@@ -3,158 +3,221 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zoha's Master Admin</title>
+    <title>Master Admin - Pro Edition</title>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
     <script src="config.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { background: #050a18; color: white; font-family: sans-serif; margin: 0; }
-        .header { background: #121e36; padding: 15px; position: sticky; top: 0; border-bottom: 1px solid #1e2d4d; z-index: 100; display: flex; align-items: center; gap: 15px; }
-        .card { background: #121e36; padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #1e2d4d; }
-        .input-box { width: 100%; padding: 10px; margin: 8px 0; background: #0a1226; color: white; border: 1px solid #1e2d4d; border-radius: 8px; box-sizing: border-box; }
-        .btn { padding: 10px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; }
-        .btn-blue { background: #3b82f6; color: white; }
-        .btn-green { background: #22c55e; color: white; }
-        .btn-red { background: #ef4444; color: white; }
-        .user-item { background: #0a1226; padding: 10px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #1e2d4d; display: flex; justify-content: space-between; align-items: center; }
-        #login-screen { height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; }
+        :root { --bg: #050a18; --card: #121e36; --border: #1e2d4d; --blue: #3b82f6; --green: #22c55e; --red: #ef4444; }
+        body { background: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; }
+        
+        .header { background: var(--card); padding: 15px; position: sticky; top: 0; border-bottom: 1px solid var(--border); z-index: 100; display: flex; align-items: center; gap: 15px; }
+        .back-btn { background: none; border: none; color: white; font-size: 20px; cursor: pointer; }
+        
+        .container { padding: 15px; }
+        .card { background: var(--card); padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid var(--border); }
+        
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+        .stat-box { background: #0a1226; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid var(--border); }
+        .stat-box h2 { margin: 5px 0; color: var(--blue); }
+
+        .input-box { width: 100%; padding: 12px; margin: 8px 0; background: #0a1226; color: white; border: 1px solid var(--border); border-radius: 8px; box-sizing: border-box; }
+        .btn { padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; transition: 0.3s; }
+        .btn-blue { background: var(--blue); color: white; }
+        .btn-green { background: var(--green); color: white; }
+        
+        .user-item { background: #0a1226; padding: 12px; border-radius: 8px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border); }
+        
+        /* Message History Style */
+        .msg-card { background: #0a1226; padding: 12px; border-radius: 8px; margin-bottom: 10px; border-left: 4px solid var(--blue); }
+        .replied { border-left-color: var(--green); opacity: 0.8; }
+        
+        #login-screen { height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--bg); }
+        
+        /* Modal */
+        .modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--card); border: 2px solid var(--blue); padding: 20px; border-radius: 15px; width: 90%; z-index: 1001; }
     </style>
 </head>
 <body>
 
     <div id="login-screen">
-        <div class="card" style="width: 300px;">
-            <h3>Zoha Master Admin</h3>
-            <input type="password" id="pass" class="input-box" placeholder="Password">
-            <button class="btn btn-blue" onclick="login()">Access Dashboard</button>
+        <div class="card" style="width: 300px; text-align: center;">
+            <h3>Admin Access</h3>
+            <input type="password" id="admin-pass" class="input-box" placeholder="Enter Password">
+            <button class="btn btn-blue" onclick="checkLogin()">Login</button>
         </div>
     </div>
 
-    <div id="panel" style="display: none;">
+    <div id="admin-panel" style="display: none;">
         <div class="header">
-            <button onclick="location.reload()" style="background:none; border:none; color:white; font-size:20px;"><i class="fas fa-arrow-left"></i></button>
-            <h3 style="margin:0;">Master Panel</h3>
+            <button class="back-btn" onclick="location.reload()"><i class="fas fa-arrow-left"></i></button>
+            <h3 style="margin:0;">Pro Admin Dashboard</h3>
         </div>
 
-        <div style="padding: 15px;">
-            <div class="card">
-                <p>Total Users: <b id="total-u">0</b> | Pending Withdraws: <b id="total-w">0</b></p>
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <p>Total Users</p>
+                    <h2 id="total-users">0</h2>
+                </div>
+                <div class="stat-box">
+                    <p>Pending Withdraw</p>
+                    <h2 id="pending-withdraws" style="color: var(--red);">0</h2>
+                </div>
             </div>
 
             <div class="card">
-                <h4><i class="fas fa-users"></i> Search & Manage</h4>
-                <input type="text" id="search" class="input-box" placeholder="Type User ID..." oninput="search()">
-                <div id="u-list" style="max-height: 250px; overflow-y: auto;"></div>
+                <h4><i class="fas fa-tools"></i> App Settings</h4>
+                <div style="display: flex; gap: 10px;">
+                    <input type="number" id="min-withdraw" class="input-box" placeholder="Min Withdraw GP">
+                    <button class="btn btn-blue" style="width: 100px;" onclick="saveConfig()">Save</button>
+                </div>
             </div>
 
             <div class="card">
-                <h4><i class="fas fa-gift"></i> Gift GP (All Users)</h4>
-                <input type="number" id="gift-amt" class="input-box" placeholder="GP Amount">
-                <button class="btn btn-green" onclick="giftAll()">Send GP to All</button>
+                <h4><i class="fas fa-gift"></i> Gift GP to All Users</h4>
+                <input type="number" id="gift-amount" class="input-box" placeholder="Amount of GP">
+                <button class="btn btn-green" onclick="giftToAll()">Send GP to Everyone</button>
             </div>
 
             <div class="card">
-                <h4><i class="fas fa-cogs"></i> Withdraw Config</h4>
-                <input type="number" id="min-w" class="input-box" placeholder="Min Withdraw Limit">
-                <input type="number" id="ex-rate" class="input-box" placeholder="Exchange Rate">
-                <button class="btn btn-blue" onclick="saveCfg()">Save Limits</button>
+                <h4><i class="fas fa-users"></i> Search User</h4>
+                <input type="text" id="user-search" class="input-box" placeholder="Enter User ID..." oninput="filterUsers()">
+                <div id="user-list-container" style="max-height: 300px; overflow-y: auto; margin-top: 10px;"></div>
             </div>
 
             <div class="card">
-                <h4><i class="fas fa-headset"></i> Support Inbox (History)</h4>
-                <div id="sup-list"></div>
+                <h4><i class="fas fa-envelope"></i> Support Messages</h4>
+                <div id="message-list">Loading messages...</div>
             </div>
         </div>
     </div>
 
-    <div id="u-modal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#121e36; border:2px solid #3b82f6; padding:20px; border-radius:12px; width:90%; z-index:1000;">
-        <h3 id="m-uid"></h3>
-        <label>Set GP Balance:</label>
-        <input type="number" id="m-gp" class="input-box">
-        <button class="btn btn-green" onclick="updateU()">Update GP</button>
-        <button class="btn btn-red" onclick="this.parentElement.style.display='none'" style="margin-top:10px;">Close</button>
+    <div id="edit-modal" class="modal">
+        <h4 id="edit-title">Edit User</h4>
+        <label>Current GP Balance:</label>
+        <input type="number" id="edit-gp" class="input-box">
+        <button class="btn btn-green" onclick="saveUserEdit()">Update Balance</button>
+        <button class="btn" style="margin-top:10px; background:#334155; color:white;" onclick="closeModal()">Close</button>
     </div>
 
     <script>
-        function login() {
-            if(document.getElementById('pass').value === "s#642S") {
-                document.getElementById('login-screen').style.display='none';
-                document.getElementById('panel').style.display='block';
-                load();
-            } else alert("Error!");
+        // Login Logic
+        function checkLogin() {
+            const pass = document.getElementById('admin-pass').value;
+            if(pass === "s#642S") { // আপনার পাসওয়ার্ড
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('admin-panel').style.display = 'block';
+                initAdmin();
+            } else {
+                alert("Wrong Password!");
+            }
         }
 
-        function load() {
-            // Users
+        function initAdmin() {
+            // Stats & User List
             db.ref('users').on('value', snap => {
-                document.getElementById('total-u').innerText = snap.numChildren();
+                const users = snap.val() || {};
+                document.getElementById('total-users').innerText = Object.keys(users).length;
+                
                 let html = "";
-                snap.forEach(c => {
+                snap.forEach(child => {
+                    let u = child.val();
                     html += `<div class="user-item">
-                        <span>${c.key} (${c.val().gp} GP)</span>
-                        <button class="btn btn-blue" style="width:auto; padding:5px 15px;" onclick="openU('${c.key}', ${c.val().gp})">Manage</button>
+                        <div><b>ID: ${child.key}</b><br><small>${u.gp || 0} GP</small></div>
+                        <button class="btn btn-blue" style="width:auto; padding:5px 12px;" onclick="openUserModal('${child.key}', ${u.gp || 0})">Manage</button>
                     </div>`;
                 });
-                document.getElementById('u-list').innerHTML = html;
+                document.getElementById('user-list-container').innerHTML = html;
             });
 
-            // Pending Withdraws
+            // Pending Withdraw Stats
             db.ref('withdraw_requests').on('value', snap => {
-                let count = 0;
-                snap.forEach(c => { if(c.val().status === 'pending') count++; });
-                document.getElementById('total-w').innerText = count;
+                let pending = 0;
+                snap.forEach(c => { if(c.val().status === 'pending') pending++; });
+                document.getElementById('pending-withdraws').innerText = pending;
             });
 
-            // Support History
+            // Config Load
+            db.ref('config/min_limit').once('value', s => {
+                if(s.exists()) document.getElementById('min-withdraw').value = s.val();
+            });
+
+            // Message History (Support)
             db.ref('support').on('value', snap => {
                 let html = "";
                 snap.forEach(userSnap => {
                     userSnap.forEach(msgSnap => {
                         let m = msgSnap.val();
-                        html += `<div class="card" style="background:#0a1226; font-size:13px; border-left:4px solid ${m.reply ? '#22c55e' : '#3b82f6'}">
-                            <b>User: ${userSnap.key}</b><br>${m.text}<br>
-                            ${m.reply ? `<i>Rep: ${m.reply}</i>` : `
-                            <input type="text" id="r-${msgSnap.key}" class="input-box" placeholder="Reply...">
-                            <button class="btn btn-blue" onclick="reply('${userSnap.key}', '${msgSnap.key}')">Send Reply</button>`}
+                        let isReplied = m.reply ? 'replied' : '';
+                        html += `<div class="msg-card ${isReplied}">
+                            <b>User: ${userSnap.key}</b><br>
+                            <span>Msg: ${m.text}</span><br>
+                            ${m.reply ? `<i style="color:#22c55e">Your Reply: ${m.reply}</i>` : `
+                            <div style="display:flex; gap:5px; margin-top:5px;">
+                                <input type="text" id="rep-${msgSnap.key}" class="input-box" style="margin:0; padding:5px;" placeholder="Reply...">
+                                <button class="btn btn-blue" style="width:70px; padding:5px;" onclick="sendReply('${userSnap.key}', '${msgSnap.key}')">Send</button>
+                            </div>`}
                         </div>`;
                     });
                 });
-                document.getElementById('sup-list').innerHTML = html || "No Messages";
+                document.getElementById('message-list').innerHTML = html || "No messages yet.";
             });
         }
 
-        function openU(id, gp) {
-            window.target = id;
-            document.getElementById('m-uid').innerText = "Manage ID: " + id;
-            document.getElementById('m-gp').value = gp;
-            document.getElementById('u-modal').style.display='block';
+        // Functions
+        function saveConfig() {
+            let limit = document.getElementById('min-withdraw').value;
+            db.ref('config/min_limit').set(parseInt(limit)).then(() => alert("Settings Saved!"));
         }
 
-        function updateU() {
-            let gp = parseInt(document.getElementById('m-gp').value);
-            db.ref('users/'+window.target+'/gp').set(gp).then(() => { alert("Updated!"); document.getElementById('u-modal').style.display='none'; });
+        function giftToAll() {
+            let amt = parseInt(document.getElementById('gift-amount').value);
+            if(!amt) return;
+            if(confirm("সবাইকে " + amt + " GP গিফট করতে চান?")) {
+                db.ref('users').once('value', snap => {
+                    snap.forEach(c => {
+                        let newGP = (c.val().gp || 0) + amt;
+                        db.ref('users/' + c.key + '/gp').set(newGP);
+                    });
+                    alert("সবাইকে গিফট পাঠানো হয়েছে!");
+                });
+            }
         }
 
-        function giftAll() {
-            let amt = parseInt(document.getElementById('gift-amt').value);
-            db.ref('users').once('value', snap => {
-                snap.forEach(c => { db.ref('users/'+c.key+'/gp').set((c.val().gp || 0) + amt); });
-                alert("Gifted GP to All!");
+        let currentUID = "";
+        function openUserModal(uid, gp) {
+            currentUID = uid;
+            document.getElementById('edit-title').innerText = "Edit User: " + uid;
+            document.getElementById('edit-gp').value = gp;
+            document.getElementById('edit-modal').style.display = 'block';
+        }
+
+        function saveUserEdit() {
+            let newGP = parseInt(document.getElementById('edit-gp').value);
+            db.ref('users/' + currentUID + '/gp').set(newGP).then(() => {
+                alert("User Updated!");
+                closeModal();
             });
         }
 
-        function reply(uid, mid) {
-            let txt = document.getElementById('r-'+mid).value;
-            db.ref('support/'+uid+'/'+mid).update({ reply: txt });
+        function sendReply(uid, mid) {
+            let repTxt = document.getElementById('rep-' + mid).value;
+            if(!repTxt) return;
+            db.ref('support/' + uid + '/' + mid).update({ reply: repTxt })
+            .then(() => alert("Reply Sent!"));
         }
 
-        function search() {
-            let q = document.getElementById('search').value.toLowerCase();
-            document.querySelectorAll('.user-item').forEach(it => {
-                it.style.display = it.innerText.toLowerCase().includes(q) ? "flex" : "none";
+        function filterUsers() {
+            let s = document.getElementById('user-search').value.toLowerCase();
+            let items = document.querySelectorAll('.user-item');
+            items.forEach(it => {
+                it.style.display = it.innerText.toLowerCase().includes(s) ? 'flex' : 'none';
             });
         }
+
+        function closeModal() { document.getElementById('edit-modal').style.display = 'none'; }
     </script>
 </body>
 </html>
