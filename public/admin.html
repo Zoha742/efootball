@@ -3,154 +3,223 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Master Admin - Zoha</title>
+    <title>Admin Panel - Zoha</title>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
     <script src="config.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { background: #050a18; color: white; font-family: sans-serif; padding: 15px; margin: 0; }
-        .header { background: #121e36; padding: 15px; position: sticky; top: 0; border-bottom: 1px solid #1e2d4d; z-index: 100; display: flex; align-items: center; gap: 15px; }
-        .card { background: #121e36; padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #1e2d4d; }
-        .input-box { width: 100%; padding: 10px; margin: 10px 0; background: #0a1226; color: white; border: 1px solid #1e2d4d; border-radius: 6px; box-sizing: border-box; }
-        .btn { padding: 10px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        body { background: #050a18; color: white; font-family: sans-serif; margin: 0; padding: 0; }
+        .header { background: #121e36; padding: 15px; border-bottom: 1px solid #1e2d4d; display: flex; align-items: center; gap: 15px; position: sticky; top: 0; z-index: 1000; }
+        .back-btn { background: none; border: none; color: white; font-size: 20px; cursor: pointer; }
+        .container { padding: 15px; }
+        .card { background: #121e36; padding: 15px; border-radius: 12px; border: 1px solid #1e2d4d; margin-bottom: 20px; }
+        .input-box { width: 100%; padding: 12px; margin: 8px 0; background: #0a1226; color: white; border: 1px solid #1e2d4d; border-radius: 8px; box-sizing: border-box; }
+        .btn { padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 5px; }
         .btn-blue { background: #3b82f6; color: white; }
         .btn-green { background: #22c55e; color: white; }
         .btn-red { background: #ef4444; color: white; }
-        .user-item { background: #0a1226; padding: 10px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #1e2d4d; display: flex; justify-content: space-between; align-items: center; }
-        #login-screen { height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; }
+        .user-item { background: #0a1226; padding: 12px; border-radius: 10px; border: 1px solid #1e2d4d; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .msg-box { background: #0a1226; padding: 10px; border-radius: 8px; border-left: 4px solid #3b82f6; margin-bottom: 10px; }
+        #login-screen { height: 100vh; display: flex; align-items: center; justify-content: center; background: #050a18; }
     </style>
 </head>
 <body>
 
     <div id="login-screen">
-        <div class="card" style="width: 300px;">
-            <h3>Admin Login</h3>
-            <input type="text" id="user" class="input-box" placeholder="Username">
-            <input type="password" id="pass" class="input-box" placeholder="Password">
-            <button class="btn btn-blue" style="width: 100%;" onclick="login()">Enter</button>
+        <div class="card" style="width: 300px; text-align: center;">
+            <h3>Zoha Admin</h3>
+            <input type="password" id="admin-pass" class="input-box" placeholder="Password">
+            <button class="btn btn-blue" onclick="login()">Login</button>
         </div>
     </div>
 
-    <div id="admin-panel" style="display: none;">
+    <div id="dashboard" style="display: none;">
         <div class="header">
-            <button onclick="location.reload()" style="background:none; border:none; color:white; font-size:20px;"><i class="fas fa-arrow-left"></i></button>
-            <h3 style="margin:0;">Master Dashboard</h3>
+            <button class="back-btn" onclick="location.reload()"><i class="fas fa-arrow-left"></i></button>
+            <h3 style="margin: 0;">Master Panel</h3>
         </div>
 
-        <div class="card">
-            <h4><i class="fas fa-users"></i> User Stats</h4>
-            <p>Total Users: <span id="total-users">0</span></p>
-            <input type="text" id="search-box" class="input-box" placeholder="Search User ID..." oninput="searchUser()">
-            <div id="user-list" style="max-height: 300px; overflow-y: auto;"></div>
-        </div>
+        <div class="container">
+            <div class="card">
+                <h4><i class="fas fa-chart-line"></i> Statistics</h4>
+                <p>Total Users: <span id="total-users">0</span></p>
+                <p>Pending Withdraws: <span id="pending-count">0</span></p>
+            </div>
 
-        <div class="card">
-            <h4><i class="fas fa-gift"></i> Gift GP to All</h4>
-            <input type="number" id="gift-amount" class="input-box" placeholder="Enter GP amount">
-            <button class="btn btn-green" onclick="giftAll()">Send GP to Everyone</button>
-        </div>
+            <div class="card">
+                <h4><i class="fas fa-users-cog"></i> Manage Users</h4>
+                <input type="text" id="search-user" class="input-box" placeholder="Search User ID..." oninput="searchUser()">
+                <div id="user-list-container" style="max-height: 250px; overflow-y: auto; margin-top: 10px;"></div>
+            </div>
 
-        <div class="card">
-            <h4><i class="fas fa-comments-alt"></i> Support & Replies</h4>
-            <div id="support-list"></div>
+            <div class="card">
+                <h4><i class="fas fa-gift"></i> Gift GP to All</h4>
+                <input type="number" id="gift-amt" class="input-box" placeholder="Enter amount to gift">
+                <button class="btn btn-green" onclick="giftAll()">Send GP to Everyone</button>
+            </div>
+
+            <div class="card">
+                <h4><i class="fas fa-money-check-alt"></i> Withdraw Requests</h4>
+                <div id="withdraw-list">Loading...</div>
+            </div>
+
+            <div class="card">
+                <h4><i class="fas fa-tools"></i> App Config</h4>
+                <label>Min Withdraw (GP):</label>
+                <input type="number" id="min-limit" class="input-box">
+                <label>Exchange Rate (GP = $1):</label>
+                <input type="number" id="ex-rate" class="input-box">
+                <button class="btn btn-blue" onclick="saveConfig()">Save Configuration</button>
+            </div>
+
+            <div class="card">
+                <h4><i class="fas fa-headset"></i> Support Inbox</h4>
+                <div id="support-list">No messages.</div>
+            </div>
         </div>
     </div>
 
-    <div id="user-modal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#121e36; padding:20px; border:2px solid #3b82f6; border-radius:12px; z-index:1000; width:90%;">
-        <h3>Manage User</h3>
-        <p id="target-uid"></p>
-        <label>GP Balance:</label>
-        <input type="number" id="target-gp" class="input-box">
+    <div id="user-modal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#121e36; padding:20px; border:2px solid #3b82f6; border-radius:15px; width:90%; z-index:2000;">
+        <h3 id="modal-uid">User ID: #</h3>
+        <label>Current GP Balance:</label>
+        <input type="number" id="modal-gp" class="input-box">
         <div style="display:flex; gap:10px;">
-            <button class="btn btn-green" onclick="saveUserGP()">Update GP</button>
+            <button class="btn btn-green" onclick="updateUserGP()">Update</button>
             <button class="btn btn-red" onclick="closeModal()">Close</button>
         </div>
     </div>
 
     <script>
         function login() {
-            if(document.getElementById('user').value === "Zoha" && document.getElementById('pass').value === "s#642S") {
+            if(document.getElementById('admin-pass').value === "s#642S") {
                 document.getElementById('login-screen').style.display = 'none';
-                document.getElementById('admin-panel').style.display = 'block';
-                loadData();
-            } else alert("Wrong Pass!");
+                document.getElementById('dashboard').style.display = 'block';
+                loadAdminData();
+            } else alert("Wrong Password!");
         }
 
-        function loadData() {
-            // Count & List
+        function loadAdminData() {
+            // Stats & User List
             db.ref('users').on('value', snap => {
                 document.getElementById('total-users').innerText = snap.numChildren();
                 let html = "";
                 snap.forEach(c => {
                     html += `<div class="user-item">
-                        <span>${c.key} (${c.val().gp} GP)</span>
-                        <button class="btn btn-blue" onclick="manageUser('${c.key}', ${c.val().gp})">Manage</button>
+                        <span>${c.key} (${c.val().gp || 0} GP)</span>
+                        <button class="btn btn-blue" style="width:auto; padding:5px 15px;" onclick="openUserModal('${c.key}', ${c.val().gp || 0})">Manage</button>
                     </div>`;
                 });
-                document.getElementById('user-list').innerHTML = html;
+                document.getElementById('user-list-container').innerHTML = html;
             });
 
-            // Support messages
+            // Pending Withdraws
+            db.ref('withdraw_requests').on('value', snap => {
+                let html = "";
+                let count = 0;
+                snap.forEach(c => {
+                    let r = c.val();
+                    if(r.status === 'pending') {
+                        count++;
+                        html += `<div class="msg-box">
+                            <b>${r.userId} - ${r.amount} GP</b><br>Method: ${r.method}<br>Address: <small>${r.address}</small>
+                            <div style="display:flex; gap:10px; margin-top:5px;">
+                                <button class="btn btn-green" onclick="updateWithdraw('${c.key}', 'approved')">Approve</button>
+                                <button class="btn btn-red" onclick="rejectWithdraw('${c.key}', '${r.userId}', ${r.amount})">Reject</button>
+                            </div>
+                        </div>`;
+                    }
+                });
+                document.getElementById('pending-count').innerText = count;
+                document.getElementById('withdraw-list').innerHTML = html || "No Pending Requests";
+            });
+
+            // Config Load
+            db.ref('config').on('value', s => {
+                if(s.exists()){
+                    document.getElementById('min-limit').value = s.val().min_limit;
+                    document.getElementById('ex-rate').value = s.val().rate;
+                }
+            });
+
+            // Support messages (Replies are stored in history)
             db.ref('support').on('value', snap => {
                 let html = "";
                 snap.forEach(userSnap => {
                     userSnap.forEach(msgSnap => {
                         let m = msgSnap.val();
-                        if(!m.reply) {
-                            html += `<div class="card" style="background:#0a1226;">
-                                <b>From: ${userSnap.key} (${m.type})</b><br>${m.text}<br>
-                                <input type="text" id="rep-${msgSnap.key}" class="input-box" placeholder="Type reply...">
-                                <button class="btn btn-blue" onclick="replySupport('${userSnap.key}', '${msgSnap.key}')">Reply</button>
-                            </div>`;
-                        }
+                        html += `<div class="msg-box" style="border-left-color: ${m.reply ? '#22c55e' : '#3b82f6'}">
+                            <b>User: ${userSnap.key}</b> (${m.type})<br>${m.text}<br>
+                            ${m.reply ? `<i style="color:#22c55e">Reply: ${m.reply}</i>` : `
+                            <input type="text" id="rep-${msgSnap.key}" class="input-box" placeholder="Write reply...">
+                            <button class="btn btn-blue" onclick="replyMsg('${userSnap.key}', '${msgSnap.key}')">Reply</button>`}
+                        </div>`;
                     });
                 });
-                document.getElementById('support-list').innerHTML = html || "No Pending Messages";
+                document.getElementById('support-list').innerHTML = html || "No messages";
             });
         }
 
+        // Functions
         function giftAll() {
-            let amt = parseInt(document.getElementById('gift-amount').value);
+            let amt = parseInt(document.getElementById('gift-amt').value);
             if(!amt) return;
             db.ref('users').once('value', snap => {
                 snap.forEach(c => {
-                    db.ref('users/' + c.key + '/gp').set((c.val().gp || 0) + amt);
+                    let current = c.val().gp || 0;
+                    db.ref('users/' + c.key + '/gp').set(current + amt);
                 });
-                alert("Gifted " + amt + " GP to all users!");
+                alert("Gifted GP to all users!");
             });
         }
 
-        function manageUser(uid, gp) {
-            document.getElementById('target-uid').innerText = "User ID: " + uid;
-            document.getElementById('target-gp').value = gp;
+        function openUserModal(uid, gp) {
+            window.targetUser = uid;
+            document.getElementById('modal-uid').innerText = "User ID: " + uid;
+            document.getElementById('modal-gp').value = gp;
             document.getElementById('user-modal').style.display = "block";
-            window.currentManageId = uid;
         }
 
-        function saveUserGP() {
-            let newGP = parseInt(document.getElementById('target-gp').value);
-            db.ref('users/' + window.currentManageId + '/gp').set(newGP).then(() => {
-                alert("Updated!");
+        function updateUserGP() {
+            let newGP = parseInt(document.getElementById('modal-gp').value);
+            db.ref('users/' + window.targetUser + '/gp').set(newGP).then(() => {
+                alert("GP Updated!");
                 closeModal();
             });
         }
 
-        function replySupport(uid, msgId) {
-            let rep = document.getElementById('rep-' + msgId).value;
-            if(!rep) return;
-            db.ref('support/' + uid + '/' + msgId).update({ reply: rep }).then(() => alert("Replied!"));
+        function replyMsg(uid, msgId) {
+            let txt = document.getElementById('rep-' + msgId).value;
+            if(!txt) return;
+            db.ref('support/' + uid + '/' + msgId).update({ reply: txt }).then(() => alert("Replied!"));
+        }
+
+        function saveConfig() {
+            db.ref('config').update({
+                min_limit: parseInt(document.getElementById('min-limit').value),
+                rate: parseInt(document.getElementById('ex-rate').value)
+            }).then(() => alert("Config Saved!"));
+        }
+
+        function updateWithdraw(key, status) {
+            db.ref('withdraw_requests/' + key).update({ status: status });
+        }
+
+        function rejectWithdraw(key, uid, amt) {
+            db.ref('withdraw_requests/' + key).update({ status: 'rejected' }).then(() => {
+                db.ref('users/' + uid + '/gp').once('value', s => {
+                    db.ref('users/' + uid + '/gp').set((s.val() || 0) + amt);
+                });
+            });
+        }
+
+        function searchUser() {
+            let q = document.getElementById('search-user').value.toLowerCase();
+            let items = document.querySelectorAll('.user-item');
+            items.forEach(it => { it.style.display = it.innerText.toLowerCase().includes(q) ? "flex" : "none"; });
         }
 
         function closeModal() { document.getElementById('user-modal').style.display = "none"; }
-        
-        function searchUser() {
-            let s = document.getElementById('search-box').value.toLowerCase();
-            let items = document.querySelectorAll('.user-item');
-            items.forEach(it => {
-                it.style.display = it.innerText.toLowerCase().includes(s) ? "flex" : "none";
-            });
-        }
     </script>
 </body>
 </html>
