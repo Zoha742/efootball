@@ -73,23 +73,34 @@
     </div>
 
     <script>
-        const tg = window.Telegram.WebApp;
-        const user = tg.initDataUnsafe?.user;
-        const userId = user?.id || "test_user";
+    const tg = window.Telegram.WebApp;
+    const user = tg.initDataUnsafe?.user;
+    const userId = user?.id || "test_user"; // টেস্ট করার জন্য
 
-        // Real-time listener for Main Balance
-        db.ref('users/' + userId + '/gp').on('value', snap => {
-            const val = snap.val() || 0;
-            document.getElementById('gp-balance').innerText = val.toLocaleString();
+    // ১. ফায়ারবেস থেকে রিয়েল-টাইম ব্যালেন্স রিড করা
+    if (userId) {
+        db.ref('users/' + userId + '/gp').on('value', (snapshot) => {
+            const currentGP = snapshot.val() || 0;
+            // উপরে মেইন ব্যালেন্সে পয়েন্ট সেট করা
+            document.getElementById('gp-balance').innerText = currentGP.toLocaleString();
+            
+            // লোকাল স্টোরেজও আপডেট করে রাখা (অপশনাল)
+            localStorage.setItem('user_gp', currentGP);
         });
+    }
 
-        if(user) {
-            document.getElementById('user-name').innerText = user.first_name + " " + (user.last_name || "");
-            document.getElementById('user-id').innerText = "ID: #" + user.id;
-            if(user.photo_url) document.getElementById('user-avatar').src = user.photo_url;
+    // ২. ইউজার ইনফো সেট করা
+    if (user) {
+        document.getElementById('user-name').innerText = user.first_name + (user.last_name ? " " + user.last_name : "");
+        document.getElementById('user-id').innerText = "ID: #" + user.id;
+        if (user.photo_url) {
+            document.getElementById('user-avatar').src = user.photo_url;
         }
+    }
 
-        document.getElementById('total-tasks').innerText = localStorage.getItem('tasks_done') || 0;
-    </script>
+    // ৩. টাস্ক কাউন্ট (এটি আপনি চাইলে ডাটাবেস থেকেও আনতে পারেন)
+    document.getElementById('total-tasks').innerText = localStorage.getItem('tasks_done') || 0;
+
+</script>
 </body>
 </html>
