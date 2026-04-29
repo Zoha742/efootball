@@ -13,7 +13,7 @@
         :root { --bg: #050a18; --card: #121e36; --border: #1e2d4d; --text: #ffffff; --green: #22c55e; --blue: #3b82f6; --orange: #f59e0b; --red: #ef4444; }
         body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding: 15px; }
         
-        /* Back Arrow & Header */
+        /* Back Arrow & Header Style */
         .header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
         .back-nav { font-size: 20px; color: white; cursor: pointer; transition: 0.3s; padding: 5px; }
         .back-nav:active { transform: scale(0.8); opacity: 0.7; }
@@ -34,7 +34,6 @@
         .status-pending { color: var(--orange); font-weight: bold; font-size: 12px; }
         .status-success { color: var(--green); font-weight: bold; font-size: 12px; }
         .cancel-btn { background: var(--red); color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 11px; cursor: pointer; transition: 0.3s; }
-        .cancel-btn:hover { opacity: 0.8; }
     </style>
 </head>
 <body>
@@ -62,7 +61,7 @@
             </select>
         </div>
         <div class="input-group">
-            <label>Wallet Address (Auto-filled from Wallet Page)</label>
+            <label>Wallet Address</label>
             <input type="text" id="wallet-address" readonly style="color: #94a3b8;" placeholder="Address not found">
         </div>
         <button id="withdraw-btn" class="withdraw-btn" onclick="submitWithdraw()" disabled>Withdraw Now</button>
@@ -75,17 +74,15 @@
         const tg = window.Telegram.WebApp;
         const userId = tg.initDataUnsafe?.user?.id || "test_user";
         let userGP = 0;
-        let minLimit = 5000; // Default limit
+        let minLimit = 5000;
 
-        // ১. ফায়ারবেস থেকে ডাটা রিড করা
+        // Firebase Listeners
         db.ref('config/min_limit').on('value', s => { if(s.exists()) minLimit = s.val(); });
 
         db.ref('users/' + userId).on('value', snapshot => {
             const data = snapshot.val() || {};
             userGP = data.gp || 0;
             document.getElementById('user-gp').innerText = userGP.toLocaleString() + " GP";
-            
-            // ওয়ালেট অ্যাড্রেস অটো-ফিল
             window.userWallets = data.wallets || {};
             updateAddr();
             validate();
@@ -95,8 +92,7 @@
             const type = document.getElementById('wallet-type').value;
             const addrInput = document.getElementById('wallet-address');
             const savedAddr = window.userWallets ? window.userWallets[type] : null;
-            
-            addrInput.value = savedAddr || "Wallet not set! Please update in Wallet page.";
+            addrInput.value = savedAddr || "Wallet not set! Update in Profile/Wallet page.";
             validate();
         }
 
@@ -104,12 +100,7 @@
             const amt = parseInt(document.getElementById('withdraw-amount').value);
             const addr = document.getElementById('wallet-address').value;
             const btn = document.getElementById('withdraw-btn');
-            
-            if (amt >= minLimit && amt <= userGP && !addr.includes("not set")) {
-                btn.disabled = false;
-            } else {
-                btn.disabled = true;
-            }
+            btn.disabled = !(amt >= minLimit && amt <= userGP && !addr.includes("not set"));
         }
 
         function submitWithdraw() {
@@ -117,24 +108,17 @@
             const type = document.getElementById('wallet-type').value;
             const addr = document.getElementById('wallet-address').value;
 
-            if (confirm(`Are you sure you want to withdraw ${amt} GP?`)) {
-                const reqRef = db.ref('withdraw_requests').push();
-                reqRef.set({
-                    userId: userId,
-                    amount: amt,
-                    method: type.toUpperCase(),
-                    address: addr,
-                    status: 'pending',
-                    date: new Date().toLocaleString()
+            if (confirm(`Withdraw ${amt} GP?`)) {
+                db.ref('withdraw_requests').push({
+                    userId: userId, amount: amt, method: type.toUpperCase(), address: addr, status: 'pending', date: new Date().toLocaleString()
                 }).then(() => {
                     db.ref('users/' + userId + '/gp').set(userGP - amt);
                     document.getElementById('withdraw-amount').value = "";
-                    alert("Withdraw Request Submitted!");
+                    alert("Submitted!");
                 });
             }
         }
 
-        // হিস্ট্রি এবং ক্যানসেল বাটন লজিক
         db.ref('withdraw_requests').on('value', snap => {
             let html = "";
             snap.forEach(child => {
@@ -142,14 +126,8 @@
                 if(r.userId == userId) {
                     let cancelBtn = (r.status === 'pending') ? 
                         `<button class="cancel-btn" onclick="cancelReq('${child.key}', ${r.amount})">Cancel</button>` : "";
-                    
                     html += `<div class="history-item">
-                        <div>
-                            <b>${r.amount} GP (${r.method})</b><br>
-                            <span class="${r.status === 'pending' ? 'status-pending' : 'status-success'}">
-                                ${r.status.toUpperCase()}
-                            </span>
-                        </div>
+                        <div><b>${r.amount} GP</b><br><span class="${r.status === 'pending' ? 'status-pending' : 'status-success'}">${r.status.toUpperCase()}</span></div>
                         ${cancelBtn}
                     </div>`;
                 }
@@ -158,10 +136,9 @@
         });
 
         function cancelReq(key, amt) {
-            if(confirm("Cancel withdraw and refund GP?")) {
+            if(confirm("Cancel and refund GP?")) {
                 db.ref('withdraw_requests/' + key).remove().then(() => {
                     db.ref('users/' + userId + '/gp').set(userGP + amt);
-                    alert("Request Cancelled & GP Refunded!");
                 });
             }
         }
