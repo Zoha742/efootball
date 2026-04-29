@@ -16,13 +16,25 @@
         .login-box { background: var(--card); padding: 30px; border-radius: 15px; border: 1px solid var(--border); width: 100%; max-width: 350px; text-align: center; }
         .login-box input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid var(--border); background: #0a1226; color: white; outline: none; box-sizing: border-box;}
         .login-btn { background: var(--blue); color: white; border: none; padding: 12px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        
         #admin-content { display: none; padding: 15px; }
+        
+        /* Header & Back Button Style */
+        .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+        .back-btn { background: transparent; color: var(--text); border: none; font-size: 18px; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+        
         .card { background: var(--card); padding: 15px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 20px; }
         .input-group { margin-bottom: 15px; }
         .input-group label { display: block; font-size: 13px; color: #94a3b8; margin-bottom: 5px; }
         .input-group input { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--border); background: #0a1226; color: white; box-sizing: border-box;}
         .action-btn { background: var(--green); color: white; border: none; padding: 12px; border-radius: 6px; cursor: pointer; width: 100%; font-weight: bold; }
         .list-item { background: #0a1226; padding: 12px; border-radius: 8px; margin-bottom: 10px; border: 1px solid var(--border); }
+        
+        /* Buttons for Withdraw Manage */
+        .btn-group { display: flex; gap: 10px; margin-top: 10px;}
+        .btn-group button { flex: 1; padding: 8px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; color: white; }
+        .btn-approve { background: var(--green); }
+        .btn-reject { background: var(--red); }
     </style>
 </head>
 <body>
@@ -38,7 +50,11 @@
     </div>
 
     <div id="admin-content">
-        <h2 style="text-align: center; color: var(--blue);">Zoha's Command Center</h2>
+        <div class="header">
+            <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back</button>
+            <h3 style="margin: 0; color: var(--blue);">Zoha's Command Center</h3>
+        </div>
+        
         <div class="card">
             <h3><i class="fas fa-cogs"></i> Withdraw Config</h3>
             <div class="input-group">
@@ -62,7 +78,9 @@
     </div>
 
     <script>
-console.log("Database connected successfully!");
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+
         function checkLogin() {
             const u = document.getElementById('username').value;
             const p = document.getElementById('password').value;
@@ -70,7 +88,14 @@ console.log("Database connected successfully!");
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('admin-content').style.display = 'block';
                 initDashboard();
-            } else { alert("Access Denied!"); }
+            } else { alert("Access Denied! Username or Password incorrect."); }
+        }
+
+        // Back arrow function
+        function goBack() {
+            document.getElementById('admin-content').style.display = 'none';
+            document.getElementById('login-screen').style.display = 'flex';
+            document.getElementById('password').value = ''; // Password faka kore dilam
         }
 
         function initDashboard() { loadConfig(); loadWithdraws(); loadMessages(); }
@@ -78,8 +103,8 @@ console.log("Database connected successfully!");
         function loadConfig() {
             db.ref('config').on('value', snap => {
                 if(snap.exists()) {
-                    document.getElementById('min-limit').value = snap.val().min_limit;
-                    document.getElementById('rate').value = snap.val().rate;
+                    document.getElementById('min-limit').value = snap.val().min_limit || 0;
+                    document.getElementById('rate').value = snap.val().rate || 0;
                 }
             });
         }
@@ -94,22 +119,51 @@ console.log("Database connected successfully!");
         function loadWithdraws() {
             db.ref('withdraw_requests').on('value', snap => {
                 let html = "";
+                let hasData = false;
                 snap.forEach(child => {
                     let r = child.val();
                     if(r.status === 'pending') {
-                        html += `<div class="list-item">
-                            <b>User ID: ${r.userId}</b><br>Amount: ${r.amount} GP<br>Method: ${r.method}<br>
-                            <button onclick="updateReq('${child.key}', 'success')" style="color:green">Accept</button>
-                            <button onclick="updateReq('${child.key}', 'rejected')" style="color:red">Reject</button>
+                        hasData = true;
+                        html += `
+                        <div class="list-item">
+                            <p style="margin: 0 0 5px 0;"><b>User ID:</b> ${r.userId}</p>
+                            <p style="margin: 0 0 5px 0; color: var(--green);"><b>Amount:</b> ${r.amount} GP</p>
+                            <p style="margin: 0 0 5px 0; color: #f59e0b;"><b>Number:</b> ${r.number}</p>
+                            <p style="margin: 0 0 10px 0;"><b>Method:</b> ${r.method}</p>
+                            
+                            <div class="btn-group">
+                                <button class="btn-approve" onclick="approveReq('${child.key}')">Approve</button>
+                                <button class="btn-reject" onclick="rejectReq('${child.key}', '${r.userId}', ${r.amount})">Reject & Refund</button>
+                            </div>
                         </div>`;
                     }
                 });
-                document.getElementById('requests-list').innerHTML = html || "No Pending Requests";
+                document.getElementById('requests-list').innerHTML = hasData ? html : "<p style='text-align:center;'>No Pending Requests</p>";
             });
         }
 
-        function updateReq(key, status) {
-            db.ref('withdraw_requests/' + key).update({ status: status }).then(() => alert("Request " + status));
+        function approveReq(key) {
+            if(confirm("টাকা পাঠানো হয়েছে? Approve করবেন?")) {
+                db.ref('withdraw_requests/' + key).update({ status: 'approved' })
+                .then(() => alert("সফলভাবে Approve করা হয়েছে!"));
+            }
+        }
+
+        // রিজেক্ট করলে ইউজারের ব্যালেন্সে GP ফেরত যাবে
+        function rejectReq(key, userId, amount) {
+            if(confirm("রিকোয়েস্ট বাতিল করে ইউজারকে GP ফেরত দিতে চান?")) {
+                // ১. স্ট্যাটাস রিজেক্ট করা
+                db.ref('withdraw_requests/' + key).update({ status: 'rejected' }).then(() => {
+                    // ২. ইউজারের ডাটাবেস থেকে বর্তমান GP খুঁজে বের করে ফেরত দেওয়া
+                    let userRef = db.ref('users/' + userId + '/gp');
+                    userRef.once('value', snap => {
+                        let currentGP = snap.val() || 0;
+                        userRef.set(currentGP + amount).then(() => {
+                            alert("রিকোয়েস্ট বাতিল হয়েছে এবং ইউজারের GP ফেরত দেওয়া হয়েছে!");
+                        });
+                    });
+                });
+            }
         }
 
         function loadMessages() {
