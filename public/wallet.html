@@ -10,36 +10,37 @@
     <script src="config.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --bg: #050a18; --card: #121e36; --primary: #3b82f6; --text: #ffffff; --border: #1e2d4d; --green: #22c55e; }
+        :root { --bg: #050a18; --card: #121e36; --primary: #3b82f6; --text: #ffffff; --border: #1e2d4d; }
         body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding: 15px; }
-        .card { background: var(--card); padding: 20px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 20px; }
-        .input-box { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); background: #0a1226; color: white; margin-bottom: 10px; box-sizing: border-box; }
-        .save-btn { width: 100%; padding: 12px; border-radius: 8px; border: none; background: var(--primary); color: white; font-weight: bold; cursor: pointer; }
-        .status-msg { font-size: 12px; color: var(--green); margin-top: 5px; display: none; }
+        .header { display: flex; align-items: center; margin-bottom: 20px; gap: 15px; }
+        .back-btn { background: none; border: none; color: white; font-size: 20px; cursor: pointer; }
+        .card { background: var(--card); padding: 20px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 15px; }
+        .input-box { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); background: #0a1226; color: white; margin: 10px 0; box-sizing: border-box; }
+        .save-btn { width: 100%; padding: 12px; border-radius: 8px; border: none; background: var(--primary); color: white; font-weight: bold; }
     </style>
 </head>
 <body>
-    <h3 style="text-align: center;"><i class="fas fa-wallet"></i> Crypto Wallets</h3>
+    <div class="header">
+        <button class="back-btn" onclick="location.href='index.html'"><i class="fas fa-arrow-left"></i></button>
+        <h3 style="margin: 0;">My Crypto Wallets</h3>
+    </div>
     
     <div class="card">
-        <label><i class="fas fa-gem"></i> TON Wallet (Tonkeeper)</label>
+        <label><i class="fas fa-gem"></i> TON Wallet Address</label>
         <input type="text" id="ton-address" class="input-box" placeholder="Enter TON Address">
-        <button class="save-btn" onclick="saveWallet('ton')">Save TON Address</button>
-        <p id="ton-status" class="status-msg">Saved successfully!</p>
+        <button class="save-btn" onclick="saveW('ton')">Save TON</button>
     </div>
 
     <div class="card">
-        <label><i class="fas fa-coins"></i> USDT Address (Binance/BEP20)</label>
+        <label><i class="fas fa-coins"></i> USDT (BEP20) Address</label>
         <input type="text" id="usdt-address" class="input-box" placeholder="Enter USDT Address">
-        <button class="save-btn" onclick="saveWallet('usdt')">Save USDT Address</button>
-        <p id="usdt-status" class="status-msg">Saved successfully!</p>
+        <button class="save-btn" onclick="saveW('usdt')">Save USDT</button>
     </div>
 
     <script>
         const tg = window.Telegram.WebApp;
         const userId = tg.initDataUnsafe?.user?.id || "test_user";
 
-        // ১. আগে থেকে সেভ করা অ্যাড্রেস লোড করা
         db.ref('users/' + userId + '/wallets').on('value', snap => {
             if(snap.exists()){
                 document.getElementById('ton-address').value = snap.val().ton || "";
@@ -47,18 +48,10 @@
             }
         });
 
-        // ২. ডাটাবেসে সেভ করা
-        function saveWallet(type) {
+        function saveW(type) {
             const addr = document.getElementById(type + '-address').value.trim();
-            if(!addr) { alert("Please enter an address!"); return; }
-
-            db.ref('users/' + userId + '/wallets').update({
-                [type]: addr
-            }).then(() => {
-                const status = document.getElementById(type + '-status');
-                status.style.display = 'block';
-                setTimeout(() => status.style.display = 'none', 3000);
-            });
+            db.ref('users/' + userId + '/wallets').update({ [type]: addr })
+            .then(() => alert(type.toUpperCase() + " Address Saved!"));
         }
     </script>
 </body>
