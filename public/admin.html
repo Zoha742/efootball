@@ -3,194 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Master Admin - Crypto Payments</title>
+    <title>Master Admin - Zoha</title>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="config.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --bg: #050a18; --card: #121e36; --red: #ef4444; --green: #22c55e; --blue: #3b82f6; --text: #ffffff; --border: #1e2d4d; }
-        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 50px; }
-        
-        /* Login Screen */
-        #login-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; padding: 20px; }
-        .login-box { background: var(--card); padding: 30px; border-radius: 15px; border: 1px solid var(--border); width: 100%; max-width: 350px; text-align: center; }
-        .login-box input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid var(--border); background: #0a1226; color: white; outline: none; box-sizing: border-box;}
-        .login-btn { background: var(--blue); color: white; border: none; padding: 12px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 10px; }
-        
-        /* Admin Content */
-        #admin-content { display: none; padding: 15px; }
-        
-        /* Header & Back Button */
-        .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
-        .back-btn { background: transparent; color: var(--text); border: none; font-size: 16px; cursor: pointer; display: flex; align-items: center; gap: 8px; padding: 5px; }
-        
-        .card { background: var(--card); padding: 15px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 20px; }
-        .input-group { margin-bottom: 15px; }
-        .input-group label { display: block; font-size: 13px; color: #94a3b8; margin-bottom: 5px; }
-        .input-group input { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--border); background: #0a1226; color: white; box-sizing: border-box;}
-        .action-btn { background: var(--green); color: white; border: none; padding: 12px; border-radius: 6px; cursor: pointer; width: 100%; font-weight: bold; }
-        
-        /* Withdraw List Items */
-        .list-item { background: #0a1226; padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 1px solid var(--border); }
-        .address-box { background: #121e36; padding: 10px; border-radius: 5px; font-size: 13px; color: var(--blue); word-break: break-all; border: 1px dashed var(--blue); margin: 10px 0; user-select: all; }
-        
-        .btn-group { display: flex; gap: 10px; margin-top: 10px;}
-        .btn-group button { flex: 1; padding: 10px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; color: white; }
-        .btn-approve { background: var(--green); }
-        .btn-reject { background: var(--red); }
+        body { background: #050a18; color: white; font-family: sans-serif; padding: 15px; margin: 0; }
+        .header { background: #121e36; padding: 15px; position: sticky; top: 0; border-bottom: 1px solid #1e2d4d; z-index: 100; display: flex; align-items: center; gap: 15px; }
+        .card { background: #121e36; padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #1e2d4d; }
+        .input-box { width: 100%; padding: 10px; margin: 10px 0; background: #0a1226; color: white; border: 1px solid #1e2d4d; border-radius: 6px; box-sizing: border-box; }
+        .btn { padding: 10px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        .btn-blue { background: #3b82f6; color: white; }
+        .btn-green { background: #22c55e; color: white; }
+        .btn-red { background: #ef4444; color: white; }
+        .user-item { background: #0a1226; padding: 10px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #1e2d4d; display: flex; justify-content: space-between; align-items: center; }
+        #login-screen { height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; }
     </style>
 </head>
 <body>
 
     <div id="login-screen">
-        <div class="login-box">
-            <i class="fas fa-user-shield" style="font-size: 40px; color: var(--blue); margin-bottom: 15px;"></i>
-            <h2>Admin Login</h2>
-            <input type="text" id="username" placeholder="Username">
-            <input type="password" id="password" placeholder="Password">
-            <button class="login-btn" onclick="checkLogin()">LOGIN</button>
+        <div class="card" style="width: 300px;">
+            <h3>Admin Login</h3>
+            <input type="text" id="user" class="input-box" placeholder="Username">
+            <input type="password" id="pass" class="input-box" placeholder="Password">
+            <button class="btn btn-blue" style="width: 100%;" onclick="login()">Enter</button>
         </div>
     </div>
 
-    <div id="admin-content">
+    <div id="admin-panel" style="display: none;">
         <div class="header">
-            <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back</button>
-            <h3 style="margin: 0; color: var(--blue);"><i class="fas fa-shield-alt"></i> Command Center</h3>
-        </div>
-        
-        <div class="card">
-            <h3 style="margin-top: 0;"><i class="fas fa-cogs"></i> App Settings</h3>
-            <div class="input-group">
-                <label>Minimum Withdraw (GP):</label>
-                <input type="number" id="min-limit">
-            </div>
-            <div class="input-group">
-                <label>Exchange Rate (GP = $1):</label>
-                <input type="number" id="rate">
-            </div>
-            <button class="action-btn" onclick="saveSettings()">Save Configuration</button>
+            <button onclick="location.reload()" style="background:none; border:none; color:white; font-size:20px;"><i class="fas fa-arrow-left"></i></button>
+            <h3 style="margin:0;">Master Dashboard</h3>
         </div>
 
         <div class="card">
-            <h3 style="margin-top: 0;"><i class="fas fa-wallet"></i> Crypto Withdraw Requests</h3>
-            <div id="requests-list">Loading pending requests...</div>
+            <h4><i class="fas fa-users"></i> User Stats</h4>
+            <p>Total Users: <span id="total-users">0</span></p>
+            <input type="text" id="search-box" class="input-box" placeholder="Search User ID..." oninput="searchUser()">
+            <div id="user-list" style="max-height: 300px; overflow-y: auto;"></div>
         </div>
 
         <div class="card">
-            <h3 style="margin-top: 0;"><i class="fas fa-envelope"></i> Support Messages</h3>
-            <div id="messages-list">No new messages.</div>
+            <h4><i class="fas fa-gift"></i> Gift GP to All</h4>
+            <input type="number" id="gift-amount" class="input-box" placeholder="Enter GP amount">
+            <button class="btn btn-green" onclick="giftAll()">Send GP to Everyone</button>
+        </div>
+
+        <div class="card">
+            <h4><i class="fas fa-comments-alt"></i> Support & Replies</h4>
+            <div id="support-list"></div>
+        </div>
+    </div>
+
+    <div id="user-modal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#121e36; padding:20px; border:2px solid #3b82f6; border-radius:12px; z-index:1000; width:90%;">
+        <h3>Manage User</h3>
+        <p id="target-uid"></p>
+        <label>GP Balance:</label>
+        <input type="number" id="target-gp" class="input-box">
+        <div style="display:flex; gap:10px;">
+            <button class="btn btn-green" onclick="saveUserGP()">Update GP</button>
+            <button class="btn btn-red" onclick="closeModal()">Close</button>
         </div>
     </div>
 
     <script>
-        const tg = window.Telegram.WebApp;
-        tg.expand();
-
-        // Login System
-        function checkLogin() {
-            const u = document.getElementById('username').value;
-            const p = document.getElementById('password').value;
-            if(u === "Zoha" && p === "s#642S") {
+        function login() {
+            if(document.getElementById('user').value === "Zoha" && document.getElementById('pass').value === "s#642S") {
                 document.getElementById('login-screen').style.display = 'none';
-                document.getElementById('admin-content').style.display = 'block';
-                initDashboard();
-            } else { 
-                alert("Access Denied! Username or Password incorrect."); 
-            }
+                document.getElementById('admin-panel').style.display = 'block';
+                loadData();
+            } else alert("Wrong Pass!");
         }
 
-        // Back Arrow
-        function goBack() {
-            document.getElementById('admin-content').style.display = 'none';
-            document.getElementById('login-screen').style.display = 'flex';
-            document.getElementById('password').value = '';
-        }
-
-        function initDashboard() { 
-            loadConfig(); 
-            loadWithdraws(); 
-            loadMessages(); 
-        }
-
-        // Settings Load & Save
-        function loadConfig() {
-            db.ref('config').on('value', snap => {
-                if(snap.exists()) {
-                    document.getElementById('min-limit').value = snap.val().min_limit || 5000;
-                    document.getElementById('rate').value = snap.val().rate || 10000;
-                }
-            });
-        }
-
-        function saveSettings() {
-            db.ref('config').update({
-                min_limit: parseInt(document.getElementById('min-limit').value),
-                rate: parseInt(document.getElementById('rate').value)
-            }).then(() => alert("Settings Updated Successfully!"));
-        }
-
-        // Withdraw Request Management
-        function loadWithdraws() {
-            db.ref('withdraw_requests').on('value', snap => {
+        function loadData() {
+            // Count & List
+            db.ref('users').on('value', snap => {
+                document.getElementById('total-users').innerText = snap.numChildren();
                 let html = "";
-                let hasData = false;
-                snap.forEach(child => {
-                    let r = child.val();
-                    if(r.status === 'pending') {
-                        hasData = true;
-                        html += `
-                        <div class="list-item">
-                            <p style="margin: 0 0 5px 0;"><b>User ID:</b> ${r.userId}</p>
-                            <p style="margin: 0 0 5px 0; color: var(--green); font-size: 16px;"><b>Amount:</b> ${r.amount} GP</p>
-                            <p style="margin: 0 0 5px 0; color: #f59e0b;"><b>Method:</b> ${r.method}</p>
-                            <div class="address-box">${r.address}</div>
-                            
-                            <div class="btn-group">
-                                <button class="btn-approve" onclick="approveReq('${child.key}')">Approve (Paid)</button>
-                                <button class="btn-reject" onclick="rejectReq('${child.key}', '${r.userId}', ${r.amount})">Reject (Refund)</button>
-                            </div>
-                        </div>`;
-                    }
+                snap.forEach(c => {
+                    html += `<div class="user-item">
+                        <span>${c.key} (${c.val().gp} GP)</span>
+                        <button class="btn btn-blue" onclick="manageUser('${c.key}', ${c.val().gp})">Manage</button>
+                    </div>`;
                 });
-                document.getElementById('requests-list').innerHTML = hasData ? html : "<p style='text-align:center;'>No Pending Requests</p>";
+                document.getElementById('user-list').innerHTML = html;
             });
-        }
 
-        function approveReq(key) {
-            if(confirm("Taka pathano hoyeche? Approve korben?")) {
-                db.ref('withdraw_requests/' + key).update({ status: 'approved' })
-                .then(() => alert("Successfully Approved!"));
-            }
-        }
-
-        function rejectReq(key, userId, amount) {
-            if(confirm("Request batil kore user ke GP ferot dite chan?")) {
-                db.ref('withdraw_requests/' + key).update({ status: 'rejected' }).then(() => {
-                    let userRef = db.ref('users/' + userId + '/gp');
-                    userRef.once('value', snap => {
-                        let currentGP = snap.val() || 0;
-                        userRef.set(currentGP + amount).then(() => {
-                            alert("Request Cancelled! User ke " + amount + " GP ferot dewa hoyeche.");
-                        });
-                    });
-                });
-            }
-        }
-
-        // Support Messages
-        function loadMessages() {
+            // Support messages
             db.ref('support').on('value', snap => {
                 let html = "";
-                snap.forEach(child => {
-                    let m = child.val();
-                    html += `<div class="list-item">
-                                <b style="color: var(--blue);">From: ${m.userId}</b><br>
-                                <p style="margin: 5px 0 0 0;">${m.text}</p>
-                             </div>`;
+                snap.forEach(userSnap => {
+                    userSnap.forEach(msgSnap => {
+                        let m = msgSnap.val();
+                        if(!m.reply) {
+                            html += `<div class="card" style="background:#0a1226;">
+                                <b>From: ${userSnap.key} (${m.type})</b><br>${m.text}<br>
+                                <input type="text" id="rep-${msgSnap.key}" class="input-box" placeholder="Type reply...">
+                                <button class="btn btn-blue" onclick="replySupport('${userSnap.key}', '${msgSnap.key}')">Reply</button>
+                            </div>`;
+                        }
+                    });
                 });
-                document.getElementById('messages-list').innerHTML = html || "<p style='text-align:center;'>No Messages</p>";
+                document.getElementById('support-list').innerHTML = html || "No Pending Messages";
+            });
+        }
+
+        function giftAll() {
+            let amt = parseInt(document.getElementById('gift-amount').value);
+            if(!amt) return;
+            db.ref('users').once('value', snap => {
+                snap.forEach(c => {
+                    db.ref('users/' + c.key + '/gp').set((c.val().gp || 0) + amt);
+                });
+                alert("Gifted " + amt + " GP to all users!");
+            });
+        }
+
+        function manageUser(uid, gp) {
+            document.getElementById('target-uid').innerText = "User ID: " + uid;
+            document.getElementById('target-gp').value = gp;
+            document.getElementById('user-modal').style.display = "block";
+            window.currentManageId = uid;
+        }
+
+        function saveUserGP() {
+            let newGP = parseInt(document.getElementById('target-gp').value);
+            db.ref('users/' + window.currentManageId + '/gp').set(newGP).then(() => {
+                alert("Updated!");
+                closeModal();
+            });
+        }
+
+        function replySupport(uid, msgId) {
+            let rep = document.getElementById('rep-' + msgId).value;
+            if(!rep) return;
+            db.ref('support/' + uid + '/' + msgId).update({ reply: rep }).then(() => alert("Replied!"));
+        }
+
+        function closeModal() { document.getElementById('user-modal').style.display = "none"; }
+        
+        function searchUser() {
+            let s = document.getElementById('search-box').value.toLowerCase();
+            let items = document.querySelectorAll('.user-item');
+            items.forEach(it => {
+                it.style.display = it.innerText.toLowerCase().includes(s) ? "flex" : "none";
             });
         }
     </script>
