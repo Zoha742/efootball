@@ -143,47 +143,36 @@
     <script>
 console.log("Database connected successfully!");
         
-        const tg = window.Telegram.WebApp;
-        tg.expand();
-        const user = tg.initDataUnsafe?.user;
+    const tg = window.Telegram.WebApp;
+    const user = tg.initDataUnsafe?.user;
+    const userId = user?.id || "test_user"; // টেস্ট করার জন্য
 
-        if (user) {
-            document.getElementById('user-name').innerText = user.first_name + (user.last_name ? " " + user.last_name : "");
-            document.getElementById('user-id').innerText = "ID: #" + user.id;
-            if (user.photo_url) document.getElementById('user-avatar').src = user.photo_url;
-        } else {
-            document.getElementById('user-name').innerText = "Guest Player";
-            document.getElementById('user-id').innerText = "ID: #000000";
-        }
-
-        window.onload = function() {
-            document.getElementById('gp-balance').innerText = localStorage.getItem('user_gp') || 0;
-            document.getElementById('total-tasks').innerText = localStorage.getItem('tasks_done') || 0;
+    // ১. ফায়ারবেস থেকে রিয়েল-টাইম ব্যালেন্স রিড করা
+    if (userId) {
+        db.ref('users/' + userId + '/gp').on('value', (snapshot) => {
+            const currentGP = snapshot.val() || 0;
+            // উপরে মেইন ব্যালেন্সে পয়েন্ট সেট করা
+            document.getElementById('gp-balance').innerText = currentGP.toLocaleString();
             
-            // Session-e prothombar holei notification dekhabe
-            if (!sessionStorage.getItem('profile_notif_shown')) {
-                setTimeout(showProfileNotif, 1500);
-                sessionStorage.setItem('profile_notif_shown', 'true');
-            }
-        }
+            // লোকাল স্টোরেজও আপডেট করে রাখা (অপশনাল)
+            localStorage.setItem('user_gp', currentGP);
+        });
+    }
 
-        function showProfileNotif() {
-            const overlay = document.getElementById('pNotifOverlay');
-            const box = document.getElementById('pNotifBox');
-            overlay.style.display = 'flex';
-            setTimeout(() => {
-                box.classList.add('show');
-            }, 100);
+    // ২. ইউজার ইনফো সেট করা
+    if (user) {
+        document.getElementById('user-name').innerText = user.first_name + (user.last_name ? " " + user.last_name : "");
+        document.getElementById('user-id').innerText = "ID: #" + user.id;
+        if (user.photo_url) {
+            document.getElementById('user-avatar').src = user.photo_url;
         }
+    }
 
-        function hideProfileNotif() {
-            const overlay = document.getElementById('pNotifOverlay');
-            const box = document.getElementById('pNotifBox');
-            box.classList.remove('show');
-            setTimeout(() => {
-                overlay.style.display = 'none';
-            }, 400);
-        }
-    </script>
+    // ৩. টাস্ক কাউন্ট (এটি আপনি চাইলে ডাটাবেস থেকেও আনতে পারেন)
+    document.getElementById('total-tasks').innerText = localStorage.getItem('tasks_done') || 0;
+
+</script>
+       
+          
 </body>
 </html>
