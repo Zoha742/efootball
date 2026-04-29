@@ -8,178 +8,101 @@
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="config.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --bg: #050a18; --card: #121e36; --border: #1e2d4d; --text: #ffffff; --green: #22c55e; --red: #f87171; --blue: #3b82f6; --orange: #f59e0b; }
+        :root { --bg: #050a18; --card: #121e36; --border: #1e2d4d; --text: #ffffff; --green: #22c55e; --blue: #3b82f6; --orange: #f59e0b; }
         body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding: 15px; }
         .card { background: var(--card); padding: 20px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 20px; }
         .balance-box { text-align: center; margin-bottom: 20px; }
         .balance-box h1 { font-size: 32px; margin: 5px 0; color: var(--green); }
         .input-group { margin-bottom: 15px; }
         .input-group label { display: block; font-size: 14px; color: #94a3b8; margin-bottom: 8px; }
-        .input-group input, .input-group select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); background: #0a1226; color: white; outline: none; box-sizing: border-box; }
+        .input-group input, .input-group select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); background: #0a1226; color: white; box-sizing: border-box; }
         .withdraw-btn { width: 100%; padding: 15px; border-radius: 8px; border: none; background: var(--blue); color: white; font-weight: bold; cursor: pointer; transition: 0.3s; }
         .withdraw-btn:disabled { background: #2d3748; cursor: not-allowed; }
         .history-item { background: #0a1226; padding: 15px; border-radius: 8px; margin-bottom: 10px; border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-        .status-pending { color: var(--orange); font-weight: bold; font-size: 12px; }
-        .status-approved { color: var(--green); font-weight: bold; font-size: 12px; }
-        .status-rejected { color: var(--red); font-weight: bold; font-size: 12px; }
-        .cancel-btn { background: var(--red); color: white; border: none; padding: 6px 12px; border-radius: 4px; font-size: 12px; cursor: pointer; }
+        .status-pending { color: var(--orange); font-weight: bold; }
     </style>
 </head>
 <body>
 
     <div class="balance-box">
-        <p style="color: #94a3b8;">আপনার বর্তমান ব্যালেন্স</p>
-        <h1 id="user-gp">0 GP</h1>
-        <p id="rate-info" style="font-size: 12px; color: #64748b;">লিমিট লোড হচ্ছে...</p>
+        <p>ব্যালেন্স: <span id="user-gp">0 GP</span></p>
+        <p id="rate-info" style="font-size: 12px; color: #64748b;">Loading limits...</p>
     </div>
 
     <div class="card">
         <div class="input-group">
             <label>উইথড্র পরিমাণ (GP)</label>
-            <input type="number" id="withdraw-amount" placeholder="কত GP তুলতে চান?" oninput="validateWithdraw()">
+            <input type="number" id="withdraw-amount" placeholder="Min Limit অনুযায়ী লিখুন" oninput="validate()">
         </div>
         <div class="input-group">
-            <label>পেমেন্ট মেথড</label>
-            <select id="payment-method">
-                <option value="Bkash">Bkash</option>
-                <option value="Nagad">Nagad</option>
-                <option value="Rocket">Rocket</option>
+            <label>ওয়ালেট সিলেক্ট করুন</label>
+            <select id="wallet-type" onchange="updateWalletDisplay()">
+                <option value="ton">TON Wallet</option>
+                <option value="usdt">USDT (Binance)</option>
             </select>
         </div>
         <div class="input-group">
-            <label>অ্যাকাউন্ট নাম্বার</label>
-            <input type="number" id="account-number" placeholder="আপনার নাম্বার দিন">
+            <label>আপনার সেভ করা অ্যাড্রেস:</label>
+            <input type="text" id="wallet-address" readonly style="background: #1e2d4d; color: #cbd5e1;" placeholder="ওয়ালেটে অ্যাড্রেস সেট করুন">
         </div>
         <button id="withdraw-btn" class="withdraw-btn" onclick="submitWithdraw()" disabled>অ্যামাউন্ট লিখুন</button>
     </div>
 
-    <div id="history-section">
-        <h3 style="font-size: 16px; margin-bottom: 15px;"><i class="fas fa-history"></i> উইথড্র হিস্ট্রি</h3>
-        <div id="history-list">কোনো হিস্ট্রি পাওয়া যায়নি।</div>
-    </div>
+    <div id="history-list"></div>
 
     <script>
         const tg = window.Telegram.WebApp;
-        tg.expand();
-        // টেলিগ্রাম থেকে ইউজার আইডি নেওয়া (না পেলে টেস্ট আইডি)
         const userId = tg.initDataUnsafe?.user?.id || "test_user";
+        let userGP = 0, minLimit = 5000, userWallets = {};
 
-        let userCurrentGP = 0;
-        let minLimit = 5000; // ডিফল্ট
+        // ১. ডাটা আনা
+        db.ref('config').on('value', s => { if(s.exists()){ minLimit = s.val().min_limit; document.getElementById('rate-info').innerText = "Min Withdraw: "+minLimit+" GP"; }});
+        db.ref('users/'+userId+'/gp').on('value', s => { userGP = s.val() || 0; document.getElementById('user-gp').innerText = userGP + " GP"; });
+        db.ref('users/'+userId+'/wallets').on('value', s => { userWallets = s.val() || {}; updateWalletDisplay(); });
 
-        // 1. অ্যাডমিন লিমিট আনা
-        db.ref('config').on('value', snap => {
-            if(snap.exists()) {
-                minLimit = snap.val().min_limit || 5000;
-                let exchangeRate = snap.val().rate || 10000;
-                document.getElementById('rate-info').innerText = `Min Withdraw: ${minLimit} GP | Rate: ${exchangeRate} GP = 1 Taka/Dollar`;
-            }
-        });
+        function updateWalletDisplay() {
+            const type = document.getElementById('wallet-type').value;
+            const addr = userWallets[type] || "";
+            document.getElementById('wallet-address').value = addr;
+            validate();
+        }
 
-        // 2. ইউজারের বর্তমান GP আনা
-        db.ref('users/' + userId + '/gp').on('value', snap => {
-            userCurrentGP = snap.val() || 0;
-            document.getElementById('user-gp').innerText = userCurrentGP.toLocaleString() + " GP";
-            validateWithdraw();
-        });
-
-        // 3. উইথড্র হিস্ট্রি শো করা
-        db.ref('withdraw_requests').on('value', snap => {
-            let html = "";
-            let hasData = false;
+        function validate() {
+            const amt = parseInt(document.getElementById('withdraw-amount').value);
+            const addr = document.getElementById('wallet-address').value;
+            const btn = document.getElementById('withdraw-btn');
             
-            // নতুন রিকোয়েস্ট উপরে দেখাতে রিভার্স করা হচ্ছে
-            let requests = [];
-            snap.forEach(child => {
-                if(child.val().userId == userId) {
-                    requests.push({ key: child.key, ...child.val() });
-                }
-            });
-            requests.reverse();
-
-            requests.forEach(r => {
-                hasData = true;
-                let statusClass = r.status === 'pending' ? 'status-pending' : (r.status === 'approved' ? 'status-approved' : 'status-rejected');
-                let cancelBtn = (r.status === 'pending') ? `<button class="cancel-btn" onclick="cancelWithdraw('${r.key}', ${r.amount})">Cancel</button>` : "";
-                
-                html += `
-                <div class="history-item">
-                    <div>
-                        <b style="font-size:16px;">${parseInt(r.amount).toLocaleString()} GP</b><br>
-                        <small style="color: #94a3b8;">${r.method} - ${r.number}</small><br>
-                        <small class="${statusClass}">${r.status.toUpperCase()}</small>
-                    </div>
-                    ${cancelBtn}
-                </div>`;
-            });
-            document.getElementById('history-list').innerHTML = hasData ? html : "কোনো হিস্ট্রি পাওয়া যায়নি।";
-        });
-
-        function validateWithdraw() {
-            let amount = parseInt(document.getElementById('withdraw-amount').value);
-            let btn = document.getElementById('withdraw-btn');
-            
-            if(!amount || amount < minLimit) {
-                btn.innerText = `মিনিমাম উইথড্র ${minLimit} GP`;
-                btn.disabled = true;
-            } else if(amount > userCurrentGP) {
-                btn.innerText = "ব্যালেন্স কম আছে";
-                btn.disabled = true;
-            } else {
-                btn.innerText = "উইথড্র কনফার্ম করুন";
-                btn.disabled = false;
-            }
+            if(!addr) { btn.innerText = "আগে ওয়ালেট সেট করুন"; btn.disabled = true; }
+            else if(amt >= minLimit && amt <= userGP) { btn.innerText = "উইথড্র রিকোয়েস্ট দিন"; btn.disabled = false; }
+            else { btn.innerText = "সঠিক অ্যামাউন্ট লিখুন"; btn.disabled = true; }
         }
 
         function submitWithdraw() {
-            let amount = parseInt(document.getElementById('withdraw-amount').value);
-            let method = document.getElementById('payment-method').value;
-            let number = document.getElementById('account-number').value;
-            
-            if(!number || number.length < 11) { 
-                alert("সঠিক অ্যাকাউন্ট নাম্বার দিন!"); 
-                return; 
-            }
+            const amt = parseInt(document.getElementById('withdraw-amount').value);
+            const type = document.getElementById('wallet-type').value;
+            const addr = document.getElementById('wallet-address').value;
 
-            let newBalance = userCurrentGP - amount;
-            let btn = document.getElementById('withdraw-btn');
-            btn.innerText = "Processing...";
-            btn.disabled = true;
-
-            // ডাটাবেসে রিকোয়েস্ট পাঠানো
             db.ref('withdraw_requests').push({
-                userId: userId,
-                amount: amount,
-                method: method,
-                number: number,
-                status: 'pending',
-                date: new Date().toLocaleString()
-            }).then(() => {
-                // ইউজারের ব্যালেন্স থেকে GP কেটে নেওয়া
-                return db.ref('users/' + userId + '/gp').set(newBalance);
-            }).then(() => {
-                alert("উইথড্র রিকোয়েস্ট সফলভাবে পাঠানো হয়েছে!");
-                document.getElementById('withdraw-amount').value = "";
-                document.getElementById('account-number').value = "";
-            }).catch(err => {
-                alert("Error: " + err.message);
-                btn.innerText = "উইথড্র কনফার্ম করুন";
-                btn.disabled = false;
-            });
+                userId: userId, amount: amt, method: type.toUpperCase(), address: addr, status: 'pending', date: new Date().toLocaleString()
+            }).then(() => db.ref('users/'+userId+'/gp').set(userGP - amt))
+              .then(() => alert("Request Sent!"));
         }
 
-        function cancelWithdraw(key, amount) {
-            if(confirm("আপনি কি রিকোয়েস্টটি ক্যানসেল করতে চান? (GP ফেরত দেওয়া হবে)")) {
-                db.ref('withdraw_requests/' + key).remove().then(() => {
-                    let refundBalance = userCurrentGP + amount;
-                    return db.ref('users/' + userId + '/gp').set(refundBalance);
-                }).then(() => {
-                    alert("রিকোয়েস্ট ক্যানসেল হয়েছে এবং GP ফেরত দেওয়া হয়েছে!");
-                });
-            }
-        }
+        // হিস্ট্রি লোড করা
+        db.ref('withdraw_requests').on('value', snap => {
+            let html = "<h3>History</h3>";
+            snap.forEach(c => {
+                let r = c.val();
+                if(r.userId == userId) {
+                    html += `<div class="history-item">
+                        <div><b>${r.amount} GP</b><br><small>${r.method}: ${r.address.substring(0,10)}...</small></div>
+                        <div class="status-pending">${r.status}</div>
+                    </div>`;
+                }
+            });
+            document.getElementById('history-list').innerHTML = html;
+        });
     </script>
 </body>
 </html>
