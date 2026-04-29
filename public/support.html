@@ -3,111 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Support Center</title>
+    <title>Support - eFootball HUB</title>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
-    <script src="https://sad.adsgram.ai/js/adsgram-sdk.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="config.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --bg: #050a18; --card: #121e36; --primary: #2dd4bf; --text: #ffffff; --border: #1e2d4d; }
-        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; }
-        .top-bar { display: flex; align-items: center; padding: 15px; background: rgba(18, 30, 54, 0.7); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); position: sticky; top: 0; }
-        .top-bar a { color: white; text-decoration: none; margin-right: 15px; }
-        .container { padding: 20px; }
-        
-        .form-box { background: var(--card); border-radius: 20px; padding: 20px; border: 1px solid var(--border); margin-bottom: 25px; }
-        .input-group { margin-bottom: 15px; text-align: left; }
-        .input-group label { display: block; font-size: 12px; color: #94a3b8; margin-bottom: 5px; }
-        input, textarea { width: 100%; background: #050a18; border: 1px solid var(--border); padding: 12px; border-radius: 10px; color: white; outline: none; box-sizing: border-box; }
-        
-        .send-btn { width: 100%; background: var(--primary); border: none; padding: 15px; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; }
-
-        /* Inbox Style */
-        .inbox-section { margin-top: 30px; text-align: left; }
-        .msg-bubble { background: var(--card); padding: 15px; border-radius: 15px; margin-bottom: 15px; border-left: 4px solid var(--primary); }
-        .reply-box { background: rgba(45, 212, 191, 0.1); padding: 10px; border-radius: 8px; margin-top: 10px; font-size: 13px; border: 1px dashed var(--primary); }
+        body { background: #050a18; color: white; font-family: sans-serif; padding: 15px; }
+        .header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
+        .card { background: #121e36; padding: 20px; border-radius: 12px; border: 1px solid #1e2d4d; }
+        select, textarea { width: 100%; padding: 12px; margin: 10px 0; background: #0a1226; color: white; border: 1px solid #1e2d4d; border-radius: 8px; box-sizing: border-box; }
+        .send-btn { width: 100%; padding: 15px; background: #3b82f6; border: none; border-radius: 8px; color: white; font-weight: bold; }
+        .msg-box { background: #1e2d4d; padding: 10px; border-radius: 8px; margin-top: 10px; font-size: 14px; }
+        .reply { color: #22c55e; margin-top: 5px; font-weight: bold; border-top: 1px solid #333; padding-top: 5px; }
     </style>
 </head>
 <body>
-
-    <div class="top-bar">
-        <a href="profile.html"><i class="fas fa-chevron-left"></i></a>
-        <span>Support Inbox</span>
+    <div class="header">
+        <button onclick="location.href='index.html'" style="background:none; border:none; color:white; font-size:20px;"><i class="fas fa-arrow-left"></i></button>
+        <h3 style="margin:0;">Support Center</h3>
     </div>
 
-    <div class="container">
-        <div class="form-box">
-            <h3 style="margin-top: 0;"><i class="fas fa-paper-plane"></i> Contact Admin</h3>
-            <div class="input-group">
-                <label>User ID</label>
-                <input type="text" id="support-uid" readonly>
-            </div>
-            <div class="input-group">
-                <label>Your Message / Comment</label>
-                <textarea id="support-msg" rows="4" placeholder="আপনার সমস্যাটি এখানে লিখুন..."></textarea>
-            </div>
-            <button class="send-btn" onclick="sendMessage()">SEND MESSAGE</button>
-        </div>
+    <div class="card">
+        <label>সমস্যার ধরণ (Type):</label>
+        <select id="issue-type">
+            <option value="Deposit Problem">Deposit Problem</option>
+            <option value="Withdraw Problem">Withdraw Problem</option>
+            <option value="GP Not Adding">GP Not Adding</option>
+            <option value="Account Issue">Account Issue</option>
+            <option value="Other">Other</option>
+        </select>
+        <label>বিস্তারিত লিখুন (Details):</label>
+        <textarea id="issue-details" rows="4" placeholder="আপনার সমস্যাটি বিস্তারিত লিখুন..."></textarea>
+        <button class="send-btn" onclick="sendMsg()">মেসেজ পাঠান</button>
+    </div>
 
-        <div class="inbox-section">
-            <h3 style="color: #94a3b8;"><i class="fas fa-inbox"></i> Inbox (Replies)</h3>
-            <div id="user-inbox">
-                </div>
-        </div>
+    <div id="my-messages">
+        <h4 style="margin-top:20px;">আপনার মেসেজগুলো:</h4>
+        <div id="msg-list">লোড হচ্ছে...</div>
     </div>
 
     <script>
-       console.log("Database connected successfully!");
-        
         const tg = window.Telegram.WebApp;
-        const uid = tg.initDataUnsafe?.user?.id || "774900"; // ডিফল্ট আইডি
-        document.getElementById('support-uid').value = uid;
+        const userId = tg.initDataUnsafe?.user?.id || "test_user";
 
-        function sendMessage() {
-            const msg = document.getElementById('support-msg').value;
-            if(!msg) return alert("মেসেজ লিখুন!");
-
-            const newMessage = {
-                id: Date.now(),
-                userId: uid,
-                userName: tg.initDataUnsafe?.user?.first_name || "Guest",
-                message: msg,
-                reply: null,
-                date: new Date().toLocaleString()
-            };
-
-            // অ্যাডমিনের জন্য সেভ করা
-            let allMessages = JSON.parse(localStorage.getItem('admin_messages')) || [];
-            allMessages.push(newMessage);
-            localStorage.setItem('admin_messages', JSON.stringify(allMessages));
-
-            alert("মেসেজ পাঠানো হয়েছে! অ্যাডমিন রিপ্লাই দিলে ইনবক্সে পাবেন।");
-            document.getElementById('support-msg').value = "";
-            loadInbox();
+        function sendMsg() {
+            const type = document.getElementById('issue-type').value;
+            const text = document.getElementById('issue-details').value;
+            if(!text) return alert("মেসেজ লিখুন!");
+            
+            db.ref('support/' + userId).push({
+                type: type, text: text, date: new Date().toLocaleString(), reply: ""
+            }).then(() => {
+                alert("মেসেজ পাঠানো হয়েছে!");
+                document.getElementById('issue-details').value = "";
+            });
         }
 
-        function loadInbox() {
-            const inbox = document.getElementById('user-inbox');
-            let allMessages = JSON.parse(localStorage.getItem('admin_messages')) || [];
-            const myMessages = allMessages.filter(m => m.userId == uid);
-
-            if(myMessages.length === 0) {
-                inbox.innerHTML = "<p style='font-size:12px; color:#4b5563;'>কোনো মেসেজ নেই।</p>";
-                return;
-            }
-
-            inbox.innerHTML = myMessages.reverse().map(m => `
-                <div class="msg-bubble">
-                    <div style="font-size:11px; color:#94a3b8;">${m.date}</div>
-                    <div style="margin-top:5px;">${m.message}</div>
-                    ${m.reply ? `<div class="reply-box"><b>Admin:</b> ${m.reply}</div>` : `<div style="font-size:10px; color:#fbbf24; margin-top:5px;">Pending for reply...</div>`}
-                </div>
-            `).join('');
-        }
-
-        window.onload = loadInbox;
+        db.ref('support/' + userId).on('value', snap => {
+            let html = "";
+            snap.forEach(c => {
+                let m = c.val();
+                html += `<div class="msg-box">
+                    <b>${m.type}</b> (${m.date})<br>${m.text}
+                    ${m.reply ? `<div class="reply">Admin: ${m.reply}</div>` : ""}
+                </div>`;
+            });
+            document.getElementById('msg-list').innerHTML = html || "কোনো মেসেজ নেই।";
+        });
     </script>
 </body>
 </html>
