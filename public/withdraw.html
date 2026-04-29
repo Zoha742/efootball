@@ -14,9 +14,9 @@
         body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding: 15px; }
         
         /* Back Arrow & Header Style */
-        .header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
-        .back-nav { font-size: 20px; color: white; cursor: pointer; transition: 0.3s; padding: 5px; }
-        .back-nav:active { transform: scale(0.8); opacity: 0.7; }
+        .header { display: flex; align-items: center; gap: 15px; margin-bottom: 25px; margin-top: 10px; }
+        .back-nav { font-size: 22px; color: white; cursor: pointer; transition: 0.3s; padding: 5px; display: flex; align-items: center; justify-content: center; }
+        .back-nav:active { transform: scale(0.85); opacity: 0.7; }
         
         .card { background: var(--card); padding: 20px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 20px; }
         .balance-box { text-align: center; margin-bottom: 20px; }
@@ -38,9 +38,9 @@
 </head>
 <body>
 
-    <div class="top-bar">
-        <a href="profile.html"><i class="fas fa-chevron-left"></i></a>
-        <h3 style="margin: 0;">Withdraw GP</h3>
+    <div class="header">
+        <i class="fas fa-arrow-left back-nav" onclick="window.history.back()"></i>
+        <h3 style="margin: 0; font-size: 20px;">Withdraw GP</h3>
     </div>
 
     <div class="balance-box">
@@ -92,7 +92,7 @@
             const type = document.getElementById('wallet-type').value;
             const addrInput = document.getElementById('wallet-address');
             const savedAddr = window.userWallets ? window.userWallets[type] : null;
-            addrInput.value = savedAddr || "Wallet not set! Update in Profile/Wallet page.";
+            addrInput.value = savedAddr || "Wallet not set! Update in Wallet page.";
             validate();
         }
 
@@ -108,13 +108,13 @@
             const type = document.getElementById('wallet-type').value;
             const addr = document.getElementById('wallet-address').value;
 
-            if (confirm(`Withdraw ${amt} GP?`)) {
+            if (confirm(`Confirm Withdraw ${amt} GP?`)) {
                 db.ref('withdraw_requests').push({
                     userId: userId, amount: amt, method: type.toUpperCase(), address: addr, status: 'pending', date: new Date().toLocaleString()
                 }).then(() => {
                     db.ref('users/' + userId + '/gp').set(userGP - amt);
                     document.getElementById('withdraw-amount').value = "";
-                    alert("Submitted!");
+                    alert("Withdraw Request Submitted!");
                 });
             }
         }
@@ -136,7 +136,7 @@
         });
 
         function cancelReq(key, amt) {
-            if(confirm("Cancel and refund GP?")) {
+            if(confirm("Cancel withdraw and refund GP?")) {
                 db.ref('withdraw_requests/' + key).remove().then(() => {
                     db.ref('users/' + userId + '/gp').set(userGP + amt);
                 });
