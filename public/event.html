@@ -4,11 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Events - eFootball HUB</title>
+    <!-- Firebase & SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
     <script src="https://sad.adsgram.ai/js/adsgram-sdk.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
+    <!-- Central Config & Ad Master -->
     <script src="config.js"></script>
+    <script src="ads-manager.js"></script> 
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --bg: #050a18; --primary: #fbbf24; --text: #ffffff; --card: #121e36; }
@@ -17,7 +22,7 @@
         .header { display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 20px; }
         .back-btn { position: absolute; left: 0; font-size: 22px; color: var(--primary); text-decoration: none; }
 
-        /* Slider Section */
+        /* Slider Section[cite: 9] */
         .event-slider {
             width: 100%;
             height: 200px;
@@ -36,7 +41,7 @@
         .dot { width: 8px; height: 8px; background: #334155; border-radius: 50%; transition: 0.3s; }
         .dot.active { background: var(--primary); width: 20px; border-radius: 10px; }
 
-        /* Vertical List */
+        /* Vertical List[cite: 9] */
         .list-title { color: var(--primary); margin: 25px 0 15px; font-size: 16px; font-weight: bold; border-left: 4px solid var(--primary); padding-left: 10px; }
         .vertical-list { display: flex; flex-direction: column; gap: 15px; padding-bottom: 20px; }
         .v-card { width: 100%; border-radius: 12px; overflow: hidden; border: 1px solid #1e2d4d; background: var(--card); }
@@ -58,9 +63,11 @@
     <div class="list-title">MORE EVENTS</div>
     <div id="vertical-container" class="vertical-list"></div>
 
+    <!-- ব্যানার অ্যাডের জন্য কন্টেইনার -->
     <div id="banner-container" style="display: flex; justify-content: center; margin-top: 20px; padding-bottom: 50px;"></div>
 
 <script>
+    // ড্যাটাবেস কানেকশন লগ
     console.log("Database connected successfully!");
     
     let currentIndex = 0;
@@ -139,24 +146,17 @@
         });
     }
 
-    // উইন্ডো লোড হওয়ার সময় স্লাইডার এবং অ্যাডস কল হবে
+    // উইন্ডো লোড হওয়ার সময় স্লাইডার এবং সেন্ট্রাল অ্যাডস কল হবে[cite: 8, 9]
     window.onload = () => {
         fetchEvents(); 
 
+        // ১ সেকেন্ড পর সেন্ট্রাল কন্ট্রোলার থেকে অ্যাডস লোড করা হবে[cite: 8]
         setTimeout(() => {
-            try {
-                if (window.Adsgram) {
-                    // ব্যানার অ্যাড (আপনার আইডি এখানে বসান)
-                    const bannerAd = window.Adsgram.init({ blockId: "YOUR_BANNER_BLOCK_ID" });
-                    bannerAd.show().catch((err) => console.log("Banner Error"));
+            // ব্যানার অ্যাড লোড[cite: 8]
+            AdController.loadBanner("banner-container");
 
-                    // ভিডিও অ্যাড (আপনার আইডি এখানে বসান)
-                    const videoAd = window.Adsgram.init({ blockId: "YOUR_VIDEO_BLOCK_ID" });
-                    videoAd.show().catch((err) => console.log("Video Error"));
-                }
-            } catch (e) {
-                console.log("Adsgram missing");
-            }
+            // ভিডিও অ্যাড (যদি এই পেজে লোড করতে চান)[cite: 8]
+            // AdController.showVideoAd(); 
         }, 1000);
     };
 </script>
