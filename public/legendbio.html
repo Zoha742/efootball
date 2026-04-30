@@ -28,7 +28,7 @@
 
         .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
         .info-box { background: var(--card); padding: 10px; border-radius: 8px; border: 1px solid #1e2d4d; }
-        .info-label { font-size: 10px; color: #94a3b8; display: block; margin-bottom: 30px; }
+        .info-label { font-size: 5px; color: #94a3b8; display: block; margin-bottom: 30px; }
         .info-value { font-size: 13px; font-weight: bold; }
 
         .stats-container { display: flex; flex-direction: column; gap: 8px; }
@@ -67,7 +67,7 @@
     console.log("Database connected successfully!");
 
     function getStatColor(val) {
-        if (val >= 95) return "#ff0000"; 
+        if (val >= 95) return "#00B7B5"; 
         if (val >= 90) return "#ff8c00"; 
         if (val >= 80) return "#ffff00"; 
         if (val >= 70) return "#adff2f"; 
