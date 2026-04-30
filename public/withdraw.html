@@ -13,27 +13,38 @@
         :root { --bg: #050a18; --card: #121e36; --border: #1e2d4d; --text: #ffffff; --green: #22c55e; --blue: #3b82f6; --orange: #f59e0b; --red: #ef4444; }
         body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding: 15px; }
         
-        /* Back Arrow & Header Style */
         .header { display: flex; align-items: center; gap: 15px; margin-bottom: 25px; margin-top: 10px; }
-        .back-nav { font-size: 22px; color: white; cursor: pointer; transition: 0.3s; padding: 5px; display: flex; align-items: center; justify-content: center; }
-        .back-nav:active { transform: scale(0.85); opacity: 0.7; }
-        
-        .card { background: var(--card); padding: 20px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 20px; }
+        .back-nav { font-size: 22px; color: white; cursor: pointer; transition: 0.3s; padding: 5px; }
+
         .balance-box { text-align: center; margin-bottom: 20px; }
         .balance-box h1 { font-size: 32px; margin: 5px 0; color: var(--green); }
+
+        /* ১. রেড বক্স স্টাইল (Exchange Rate এর জন্য) */
+        .rate-info-box { 
+            border: 1px solid var(--red); 
+            color: var(--red); 
+            padding: 8px; 
+            border-radius: 8px; 
+            font-size: 12px; 
+            display: inline-block; 
+            margin-top: 5px;
+            font-weight: bold;
+        }
         
+        .card { background: var(--card); padding: 20px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 20px; }
         .input-group { margin-bottom: 15px; }
         .input-group label { display: block; font-size: 14px; color: #94a3b8; margin-bottom: 8px; }
-        .input-group input, .input-group select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); background: #0a1226; color: white; box-sizing: border-box; outline: none; }
         
+        /* ক্যালকুলেটর টেক্সট স্টাইল */
+        #calc-display { color: var(--orange); font-weight: bold; margin-left: 10px; font-size: 13px; }
+
+        .input-group input, .input-group select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); background: #0a1226; color: white; box-sizing: border-box; outline: none; }
         .withdraw-btn { width: 100%; padding: 15px; border-radius: 8px; border: none; background: var(--blue); color: white; font-weight: bold; cursor: pointer; font-size: 16px; }
         .withdraw-btn:disabled { background: #2d3748; cursor: not-allowed; opacity: 0.6; }
         
-        .history-title { margin: 20px 0 10px; font-size: 18px; display: flex; align-items: center; gap: 10px; }
         .history-item { background: #0a1226; padding: 15px; border-radius: 10px; margin-bottom: 10px; border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
         .status-pending { color: var(--orange); font-weight: bold; font-size: 12px; }
-        .status-success { color: var(--green); font-weight: bold; font-size: 12px; }
-        .cancel-btn { background: var(--red); color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 11px; cursor: pointer; transition: 0.3s; }
+        .cancel-btn { background: var(--red); color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 11px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -46,11 +57,13 @@
     <div class="balance-box">
         <p style="color: #94a3b8; margin: 0;">Current Balance</p>
         <h1 id="user-gp">0 GP</h1>
+        <!-- এক্সচেঞ্জ রেট রেড বক্স[cite: 7] -->
+        <div id="rate-display" class="rate-info-box">Loading Exchange Rate...</div>
     </div>
 
     <div class="card">
         <div class="input-group">
-            <label>Amount (GP)</label>
+            <label>Amount (GP) <span id="calc-display"></span></label> <!-- ক্যালকুলেটর ডিসপ্লে[cite: 7] -->
             <input type="number" id="withdraw-amount" placeholder="Enter amount to withdraw" oninput="validate()">
         </div>
         <div class="input-group">
@@ -62,22 +75,27 @@
         </div>
         <div class="input-group">
             <label>Wallet Address</label>
-            <input type="text" id="wallet-address" readonly style="color: #94a3b8;" placeholder="Address not found">
+            <input type="text" id="wallet-address" readonly style="color: #94a3b8;">
         </div>
         <button id="withdraw-btn" class="withdraw-btn" onclick="submitWithdraw()" disabled>Withdraw Now</button>
     </div>
 
-    <h4 class="history-title"><i class="fas fa-history"></i> Withdraw History</h4>
+    <h4 style="margin-bottom: 10px;"><i class="fas fa-history"></i> Withdraw History</h4>
     <div id="history-list">Loading history...</div>
 
     <script>
         const tg = window.Telegram.WebApp;
         const userId = tg.initDataUnsafe?.user?.id || "test_user";
-        let userGP = 0;
-        let minLimit = 5000;
+        let userGP = 0, minLimit = 5000, exchangeRate = 10000; // ডিফল্ট রেট
 
-        // Firebase Listeners
-        db.ref('config/min_limit').on('value', s => { if(s.exists()) minLimit = s.val(); });
+        // ১. অ্যাডমিন প্যানেল থেকে রেট এবং লিমিট নেওয়া
+        db.ref('config').on('value', s => {
+            if(s.exists()){
+                minLimit = s.val().min_limit || 5000;
+                exchangeRate = s.val().rate || 10000;
+                document.getElementById('rate-display').innerText = `Rate: ${exchangeRate.toLocaleString()} GP = 1 Dollar`;
+            }
+        });
 
         db.ref('users/' + userId).on('value', snapshot => {
             const data = snapshot.val() || {};
@@ -90,16 +108,27 @@
 
         function updateAddr() {
             const type = document.getElementById('wallet-type').value;
-            const addrInput = document.getElementById('wallet-address');
             const savedAddr = window.userWallets ? window.userWallets[type] : null;
-            addrInput.value = savedAddr || "Wallet not set! Update in Wallet page.";
+            document.getElementById('wallet-address').value = savedAddr || "Wallet not set! Update in Profile.";
             validate();
         }
 
+        // ২. ক্যালকুলেটর লজিক (টাইপ করার সময় ডলার দেখাবে)[cite: 7]
         function validate() {
-            const amt = parseInt(document.getElementById('withdraw-amount').value);
+            const amtInput = document.getElementById('withdraw-amount');
+            const amt = parseInt(amtInput.value) || 0;
             const addr = document.getElementById('wallet-address').value;
             const btn = document.getElementById('withdraw-btn');
+            const calcDisplay = document.getElementById('calc-display');
+
+            // লাইভ ক্যালকুলেটর[cite: 7]
+            if (amt > 0) {
+                const dollars = (amt / exchangeRate).toFixed(2);
+                calcDisplay.innerText = `≈ $${dollars}`;
+            } else {
+                calcDisplay.innerText = "";
+            }
+
             btn.disabled = !(amt >= minLimit && amt <= userGP && !addr.includes("not set"));
         }
 
@@ -108,13 +137,13 @@
             const type = document.getElementById('wallet-type').value;
             const addr = document.getElementById('wallet-address').value;
 
-            if (confirm(`Confirm Withdraw ${amt} GP?`)) {
+            if (confirm(`Withdraw ${amt} GP?`)) {
                 db.ref('withdraw_requests').push({
                     userId: userId, amount: amt, method: type.toUpperCase(), address: addr, status: 'pending', date: new Date().toLocaleString()
                 }).then(() => {
                     db.ref('users/' + userId + '/gp').set(userGP - amt);
                     document.getElementById('withdraw-amount').value = "";
-                    alert("Withdraw Request Submitted!");
+                    alert("Submitted!");
                 });
             }
         }
@@ -127,7 +156,7 @@
                     let cancelBtn = (r.status === 'pending') ? 
                         `<button class="cancel-btn" onclick="cancelReq('${child.key}', ${r.amount})">Cancel</button>` : "";
                     html += `<div class="history-item">
-                        <div><b>${r.amount} GP</b><br><span class="${r.status === 'pending' ? 'status-pending' : 'status-success'}">${r.status.toUpperCase()}</span></div>
+                        <div><b>${r.amount} GP</b><br><span class="status-pending">${r.status.toUpperCase()}</span></div>
                         ${cancelBtn}
                     </div>`;
                 }
@@ -136,7 +165,7 @@
         });
 
         function cancelReq(key, amt) {
-            if(confirm("Cancel withdraw and refund GP?")) {
+            if(confirm("Cancel and refund GP?")) {
                 db.ref('withdraw_requests/' + key).remove().then(() => {
                     db.ref('users/' + userId + '/gp').set(userGP + amt);
                 });
