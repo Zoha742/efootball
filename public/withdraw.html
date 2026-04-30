@@ -88,6 +88,96 @@
         let minLimit = 5000; 
         let exchangeRate = 10000; 
 
+        <!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Withdraw GP - eFootball HUB</title>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="config.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --bg: #050a18; --card: #121e36; --border: #1e2d4d; --text: #ffffff; --green: #22c55e; --blue: #3b82f6; --orange: #f59e0b; --red: #ef4444; }
+        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding: 15px; }
+        
+        .header { display: flex; align-items: center; gap: 15px; margin-bottom: 25px; margin-top: 10px; }
+        .back-nav { font-size: 22px; color: white; cursor: pointer; padding: 5px; }
+
+        .balance-box { text-align: center; margin-bottom: 20px; }
+        .balance-box h1 { font-size: 32px; margin: 5px 0; color: var(--green); }
+
+        .rate-info-box { 
+            border: 1px solid var(--red); 
+            color: var(--red); 
+            padding: 8px 15px; 
+            border-radius: 8px; 
+            font-size: 13px; 
+            display: inline-block; 
+            margin-top: 5px;
+            font-weight: bold;
+        }
+        
+        .card { background: var(--card); padding: 20px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 20px; }
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; font-size: 14px; color: #94a3b8; margin-bottom: 8px; }
+        
+        #calc-display { color: var(--orange); font-weight: bold; margin-left: 10px; font-size: 13px; }
+
+        .input-group input, .input-group select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); background: #0a1226; color: white; box-sizing: border-box; outline: none; }
+        .withdraw-btn { width: 100%; padding: 15px; border-radius: 8px; border: none; background: var(--blue); color: white; font-weight: bold; cursor: pointer; font-size: 16px; }
+        .withdraw-btn:disabled { background: #2d3748; cursor: not-allowed; opacity: 0.6; }
+        
+        .history-item { background: #0a1226; padding: 15px; border-radius: 10px; margin-bottom: 10px; border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .status-pending { color: var(--orange); font-weight: bold; font-size: 12px; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <i class="fas fa-arrow-left back-nav" onclick="window.history.back()"></i>
+        <h3 style="margin: 0; font-size: 20px;">Withdraw GP</h3>
+    </div>
+
+    <div class="balance-box">
+        <p style="color: #94a3b8; margin: 0;">Current Balance</p>
+        <h1 id="user-gp">0 GP</h1>
+        <!-- এক্সচেঞ্জ রেট বক্স[cite: 6] -->
+        <div id="rate-display" class="rate-info-box">Loading Rate...</div>
+    </div>
+
+    <div class="card">
+        <div class="input-group">
+            <!-- ক্যালকুলেটর ডিসপ্লে[cite: 6] -->
+            <label>Amount (GP) <span id="calc-display"></span></label>
+            <input type="number" id="withdraw-amount" placeholder="Enter amount to withdraw" oninput="validate()">
+        </div>
+        <div class="input-group">
+            <label>Select Wallet / Method</label>
+            <select id="wallet-type" onchange="updateAddr()">
+                <option value="ton">TON Wallet</option>
+                <option value="usdt">USDT (Binance)</option>
+            </select>
+        </div>
+        <div class="input-group">
+            <label>Wallet Address</label>
+            <input type="text" id="wallet-address" readonly style="color: #94a3b8;">
+        </div>
+        <button id="withdraw-btn" class="withdraw-btn" onclick="submitWithdraw()" disabled>Withdraw Now</button>
+    </div>
+
+    <h4 style="margin-bottom: 10px;"><i class="fas fa-history"></i> Withdraw History</h4>
+    <div id="history-list">Loading history...</div>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        const userId = tg.initDataUnsafe?.user?.id || "test_user";
+        let userGP = 0;
+        let minLimit = 5000; 
+        let exchangeRate = 10000; 
+
         // ১. অ্যাডমিন প্যানেল থেকে রিয়েল-টাইম ডাটা রিড করা
         db.ref('config').on('value', (snapshot) => {
             const config = snapshot.val();
@@ -100,6 +190,78 @@
                 validate(); 
             }
         });
+
+        // ২. ইউজারের ব্যালেন্স এবং ওয়ালেট লোড[cite: 6]
+        db.ref('users/' + userId).on('value', snapshot => {
+            const data = snapshot.val() || {};
+            userGP = data.gp || 0;
+            document.getElementById('user-gp').innerText = userGP.toLocaleString() + " GP";
+            window.userWallets = data.wallets || {};
+            updateAddr();
+            validate();
+        });
+
+        function updateAddr() {
+            const type = document.getElementById('wallet-type').value;
+            const savedAddr = window.userWallets ? window.userWallets[type] : null;
+            const addrInput = document.getElementById('wallet-address');
+            addrInput.value = savedAddr || "Wallet not set! Update in Profile.";
+            addrInput.style.color = savedAddr ? "white" : "#ef4444";
+            validate();
+        }
+
+        // ৩. ক্যালকুলেটর এবং বাটন কন্ট্রোল[cite: 6]
+        function validate() {
+            const amt = parseInt(document.getElementById('withdraw-amount').value) || 0;
+            const addr = document.getElementById('wallet-address').value;
+            const btn = document.getElementById('withdraw-btn');
+            const calcDisplay = document.getElementById('calc-display');
+
+            // লাইভ ক্যালকুলেটর[cite: 6]
+            if (amt > 0) {
+                const dollars = (amt / exchangeRate).toFixed(2);
+                calcDisplay.innerText = `≈ $${dollars}`;
+            } else { calcDisplay.innerText = ""; }
+
+            // বাটন তখনই কাজ করবে যদি অ্যামাউন্ট মিনিমাম লিমিট এর সমান বা বেশি হয়[cite: 6]
+            const isAmountValid = (amt >= minLimit && amt <= userGP);
+            const isWalletValid = (addr && !addr.includes("not set"));
+            
+            btn.disabled = !(isAmountValid && isWalletValid);
+        }
+
+        function submitWithdraw() {
+            const amt = parseInt(document.getElementById('withdraw-amount').value);
+            const type = document.getElementById('wallet-type').value;
+            const addr = document.getElementById('wallet-address').value;
+
+            if (confirm(`Withdraw ${amt} GP?`)) {
+                db.ref('withdraw_requests').push({
+                    userId: userId, amount: amt, method: type.toUpperCase(), address: addr, status: 'pending', date: new Date().toLocaleString()
+                }).then(() => {
+                    db.ref('users/' + userId + '/gp').set(userGP - amt);
+                    document.getElementById('withdraw-amount').value = "";
+                    alert("Withdraw Submitted!");
+                });
+            }
+        }
+
+        db.ref('withdraw_requests').on('value', snap => {
+            let html = "";
+            snap.forEach(child => {
+                let r = child.val();
+                if(r.userId == userId) {
+                    html += `<div class="history-item">
+                        <div><b>${r.amount} GP</b><br><span class="status-pending">${r.status.toUpperCase()}</span></div>
+                        <small style="color:#94a3b8">${r.date}</small>
+                    </div>`;
+                }
+            });
+            document.getElementById('history-list').innerHTML = html || "No history found.";
+        });
+    </script>
+</body>
+</html>
 
         // ২. ইউজারের ব্যালেন্স এবং ওয়ালেট লোড[cite: 6]
         db.ref('users/' + userId).on('value', snapshot => {
