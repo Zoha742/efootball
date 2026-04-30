@@ -9,6 +9,9 @@
     <script src="https://sad.adsgram.ai/js/adsgram-sdk.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="config.js"></script>
+    <script src="ads-manager.js"></script> <!-- এটি যোগ করতে হবে -->
+
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --bg: #050a18; --primary: #fbbf24; --card: #121e36; }
@@ -94,20 +97,18 @@
                 document.getElementById('m-km-p').innerText = m.km_pos;
 
                 }
-            // ৩. অ্যাডস লোড (১ সেকেন্ড পর)
+            // নতুন মাস্টার কন্ট্রোলার থেকে অ্যাডস লোড (১ সেকেন্ড পর)
             setTimeout(() => {
-                try {
-                    if (window.Adsgram) {
-                        // ব্যানার অ্যাড (আপনার আইডি দিন)
-                        const bannerAd = window.Adsgram.init({ blockId: "আপনার_ব্যানার_BLOCK_ID" });
-                        bannerAd.show().catch((err) => console.log("Banner Error"));
-
-                        // ভিডিও অ্যাড (আপনার আইডি দিন)
-                        const videoAd = window.Adsgram.init({ blockId: "আপনার_ভিডিও_BLOCK_ID" });
-                        videoAd.show().catch((err) => console.log("Video Error"));
-                    }
-                } catch (e) {
-                    console.log("Adsgram SDK issue");
+                if (typeof AdController !== 'undefined') {
+                    AdController.loadBanner("banner-container");
+                    
+                    // ভিডিও অ্যাড বর্তমানে কমেন্ট করে হাইড করা আছে
+                    /*
+                    AdController.showVideoAd(
+                        (result) => { console.log("Video Reward Success"); },
+                        (error) => { console.log("Video Ad Error"); }
+                    );
+                    */
                 }
             }, 1000);
         };
