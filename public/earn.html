@@ -4,11 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Earn More - eFootball HUB</title>
+    <!-- Firebase & SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
     <script src="https://sad.adsgram.ai/js/adsgram-sdk.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
+    <!-- Central Config & Ad Master -->
     <script src="config.js"></script>
+    <script src="ads-manager.js"></script> 
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --bg: #050a18; --card: #121e36; --primary: #818cf8; --text: #ffffff; --border: #1e2d4d; --yellow: #fbbf24; }
@@ -64,69 +69,77 @@
     </div>
 
     <script>
-        console.log("Database connected successfully!");
-        
-        let adsWatched = parseInt(localStorage.getItem('earn_ads_count')) || 0;
-        let nextAllowedTime = parseInt(localStorage.getItem('earn_next_time')) || 0;
+        const tg = window.Telegram.WebApp;
+        const userId = tg.initDataUnsafe?.user?.id || "test_user";
+        let adsWatched = 0;
+        let nextAllowedTime = 0;
+        let userGP = 0;
         let timerInterval;
+
+        // ১. রিয়েল-টাইম ডাটা লোড করা (Firebase)
+        function initEarn() {
+            db.ref('users/' + userId).on('value', snap => {
+                const data = snap.val() || {};
+                userGP = data.gp || 0;
+                adsWatched = data.earn_ads_count || 0;
+                nextAllowedTime = data.earn_next_time || 0;
+                updateUI();
+            });
+        }
 
         function updateUI() {
             const now = Date.now();
             document.getElementById('ad-count').innerText = adsWatched;
 
             if (now < nextAllowedTime) {
-                // Cooldown active
                 startTimer(nextAllowedTime - now);
             } else {
-                // Ready to watch
-                if (adsWatched >= 3) {
-                    // 24 hour limit reached, reset if 24h passed
-                    if (now >= nextAllowedTime) {
-                        resetDailyLimit();
-                    } else {
-                        showLimitReached();
-                    }
+                if (adsWatched >= 3 && now < nextAllowedTime) {
+                    showLimitReached();
+                } else if (adsWatched >= 3 && now >= nextAllowedTime) {
+                    // ২৪ ঘণ্টা পার হলে লিমিট রিসেট
+                    resetDailyLimit();
                 } else {
                     showReadyState();
                 }
             }
         }
 
+        // ২. অ্যাড দেখানো (ads-manager.js ব্যবহার করে)
         function watchAd() {
-            // Adsgram Logic
-            const AdController = window.Adsgram.init({ blockId: "YOUR_BLOCK_ID" }); // আপনার অরিজিনাল আইডি বসান
-
-            AdController.show().then((result) => {
-                handleReward();
-            }).catch((err) => {
-                alert("Ad failed or skipped. Please try again.");
-            });
-            
-            // Testing এর জন্য (অ্যাড শো না করলে নিচে handleReward() কল করে টেস্ট করতে পারেন)
-            // handleReward(); 
+            AdController.showVideoAd(
+                (result) => {
+                    handleReward();
+                },
+                (error) => {
+                    alert("Ad failed or skipped. Please try again.");
+                }
+            );
         }
 
+        // ৩. রিওয়ার্ড এবং ডাটাবেস আপডেট করা[cite: 8, 9]
         function handleReward() {
-            // ১. পয়েন্ট যোগ করা (Admin Config থেকে)
-            const adminConfig = JSON.parse(localStorage.getItem('admin_config')) || { task_reward: 100 };
-            let currentGP = parseInt(localStorage.getItem('user_gp')) || 0;
-            localStorage.setItem('user_gp', currentGP + adminConfig.task_reward);
+            db.ref('config/task_reward').once('value', s => {
+                const reward = s.val() || 100;
+                const newCount = adsWatched + 1;
 
-            // ২. কাউন্ট বাড়ানো
-            adsWatched++;
-            localStorage.setItem('earn_ads_count', adsWatched);
+                // ওয়েটিং টাইম লজিক (Progressive Logic)[cite: 9]
+                let waitTime = 0;
+                if (newCount === 1) waitTime = 1 * 60 * 1000; // ১ম পর ১ মিনিট
+                else if (newCount === 2) waitTime = 3 * 60 * 1000; // ২য় পর ৩ মিনিট
+                else if (newCount >= 3) waitTime = 24 * 60 * 60 * 1000; // ৩য় পর ২৪ ঘণ্টা
 
-            // ৩. পরবর্তী সময় সেট করা (Progressive Logic)
-            let waitTime = 0;
-            if (adsWatched === 1) waitTime = 1 * 60 * 1000; // ১ম পর ১ মিনিট
-            else if (adsWatched === 2) waitTime = 3 * 60 * 1000; // ২য় পর ৩ মিনিট
-            else if (adsWatched >= 3) waitTime = 24 * 60 * 60 * 1000; // ৩য় পর ২৪ ঘণ্টা
+                const nextTime = Date.now() + waitTime;
 
-            nextAllowedTime = Date.now() + waitTime;
-            localStorage.setItem('earn_next_time', nextAllowedTime);
-
-            alert(`Success! You earned ${adminConfig.task_reward} GP.`);
-            updateUI();
+                // Firebase এ ডাটা আপডেট[cite: 8]
+                db.ref('users/' + userId).update({
+                    gp: userGP + reward,
+                    earn_ads_count: newCount,
+                    earn_next_time: nextTime
+                }).then(() => {
+                    alert(`Success! You earned ${reward} GP.`);
+                });
+            });
         }
 
         function startTimer(diff) {
@@ -150,7 +163,6 @@
                     return;
                 }
 
-                // Format Time
                 let h = Math.floor(remaining / 3600000);
                 let m = Math.floor((remaining % 3600000) / 60000);
                 let s = Math.floor((remaining % 60000) / 1000);
@@ -178,15 +190,13 @@
         }
 
         function resetDailyLimit() {
-            adsWatched = 0;
-            localStorage.setItem('earn_ads_count', 0);
-            localStorage.removeItem('earn_next_time');
-            nextAllowedTime = 0;
-            showReadyState();
-            document.getElementById('ad-count').innerText = "0";
+            db.ref('users/' + userId).update({
+                earn_ads_count: 0,
+                earn_next_time: 0
+            });
         }
 
-        window.onload = updateUI;
+        window.onload = initEarn;
     </script>
 </body>
 </html>
