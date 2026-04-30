@@ -16,7 +16,10 @@
         .back-nav { font-size: 20px; color: white; cursor: pointer; padding: 5px; }
 
         .container { padding: 15px; }
+        /* Grid Column 2 theke 3 kora hoyeche jate active user box fit hoy */
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+        @media (min-width: 600px) { .grid { grid-template-columns: 1fr 1fr 1fr; } }
+        
         .card { background: var(--card); padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid var(--border); }
         
         .stat-box { background: #0a1226; padding: 12px; border-radius: 10px; text-align: center; border: 1px solid var(--border); }
@@ -62,6 +65,7 @@
         <div class="container">
             <div class="grid">
                 <div class="stat-box"><small>Total Users</small><h2 id="st-users">0</h2></div>
+                <div class="stat-box"><small>Active (Live)</small><h2 id="st-active" style="color: var(--green);">0</h2></div> <!-- Active User Box[cite: 11] -->
                 <div class="stat-box"><small>Pending Req</small><h2 id="st-pending" style="color: var(--orange);">0</h2></div>
                 <div class="stat-box"><small>Total GP</small><h2 id="st-total-gp" style="color: var(--green);">0</h2></div>
                 <div class="stat-box"><small>Banned</small><h2 id="st-banned" style="color: var(--red);">0</h2></div>
@@ -135,7 +139,6 @@
         }
 
         function init() {
-            // Stats & Global Config
             db.ref('config').on('value', s => {
                 if(s.exists()){
                     document.getElementById('cfg-min').value = s.val().min_limit || 5000;
@@ -143,17 +146,22 @@
                 }
             });
 
-            // Users & Stats
             db.ref('users').on('value', snap => {
-                let users = snap.val() || {};
                 let count = snap.numChildren();
-                let banned = 0, totalGP = 0;
+                let banned = 0, totalGP = 0, activeCount = 0; // Active user variable added[cite: 11]
+                let currentTime = Date.now();
                 let html = "";
                 
                 snap.forEach(c => {
                     let u = c.val();
                     if(u.banned) banned++;
                     totalGP += (u.gp || 0);
+                    
+                    // Active logic: 5 minute threshold[cite: 11]
+                    if (u.lastSeen && (currentTime - u.lastSeen) < (5 * 60 * 1000)) {
+                        activeCount++;
+                    }
+
                     html += `<div class="user-item">
                         <div>
                             <b>${c.key}</b> ${u.banned ? '<span class="badge-banned">BANNED</span>' : ''}<br>
@@ -164,12 +172,12 @@
                 });
 
                 document.getElementById('st-users').innerText = count;
+                document.getElementById('st-active').innerText = activeCount; // Update active count[cite: 11]
                 document.getElementById('st-banned').innerText = banned;
                 document.getElementById('st-total-gp').innerText = totalGP.toLocaleString();
                 document.getElementById('user-list').innerHTML = html;
             });
 
-            // Withdraw Requests
             db.ref('withdraw_requests').on('value', snap => {
                 let pending = 0;
                 let html = "";
@@ -191,7 +199,6 @@
                 document.getElementById('wd-list').innerHTML = html || "No Pending Requests.";
             });
 
-            // Support History
             db.ref('support').on('value', snap => {
                 let html = "";
                 snap.forEach(userSnap => {
@@ -209,7 +216,6 @@
             });
         }
 
-        // Functions
         function saveConfig() {
             db.ref('config').update({
                 min_limit: parseInt(document.getElementById('cfg-min').value),
@@ -276,8 +282,10 @@
         }
 
         function toggleMaintenance() {
-            alert("This requires maintenance check in index.html, flag set in database.");
-            db.ref('config/maintenance').transaction(c => !c);
+            db.ref('config/maintenance').once('value', snap => {
+                let current = snap.val() || false;
+                db.ref('config/maintenance').set(!current).then(() => alert("Maintenance " + (!current ? "Enabled" : "Disabled")));
+            });
         }
 
         function broadcastMsg() {
