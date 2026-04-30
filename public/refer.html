@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Refer & Earn - eFootball HUB</title>
-    <script src="[https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js](https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js)"></script>
-    <script src="[https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js](https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js)"></script>
-    <script src="[https://telegram.org/js/telegram-web-app.js](https://telegram.org/js/telegram-web-app.js)"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="config.js"></script>
-    <link rel="stylesheet" href="[https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css)">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --bg: #050a18; --card: #121e36; --primary: #f472b6; --text: #ffffff; --border: #1e2d4d; --green: #22c55e; }
         body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 30px; }
@@ -70,7 +70,7 @@
             
             <h4>My Invited Friends</h4>
             <div class="user-list" id="ref-user-list">
-                <p style="text-align:center; color:#4b5563; font-size:13px; padding:20px;">No friends invited yet.</p>
+                <p style="text-align:center; color:#4b5563; font-size:13px; padding:20px;">Loading...</p>
             </div>
         </div>
     </div>
@@ -80,64 +80,84 @@
         const tg = window.Telegram.WebApp;
         tg.expand();
         
-        const user = tg.initDataUnsafe?.user;
-        const userId = user?.id || "test_user";
-        const botUsername = "Efootballtmbot"; // আপনার বটের ইউজারনেম
+        // ইউজার আইডি ফেচ করা
+        let userId = "test_user";
+        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+            userId = tg.initDataUnsafe.user.id;
+        }
 
-        // ১. রেফারেল লিঙ্ক তৈরি (ID + Username Logic)
-        const referLink = `[https://t.me/$](https://t.me/$){botUsername}?start=${userId}`;
+        const botUsername = "Efootballtmbot"; // আপনার মূল বটের নাম
+
+        // বট স্টার্ট করার জন্য রেফার লিংক তৈরি
+        const referLink = "https://t.me/" + botUsername + "?start=" + userId;
+        
+        // লিংকটি বক্সে দেখানো
         document.getElementById('ref-link').innerText = referLink;
 
-        // ২. রেফারেল ড্যাশবোর্ড ডাটা লোড করা
+        // ড্যাশবোর্ড ডাটা লোড করা
         function loadReferData() {
             try {
-                // নিশ্চিত করুন config.js ফাইলে db = firebase.database() সেট করা আছে
-                db.ref('users').on('value', snap => {
-                    let count = 0;
-                    let html = "";
-                    let bonusPerRefer = 1000; // ডিফল্ট বোনাস
+                if (typeof db !== 'undefined') {
+                    db.ref('users').on('value', function(snap) {
+                        let count = 0;
+                        let html = "";
+                        let bonusPerRefer = 1000; // ডিফল্ট বোনাস
 
-                    snap.forEach(child => {
-                        const u = child.val();
-                        // চেক করা হচ্ছে এই ইউজারকে বর্তমান ইউজার ইনভাইট করেছে কি না
-                        if (u && u.referredBy == userId) {
-                            count++;
-                            const firstLetter = u.name ? u.name.charAt(0).toUpperCase() : "U";
-                            const userName = u.name || "Unknown User";
-                            
-                            html += `
-                                <div class="user-item">
-                                    <div class="user-info">
-                                        <div style="background:var(--border); width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:bold;">${firstLetter}</div>
-                                        <div style="font-size:14px;">${userName}</div>
-                                    </div>
-                                    <span class="status-tag">Success</span>
-                                </div>`;
+                        snap.forEach(function(child) {
+                            const u = child.val();
+                            if (u && u.referredBy == userId) {
+                                count++;
+                                const userName = u.name ? u.name : "Unknown User";
+                                const firstLetter = userName.charAt(0).toUpperCase();
+                                
+                                html += `
+                                    <div class="user-item">
+                                        <div class="user-info">
+                                            <div style="background:var(--border); width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:bold;">${firstLetter}</div>
+                                            <div style="font-size:14px;">${userName}</div>
+                                        </div>
+                                        <span class="status-tag">Success</span>
+                                    </div>`;
+                            }
+                        });
+
+                        document.getElementById('total-refers').innerText = count;
+                        document.getElementById('earned-gp').innerText = (count * bonusPerRefer).toLocaleString();
+                        
+                        if (count > 0) {
+                            document.getElementById('ref-user-list').innerHTML = html;
+                        } else {
+                            document.getElementById('ref-user-list').innerHTML = '<p style="text-align:center; color:#4b5563; font-size:13px; padding:20px;">No friends invited yet.</p>';
                         }
                     });
-
-                    document.getElementById('total-refers').innerText = count;
-                    document.getElementById('earned-gp').innerText = (count * bonusPerRefer).toLocaleString();
-                    
-                    if (count > 0) {
-                        document.getElementById('ref-user-list').innerHTML = html;
-                    } else {
-                        document.getElementById('ref-user-list').innerHTML = '<p style="text-align:center; color:#4b5563; font-size:13px; padding:20px;">No friends invited yet.</p>';
-                    }
-                });
+                }
             } catch (error) {
                 console.error("Database connection issue: ", error);
             }
         }
 
+        // লিংক কপি করার ফাংশন
         function copyLink() {
             const link = document.getElementById('ref-link').innerText;
             if (link !== "Loading link...") {
-                navigator.clipboard.writeText(link).then(() => {
-                    alert("Referral link copied!");
-                }).catch(err => {
-                    console.error("Failed to copy link: ", err);
-                });
+                if (navigator.clipboard && window.isSecureContext) {
+                    navigator.clipboard.writeText(link).then(() => {
+                        alert("Referral link copied!");
+                    });
+                } else {
+                    let textArea = document.createElement("textarea");
+                    textArea.value = link;
+                    textArea.style.position = "fixed";
+                    textArea.style.opacity = "0";
+                    document.body.appendChild(textArea);
+                    textArea.focus();
+                    textArea.select();
+                    try {
+                        document.execCommand('copy');
+                        alert("Referral link copied!");
+                    } catch (err) {}
+                    textArea.remove();
+                }
             }
         }
 
