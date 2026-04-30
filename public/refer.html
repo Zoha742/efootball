@@ -3,62 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Refer & Earn</title>
+    <title>Refer & Earn - eFootball HUB</title>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
-    <script src="https://sad.adsgram.ai/js/adsgram-sdk.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="config.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --bg: #050a18; --card: #121e36; --primary: #f472b6; --text: #ffffff; --border: #1e2d4d; }
+        :root { --bg: #050a18; --card: #121e36; --primary: #f472b6; --text: #ffffff; --border: #1e2d4d; --green: #22c55e; }
         body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 30px; }
+        
         .top-bar { display: flex; align-items: center; padding: 15px; background: rgba(18, 30, 54, 0.7); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; }
         .top-bar a { color: white; text-decoration: none; font-size: 18px; margin-right: 15px; }
-        .container { padding: 20px; text-align: center; }
-        .refer-card { background: var(--card); border-radius: 20px; padding: 30px; border: 1px solid var(--border); box-shadow: 0 4px 15px rgba(244, 114, 182, 0.1); }
-        .refer-card i { font-size: 60px; color: var(--primary); margin-bottom: 15px; }
-        .link-box { background: #050a18; border: 1px dashed var(--primary); padding: 15px; border-radius: 12px; margin: 20px 0; font-size: 13px; color: #94a3b8; word-break: break-all; }
-        .btn-copy { width: 100%; background: linear-gradient(135deg, #f472b6, #db2777); border: none; color: white; padding: 14px; border-radius: 12px; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        .btn-copy:active { transform: scale(0.95); }
+        
+        .container { padding: 20px; }
+        .refer-card { background: var(--card); border-radius: 20px; padding: 30px; border: 1px solid var(--border); text-align: center; margin-bottom: 25px; }
+        .refer-card i { font-size: 50px; color: var(--primary); margin-bottom: 15px; }
+        
+        .link-box { background: #050a18; border: 1px dashed var(--primary); padding: 15px; border-radius: 12px; margin: 20px 0; font-size: 13px; color: #94a3b8; word-break: break-all; cursor: pointer; }
+        .btn-copy { width: 100%; background: linear-gradient(135deg, #f472b6, #db2777); border: none; color: white; padding: 14px; border-radius: 12px; font-weight: bold; cursor: pointer; }
+
+        /* Dashboard Style */
+        .dashboard { background: var(--card); border-radius: 20px; border: 1px solid var(--border); padding: 20px; }
+        .dash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+        .dash-stat { text-align: center; }
+        .dash-stat span { display: block; font-size: 12px; color: #94a3b8; text-transform: uppercase; }
+        .dash-stat b { font-size: 18px; color: var(--primary); }
+
+        .user-list { max-height: 300px; overflow-y: auto; }
+        .user-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #0a1226; border-radius: 10px; margin-bottom: 8px; border: 1px solid var(--border); }
+        .user-info { display: flex; align-items: center; gap: 10px; }
+        .user-info img { width: 30px; height: 30px; border-radius: 50%; background: var(--border); }
+        .status-tag { font-size: 10px; padding: 3px 8px; border-radius: 20px; background: rgba(34, 197, 94, 0.1); color: var(--green); border: 1px solid var(--green); }
     </style>
 </head>
 <body>
+
     <div class="top-bar">
         <a href="profile.html"><i class="fas fa-chevron-left"></i></a>
         <span>Refer & Earn</span>
     </div>
+
     <div class="container">
+        <!-- Refer Card -->
         <div class="refer-card">
-            <i class="fas fa-user-plus"></i>
+            <i class="fas fa-gift"></i>
             <h2>Invite Friends</h2>
-            <p style="font-size: 14px; color: #94a3b8;">আপনার বন্ধুদের ইনভাইট করুন এবং প্রতি রেফারে ১০০০ GP বোনাস জিতে নিন!</p>
-            <div class="link-box" id="ref-link">t.me/Efootballtmbot</div>
+            <p style="font-size: 14px; color: #94a3b8;">আপনার বন্ধুদের ইনভাইট করুন এবং প্রতি সফল রেফারে ১০০০ GP বোনাস জিতে নিন!</p>
+            
+            <div class="link-box" id="ref-link" onclick="copyLink()">Loading link...</div>
             <button class="btn-copy" onclick="copyLink()">COPY REFER LINK</button>
         </div>
+
+        <!-- Referral Dashboard -->
+        <div class="dashboard">
+            <div class="dash-header">
+                <div class="dash-stat">
+                    <span>Total Refer</span>
+                    <b id="total-refers">0</b>
+                </div>
+                <div class="dash-stat">
+                    <span>Earned GP</span>
+                    <b id="earned-gp">0</b>
+                </div>
+            </div>
+            
+            <h4>My Invited Friends</h4>
+            <div class="user-list" id="ref-user-list">
+                <p style="text-align:center; color:#4b5563; font-size:13px; padding:20px;">No friends invited yet.</p>
+            </div>
+        </div>
     </div>
+
     <script>
-       console.log("Database connected successfully!");
-        
+        const tg = window.Telegram.WebApp;
+        const user = tg.initDataUnsafe?.user;
+        const userId = user?.id || "test_user";
+        const botUsername = "Efootballtmbot"; // আপনার বটের ইউজারনেম
+
+        // ১. রেফারেল লিঙ্ক তৈরি (ID + Username Logic)
+        const referLink = `https://t.me/${botUsername}?start=${userId}`;[cite: 12]
+        document.getElementById('ref-link').innerText = referLink;
+
+        // ২. রেফারেল ড্যাশবোর্ড ডাটা লোড করা
+        function loadReferData() {
+            db.ref('users').on('value', snap => {
+                let count = 0;
+                let html = "";
+                let bonusPerRefer = 1000; // ডিফল্ট বোনাস
+
+                snap.forEach(child => {
+                    const u = child.val();
+                    // চেক করা হচ্ছে এই ইউজারকে বর্তমান ইউজার ইনভাইট করেছে কি না
+                    if (u.referredBy == userId) {
+                        count++;
+                        html += `
+                            <div class="user-item">
+                                <div class="user-info">
+                                    <div style="background:var(--border); width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px;">${u.name.charAt(0)}</div>
+                                    <div style="font-size:14px;">${u.name}</div>
+                                </div>
+                                <span class="status-tag">Success</span>
+                            </div>`;
+                    }
+                });
+
+                document.getElementById('total-refers').innerText = count;
+                document.getElementById('earned-gp').innerText = (count * bonusPerRefer).toLocaleString();
+                if (count > 0) {
+                    document.getElementById('ref-user-list').innerHTML = html;
+                }
+            });
+        }
+
         function copyLink() {
             const link = document.getElementById('ref-link').innerText;
             navigator.clipboard.writeText(link);
             alert("Referral link copied!");
         }
-        const tg = window.Telegram.WebApp;
-const user = tg.initDataUnsafe?.user;
 
-// Admin config theke bonus amount neya
-const adminConfig = JSON.parse(localStorage.getItem('admin_config')) || { refer_bonus: 1000 };
-
-if (user) {
-    // Apnar bot-er username ekhane bosaben
-    const botUsername = "YOUR_BOT_USERNAME"; 
-    const referLink = `https://t.me/${botUsername}?start=${user.id}`;
-    
-    document.getElementById('ref-link').innerText = referLink;
-    document.querySelector('.refer-card p').innerText = `বন্ধুদের ইনভাইট করুন এবং প্রতি রেফারে ${adminConfig.refer_bonus} GP বোনাস জিতে নিন!`;
-}
+        window.onload = loadReferData;
     </script>
 </body>
 </html>
