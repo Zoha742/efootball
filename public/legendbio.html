@@ -3,34 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Player Bio</title>
+    <title>Player Bio - eFootball HUB</title>
+    <!-- Firebase & SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
     <script src="https://sad.adsgram.ai/js/adsgram-sdk.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
+    <!-- Central Master Scripts -->
     <script src="config.js"></script>
+    <script src="ads-manager.js"></script> 
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --bg: #050a18; --card: #121e36; --primary: #fbbf24; --text: #ffffff; }
-        body { background: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; padding: 15px; padding-bottom: 50px; }
+        body { background: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; padding: 15px; padding-bottom: 80px; }
         
         .header { display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 15px; }
         .back-btn { position: absolute; left: 0; font-size: 22px; color: var(--primary); text-decoration: none; }
         
-        /* Profile Card - Design Unchanged */
         .profile-card { background: var(--card); border-radius: 12px; padding: 15px; text-align: center; border: 1px solid #1e2d4d; margin-bottom: 15px; }
         .profile-img { width: 120px; border-radius: 12px; border: 2px solid var(--primary); margin-bottom: 10px; }
         .profile-name { font-size: 18px; font-weight: bold; color: var(--primary); }
 
         .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
         .info-box { background: var(--card); padding: 10px; border-radius: 8px; border: 1px solid #1e2d4d; }
-        .info-label { font-size: 10px; color: #94a3b8; display: block; margin-bottom: 30px; }
+        .info-label { font-size: 10px; color: #94a3b8; display: block; margin-bottom: 5px; }
         .info-value { font-size: 13px; font-weight: bold; }
 
         .stats-container { display: flex; flex-direction: column; gap: 8px; }
         .stat-box { display: flex; justify-content: space-between; align-items: center; background: #0f172a; padding: 8px 12px; border-radius: 6px; border: 1px solid #1e2d4d; }
         .stat-name { font-size: 12px; color: #cbd5e1; }
         .stat-num { font-size: 14px; font-weight: bold; color: #000; padding: 2px 8px; border-radius: 4px; min-width: 35px; text-align: center; }
+        
+        #banner-container { position: fixed; bottom: 0; left: 0; width: 100%; display: flex; justify-content: center; background: rgba(5, 10, 24, 0.9); padding: 10px 0; border-top: 1px solid var(--border); }
     </style>
 </head>
 <body>
@@ -54,11 +60,13 @@
     <div class="info-box"><span class="info-label">Playing Style</span><span class="info-value" id="p-style">--</span></div>
 </div>
 
-<div class="stats-container" id="stats-container">
-    </div>
+<div class="stats-container" id="stats-container"></div>
+
+<!-- ব্যানার অ্যাডের কন্টেইনার -->
+<div id="banner-container"></div>
 
 <script>
-   console.log("Database connected successfully!");
+    console.log("Database connected successfully!");[cite: 8, 12]
 
     function getStatColor(val) {
         if (val >= 95) return "#ff0000"; // Red/Epic
@@ -69,6 +77,7 @@
     }
 
     window.onload = () => {
+        // ১. প্লেয়ার ডাটা লোড করা
         const pData = localStorage.getItem('selected_player');
         if (pData) {
             const p = JSON.parse(pData);
@@ -95,15 +104,18 @@
             }
         }
 
-        // Adsgram Integration (Preserved)
+        // ২. ব্যানার অ্যাড লোড (সেন্ট্রাল কন্ট্রোলার থেকে)[cite: 8]
         setTimeout(() => {
-            try {
-                if (window.Adsgram) {
-                    const bannerAd = window.Adsgram.init({ blockId: "4774" });
-                    bannerAd.show().catch((err) => console.log("Ads Error"));
-                }
-            } catch (e) {}
+            AdController.loadBanner("banner-container");
         }, 800);
+
+        // ৩. ভিডিও অ্যাড (বর্তমানে হাইড করা আছে)
+        /*
+        AdController.showVideoAd(
+            (result) => { console.log("Video reward success"); },
+            (error) => { console.log("Video ad error"); }
+        );
+        */
     };
 </script>
 </body>
