@@ -8,9 +8,9 @@
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
     <script src="https://sad.adsgram.ai/js/adsgram-sdk.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
     <script src="config.js"></script>
-    <script src="ads-manager.js"></script> <!-- এটি যোগ করতে হবে -->
-
+    <script src="ads-manager.js"></script> <!-- সেন্ট্রাল অ্যাড স্ক্রিপ্ট -->
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -28,23 +28,21 @@
         .row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .row:last-child { border-bottom: none; }
 
-        /* --- আপনার চাওয়া পরিবর্তন এখানে --- */
         .subtitle { 
             font-weight: bold; 
-            color: #fbbf24; /* এখান থেকে লাল বক্সের বামের লেখাগুলোর কালার চেঞ্জ করুন */
-            font-size: 13px; /* এখান থেকে সাইজ ছোট-বড় করুন */
+            color: #fbbf24; 
+            font-size: 13px; 
             text-transform: uppercase; 
             width: 45%; 
         }
 
         .body-text { 
-            font-size: 15px; /* এখান থেকে ডানের লেখার সাইজ চেঞ্জ করুন */
-            color: #ffffff; /* এখান থেকে ডানের লেখার কালার চেঞ্জ করুন */
+            font-size: 15px; 
+            color: #ffffff; 
             text-align: right; 
             width: 55%; 
             font-weight: 500;
         }
-        /* ---------------------------------- */
 
         video { width: 100%; border-radius: 10px; border: 1px solid #1e2d4d; margin-top: 10px; }
     </style>
@@ -56,6 +54,7 @@
     </div>
     <img id="m-img" class="bio-img" src="">
     <h2 id="m-name" class="name"></h2>
+    
     <div class="details-container">
         <div class="row"><span class="subtitle">Nationality</span><span id="m-nat" class="body-text"></span></div>
         <div class="row"><span class="subtitle">Team</span><span id="m-team" class="body-text"></span></div>
@@ -69,14 +68,17 @@
         <div class="row"><span class="subtitle">Playing Style</span><span id="m-km-s" class="body-text"></span></div>
         <div class="row"><span class="subtitle">Position</span><span id="m-km-p" class="body-text"></span></div>
     </div>
+    
     <div style="text-align: left; color: var(--primary); font-size: 14px; margin-bottom: 8px; font-weight: bold; margin-top: 20px;">
-    TACTICAL VIDEO
-</div>
-<video autoplay muted playsinline loop controls style="width: 100%; border-radius: 10px; border: 1px solid #1e2d4d;">
+        TACTICAL VIDEO
+    </div>
+    <video autoplay muted playsinline loop controls style="width: 100%; border-radius: 10px; border: 1px solid #1e2d4d;">
         <source src="https://res.cloudinary.com/dyqegwdme/video/upload/v1777200154/Screen_Recording_20260426_161047_eFootball_cckti0.mp4" type="video/mp4">
     </video>
 
+    <!-- ব্যানার কন্টেইনার -->
     <div id="banner-container" style="display: flex; justify-content: center; margin-top: 25px; padding-bottom: 30px;"></div>
+    
     <script>
        console.log("Database connected successfully!");
         
@@ -95,14 +97,15 @@
                 document.getElementById('m-cp-p').innerText = m.cp_pos;
                 document.getElementById('m-km-s').innerText = m.km_style;
                 document.getElementById('m-km-p').innerText = m.km_pos;
+            }
 
-                }
-            // নতুন মাস্টার কন্ট্রোলার থেকে অ্যাডস লোড (১ সেকেন্ড পর)
+            // ব্যানার এবং ভিডিও অ্যাড
             setTimeout(() => {
                 if (typeof AdController !== 'undefined') {
+                    // ১. ব্যানার অ্যাড
                     AdController.loadBanner("banner-container");
                     
-                    // ভিডিও অ্যাড বর্তমানে কমেন্ট করে হাইড করা আছে
+                    // ২. ভিডিও অ্যাড (বর্তমানে হাইড করা আছে)
                     /*
                     AdController.showVideoAd(
                         (result) => { console.log("Video Reward Success"); },
