@@ -76,36 +76,46 @@
     </div>
 
     <script>
-        // টেলিগ্রাম ওয়েবঅ্যাপ ইনিশিয়ালাইজেশন
-        const tg = window.Telegram.WebApp;
-        tg.expand();
-        
-        // ইউজার আইডি ফেচ করা
-        let userId = "test_user";
-        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-            userId = tg.initDataUnsafe.user.id;
+        // ১. সবার আগে রেফার লিংক তৈরি করে বক্সে বসানো (যাতে ডাটাবেজ বা অন্য কোনো কারণে আটকে না যায়)
+        try {
+            const tg = window.Telegram.WebApp;
+            tg.expand();
+            
+            let userId = "test_user";
+            // টেলিগ্রাম থেকে ইউজার আইডি নেওয়ার চেষ্টা
+            if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+                userId = tg.initDataUnsafe.user.id;
+            }
+
+            const botUsername = "Efootballtmbot";
+            const referLink = "https://t.me/" + botUsername + "?start=" + userId;
+            
+            // লিংকটি বক্সে পুশ করা
+            document.getElementById('ref-link').innerText = referLink;
+            
+        } catch (e) {
+            console.error("Telegram API Error:", e);
+            document.getElementById('ref-link').innerText = "https://t.me/Efootballtmbot?start=error_loading";
         }
 
-        const botUsername = "Efootballtmbot"; // আপনার মূল বটের নাম
-
-        // বট স্টার্ট করার জন্য রেফার লিংক তৈরি
-        const referLink = "https://t.me/" + botUsername + "?start=" + userId;
-        
-        // লিংকটি বক্সে দেখানো
-        document.getElementById('ref-link').innerText = referLink;
-
-        // ড্যাশবোর্ড ডাটা লোড করা
+        // ২. ডাটাবেজ থেকে রেফার ডাটা লোড করা
         function loadReferData() {
             try {
                 if (typeof db !== 'undefined') {
+                    // টেলিগ্রাম ইউজার আইডি আবার কনফার্ম করা
+                    let currentUserId = "test_user";
+                    if (window.Telegram.WebApp.initDataUnsafe?.user) {
+                        currentUserId = window.Telegram.WebApp.initDataUnsafe.user.id;
+                    }
+
                     db.ref('users').on('value', function(snap) {
                         let count = 0;
                         let html = "";
-                        let bonusPerRefer = 1000; // ডিফল্ট বোনাস
+                        let bonusPerRefer = 1000;
 
                         snap.forEach(function(child) {
                             const u = child.val();
-                            if (u && u.referredBy == userId) {
+                            if (u && u.referredBy == currentUserId) {
                                 count++;
                                 const userName = u.name ? u.name : "Unknown User";
                                 const firstLetter = userName.charAt(0).toUpperCase();
@@ -130,37 +140,40 @@
                             document.getElementById('ref-user-list').innerHTML = '<p style="text-align:center; color:#4b5563; font-size:13px; padding:20px;">No friends invited yet.</p>';
                         }
                     });
+                } else {
+                    document.getElementById('ref-user-list').innerHTML = '<p style="text-align:center; color:#4b5563; font-size:13px; padding:20px;">Database not connected.</p>';
                 }
             } catch (error) {
                 console.error("Database connection issue: ", error);
             }
         }
 
-        // লিংক কপি করার ফাংশন
+        // ৩. লিংক কপি করার ফাংশন
         function copyLink() {
-            const link = document.getElementById('ref-link').innerText;
-            if (link !== "Loading link...") {
-                if (navigator.clipboard && window.isSecureContext) {
-                    navigator.clipboard.writeText(link).then(() => {
-                        alert("Referral link copied!");
-                    });
-                } else {
-                    let textArea = document.createElement("textarea");
-                    textArea.value = link;
-                    textArea.style.position = "fixed";
-                    textArea.style.opacity = "0";
-                    document.body.appendChild(textArea);
-                    textArea.focus();
-                    textArea.select();
-                    try {
-                        document.execCommand('copy');
-                        alert("Referral link copied!");
-                    } catch (err) {}
-                    textArea.remove();
+            const linkBox = document.getElementById('ref-link');
+            const link = linkBox.innerText;
+            
+            if (link !== "Loading link..." && !link.includes("error_loading")) {
+                let textArea = document.createElement("textarea");
+                textArea.value = link;
+                textArea.style.position = "fixed";
+                textArea.style.opacity = "0";
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    alert("Referral link copied successfully!");
+                } catch (err) {
+                    alert("Failed to copy link! Please select and copy manually.");
                 }
+                textArea.remove();
+            } else {
+                alert("Please wait for the valid link to load.");
             }
         }
 
+        // পেজ লোড হলে ডাটাবেজ কল হবে
         window.onload = loadReferData;
     </script>
 </body>
