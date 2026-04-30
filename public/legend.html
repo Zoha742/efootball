@@ -9,7 +9,6 @@
     <script src="https://sad.adsgram.ai/js/adsgram-sdk.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="config.js"></script>
-    <!-- মাস্টার অ্যাড স্ক্রিপ্ট লিঙ্ক করা হলো[cite: 8] -->
     <script src="ads-manager.js"></script> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -19,7 +18,6 @@
         .header { display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 25px; }
         .back-btn { position: absolute; left: 0; font-size: 22px; color: var(--primary); text-decoration: none; }
         
-        /* All Position Buttons - Unchanged[cite: 18] */
         .pos-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 25px; }
         .pos-btn { background: var(--card-dark); border: 1px solid var(--primary); padding: 12px; text-align: center; border-radius: 8px; cursor: pointer; color: var(--primary); font-weight: bold; font-size: 14px; }
         
@@ -30,12 +28,11 @@
             padding-bottom: 100px; 
         }
 
-        /* Card Design like Screenshot 6[cite: 18] */
         .top-card { 
             background: var(--card-dark); 
             border-radius: 10px; 
             overflow: hidden; 
-            border: 1.5px solid var(--primary); /* Gold border like example */
+            border: 1.5px solid var(--primary);
             text-align: center; 
             cursor: pointer;
             display: flex;
@@ -45,11 +42,10 @@
         
         .top-card:active { transform: scale(0.95); }
 
-        /* Image View Fix[cite: 18] */
         .top-card img { 
             width: 100%; 
-            object-fit: cover; /* Fill the card area */
-            object-position: top; /* Keep player face visible */
+            object-fit: cover; 
+            object-position: top; 
             display: block;
         }
 
@@ -58,7 +54,7 @@
             padding: 8px 2px; 
             margin: 0; 
             color: var(--text); 
-            background: rgba(18, 30, 54, 0.9); /* Card dark color background for name */
+            background: rgba(18, 30, 54, 0.9); 
             font-weight: bold;
             white-space: nowrap;
             overflow: hidden;
@@ -79,7 +75,7 @@
         <div class="pos-btn" onclick="loadLegends('CF')">CF</div>
         <div class="pos-btn" onclick="loadLegends('SS')">SS</div>
         <div class="pos-btn" onclick="loadLegends('LWF')">LWF</div>
-        <div class="pos-btn" onclick="loadLegends('RWF') )">RWF</div>
+        <div class="pos-btn" onclick="loadLegends('RWF')">RWF</div>
         <div class="pos-btn" onclick="loadLegends('AMF')">AMF</div>
         <div class="pos-btn" onclick="loadLegends('CMF')">CMF</div>
         <div class="pos-btn" onclick="loadLegends('DMF')">DMF</div>
@@ -89,14 +85,12 @@
         <div class="pos-btn" onclick="loadLegends('GK')">GK</div>
     </div>
 
-    <!-- প্লেয়ার গ্রিড[cite: 18] -->
     <div id="legend-container" class="player-grid"></div>
     
-    <!-- ব্যানার অ্যাড কন্টেইনার (এখানে লেআউট ফিক্স করা হয়েছে)[cite: 8, 17] -->
     <div id="banner-container" style="display: flex; justify-content: center; margin-top: 20px; padding-bottom: 20px;"></div>
 
 <script>
-    console.log("Database connected successfully!");[cite: 18]
+    console.log("Database connected successfully!");
     
     async function loadLegends(pos) {
         const container = document.getElementById('legend-container');
@@ -132,10 +126,8 @@
     } 
 
     window.onload = () => {
-        // ১. প্লেয়ার লিস্ট লোড করা[cite: 18]
         loadLegends('CF'); 
 
-        // ২. মাস্টার কন্ট্রোলার থেকে ব্যানার অ্যাড লোড করা[cite: 8]
         setTimeout(() => {
             if (typeof AdController !== 'undefined') {
                 AdController.loadBanner("banner-container");
