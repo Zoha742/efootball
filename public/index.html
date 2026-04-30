@@ -27,12 +27,12 @@
         /* Headline Style */
         .headline { color: var(--text); font-size: 16px; font-weight: bold; text-transform: uppercase; margin: 25px 0 12px; border-left: 4px solid var(--primary); padding-left: 10px; }
 
-        /* Quick Action Buttons (3 Column) */
+        /* Quick Action Buttons */
         .quick-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 25px; }
         .quick-btn { background: var(--card-dark); border: 1px solid var(--border); padding: 15px 5px; border-radius: 12px; text-align: center; cursor: pointer; color: #fff; font-size: 12px; transition: 0.3s; }
         .quick-btn i { display: block; margin-bottom: 8px; color: #f97316; font-size: 18px; }
 
-        /* Top Player Card View (3 Column) */
+        /* Top Player Card View */
         .player-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
         .top-card { background: var(--card-dark); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; text-align: center; padding: 5px; cursor: pointer; }
         .top-card img { width: 100%; border-radius: 8px; display: block; }
@@ -66,8 +66,7 @@
         <div id="banner-container" style="display: flex; justify-content: center; margin: 20px 0;"></div>
 
         <div class="headline">Top Player</div>
-        <div id="home-legend-view" class="player-grid">
-            </div>
+        <div id="home-legend-view" class="player-grid"></div>
     </div>
 
     <nav class="bottom-nav">
@@ -78,9 +77,9 @@
     </nav>
 
    <script>
+    console.log("Database connected successfully!");
 
-      console.log("Database connected successfully!");
-       
+    // ১. হোম পেজের লিজেন্ড ডাটা লোড করা
     async function loadHomeLegends() {
         const container = document.getElementById('home-legend-view');
         try {
@@ -105,67 +104,58 @@
         }
     }
 
-       window.addEventListener('load', () => {
-    const tg = window.Telegram.WebApp;
-    const startParam = tg.initDataUnsafe?.start_param; // Jini refer korechen tar ID ekhane thakbe
+    // ২. মেইন লজিক: ইউজার ডিটেকশন, রেজিস্ট্রেশন এবং মেইনটেন্যান্স চেক
+    window.addEventListener('load', () => {
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+        const user = tg.initDataUnsafe?.user;
+        const startParam = tg.initDataUnsafe?.start_param;
 
-    if (startParam && !localStorage.getItem('refer_bonus_claimed')) {
-        const adminConfig = JSON.parse(localStorage.getItem('admin_config')) || { refer_bonus: 1000 };
-        const bonus = parseInt(adminConfig.refer_bonus);
+        // হোম লিজেন্ড লোড করা
+        loadHomeLegends();
 
-        // Notun user-ke bonus deya
-        let currentGP = parseInt(localStorage.getItem('user_gp')) || 0;
-        localStorage.setItem('user_gp', currentGP + bonus);
-        
-        // Jate bar bar bonus na neya jay
-        localStorage.setItem('refer_bonus_claimed', 'true');
-        
-        alert(`Referral link theke join koray apni ${bonus} GP bonus peyechen!`);
-    }
-});
-       window.addEventListener('load', () => {
-    const tg = window.Telegram.WebApp;
-    tg.expand();
-    const user = tg.initDataUnsafe?.user;
-    
-    if (user) {
-        const userId = user.id;
-        const userRef = db.ref('users/' + userId);
+        if (user) {
+            const userId = user.id;
+            const userRef = db.ref('users/' + userId);
 
-        // ১. মেইনটেন্যান্স চেক (অ্যাডমিন প্যানেল থেকে কন্ট্রোল হবে)
-        db.ref('config/maintenance').on('value', snap => {
-            if (snap.val() === true) {
-                document.body.innerHTML = "<div style='background:#050a18; height:100vh; display:flex; align-items:center; justify-content:center; color:white; text-align:center;'><h1>Server Maintenance... <br> Please wait!</h1></div>";
-                return;
-            }
-        });
-
-        // ২. ইউজার রেজিস্ট্রেশন এবং ব্যান চেক
-        userRef.on('value', snap => {
-            if (!snap.exists()) {
-                // নতুন ইউজার ডাটাবেসে সেভ করা
-                let welcomeBonus = 0;
-                const startParam = tg.initDataUnsafe?.start_param;
-                
-                if (startParam) { welcomeBonus = 1000; } // রেফারেল বোনাস (যদি থাকে)
-
-                userRef.set({
-                    name: user.first_name + " " + (user.last_name || ""),
-                    gp: welcomeBonus,
-                    banned: false,
-                    joinDate: new Date().toLocaleString()
-                }).then(() => console.log("New User Registered!"));
-            } else {
-                // ইউজার যদি ব্যান থাকে তবে অ্যাপ বন্ধ হয়ে যাবে
-                if (snap.val().banned === true) {
-                    document.body.innerHTML = "<div style='background:#050a18; height:100vh; display:flex; align-items:center; justify-content:center; color:red; text-align:center;'><h1>You are BANNED! <br> Contact Admin for help.</h1></div>";
+            // A. মেইনটেন্যান্স চেক
+            db.ref('config/maintenance').on('value', snap => {
+                if (snap.val() === true) {
+                    document.body.innerHTML = "<div style='background:#050a18; height:100vh; display:flex; align-items:center; justify-content:center; color:white; text-align:center; padding:20px;'><h1>Server Maintenance... <br> Please wait!</h1></div>";
+                    return;
                 }
-            }
-        });
-    }
-});
-       
-    window.onload = loadHomeLegends;
+            });
+
+            // B. রেজিস্ট্রেশন, ব্যান চেক এবং অ্যাক্টিভিটি ট্র্যাক
+            userRef.on('value', snap => {
+                if (!snap.exists()) {
+                    // নতুন ইউজার ডাটাবেসে সেভ করা
+                    let welcomeBonus = startParam ? 1000 : 0; // রেফারেল বোনাস থাকলে ১০০০[cite: 10]
+
+                    userRef.set({
+                        name: user.first_name + " " + (user.last_name || ""),
+                        username: user.username || "N/A",
+                        gp: welcomeBonus,
+                        banned: false,
+                        lastSeen: Date.now(), // অ্যাক্টিভ ইউজার ট্র্যাক করতে
+                        joinDate: new Date().toLocaleString()
+                    }).then(() => {
+                        console.log("New User Registered!");
+                        if(welcomeBonus > 0) alert(`Referral link theke join koray apni ${welcomeBonus} GP bonus peyechen!`);
+                    });
+                } else {
+                    const userData = snap.val();
+                    // ইউজার যদি ব্যান থাকে তবে অ্যাপ বন্ধ হয়ে যাবে[cite: 10]
+                    if (userData.banned === true) {
+                        document.body.innerHTML = "<div style='background:#050a18; height:100vh; display:flex; align-items:center; justify-content:center; color:red; text-align:center; padding:20px;'><h1>You are BANNED! <br> Contact Admin for help.</h1></div>";
+                    } else {
+                        // ইউজার অ্যাক্টিভ থাকলে lastSeen আপডেট করা
+                        userRef.update({ lastSeen: Date.now() });
+                    }
+                }
+            });
+        }
+    });
 </script>
 </body>
 </html>
