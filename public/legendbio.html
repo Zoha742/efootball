@@ -4,12 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Player Bio</title>
+    <!-- Firebase & SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
     <script src="https://sad.adsgram.ai/js/adsgram-sdk.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
+    <!-- সেন্ট্রাল স্ক্রিপ্ট লিঙ্ক -->
     <script src="config.js"></script>
-    <script src="ads-manager.js"></script> <!-- শুধু এই স্ক্রিপ্টটি অ্যাড করা হয়েছে -->
+    <script src="ads-manager.js"></script>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --bg: #050a18; --card: #121e36; --primary: #fbbf24; --text: #ffffff; }
@@ -18,7 +22,6 @@
         .header { display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 15px; }
         .back-btn { position: absolute; left: 0; font-size: 22px; color: var(--primary); text-decoration: none; }
         
-        /* Profile Card - Design Unchanged */
         .profile-card { background: var(--card); border-radius: 12px; padding: 15px; text-align: center; border: 1px solid #1e2d4d; margin-bottom: 15px; }
         .profile-img { width: 120px; border-radius: 12px; border: 2px solid var(--primary); margin-bottom: 10px; }
         .profile-name { font-size: 18px; font-weight: bold; color: var(--primary); }
@@ -55,25 +58,24 @@
     <div class="info-box"><span class="info-label">Playing Style</span><span class="info-value" id="p-style">--</span></div>
 </div>
 
-<div class="stats-container" id="stats-container">
-    </div>
+<div class="stats-container" id="stats-container"></div>
 
-<!-- শুধু এই ব্যানার কন্টেইনারটি যোগ করা হয়েছে -->
+<!-- ব্যানার অ্যাডের কন্টেইনার -->
 <div id="banner-container" style="display: flex; justify-content: center; margin-top: 20px; padding-bottom: 20px;"></div>
 
 <script>
-   console.log("Database connected successfully!");[cite: 18]
+    console.log("Database connected successfully!");
 
     function getStatColor(val) {
-        if (val >= 95) return "#ff0000"; // Red/Epic
-        if (val >= 90) return "#ff8c00"; // Orange
-        if (val >= 80) return "#ffff00"; // Yellow
-        if (val >= 70) return "#adff2f"; // Light Green
+        if (val >= 95) return "#ff0000"; 
+        if (val >= 90) return "#ff8c00"; 
+        if (val >= 80) return "#ffff00"; 
+        if (val >= 70) return "#adff2f"; 
         return "#ffffff";
     }
 
     window.onload = () => {
-        const pData = localStorage.getItem('selected_player');[cite: 18]
+        const pData = localStorage.getItem('selected_player');
         if (pData) {
             const p = JSON.parse(pData);
             document.getElementById('p-img').src = p.img;
@@ -99,13 +101,22 @@
             }
         }
 
-        // Adsgram Integration (Updated for Central Ads System)
+        // --- ব্যানার এবং ভিডিও অ্যাড কল করার অংশ ---
         setTimeout(() => {
             try {
                 if (typeof AdController !== 'undefined') {
+                    // ১. ব্যানার অ্যাড লোড
                     AdController.loadBanner("banner-container");
+                    
+                    // ২. ভিডিও অ্যাড শো
+                    AdController.showVideoAd(
+                        (result) => { console.log("Video Reward Success"); },
+                        (error) => { console.log("Video Ad Error or Skipped", error); }
+                    );
                 }
-            } catch (e) {}
+            } catch (e) {
+                console.log("Ad Error", e);
+            }
         }, 800);
     };
 </script>
