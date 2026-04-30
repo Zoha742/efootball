@@ -70,7 +70,6 @@
                 <div class="stat-box"><small>Banned</small><h2 id="st-banned" style="color: var(--red);">0</h2></div>
             </div>
 
-            <!-- Financial Settings Card with Refer Bonus Option -->
             <div class="card">
                 <h4><i class="fas fa-hand-holding-usd"></i> Financial Settings</h4>
                 <div class="grid">
@@ -82,7 +81,6 @@
                         <label style="font-size: 11px;">1 Dollar = (GP)</label>
                         <input type="number" id="cfg-rate" class="input-box">
                     </div>
-                    <!-- New Refer Bonus Field Added -->
                     <div>
                         <label style="font-size: 11px;">Refer Bonus (GP)</label>
                         <input type="number" id="cfg-bonus" class="input-box">
@@ -144,7 +142,7 @@
         }
 
         function init() {
-            // Load values including Refer Bonus from Firebase
+            // ১. অ্যাডমিন প্যানেলে ডাটা লোড করা[cite: 7]
             db.ref('config').on('value', s => {
                 if(s.exists()){
                     document.getElementById('cfg-min').value = s.val().min_limit || 5000;
@@ -153,6 +151,7 @@
                 }
             });
 
+            // ২. ইউজার স্ট্যাটস এবং লিস্ট[cite: 8]
             db.ref('users').on('value', snap => {
                 let count = snap.numChildren();
                 let banned = 0, totalGP = 0, activeCount = 0;
@@ -181,7 +180,7 @@
                 document.getElementById('user-list').innerHTML = html;
             });
 
-            // Withdraw and Support logic remains same as Source 10[cite: 10]
+            // ৩. উইথড্র রিকোয়েস্ট ম্যানেজমেন্ট[cite: 8]
             db.ref('withdraw_requests').on('value', snap => {
                 let pending = 0;
                 let html = "";
@@ -203,6 +202,7 @@
                 document.getElementById('wd-list').innerHTML = html || "No Pending Requests.";
             });
 
+            // ৪. সাপোর্ট হিস্ট্রি[cite: 8]
             db.ref('support').on('value', snap => {
                 let html = "";
                 snap.forEach(userSnap => {
@@ -220,16 +220,15 @@
             });
         }
 
-        // Updated Save Function to include Refer Bonus[cite: 10]
+        // ৫. ডাটাবেসে সেটিিংস সেভ করা[cite: 7]
         function saveConfig() {
             db.ref('config').update({
                 min_limit: parseInt(document.getElementById('cfg-min').value),
                 rate: parseInt(document.getElementById('cfg-rate').value),
                 refer_bonus: parseInt(document.getElementById('cfg-bonus').value)
-            }).then(() => alert("Financials Updated!"));
+            }).then(() => alert("Settings Updated Successfully!"));
         }
 
-        // Global functions same as Source 10[cite: 10]
         function giftAll() {
             let amt = parseInt(document.getElementById('gift-amt').value);
             if(!amt) return;
