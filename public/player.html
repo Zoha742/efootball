@@ -4,11 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Players - eFootball HUB</title>
+    <!-- Firebase & SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
     <script src="https://sad.adsgram.ai/js/adsgram-sdk.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
+    <!-- সেন্ট্রাল স্ক্রিপ্ট লিঙ্ক -->
     <script src="config.js"></script>
+    <script src="ads-manager.js"></script>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --bg: #050a18; --card-dark: #121e36; --primary: #fbbf24; --text: #ffffff; --border: #1e2d4d; }
@@ -33,7 +38,7 @@
             background: var(--card-dark); 
             border-radius: 10px; 
             overflow: hidden; 
-            border: 1.5px solid var(--primary); /* Gold border like example */
+            border: 1.5px solid var(--primary);
             text-align: center; 
             cursor: pointer;
             display: flex;
@@ -46,9 +51,9 @@
         /* Image View Fix */
         .top-card img { 
             width: 100%; 
-            aspect-ratio: 2/2.3; /* Taller portrait view like example */
-            object-fit: cover; /* Fill the card area */
-            object-position: top; /* Keep player face visible */
+            aspect-ratio: 2/2.3; 
+            object-fit: cover; 
+            object-position: top; 
             display: block;
         }
 
@@ -57,14 +62,15 @@
             padding: 8px 2px; 
             margin: 0; 
             color: var(--text); 
-            background: rgba(18, 30, 54, 0.9); /* Card dark color background for name */
+            background: rgba(18, 30, 54, 0.9);
             font-weight: bold;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
-        .bottom-ad-banner { position: fixed; bottom: 0; left: 0; width: 100%; height: 50px; background: rgba(0,0,0,0.8); display: flex; justify-content: center; align-items: center; z-index: 1000; border-top: 1px solid #334155; }
+        /* ব্যানার কন্টেইনার স্টাইল */
+        #banner-container { display: flex; justify-content: center; margin-top: 20px; padding-bottom: 20px; }
     </style>
 </head>
 <body>
@@ -74,6 +80,7 @@
         <h2 style="font-size: 18px;">SELECT POSITION</h2>
     </div>
 
+    <!-- আপনার পজিশন বাটনগুলো হুবহু আগের মতো রাখা হয়েছে -->
     <div class="pos-grid">
         <div class="pos-btn" onclick="loadPlayers('CF')">CF</div>
         <div class="pos-btn" onclick="loadPlayers('SS')">SS</div>
@@ -92,22 +99,20 @@
 
     <div id="player-container" class="player-grid"></div>
 
+    <!-- ব্যানার কন্টেইনার -->
+    <div id="banner-container"></div>
+
    <script>
-      console.log("Database connected successfully!");
+    console.log("Database connected successfully!");
        
     const tg = window.Telegram.WebApp;
     tg.expand();
 
-    // Adsgram Initialization
-    const AdController = window.Adsgram.init({ blockId: "int-41" });
-
     async function loadPlayers(pos) {
         const container = document.getElementById('player-container');
-        // লোডিং শুরু
         container.innerHTML = "<p style='grid-column: span 3; text-align:center; color: #3b82f6;'>Loading Players...</p>";
         
         try {
-            // নিশ্চিত করুন ফাইলের নাম player.json
             const response = await fetch('player.json'); 
             
             if (!response.ok) {
@@ -115,11 +120,9 @@
             }
 
             const data = await response.json();
-            
-            // পজিশন অনুযায়ী ফিল্টার (যেমন: CF, SS, LB ইত্যাদি)
             const filteredPlayers = data.players.filter(p => p.pos === pos);
             
-            container.innerHTML = ""; // লোডিং টেক্সট সরিয়ে ফেলা
+            container.innerHTML = ""; 
 
             if (filteredPlayers.length === 0) {
                 container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>No players found for " + pos + "</p>";
@@ -133,9 +136,19 @@
                     <img src="${p.img}" onerror="this.src='https://via.placeholder.com/150'">
                     <p>${p.name}</p>
                 `;
+                
                 card.onclick = () => {
-                    // অ্যাড দেখিয়ে বায়ো পেজে যাওয়া
-                    AdController.show().then(() => openBio(p)).catch(() => openBio(p));
+                    // ভিডিও অ্যাড বর্তমানে হাইড করা আছে
+                    /*
+                    if (typeof AdController !== 'undefined') {
+                        AdController.showVideoAd(
+                            () => openBio(p), 
+                            () => openBio(p)
+                        );
+                        return;
+                    }
+                    */
+                    openBio(p);
                 };
                 container.appendChild(card);
             });
@@ -146,14 +159,20 @@
     }
 
     function openBio(player) {
-        // প্লেয়ারের সব ডাটা LocalStorage এ সেভ করা
         localStorage.setItem('selected_player', JSON.stringify(player));
-        // playerbio.html পেজে নিয়ে যাওয়া
         window.location.href = 'playerbio.html';
     }
 
-    // পেজ লোড হলে ডিফল্টভাবে CF দেখাবে
-    window.onload = () => loadPlayers('CF');
+    window.onload = () => {
+        loadPlayers('CF');
+
+        // ব্যানার অ্যাড লোড
+        setTimeout(() => {
+            if (typeof AdController !== 'undefined') {
+                AdController.loadBanner("banner-container");
+            }
+        }, 1000);
+    };
 </script>
 </body>
 </html>
