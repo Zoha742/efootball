@@ -35,7 +35,7 @@
         .input-group { margin-bottom: 15px; }
         .input-group label { display: block; font-size: 14px; color: #94a3b8; margin-bottom: 8px; }
         
-        /* ক্যালকুলেটর টেক্সট স্টাইল */
+        /* ক্যালকুলেটর টেক্সট স্টাইল[cite: 8] */
         #calc-display { color: var(--orange); font-weight: bold; margin-left: 10px; font-size: 13px; }
 
         .input-group input, .input-group select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); background: #0a1226; color: white; box-sizing: border-box; outline: none; }
@@ -57,13 +57,13 @@
     <div class="balance-box">
         <p style="color: #94a3b8; margin: 0;">Current Balance</p>
         <h1 id="user-gp">0 GP</h1>
-        <!-- এক্সচেঞ্জ রেট রেড বক্স[cite: 7] -->
+        <!-- এক্সচেঞ্জ রেট রেড বক্স[cite: 8] -->
         <div id="rate-display" class="rate-info-box">Loading Exchange Rate...</div>
     </div>
 
     <div class="card">
         <div class="input-group">
-            <label>Amount (GP) <span id="calc-display"></span></label> <!-- ক্যালকুলেটর ডিসপ্লে[cite: 7] -->
+            <label>Amount (GP) <span id="calc-display"></span></label> <!-- ক্যালকুলেটর ডিসপ্লে[cite: 8] -->
             <input type="number" id="withdraw-amount" placeholder="Enter amount to withdraw" oninput="validate()">
         </div>
         <div class="input-group">
@@ -86,17 +86,25 @@
     <script>
         const tg = window.Telegram.WebApp;
         const userId = tg.initDataUnsafe?.user?.id || "test_user";
-        let userGP = 0, minLimit = 5000, exchangeRate = 10000; // ডিফল্ট রেট
+        let userGP = 0;
+        let minLimit = 5000; 
+        let exchangeRate = 10000; 
 
-        // ১. অ্যাডমিন প্যানেল থেকে রেট এবং লিমিট নেওয়া
-        db.ref('config').on('value', s => {
-            if(s.exists()){
-                minLimit = s.val().min_limit || 5000;
-                exchangeRate = s.val().rate || 10000;
+        // ১. অ্যাডমিন প্যানেল থেকে রিয়েল-টাইম রেট এবং লিমিট নেওয়া[cite: 8]
+        // .on('value') ব্যবহারের ফলে অ্যাডমিন প্যানেলে ডাটা চেঞ্জ হলে এখানেও অটো আপডেট হবে
+        db.ref('config').on('value', (snapshot) => {
+            const config = snapshot.val();
+            if(config) {
+                minLimit = config.min_limit || 5000;
+                exchangeRate = config.rate || 10000; // অ্যাডমিন প্যানেলের cfg-rate এর সাথে কানেক্টেড[cite: 8]
                 document.getElementById('rate-display').innerText = `Rate: ${exchangeRate.toLocaleString()} GP = 1 Dollar`;
+                
+                // রেট আপডেট হলে ক্যালকুলেটরের হিসাবও রিফ্রেশ করা
+                validate(); 
             }
         });
 
+        // ২. ইউজারের ব্যালেন্স এবং ওয়ালেট ডাটা লোড করা[cite: 8]
         db.ref('users/' + userId).on('value', snapshot => {
             const data = snapshot.val() || {};
             userGP = data.gp || 0;
@@ -109,11 +117,19 @@
         function updateAddr() {
             const type = document.getElementById('wallet-type').value;
             const savedAddr = window.userWallets ? window.userWallets[type] : null;
-            document.getElementById('wallet-address').value = savedAddr || "Wallet not set! Update in Profile.";
+            const addrInput = document.getElementById('wallet-address');
+            
+            if (savedAddr) {
+                addrInput.value = savedAddr;
+                addrInput.style.color = "white";
+            } else {
+                addrInput.value = "Wallet not set! Update in Profile.";
+                addrInput.style.color = "#ef4444";
+            }
             validate();
         }
 
-        // ২. ক্যালকুলেটর লজিক (টাইপ করার সময় ডলার দেখাবে)[cite: 7]
+        // ৩. ক্যালকুলেটর এবং বাটন ভ্যালিডেশন লজিক[cite: 8]
         function validate() {
             const amtInput = document.getElementById('withdraw-amount');
             const amt = parseInt(amtInput.value) || 0;
@@ -121,7 +137,7 @@
             const btn = document.getElementById('withdraw-btn');
             const calcDisplay = document.getElementById('calc-display');
 
-            // লাইভ ক্যালকুলেটর[cite: 7]
+            // লাইভ ক্যালকুলেটর (অ্যাডমিন রেট ব্যবহার করে)[cite: 8]
             if (amt > 0) {
                 const dollars = (amt / exchangeRate).toFixed(2);
                 calcDisplay.innerText = `≈ $${dollars}`;
@@ -129,7 +145,11 @@
                 calcDisplay.innerText = "";
             }
 
-            btn.disabled = !(amt >= minLimit && amt <= userGP && !addr.includes("not set"));
+            // শর্ত: মিনিমাম লিমিট থাকতে হবে, ব্যালেন্স থাকতে হবে এবং ওয়ালেট সেট থাকতে হবে[cite: 8]
+            const isAmountOk = (amt >= minLimit && amt <= userGP);
+            const isWalletOk = (addr && !addr.includes("not set"));
+            
+            btn.disabled = !(isAmountOk && isWalletOk);
         }
 
         function submitWithdraw() {
