@@ -4,35 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daily Tasks - eFootball HUB</title>
+    <!-- Firebase & SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
     <script src="https://sad.adsgram.ai/js/adsgram-sdk.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
+    <!-- Central Config & Ad Master -->
     <script src="config.js"></script>
+    <script src="ads-manager.js"></script> 
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --bg: #050a18; --card: #121e36; --primary: #3b82f6; --text: #ffffff; --border: #1e2d4d; --green: #22c55e; }
         body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 30px; }
-        
         .top-bar { display: flex; align-items: center; padding: 15px; background: rgba(18, 30, 54, 0.7); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; }
         .top-bar a { color: white; text-decoration: none; margin-right: 15px; }
-
         .container { padding: 20px; text-align: center; }
         .task-card { background: var(--card); border-radius: 20px; padding: 25px; border: 1px solid var(--border); margin-bottom: 20px; }
-        
-        .reward-info { margin-bottom: 20px; }
         .reward-info i { font-size: 40px; color: #fbbf24; margin-bottom: 10px; }
         .reward-info h2 { margin: 5px 0; color: var(--green); }
-
         .ad-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0; }
         .ad-slot { background: #050a18; border: 1px solid var(--border); padding: 15px 5px; border-radius: 12px; font-size: 12px; transition: 0.3s; }
         .ad-slot.done { border-color: var(--green); color: var(--green); }
-        .ad-slot.done i { color: var(--green); }
-
         .btn-main { width: 100%; border: none; padding: 15px; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 16px; }
         .btn-blue { background: var(--primary); box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); }
-        .btn-wait { background: #4b5563; cursor: not-allowed; }
-        
         #timer { font-size: 18px; font-weight: bold; color: #f87171; margin-top: 10px; display: none; }
     </style>
 </head>
@@ -48,7 +44,7 @@
             <div class="reward-info">
                 <i class="fas fa-gift"></i>
                 <span>Task Reward</span>
-                <h2>100 GP Points</h2>
+                <h2 id="display-reward">100 GP Points</h2>
             </div>
 
             <div class="ad-grid" id="ad-slots">
@@ -66,57 +62,80 @@
     </div>
 
     <script>
-
-       console.log("Database connected successfully!");
-        
+        const tg = window.Telegram.WebApp;
+        const userId = tg.initDataUnsafe?.user?.id || "test_user";
         let adsWatched = 0;
-        const cooldownTime = 12 * 60 * 60 * 1000; // 12 Hours in ms
+        let userGP = 0;
+        let totalTasksDone = 0;
+        const cooldownTime = 12 * 60 * 60 * 1000;
 
-        function updateUI() {
-            const lastCollect = localStorage.getItem('last_task_collect');
-            const now = Date.now();
+        // ১. রিয়েল-টাইম ডাটা লোড (Firebase)
+        function initTask() {
+            db.ref('users/' + userId).on('value', snap => {
+                const data = snap.val() || {};
+                userGP = data.gp || 0;
+                totalTasksDone = data.tasks_done || 0;
+                const lastCollect = data.last_task_collect || 0;
+                const now = Date.now();
 
-            if (lastCollect && (now - lastCollect < cooldownTime)) {
-                startTimer(cooldownTime - (now - lastCollect));
-            } else {
-                resetTaskUI();
-            }
+                if (now - lastCollect < cooldownTime) {
+                    startTimer(cooldownTime - (now - lastCollect));
+                } else {
+                    resetTaskUI();
+                }
+            });
         }
 
+        // ২. অ্যাড হ্যান্ডলার (AdController ব্যবহার করে)[cite: 1, 7]
         function handleTask() {
             if (adsWatched < 6) {
-                // Ekhane Adsgram logic hobe. Sample-er jonno ami direct count barachhi.
-                alert("Loading Ad " + (adsWatched + 1) + "...");
-                
-                adsWatched++;
-                document.getElementById(`slot-${adsWatched}`).classList.add('done');
-                document.getElementById(`slot-${adsWatched}`).innerHTML = '<i class="fas fa-check-circle"></i><br>Done';
-                
-                if (adsWatched < 6) {
-                    document.getElementById('task-btn').innerText = `WATCH AD (${adsWatched + 1}/6)`;
-                } else {
-                    document.getElementById('task-btn').innerText = "COLLECT 100 GP";
-                    document.getElementById('task-btn').style.background = "var(--green)";
-                }
+                // ads-manager.js থেকে অ্যাড ফাংশন কল[cite: 7]
+                AdController.showVideoAd(
+                    (result) => {
+                        adsWatched++;
+                        updateSlotUI(adsWatched);
+                        if (adsWatched === 6) {
+                            document.getElementById('task-btn').innerText = "COLLECT REWARD";
+                            document.getElementById('task-btn').style.background = "var(--green)";
+                        } else {
+                            document.getElementById('task-btn').innerText = `WATCH AD (${adsWatched + 1}/6)`;
+                        }
+                    },
+                    (error) => {
+                        alert("Ad failed to load. Please try again.");
+                    }
+                );
             } else {
                 collectReward();
             }
         }
 
-        function collectReward() {
-            let currentGP = parseInt(localStorage.getItem('user_gp')) || 0;
-            localStorage.setItem('user_gp', currentGP + 100);
-            localStorage.setItem('last_task_collect', Date.now());
-            
-            alert("Congratulations! 100 GP Added to your wallet.");
-            updateUI();
+        function updateSlotUI(num) {
+            const slot = document.getElementById(`slot-${num}`);
+            slot.classList.add('done');
+            slot.innerHTML = '<i class="fas fa-check-circle"></i><br>Done';
         }
 
+        // ৩. রিওয়ার্ড এবং ডাটাবেস আপডেট[cite: 1]
+        function collectReward() {
+            db.ref('config/task_reward').once('value', s => {
+                const reward = s.val() || 100;
+                
+                db.ref('users/' + userId).update({
+                    gp: userGP + reward,
+                    tasks_done: totalTasksDone + 1, // টাস্ক রেকর্ড আপডেট[cite: 1]
+                    last_task_collect: Date.now()
+                }).then(() => {
+                    alert(`Congratulations! ${reward} GP Added.`);
+                    adsWatched = 0;
+                });
+            });
+        }
+
+        // টাইমার এবং ইউআই ফাংশনসমূহ
         function startTimer(duration) {
             const btn = document.getElementById('task-btn');
             const timerDiv = document.getElementById('timer');
-            const countdownSpan = document.getElementById('countdown');
-            
             btn.style.display = "none";
             timerDiv.style.display = "block";
 
@@ -127,26 +146,17 @@
                     resetTaskUI();
                     return;
                 }
-
-                let hours = Math.floor(duration / (1000 * 60 * 60));
-                let minutes = Math.floor((duration % (1000 * 60 * 60)) / (1000 * 60));
-                let seconds = Math.floor((duration % (1000 * 60)) / 1000);
-
-                countdownSpan.innerText = 
-                    (hours < 10 ? "0" + hours : hours) + ":" + 
-                    (minutes < 10 ? "0" + minutes : minutes) + ":" + 
-                    (seconds < 10 ? "0" + seconds : seconds);
+                let h = Math.floor(duration / 3600000);
+                let m = Math.floor((duration % 3600000) / 60000);
+                let s = Math.floor((duration % 60000) / 1000);
+                document.getElementById('countdown').innerText = 
+                    `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
             }, 1000);
         }
 
         function resetTaskUI() {
-            adsWatched = 0;
             document.getElementById('task-btn').style.display = "block";
-            document.getElementById('task-btn').classList.add('btn-blue');
-            document.getElementById('task-btn').innerText = "WATCH AD (1/6)";
             document.getElementById('timer').style.display = "none";
-            
-            // Slots reset
             for (let i = 1; i <= 6; i++) {
                 const slot = document.getElementById(`slot-${i}`);
                 slot.classList.remove('done');
@@ -154,19 +164,7 @@
             }
         }
 
-        function collectReward() {
-    const adminConfig = JSON.parse(localStorage.getItem('admin_config')) || { task_reward: 100 };
-    const reward = adminConfig.task_reward;
-
-    let currentGP = parseInt(localStorage.getItem('user_gp')) || 0;
-    localStorage.setItem('user_gp', currentGP + reward);
-    localStorage.setItem('last_task_collect', Date.now());
-    
-    alert(`Congratulations! ${reward} GP Added to your wallet.`);
-    updateUI();
-}
-
-        window.onload = updateUI;
+        window.onload = initTask;
     </script>
 </body>
 </html>
