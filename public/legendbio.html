@@ -12,16 +12,16 @@
     <!-- আপনার অরিজিনাল ফাইল লিঙ্কগুলো[cite: 15] -->
     <script src="config.js"></script>
     <script src="ads-manager.js"></script> <!-- সেন্ট্রাল অ্যাড কন্ট্রোল -->
-
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --bg: #050a18; --card: #121e36; --primary: #fbbf24; --text: #ffffff; }
-        body { background: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; padding: 15px; padding-bottom: 80px; }
+        body { background: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; padding: 15px; padding-bottom: 50px; }
         
         .header { display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 15px; }
         .back-btn { position: absolute; left: 0; font-size: 22px; color: var(--primary); text-decoration: none; }
         
-        /* আপনার অরিজিনাল ডিজাইন[cite: 15] */
+        /* Profile Card - Design Unchanged */
         .profile-card { background: var(--card); border-radius: 12px; padding: 15px; text-align: center; border: 1px solid #1e2d4d; margin-bottom: 15px; }
         .profile-img { width: 120px; border-radius: 12px; border: 2px solid var(--primary); margin-bottom: 10px; }
         .profile-name { font-size: 18px; font-weight: bold; color: var(--primary); }
@@ -35,9 +35,6 @@
         .stat-box { display: flex; justify-content: space-between; align-items: center; background: #0f172a; padding: 8px 12px; border-radius: 6px; border: 1px solid #1e2d4d; }
         .stat-name { font-size: 12px; color: #cbd5e1; }
         .stat-num { font-size: 14px; font-weight: bold; color: #000; padding: 2px 8px; border-radius: 4px; min-width: 35px; text-align: center; }
-
-        /* ব্যানার কন্টেইনার স্টাইল */
-        #banner-container { position: fixed; bottom: 0; left: 0; width: 100%; display: flex; justify-content: center; background: rgba(5, 10, 24, 0.9); padding: 10px 0; }
     </style>
 </head>
 <body>
@@ -61,15 +58,12 @@
     <div class="info-box"><span class="info-label">Playing Style</span><span class="info-value" id="p-style">--</span></div>
 </div>
 
-<div class="stats-container" id="stats-container"></div>
-
-<!-- ব্যানার অ্যাডের জন্য কন্টেইনার[cite: 8] -->
-<div id="banner-container"></div>
+<div class="stats-container" id="stats-container">
+    </div>
 
 <script>
-   console.log("Database connected successfully!");[cite: 15]
+   console.log("Database connected successfully!");
 
-    // আপনার অরিজিনাল কালার লজিক[cite: 15]
     function getStatColor(val) {
         if (val >= 95) return "#ff0000"; // Red/Epic
         if (val >= 90) return "#ff8c00"; // Orange
@@ -79,7 +73,6 @@
     }
 
     window.onload = () => {
-        // আপনার অরিজিনাল প্লেয়ার লোডিং লজিক[cite: 15]
         const pData = localStorage.getItem('selected_player');
         if (pData) {
             const p = JSON.parse(pData);
