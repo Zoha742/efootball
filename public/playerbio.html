@@ -4,49 +4,121 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Player Bio</title>
+    <!-- Firebase & SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
+    <script src="https://sad.adsgram.ai/js/adsgram-sdk.js"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
+    <!-- সেন্ট্রাল স্ক্রিপ্ট লিঙ্ক -->
     <script src="config.js"></script>
-
+    <script src="ads-manager.js"></script>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* আপনার অরিজিনাল ডিজাইন হুবহু ১:১ রাখা হয়েছে */
-        body { background: #050a18; color: #fff; font-family: 'Segoe UI', sans-serif; text-align: center; padding: 20px; margin: 0; }
-        .back-btn { position: absolute; left: 15px; top: 20px; color: #3b82f6; font-size: 24px; cursor: pointer; }
-        .bio-container { margin-top: 50px; animation: fadeIn 0.5s; }
-        .bio-img { width: 100%; max-width: 280px; border-radius: 20px; border: 3px solid #3b82f6; box-shadow: 0 0 15px rgba(59, 130, 246, 0.5); }
-        .player-name { margin-top: 25px; color: #3b82f6; font-size: 24px; text-transform: uppercase; }
-        .bio-text { margin-top: 20px; padding: 0 15px; line-height: 1.7; color: #ccc; font-size: 14px; text-align: justify; }
-        .ad-space { margin-top: 40px; background: #121e36; border-radius: 10px; padding: 15px; color: gray; font-size: 11px; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        :root { --bg: #050a18; --card: #121e36; --primary: #fbbf24; --text: #ffffff; }
+        body { background: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; padding: 15px; padding-bottom: 50px; }
+        
+        .header { display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 15px; }
+        .back-btn { position: absolute; left: 0; font-size: 22px; color: var(--primary); text-decoration: none; }
+        
+        .profile-card { background: var(--card); border-radius: 12px; padding: 15px; text-align: center; border: 1px solid #1e2d4d; margin-bottom: 15px; }
+        .profile-img { width: 120px; border-radius: 12px; border: 2px solid var(--primary); margin-bottom: 10px; }
+        .profile-name { font-size: 18px; font-weight: bold; color: var(--primary); }
+
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .info-box { background: var(--card); padding: 10px; border-radius: 8px; border: 1px solid #1e2d4d; }
+        .info-label { font-size: 10px; color: #94a3b8; display: block; margin-bottom: 15px; }
+        .info-value { font-size: 13px; font-weight: bold; }
+
+        .stats-container { display: flex; flex-direction: column; gap: 8px; }
+        .stat-box { display: flex; justify-content: space-between; align-items: center; background: #0f172a; padding: 8px 12px; border-radius: 6px; border: 1px solid #1e2d4d; }
+        .stat-name { font-size: 12px; color: #cbd5e1; }
+        .stat-num { font-size: 14px; font-weight: bold; color: #000; padding: 2px 8px; border-radius: 4px; min-width: 35px; text-align: center; }
     </style>
 </head>
 <body>
-    <i class="fas fa-arrow-left back-btn" onclick="window.location.href='player.html'"></i>
-    
-    <div class="bio-container">
-        <img id="p-img" class="bio-img" src="" alt="Player Image">
-        <h2 id="p-name" class="player-name"></h2>
-        <div id="p-bio" class="bio-text"></div>
-    </div>
 
-    <div class="ad-space">
-        ADVERTISEMENT SPACE
-    </div>
+<div class="header">
+    <a href="player.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+    <h3 style="margin:0;">Player Statistics</h3>
+</div>
 
-    <script>
-        console.log("Database connected successfully!");
+<div class="profile-card">
+    <img id="p-img" src="" class="profile-img">
+    <div id="p-name" class="profile-name">Loading...</div>
+</div>
 
-        window.onload = function() {
-            // আপনার অরিজিনাল কমান্ড: localStorage থেকে ডাটা নেওয়া
-            const data = localStorage.getItem('selected_player');
-            if (data) {
-                const p = JSON.parse(data);
-                document.getElementById('p-img').src = p.img;
-                document.getElementById('p-name').innerText = p.name;
-                document.getElementById('p-bio').innerText = p.bio || "No biography available.";
+<div class="info-grid">
+    <div class="info-box"><span class="info-label">Nationality</span><span class="info-value" id="p-nation">--</span></div>
+    <div class="info-box"><span class="info-label">Team</span><span class="info-value" id="p-team">--</span></div>
+    <div class="info-box"><span class="info-label">Position</span><span class="info-value" id="p-pos">--</span></div>
+    <div class="info-box"><span class="info-label">Foot</span><span class="info-value" id="p-foot">--</span></div>
+    <div class="info-box"><span class="info-label">Height</span><span class="info-value" id="p-height">--</span></div>
+    <div class="info-box"><span class="info-label">Playing Style</span><span class="info-value" id="p-style">--</span></div>
+</div>
+
+<div class="stats-container" id="stats-container"></div>
+
+<!-- ব্যানার অ্যাডের কন্টেইনার -->
+<div id="banner-container" style="display: flex; justify-content: center; margin-top: 20px; padding-bottom: 20px;"></div>
+
+<script>
+    console.log("Database connected successfully!");
+
+    function getStatColor(val) {
+        if (val >= 95) return "#09E39A"; 
+        if (val >= 90) return "#ff8c00"; 
+        if (val >= 80) return "#ffff00"; 
+        if (val >= 70) return "#adff2f"; 
+        return "#ffffff";
+    }
+
+    window.onload = () => {
+        const pData = localStorage.getItem('selected_player');
+        if (pData) {
+            const p = JSON.parse(pData);
+            document.getElementById('p-img').src = p.img;
+            document.getElementById('p-name').innerText = p.name;
+            document.getElementById('p-nation').innerText = p.nationality || "N/A";
+            document.getElementById('p-team').innerText = p.team || "N/A";
+            document.getElementById('p-pos').innerText = p.pos || "N/A";
+            document.getElementById('p-foot').innerText = p.foot || "N/A";
+            document.getElementById('p-height').innerText = p.height || "N/A";
+            document.getElementById('p-style').innerText = p.style || "N/A";
+
+            const container = document.getElementById('stats-container');
+            container.innerHTML = "";
+            
+            if (p.stats) {
+                Object.entries(p.stats).forEach(([name, val]) => {
+                    const box = document.createElement('div');
+                    box.className = 'stat-box';
+                    box.innerHTML = `<span class="stat-name">${name}</span>
+                                    <span class="stat-num" style="background:${getStatColor(val)}">${val}</span>`;
+                    container.appendChild(box);
+                });
             }
-        };
-    </script>
+        }
+
+        // --- ব্যানার এবং ভিডিও অ্যাড কল করার অংশ ---
+        setTimeout(() => {
+            try {
+                if (typeof AdController !== 'undefined') {
+                    // ১. ব্যানার অ্যাড লোড
+                    AdController.loadBanner("banner-container");
+                    
+                    // ২. ভিডিও অ্যাড শো
+                    AdController.showVideoAd(
+                        (result) => { console.log("Video Reward Success"); },
+                        (error) => { console.log("Video Ad Error or Skipped", error); }
+                    );
+                }
+            } catch (e) {
+                console.log("Ad Error", e);
+            }
+        }, 800);
+    };
+</script>
 </body>
 </html>
