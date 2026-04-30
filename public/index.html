@@ -154,6 +154,25 @@
                     }
                 }
             });
+            // ২. ইউজার রেজিস্ট্রেশন এবং রেফারেল ডিটেকশন
+userRef.on('value', snap => {
+    if (!snap.exists()) {
+        // নতুন ইউজার ডাটাবেসে সেভ করার সময় referredBy যোগ করুন[cite: 8, 11]
+        let welcomeBonus = startParam ? 1000 : 0; 
+
+        userRef.set({
+            name: user.first_name + " " + (user.last_name || ""),
+            username: user.username || "N/A",
+            gp: welcomeBonus,
+            referredBy: startParam || "none", // এই লাইনটি ইনভাইট ট্র্যাক করবে
+            banned: false,
+            lastSeen: Date.now(),
+            joinDate: new Date().toLocaleString()
+        }).then(() => {
+            console.log("New User Registered with Referer!");
+        });
+    }
+});
         }
     });
 </script>
