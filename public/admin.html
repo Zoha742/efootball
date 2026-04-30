@@ -16,7 +16,6 @@
         .back-nav { font-size: 20px; color: white; cursor: pointer; padding: 5px; }
 
         .container { padding: 15px; }
-        /* Grid Column 2 theke 3 kora hoyeche jate active user box fit hoy */
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
         @media (min-width: 600px) { .grid { grid-template-columns: 1fr 1fr 1fr; } }
         
@@ -65,12 +64,13 @@
         <div class="container">
             <div class="grid">
                 <div class="stat-box"><small>Total Users</small><h2 id="st-users">0</h2></div>
-                <div class="stat-box"><small>Active (Live)</small><h2 id="st-active" style="color: var(--green);">0</h2></div> <!-- Active User Box[cite: 11] -->
+                <div class="stat-box"><small>Active (Live)</small><h2 id="st-active" style="color: var(--green);">0</h2></div>
                 <div class="stat-box"><small>Pending Req</small><h2 id="st-pending" style="color: var(--orange);">0</h2></div>
                 <div class="stat-box"><small>Total GP</small><h2 id="st-total-gp" style="color: var(--green);">0</h2></div>
                 <div class="stat-box"><small>Banned</small><h2 id="st-banned" style="color: var(--red);">0</h2></div>
             </div>
 
+            <!-- Financial Settings Card with Refer Bonus Option -->
             <div class="card">
                 <h4><i class="fas fa-hand-holding-usd"></i> Financial Settings</h4>
                 <div class="grid">
@@ -81,6 +81,11 @@
                     <div>
                         <label style="font-size: 11px;">1 Dollar = (GP)</label>
                         <input type="number" id="cfg-rate" class="input-box">
+                    </div>
+                    <!-- New Refer Bonus Field Added -->
+                    <div>
+                        <label style="font-size: 11px;">Refer Bonus (GP)</label>
+                        <input type="number" id="cfg-bonus" class="input-box">
                     </div>
                 </div>
                 <button class="btn btn-blue" onclick="saveConfig()"><i class="fas fa-save"></i> Update Settings</button>
@@ -139,16 +144,18 @@
         }
 
         function init() {
+            // Load values including Refer Bonus from Firebase
             db.ref('config').on('value', s => {
                 if(s.exists()){
                     document.getElementById('cfg-min').value = s.val().min_limit || 5000;
                     document.getElementById('cfg-rate').value = s.val().rate || 10000;
+                    document.getElementById('cfg-bonus').value = s.val().refer_bonus || 1000;
                 }
             });
 
             db.ref('users').on('value', snap => {
                 let count = snap.numChildren();
-                let banned = 0, totalGP = 0, activeCount = 0; // Active user variable added[cite: 11]
+                let banned = 0, totalGP = 0, activeCount = 0;
                 let currentTime = Date.now();
                 let html = "";
                 
@@ -156,11 +163,7 @@
                     let u = c.val();
                     if(u.banned) banned++;
                     totalGP += (u.gp || 0);
-                    
-                    // Active logic: 5 minute threshold[cite: 11]
-                    if (u.lastSeen && (currentTime - u.lastSeen) < (5 * 60 * 1000)) {
-                        activeCount++;
-                    }
+                    if (u.lastSeen && (currentTime - u.lastSeen) < (5 * 60 * 1000)) { activeCount++; }
 
                     html += `<div class="user-item">
                         <div>
@@ -172,12 +175,13 @@
                 });
 
                 document.getElementById('st-users').innerText = count;
-                document.getElementById('st-active').innerText = activeCount; // Update active count[cite: 11]
+                document.getElementById('st-active').innerText = activeCount;
                 document.getElementById('st-banned').innerText = banned;
                 document.getElementById('st-total-gp').innerText = totalGP.toLocaleString();
                 document.getElementById('user-list').innerHTML = html;
             });
 
+            // Withdraw and Support logic remains same as Source 10[cite: 10]
             db.ref('withdraw_requests').on('value', snap => {
                 let pending = 0;
                 let html = "";
@@ -216,13 +220,16 @@
             });
         }
 
+        // Updated Save Function to include Refer Bonus[cite: 10]
         function saveConfig() {
             db.ref('config').update({
                 min_limit: parseInt(document.getElementById('cfg-min').value),
-                rate: parseInt(document.getElementById('cfg-rate').value)
+                rate: parseInt(document.getElementById('cfg-rate').value),
+                refer_bonus: parseInt(document.getElementById('cfg-bonus').value)
             }).then(() => alert("Financials Updated!"));
         }
 
+        // Global functions same as Source 10[cite: 10]
         function giftAll() {
             let amt = parseInt(document.getElementById('gift-amt').value);
             if(!amt) return;
@@ -238,9 +245,7 @@
         function updateWD(key, status, uid, amt) {
             if(confirm(`Confirm ${status}?`)) {
                 db.ref('withdraw_requests/' + key).update({ status: status }).then(() => {
-                    if(status === 'rejected') {
-                        db.ref('users/' + uid + '/gp').transaction(c => (c || 0) + amt);
-                    }
+                    if(status === 'rejected') { db.ref('users/' + uid + '/gp').transaction(c => (c || 0) + amt); }
                     db.ref('notifications/' + uid).push({ text: `Your withdraw of ${amt} GP was ${status}.`, date: new Date().toLocaleString() });
                     alert("Request Updated!");
                 });
