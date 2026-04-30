@@ -4,11 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>eFootball HUB</title>
+    <!-- Firebase & SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
     <script src="https://sad.adsgram.ai/js/adsgram-sdk.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
+    <!-- সেন্ট্রাল স্ক্রিপ্ট লিঙ্ক -->
     <script src="config.js"></script>
+    <script src="ads-manager.js"></script>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --bg: #050a18; --card-dark: #121e36; --primary: #3b82f6; --text: #ffffff; --border: #1e2d4d; }
@@ -42,6 +47,9 @@
         .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 70px; background: #070d19; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid var(--border); z-index: 1000; }
         .nav-item { text-align: center; color: #94a3b8; font-size: 11px; text-decoration: none; flex: 1; }
         .nav-item i { font-size: 20px; display: block; margin-bottom: 4px; }
+
+        /* Boost Button Disabled State */
+        .boost-disabled { opacity: 0.6; cursor: not-allowed !important; }
     </style>
 </head>
 <body>
@@ -59,7 +67,12 @@
         <div class="headline">Quick Action</div>
         <div class="quick-grid">
             <div class="quick-btn" onclick="location.href='store.html'" style="background: linear-gradient(135deg, #6a11cb, #2575fc); border: none;"><i class="fas fa-shopping-cart" style="color: white;"></i>Store</div>
-            <div class="quick-btn" onclick="location.href='daily.html'" style="background: linear-gradient(135deg, #11998e, #38ef7d); border: none;"><i class="fas fa-tasks" style="color: white;"></i>Daily</div>
+            
+            <!-- Boost Button Replaced Daily -->
+            <div id="boostBtn" class="quick-btn" onclick="handleBoostClick()" style="background: linear-gradient(135deg, #11998e, #38ef7d); border: none;">
+                <i class="fas fa-rocket" style="color: white;"></i><span id="boostText">Boost</span>
+            </div>
+            
             <div class="quick-btn" onclick="location.href='admin.html'" style="background: linear-gradient(135deg, #ff4b2b, #ff416c); border: none;"><i class="fas fa-user-shield" style="color: white;"></i>Admin</div>
         </div>
 
@@ -78,6 +91,16 @@
 
    <script>
     console.log("Database connected successfully!");
+
+    const tg = window.Telegram.WebApp;
+    tg.expand();
+    const user = tg.initDataUnsafe?.user;
+    const startParam = tg.initDataUnsafe?.start_param;
+    const userId = user ? user.id : "test_user"; // টেস্টিংয়ের জন্য
+    
+    // ১২ ঘণ্টার মিলি-সেকেন্ড (12 hours * 60 min * 60 sec * 1000 ms)
+    const COOLDOWN_TIME = 12 * 60 * 60 * 1000; 
+    const BOOST_REWARD = 500; // 500 GP
 
     // ১. হোম পেজের লিজেন্ড ডাটা লোড করা
     async function loadHomeLegends() {
@@ -104,18 +127,96 @@
         }
     }
 
-    // ২. মেইন লজিক: ইউজার ডিটেকশন, রেজিস্ট্রেশন এবং মেইনটেন্যান্স চেক
-    window.addEventListener('load', () => {
-        const tg = window.Telegram.WebApp;
-        tg.expand();
-        const user = tg.initDataUnsafe?.user;
-        const startParam = tg.initDataUnsafe?.start_param;
+    // ২. বুস্ট অপশনের লজিক
+    function handleBoostClick() {
+        const userRef = db.ref('users/' + userId);
+        
+        userRef.once('value').then(snap => {
+            if (snap.exists()) {
+                const userData = snap.val();
+                const lastBoostTime = userData.lastBoostTime || 0;
+                const currentTime = Date.now();
+                const timePassed = currentTime - lastBoostTime;
 
-        // হোম লিজেন্ড লোড করা
+                // যদি ১২ ঘণ্টা পার না হয়ে থাকে
+                if (timePassed < COOLDOWN_TIME) {
+                    const timeLeft = COOLDOWN_TIME - timePassed;
+                    const hoursLeft = Math.floor(timeLeft / (1000 * 60 * 60));
+                    const minutesLeft = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                    alert(`আপনি ইতিমধ্যেই Boost করেছেন! আবার চেষ্টা করতে ${hoursLeft} ঘণ্টা ${minutesLeft} মিনিট অপেক্ষা করুন।`);
+                    return;
+                }
+
+                // যদি ১২ ঘণ্টা পার হয়ে যায়, তবে ভিডিও অ্যাড কল করুন
+                if (typeof AdController !== 'undefined') {
+                    AdController.showVideoAd(
+                        // Success Function: ভিডিও পুরোপুরি দেখলে
+                        (result) => { 
+                            const newGp = (userData.gp || 0) + BOOST_REWARD;
+                            // ডাটাবেজ আপডেট
+                            userRef.update({
+                                gp: newGp,
+                                lastBoostTime: currentTime
+                            }).then(() => {
+                                alert(`অভিনন্দন! আপনি ভিডিওটি দেখেছেন এবং ${BOOST_REWARD} GP জিতেছেন!`);
+                                updateBoostButtonUI(currentTime);
+                            });
+                        },
+                        // Error/Skip Function: ভিডিও না দেখলে বা এরর হলে
+                        (error) => { 
+                            alert("আপনাকে সম্পূর্ণ ভিডিওটি দেখতে হবে।");
+                        }
+                    );
+                } else {
+                    alert("অ্যাড সিস্টেম লোড হতে সমস্যা হচ্ছে। একটু পর আবার চেষ্টা করুন।");
+                }
+            }
+        });
+    }
+
+    // বুস্ট বাটনের UI আপডেট (টাইমার দেখানো)
+    function updateBoostButtonUI(lastBoostTime) {
+        const boostBtn = document.getElementById('boostBtn');
+        const boostText = document.getElementById('boostText');
+        const currentTime = Date.now();
+        const timePassed = currentTime - lastBoostTime;
+
+        if (timePassed < COOLDOWN_TIME) {
+            boostBtn.classList.add('boost-disabled');
+            // টাইমার সেট করা
+            const interval = setInterval(() => {
+                const now = Date.now();
+                const diff = COOLDOWN_TIME - (now - lastBoostTime);
+                if (diff <= 0) {
+                    clearInterval(interval);
+                    boostBtn.classList.remove('boost-disabled');
+                    boostText.innerText = "Boost";
+                } else {
+                    const h = Math.floor(diff / (1000 * 60 * 60));
+                    const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                    boostText.innerText = `${h}h ${m}m`;
+                }
+            }, 60000); // প্রতি মিনিটে আপডেট
+            
+            // প্রথমবার ইনস্ট্যান্ট দেখানোর জন্য
+            const h = Math.floor((COOLDOWN_TIME - timePassed) / (1000 * 60 * 60));
+            const m = Math.floor(((COOLDOWN_TIME - timePassed) % (1000 * 60 * 60)) / (1000 * 60));
+            boostText.innerText = `${h}h ${m}m`;
+        }
+    }
+
+    // ৩. মেইন লজিক: ইউজার ডিটেকশন এবং মেইনটেন্যান্স চেক
+    window.addEventListener('load', () => {
         loadHomeLegends();
+        
+        // ব্যানার অ্যাড লোড
+        setTimeout(() => {
+            if (typeof AdController !== 'undefined') {
+                AdController.loadBanner("banner-container");
+            }
+        }, 1000);
 
         if (user) {
-            const userId = user.id;
             const userRef = db.ref('users/' + userId);
 
             // A. মেইনটেন্যান্স চেক
@@ -129,50 +230,33 @@
             // B. রেজিস্ট্রেশন, ব্যান চেক এবং অ্যাক্টিভিটি ট্র্যাক
             userRef.on('value', snap => {
                 if (!snap.exists()) {
-                    // নতুন ইউজার ডাটাবেসে সেভ করা
-                    let welcomeBonus = startParam ? 1000 : 0; // রেফারেল বোনাস থাকলে ১০০০[cite: 10]
+                    let welcomeBonus = startParam ? 1000 : 0; 
 
                     userRef.set({
                         name: user.first_name + " " + (user.last_name || ""),
                         username: user.username || "N/A",
                         gp: welcomeBonus,
+                        referredBy: startParam || "none",
                         banned: false,
-                        lastSeen: Date.now(), // অ্যাক্টিভ ইউজার ট্র্যাক করতে
+                        lastSeen: Date.now(),
+                        lastBoostTime: 0, // নতুন ইউজারের জন্য 0
                         joinDate: new Date().toLocaleString()
                     }).then(() => {
                         console.log("New User Registered!");
-                        if(welcomeBonus > 0) alert(`Referral link theke join koray apni ${welcomeBonus} GP bonus peyechen!`);
                     });
                 } else {
                     const userData = snap.val();
-                    // ইউজার যদি ব্যান থাকে তবে অ্যাপ বন্ধ হয়ে যাবে[cite: 10]
                     if (userData.banned === true) {
                         document.body.innerHTML = "<div style='background:#050a18; height:100vh; display:flex; align-items:center; justify-content:center; color:red; text-align:center; padding:20px;'><h1>You are BANNED! <br> Contact Admin for help.</h1></div>";
                     } else {
-                        // ইউজার অ্যাক্টিভ থাকলে lastSeen আপডেট করা
                         userRef.update({ lastSeen: Date.now() });
+                        // পেজ লোড হওয়ার সময় বুস্ট বাটনের টাইমার চেক করা
+                        if (userData.lastBoostTime) {
+                            updateBoostButtonUI(userData.lastBoostTime);
+                        }
                     }
                 }
             });
-            // ২. ইউজার রেজিস্ট্রেশন এবং রেফারেল ডিটেকশন
-userRef.on('value', snap => {
-    if (!snap.exists()) {
-        // নতুন ইউজার ডাটাবেসে সেভ করার সময় referredBy যোগ করুন[cite: 8, 11]
-        let welcomeBonus = startParam ? 1000 : 0; 
-
-        userRef.set({
-            name: user.first_name + " " + (user.last_name || ""),
-            username: user.username || "N/A",
-            gp: welcomeBonus,
-            referredBy: startParam || "none", // এই লাইনটি ইনভাইট ট্র্যাক করবে
-            banned: false,
-            lastSeen: Date.now(),
-            joinDate: new Date().toLocaleString()
-        }).then(() => {
-            console.log("New User Registered with Referer!");
-        });
-    }
-});
         }
     });
 </script>
