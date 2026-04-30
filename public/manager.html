@@ -8,7 +8,10 @@
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
     <script src="https://sad.adsgram.ai/js/adsgram-sdk.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
+    <!-- সেন্ট্রাল স্ক্রিপ্ট লিঙ্ক -->
     <script src="config.js"></script>
+    <script src="ads-manager.js"></script> 
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -35,16 +38,11 @@
 
     <div id="manager-container" class="grid"></div>
 
+    <!-- ব্যানার অ্যাড কন্টেইনার -->
+    <div id="banner-container" style="display: flex; justify-content: center; margin-top: 20px; padding-bottom: 20px;"></div>
+
 <script>
-   console.log("Database connected successfully!");
-    
-    // Adsgram Error Handling
-    let AdController = null;
-    try {
-        if (window.Adsgram) {
-            AdController = window.Adsgram.init({ blockId: "int-41" });
-        }
-    } catch (e) { console.log("Ad script error"); }
+    console.log("Database connected successfully!");
 
     async function loadManagers() {
         const container = document.getElementById('manager-container');
@@ -62,11 +60,17 @@
                 card.innerHTML = `<img src="${manager.img}"><p>${manager.name}</p>`;
                 
                 card.onclick = () => {
-                    if (AdController) {
-                        AdController.show().then(() => openBio(manager)).catch(() => openBio(manager));
-                    } else {
-                        openBio(manager);
+                    // ভিডিও অ্যাড (বর্তমানে হাইড করা আছে, চালু করতে চাইলে /* */ মুছে দিন)
+                    /*
+                    if (typeof AdController !== 'undefined') {
+                        AdController.showVideoAd(
+                            () => openBio(manager), 
+                            () => openBio(manager)
+                        );
+                        return;
                     }
+                    */
+                    openBio(manager);
                 };
                 container.appendChild(card);
             });
@@ -77,10 +81,19 @@
 
     function openBio(manager) {
         localStorage.setItem('selected_manager', JSON.stringify(manager));
-        window.location.href = 'managerbio.html'; // Oboshshoi ei namer file thakte hobe
+        window.location.href = 'managerbio.html'; 
     }
 
-    window.onload = loadManagers;
+    window.onload = () => {
+        loadManagers();
+        
+        // ব্যানার অ্যাড লোড
+        setTimeout(() => {
+            if (typeof AdController !== 'undefined') {
+                AdController.loadBanner("banner-container");
+            }
+        }, 1000);
+    };
 </script>
 </body>
 </html>
