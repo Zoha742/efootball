@@ -99,21 +99,20 @@
                 document.getElementById('m-km-p').innerText = m.km_pos;
             }
 
-            /// --- ১২ ঘণ্টার লিমিটেড অ্যাড সিস্টেম (Manager Bio) ---
-        setTimeout(() => {
-            try {
-                if (typeof BioAdController !== 'undefined') {
-                    // ১. ভিডিও অ্যাড (Manager Bio-এর জন্য ১২ ঘণ্টায় একবার)
-                    BioAdController.showBioAd('manager_bio_page'); 
+            // আপনার বর্তমান কোডটি ঠিক এইরকম থাকবে:
+setTimeout(() => {
+    try {
+        if (typeof BioAdController !== 'undefined') {
+            // ১. ভিডিও অ্যাড (১২ ঘণ্টায় একবার)
+            BioAdController.showBioAd('manager_bio_page');
 
-                    // ২. ব্যানার অ্যাড (এটি সব সময় লোড হবে)
-                    BioAdController.loadBioBanner('banner-container');
-                }
-            } catch (e) {
-                console.log("Ad Loading Error:", e);
-            }
-        }, 800);
-        };
+            // ২. ব্যানার অ্যাড (এটি সব সময় আসবে যদি ওপরে দেওয়া div-টি থাকে)
+            BioAdController.loadBioBanner('banner-container');
+        }
+    } catch (e) {
+        console.log("Ad Loading Error:", e);
+    }
+}, 800);
     </script>
 </body>
 </html>
