@@ -1,47 +1,47 @@
-console.log("Database connected successfully!");
+console.log("Database connected successfully!");[cite: 5]
 
-const AdController = {
-    // ১. ভিডিও অ্যাডের ID (আপনার Boost বাটনের জন্য)
-    videoBlockId: "29212", 
+const AdController = {[cite: 5]
+    // ১. ভিডিও অ্যাডের ID
+    videoBlockId: "29212",[cite: 5]
 
-    // ২. ব্যানার/টাস্ক অ্যাডের ID (আপনার পেজের নিচে শো করার জন্য)
-    bannerBlockId: "task-29213", 
+    // ২. ব্যানার/টাস্ক অ্যাডের ID (এখান থেকে 'task-' লেখাটি সরিয়ে দেওয়া হয়েছে)[cite: 3, 4, 5]
+    bannerBlockId: "29213", 
 
-    // ভিডিও অ্যাড (Reward) লোড করার ফাংশন
-    showVideoAd: function(onReward, onError) {
-        try {
-            if (window.Adsgram) {
-                const ad = window.Adsgram.init({ blockId: this.videoBlockId });
-                ad.show()
-                  .then(onReward)
-                  .catch((err) => {
-                      console.log("Video skipped or error:", err);
-                      if (onError) onError(err);
-                  });
-            } else {
-                if (onError) onError("Adsgram API not loaded");
-            }
-        } catch (e) {
-            if (onError) onError(e);
-        }
-    },
+    // ভিডিও অ্যাড (Reward) লোড করার ফাংশন[cite: 5]
+    showVideoAd: function(onReward, onError) {[cite: 5]
+        try {[cite: 5]
+            if (window.Adsgram) {[cite: 5]
+                const ad = window.Adsgram.init({ blockId: this.videoBlockId });[cite: 5]
+                ad.show()[cite: 5]
+                  .then(onReward)[cite: 5]
+                  .catch((err) => {[cite: 5]
+                      console.log("Video skipped or error:", err);[cite: 5]
+                      if (onError) onError(err);[cite: 5]
+                  });[cite: 5]
+            } else {[cite: 5]
+                // ইনডেক্স পেজে এরর পপআপ বন্ধ করার জন্য এটি শুধুমাত্র কনসোলে দেখাবে[cite: 5]
+                console.log("Adsgram SDK not loaded yet."); 
+            }[cite: 5]
+        } catch (e) {[cite: 5]
+            if (onError) onError(e);[cite: 5]
+        }[cite: 5]
+    },[cite: 5]
 
-    // ব্যানার (Task) অ্যাড লোড করার ফাংশন
-    loadBanner: function(containerId) {
-        const container = document.getElementById(containerId);
+    // ব্যানার (Task) অ্যাড লোড করার ফাংশন[cite: 5]
+    loadBanner: function(containerId) {[cite: 5]
+        const container = document.getElementById(containerId);[cite: 5]
         
-        // ব্যানার আইডি থাকলে অ্যাড লোড হবে
-        if (container && this.bannerBlockId !== "") {
-            try {
-                if (window.Adsgram) {
-                    const bannerAd = window.Adsgram.init({ blockId: this.bannerBlockId });
-                    bannerAd.show()
-                        .then(() => console.log("Banner/Task Ad loaded successfully"))
-                        .catch((err) => console.log("Banner Error:", err));
-                }
-            } catch (e) {
-                console.error("Adsgram Banner failed", e);
-            }
-        }
-    }
-};
+        if (container && this.bannerBlockId !== "") {[cite: 5]
+            try {[cite: 5]
+                if (window.Adsgram) {[cite: 5]
+                    const bannerAd = window.Adsgram.init({ blockId: this.bannerBlockId });[cite: 5]
+                    bannerAd.show()[cite: 5]
+                        .then(() => console.log("Banner/Task Ad loaded successfully"))[cite: 5]
+                        .catch((err) => console.log("Banner Error:", err));[cite: 5]
+                }[cite: 5]
+            } catch (e) {[cite: 5]
+                console.error("Adsgram Banner failed", e);[cite: 5]
+            }[cite: 5]
+        }[cite: 5]
+    }[cite: 5]
+};[cite: 5]
