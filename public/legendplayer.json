@@ -8,7 +8,7 @@
   "country": "Germany",
   "height": "182 cm",
   "style": "Adv. Striker",
-      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777126450/K._Heinz_Rummenigge_tucqrv.png",
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656220/K.H_Rummenigge_l0okbe.png",
       "stats": {
         "Overall Rating": 104, "Offensive Awareness": 93, "Ball Control": 95, "Dribbling": 99, "Tight Possession": 96,
         "Low Pass": 70, "Lofted Pass": 80, "Finishing": 95, "Heading": 88,
@@ -21,73 +21,79 @@
 {
   "name": "Johan Cruyff",
   "pos": "CF",
-  "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470945/Johan_Cruyff_fiynct.png",
+  "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656257/Johan_Cruyff_ramebw.png",
   "bio": "Johan Cruyff was the architect of Total Football. A visionary forward whose technical skill changed the game forever."
 },
 {
   "name": "Andriy Shevchenko",
   "pos": "CF",
-  "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470945/Andriy_Shevchenko_cgut92.png",
+  "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656277/Andriy_Shevchenko_fbyciw.png",
   "bio": "The Ukrainian legend Shevchenko was a nightmare for defenders, winning the Ballon d'Or in 2004 with AC Milan."
 },
 {
   "name": "Eric Cantona",
   "pos": "CF",
-  "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470945/Eric_Cantona_m7ih4d.png",
+  "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656267/Eric_Cantona_l3mrwy.png",
   "bio": "Known as 'The King', Cantona was a charismatic and powerful forward who led Manchester United to dominance in the 90s."
 },
 {
   "name": "Samuel Eto'o",
   "pos": "CF",
-  "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777124560/Samuel_Eto_o_cqyfhb.png",
+  "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656214/samuel_eto_o_pyt3hv.png",
   "bio": "Samuel Eto'o is a four-time African Player of the Year, known for his lightning speed and clinical finishing."
 },
 {
   "name": "Christian Vieri",
   "pos": "CF",
-  "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470944/Christian_Vieri_wusdgc.png",
+  "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656282/Christian_Vieri_cmptpr.png",
   "bio": "Christian Vieri was a physical powerhouse and a prolific Italian striker, feared for his aerial ability and strength."
 },
 {
   "name": "Ferenc Puskas",
   "pos": "CF",
-  "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470944/Ferenc_Puskas_b3jqdo.png",
+  "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656247/Ferenc_Puskas_oa2tuw.png",
   "bio": "Ferenc Puskas was a Hungarian legend and one of the greatest scorers ever, famously leading Real Madrid to multiple titles."
+},
+{
+  "name": "Jan Koller",
+  "pos": "CF",
+  "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656197/Jan_Koller_sudb2s.png",
+  "bio": "Denis Law, the 'Lawman', is a Manchester United legend and the only Scottish player to win the Ballon d'Or."
 },
 {
   "name": "Denis Law",
   "pos": "CF",
-  "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470944/Denis_Law_jauilc.png",
+  "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656272/Denis_Law_c1ieki.png",
   "bio": "Denis Law, the 'Lawman', is a Manchester United legend and the only Scottish player to win the Ballon d'Or."
 },
 {
   "name": "Romario",
   "pos": "CF",
-  "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470944/Romario_nutoc6.png",
+  "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656224/Romario_lth26a.png",
   "bio": "Romario was a master of efficiency in the box, a clinical finisher who scored over 1,000 goals in his career."
 },
 {
   "name": "Alessandro Del Piero",
   "pos": "CF",
-  "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470944/Alessandro_Del_Piero_a69bty.png",
+  "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656262/Alessandro_Del_Piero_uiwgjo.png",
   "bio": "Del Piero is a Juventus icon, known for his technical brilliance and spectacular goals from his trademark 'Del Piero Zone'."
 },
 {
   "name": "Didier Drogba",
   "pos": "CF",
-  "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470943/Didier_Drogba_ivejm5.png",
+  "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656252/Didier_Drogba_blhvnh.png",
   "bio": "Didier Drogba was the ultimate big-game player for Chelsea, famously leading them to their first Champions League title."
 },
 {
   "name": "Ruud van Nistelrooij",
   "pos": "CF",
-  "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470943/Ruud_van_Nistelrooij_chqxcw.png",
+  "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656189/Ruud_van_Nistelrooij_dj3deu.png",
   "bio": "Ruud van Nistelrooy was a pure goal-poacher, known for his incredible positioning and finishing inside the penalty area."
 },
 {
   "name": "Gerd Muller",
   "pos": "CF",
-  "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470943/Gerd_Muller_a8s7ip.png",
+  "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656243/Gerd_Muller_i9pchh.png",
   "bio": "Gerd Muller, 'Der Bomber', was one of the most efficient goalscorers in history, starring for Bayern Munich and West Germany."
 },
   {
