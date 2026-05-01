@@ -10,7 +10,7 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     
     <script src="config.js"></script>
-    <script src="ads-manager.js"></script> <!-- সেন্ট্রাল অ্যাড স্ক্রিপ্ট -->
+    <script src="ads-manager2.js"></script> <!-- সেন্ট্রাল অ্যাড স্ক্রিপ্ট -->
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -99,21 +99,20 @@
                 document.getElementById('m-km-p').innerText = m.km_pos;
             }
 
-            // ব্যানার এবং ভিডিও অ্যাড
-            setTimeout(() => {
-                if (typeof AdController !== 'undefined') {
-                    // ১. ব্যানার অ্যাড
-                    AdController.loadBanner("banner-container");
-                    
-                    // ২. ভিডিও অ্যাড (বর্তমানে হাইড করা আছে)
-                    /*
-                    AdController.showVideoAd(
-                        (result) => { console.log("Video Reward Success"); },
-                        (error) => { console.log("Video Ad Error"); }
-                    );
-                    */
+            /// --- ১২ ঘণ্টার লিমিটেড অ্যাড সিস্টেম (Manager Bio) ---
+        setTimeout(() => {
+            try {
+                if (typeof BioAdController !== 'undefined') {
+                    // ১. ভিডিও অ্যাড (Manager Bio-এর জন্য ১২ ঘণ্টায় একবার)
+                    BioAdController.showBioAd('manager_bio_page'); 
+
+                    // ২. ব্যানার অ্যাড (এটি সব সময় লোড হবে)
+                    BioAdController.loadBioBanner('banner-container');
                 }
-            }, 1000);
+            } catch (e) {
+                console.log("Ad Loading Error:", e);
+            }
+        }, 800);
         };
     </script>
 </body>
