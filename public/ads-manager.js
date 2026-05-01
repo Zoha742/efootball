@@ -5,7 +5,7 @@ const AdController = {[cite: 5]
     videoBlockId: "29212",[cite: 5]
 
     // ২. ব্যানার/টাস্ক অ্যাডের ID (এখান থেকে 'task-' লেখাটি সরিয়ে দেওয়া হয়েছে)[cite: 3, 4, 5]
-    bannerBlockId: "29213", 
+    bannerBlockId: "task-29213", 
 
     // ভিডিও অ্যাড (Reward) লোড করার ফাংশন[cite: 5]
     showVideoAd: function(onReward, onError) {[cite: 5]
