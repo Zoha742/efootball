@@ -101,21 +101,19 @@
             }
         }
 
-        // --- ব্যানার এবং ভিডিও অ্যাড কল করার অংশ ---
+      // --- ১২ ঘণ্টার লিমিটেড অ্যাড সিস্টেম ---
         setTimeout(() => {
             try {
-                if (typeof AdController !== 'undefined') {
-                    // ১. ব্যানার অ্যাড লোড
-                    AdController.loadBanner("banner-container");
-                    
-                    // ২. ভিডিও অ্যাড শো
-                    AdController.showVideoAd(
-                        (result) => { console.log("Video Reward Success"); },
-                        (error) => { console.log("Video Ad Error or Skipped", error); }
-                    );
+                // আমরা যেহেতু নতুন ফাইল ads-manager2.js ব্যবহার করছি, তাই BioAdController চেক হবে
+                if (typeof BioAdController !== 'undefined') {
+                    // ১. ভিডিও অ্যাড (১২ ঘণ্টায় একবার আসবে)
+                    BioAdController.showBioAd('legend_bio_page'); 
+
+                    // ২. ব্যানার অ্যাড লোড করা
+                    BioAdController.loadBioBanner('banner-container');
                 }
             } catch (e) {
-                console.log("Ad Error", e);
+                console.log("Ad Loading Error:", e);
             }
         }, 800);
     };
