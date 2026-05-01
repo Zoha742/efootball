@@ -1,6 +1,6 @@
 const BioAdController = {
     videoBlockId: "29212", 
-    bannerBlockId: "29213", // ব্যানার আইডি ফরম্যাট ঠিক করা হয়েছে
+    bannerBlockId: "task-29213", // ব্যানার আইডি ফরম্যাট ঠিক করা হয়েছে
 
     // ১২ ঘণ্টার চেক লজিক (শুধু ভিডিওর জন্য)
     _canShowVideo: function(key) {
