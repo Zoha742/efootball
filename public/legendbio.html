@@ -12,7 +12,7 @@
     
     <!-- সেন্ট্রাল স্ক্রিপ্ট লিঙ্ক -->
     <script src="config.js"></script>
-    <script src="ads-manager2.js"></script>
+    <script src="ads_manager_limit.js"></script>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -101,7 +101,7 @@
       // --- ১২ ঘণ্টার লিমিটেড অ্যাড সিস্টেম ---
         setTimeout(() => {
             try {
-                // আমরা যেহেতু নতুন ফাইল ads-manager2.js ব্যবহার করছি, তাই BioAdController চেক হবে
+                // আমরা যেহেতু নতুন ফাইল ads_manager_limit.js ব্যবহার করছি, তাই BioAdController চেক হবে
                 if (typeof BioAdController !== 'undefined') {
                     // ১. ভিডিও অ্যাড (১২ ঘণ্টায় একবার আসবে)
                     BioAdController.showBioAd('legend_bio_page'); 
