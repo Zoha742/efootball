@@ -1,33 +1,36 @@
-// ads-manager.js - শুধুমাত্র রিওয়ার্ড ভিডিওর জন্য
-console.log("Ad Controller Connected!");[cite: 12]
+// ads-manager.js - রিওয়ার্ড এবং ইন্টারস্টিশিয়াল অ্যাড কন্ট্রোলার
+console.log("Ad Controller Connected!");
 
 const AdController = {
-    // ভিডিও অ্যাডের ID (সব সময় শুধু সংখ্যা হবে)
+    // ব্লকের আইডিগুলো এখানে সেট করা হয়েছে
     videoBlockId: "29212", 
+    interstitialBlockId: "29249", // আপনার দেওয়া ইন্টারস্টিশিয়াল আইডি
 
-    // ভিডিও অ্যাড (Reward) লোড এবং প্রদর্শনের ফাংশন[cite: 12]
+    // ১. রিওয়ার্ডেড ভিডিও অ্যাড প্রদর্শন
     showVideoAd: function(onReward, onError) {
-        try {
-            if (window.Adsgram) {
-                // Adsgram SDK দিয়ে ভিডিও ইনিশিয়ালাইজ করা[cite: 12]
-                const ad = window.Adsgram.init({ blockId: this.videoBlockId });
-                
-                // ভিডিও প্রদর্শন এবং রেজাল্ট হ্যান্ডলিং[cite: 12]
-                ad.show()
-                  .then((result) => {
-                      console.log("Video Reward Success");
-                      if (onReward) onReward(result); // সফল হলে রিওয়ার্ড ফাংশন কল হবে
-                  })
-                  .catch((err) => {
-                      console.log("Video skipped or error:", err);
-                      if (onError) onError(err); // এরর বা স্কিপ করলে এটি কল হবে
-                  });
-            } else {
-                console.log("Adsgram SDK not loaded yet.");[cite: 12]
-            }
-        } catch (e) {
-            console.error("Ad System Error:", e);
-            if (onError) onError(e);
+        if (window.Adsgram) {
+            const ad = window.Adsgram.init({ blockId: this.videoBlockId });
+            ad.show()
+              .then((result) => {
+                  if (onReward) onReward(result); // সফল হলে রিওয়ার্ড পাবে
+              })
+              .catch((err) => {
+                  if (onError) onError(err); // স্কিপ বা এরর হলে কল হবে
+              });
+        } else {
+            console.log("Adsgram SDK not loaded yet.");
+        }
+    },
+
+    // ২. ইন্টারস্টিশিয়াল অ্যাড প্রদর্শন (ইভেন্ট ব্যাক বাটনের জন্য)
+    showInterstitialAd: function(onComplete) {
+        if (window.Adsgram) {
+            const ad = window.Adsgram.init({ blockId: this.interstitialBlockId });
+            ad.show()
+              .then(() => { if (onComplete) onComplete(); }) // অ্যাড শেষ হলে ব্যাক করবে
+              .catch(() => { if (onComplete) onComplete(); }); // এরর হলেও ব্যাক করবে
+        } else {
+            if (onComplete) onComplete();
         }
     }
-};[cite: 12]
+};
