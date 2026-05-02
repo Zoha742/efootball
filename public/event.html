@@ -10,9 +10,8 @@
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     
-    <!-- Central Config & Ad Master -->
+    <!-- Central Config -->
     <script src="config.js"></script>
-    <script src="ads-manager.js"></script> 
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -22,16 +21,9 @@
         .header { display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 20px; }
         .back-btn { position: absolute; left: 0; font-size: 22px; color: var(--primary); text-decoration: none; }
 
-        /* Slider Section[cite: 9] */
         .event-slider {
-            width: 100%;
-            height: 200px;
-            overflow: hidden;
-            border-radius: 12px;
-            border: 2px solid var(--primary);
-            position: relative;
-            background: var(--card);
-            touch-action: pan-y;
+            width: 100%; height: 200px; overflow: hidden; border-radius: 12px;
+            border: 2px solid var(--primary); position: relative; background: var(--card); touch-action: pan-y;
         }
 
         .slider-track { display: flex; transition: transform 0.4s ease-in-out; height: 100%; }
@@ -41,11 +33,19 @@
         .dot { width: 8px; height: 8px; background: #334155; border-radius: 50%; transition: 0.3s; }
         .dot.active { background: var(--primary); width: 20px; border-radius: 10px; }
 
-        /* Vertical List[cite: 9] */
         .list-title { color: var(--primary); margin: 25px 0 15px; font-size: 16px; font-weight: bold; border-left: 4px solid var(--primary); padding-left: 10px; }
         .vertical-list { display: flex; flex-direction: column; gap: 15px; padding-bottom: 20px; }
         .v-card { width: 100%; border-radius: 12px; overflow: hidden; border: 1px solid #1e2d4d; background: var(--card); }
         .v-card img { width: 100%; height: auto; display: block; }
+
+        /* ভিডিও অ্যাড বাটনের স্টাইল */
+        .ad-btn-container { margin: 20px 0; padding: 0 5px; }
+        .btn-video { 
+            width: 100%; border: none; padding: 15px; border-radius: 12px; 
+            background: linear-gradient(135deg, #fbbf24, #d97706); color: #050a18; 
+            font-weight: bold; cursor: pointer; font-size: 16px; 
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
     </style>
 </head>
 <body>
@@ -60,17 +60,39 @@
     </div>
     <div id="dots" class="dots"></div>
 
+    <!-- ভিডিও অ্যাডের জন্য বাটন -->
+    <div class="ad-btn-container">
+        <button class="btn-video" onclick="watchEventAd()">
+            <i class="fas fa-play-circle"></i> WATCH AD FOR REWARD
+        </button>
+    </div>
+
     <div class="list-title">MORE EVENTS</div>
     <div id="vertical-container" class="vertical-list"></div>
 
-    <!-- ব্যানার অ্যাডের জন্য কন্টেইনার -->
-    <!-- ইভেন্ট পেজের জন্য ব্যানার কন্টেইনার -->
-    <div id="banner-container" style="width: 100%; min-height: 50px; display: flex; justify-content: center; margin-top: 20px; padding-bottom: 50px;"></div>
-
 <script>
-    // ড্যাটাবেস কানেকশন লগ
-    console.log("Database connected successfully!");
-    
+    // ভিডিও অ্যাড কন্ট্রোলার লজিক
+    const AdController = {
+        videoBlockId: "29212", 
+        showVideoAd: function(onReward, onError) {
+            if (window.Adsgram) {
+                const ad = window.Adsgram.init({ blockId: this.videoBlockId });
+                ad.show()
+                  .then((result) => { if (onReward) onReward(result); })
+                  .catch((err) => { if (onError) onError(err); });
+            } else {
+                console.log("Adsgram SDK not loaded yet.");
+            }
+        }
+    };
+
+    function watchEventAd() {
+        AdController.showVideoAd(
+            (res) => alert("Success! Your reward has been added."),
+            (err) => console.log("Ad skipped or error", err)
+        );
+    }
+
     let currentIndex = 0;
     let images = [];
     let slideInterval;
@@ -109,7 +131,6 @@
 
             startAutoSlide();
             setupTouch();
-
         } catch (e) {
             track.innerHTML = `<p style='text-align:center; padding:20px; color:red;'>${e.message}</p>`;
         }
@@ -127,6 +148,7 @@
     function updateSlider() {
         const track = document.getElementById('slider-track');
         const dots = document.querySelectorAll('.dot');
+        if(!track) return;
         track.style.transform = `translateX(-${currentIndex * 100}%)`;
         dots.forEach(d => d.classList.remove('active'));
         if(dots[currentIndex]) dots[currentIndex].classList.add('active');
@@ -147,24 +169,9 @@
         });
     }
 
-    // উইন্ডো লোড হওয়ার সময় স্লাইডার এবং সেন্ট্রাল অ্যাডস কল হবে[cite: 8, 9]
     window.onload = () => {
-    fetchEvents(); 
-
-    // ১ সেকেন্ড পর অ্যাড লোড হবে
-    setTimeout(() => {
-        try {
-            if (typeof AdController !== 'undefined') {
-                // ব্যানার অ্যাড লোড করা হচ্ছে
-                AdController.loadBanner("banner-container");
-            } else {
-                console.log("AdController not found!");
-            }
-        } catch (e) {
-            console.error("Ad error:", e);
-        }
-    }, 1000);
-};
+        fetchEvents(); 
+    };
 </script>
 </body>
 </html>
