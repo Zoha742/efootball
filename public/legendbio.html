@@ -98,22 +98,17 @@
             }
         }
 
-      // --- ১২ ঘণ্টার লিমিটেড অ্যাড সিস্টেম ---
+        // --- ১২ ঘণ্টার লিমিটেড অ্যাড সিস্টেম ---
         setTimeout(() => {
             try {
-                // নতুন অবজেক্ট ads_manager_limit চেক হবে[cite: 12]
                 if (typeof ads_manager_limit !== 'undefined') {
-                    // ১. ভিডিও অ্যাড (১২ ঘণ্টায় একবার আসবে)[cite: 12]
-                    ads_manager_limit.showBioAd('legend_bio_page');[cite: 12]
-
-                    // ২. ব্যানার অ্যাড লোড করা (আপাতত বন্ধ)[cite: 12]
-                   // ads_manager_limit.loadBioBanner('banner-container');[cite: 12]
+                    ads_manager_limit.showBioAd('player_bio_page');
                 }
             } catch (e) {
-                console.log("Ad Loading Error:", e);[cite: 12]
+                console.log("Ad Loading Error:", e);
             }
         }, 800);
-    };
+    }; // <--- এই ব্র্যাকেটটি ঠিকভাবে বসানো হয়েছে
 </script>
 </body>
 </html>
