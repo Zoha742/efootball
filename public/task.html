@@ -13,8 +13,6 @@
     <!-- Central Config -->
     <script src="config.js"></script>
 
-    <!-- [নোট: কনফ্লিক্ট এড়াতে ads-manager.js এর লিঙ্কটি সরিয়ে দেওয়া হয়েছে কারণ কোডটি নিচে সরাসরি দেওয়া আছে] -->
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --bg: #050a18; --card: #121e36; --primary: #3b82f6; --text: #ffffff; --border: #1e2d4d; --green: #22c55e; }
@@ -45,7 +43,7 @@
             <div class="reward-info">
                 <i class="fas fa-gift"></i>
                 <span>Task Reward</span>
-                <h2 id="display-reward">100 GP Points</h2>
+                <h2 id="display-reward">500 GP Points</h2>
             </div>
 
             <div class="ad-grid" id="ad-slots">
@@ -66,7 +64,6 @@
         const tg = window.Telegram.WebApp;
         const userId = tg.initDataUnsafe?.user?.id || "test_user";
 
-        // ১. ভিডিও অ্যাড কন্ট্রোলার (সরাসরি ইনজেক্ট করা হয়েছে)
         const AdController = {
             videoBlockId: "29212", 
             showVideoAd: function(onReward, onError) {
@@ -76,8 +73,7 @@
                       .then((result) => { if (onReward) onReward(result); })
                       .catch((err) => { if (onError) onError(err); });
                 } else {
-                    console.log("Adsgram SDK not loaded yet.");
-                    alert("Ad system is loading, please wait a moment.");
+                    alert("Ad system is loading, please wait.");
                 }
             }
         };
@@ -88,7 +84,6 @@
         const cooldownTime = 12 * 60 * 60 * 1000;
         let timerInterval;
 
-        // ২. রিয়েল-টাইম ডাটা লোড (Firebase)
         function initTask() {
             db.ref('users/' + userId).on('value', snap => {
                 const data = snap.val() || {};
@@ -105,7 +100,6 @@
             });
         }
 
-        // ৩. অ্যাড হ্যান্ডলার (সঠিকভাবে আপডেট করা হয়েছে)
         function handleTask() {
             if (adsWatched < 6) {
                 AdController.showVideoAd(
@@ -113,14 +107,14 @@
                         adsWatched++;
                         updateSlotUI(adsWatched);
                         if (adsWatched === 6) {
-                            document.getElementById('task-btn').innerText = "COLLECT REWARD";
+                            document.getElementById('task-btn').innerText = "COLLECT 500 GP";
                             document.getElementById('task-btn').style.background = "var(--green)";
                         } else {
                             document.getElementById('task-btn').innerText = `WATCH AD (${adsWatched + 1}/6)`;
                         }
                     },
                     (error) => {
-                        alert("Ad failed or skipped. Please watch the full video to count the task.");
+                        alert("আপনাকে সম্পূর্ণ ভিডিওটি দেখতে হবে।");
                     }
                 );
             } else {
@@ -136,23 +130,18 @@
             }
         }
 
-        // ৪. রিওয়ার্ড এবং ডাটাবেস আপডেট[cite: 10]
         function collectReward() {
-            db.ref('config/task_reward').once('value', s => {
-                const reward = s.val() || 100;
-                db.ref('users/' + userId).update({
-                    gp: userGP + reward,
-                    tasks_done: totalTasksDone + 1,
-                    last_task_collect: Date.now()
-                }).then(() => {
-                    alert(`Success! ${reward} GP Added.`);
-                    adsWatched = 0;
-                    // initTask অটোমেটিক টাইমার শুরু করবে
-                });
+            const rewardAmount = 500; // আপনি ৫০০ জিপি চেয়েছিলেন
+            db.ref('users/' + userId).update({
+                gp: userGP + rewardAmount,
+                tasks_done: totalTasksDone + 1,
+                last_task_collect: Date.now()
+            }).then(() => {
+                alert(`অভিনন্দন! আপনি ৬টি অ্যাড সম্পন্ন করেছেন এবং ${rewardAmount} GP পেয়েছেন।`);
+                adsWatched = 0;
             });
         }
 
-        // ৫. টাইমার লজিক (Firebase স্প্যামিং কমানো হয়েছে)[cite: 10]
         function startTimer(endTime) {
             const btn = document.getElementById('task-btn');
             const timerDiv = document.getElementById('timer');
