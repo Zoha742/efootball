@@ -4,7 +4,7 @@ console.log("Ad Controller Connected!");
 const AdController = {
     // ব্লকের আইডিগুলো এখানে সেট করা হয়েছে
     videoBlockId: "29212", 
-    interstitialBlockId: "29249", // আপনার দেওয়া ইন্টারস্টিশিয়াল আইডি
+    interstitialBlockId: "29212", // আপনার দেওয়া ইন্টারস্টিশিয়াল আইডি
 
     // ১. রিওয়ার্ডেড ভিডিও অ্যাড প্রদর্শন
     showVideoAd: function(onReward, onError) {
