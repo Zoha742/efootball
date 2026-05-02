@@ -60,9 +60,6 @@
 
 <div class="stats-container" id="stats-container"></div>
 
-<!-- ব্যানার অ্যাডের কন্টেইনার -->
-<div id="banner-container" style="display: flex; justify-content: center; margin-top: 20px; padding-bottom: 20px;"></div>
-
 <script>
     console.log("Database connected successfully!");
 
@@ -109,7 +106,7 @@
                     BioAdController.showBioAd('player_bio_page'); 
 
                     // ২. ব্যানার অ্যাড লোড করা
-                    BioAdController.loadBioBanner('banner-container');
+                   // BioAdController.loadBioBanner('banner-container');
                 }
             } catch (e) {
                 console.log("Ad Loading Error:", e);
