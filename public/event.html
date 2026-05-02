@@ -159,8 +159,8 @@
     // ব্যানার অ্যাড ফিক্সড[cite: 17]
     function loadBannerAd() {
         if (window.Adsgram) {
-            // আইডি শুধুমাত্র সংখ্যা হবে, আপনার কোডে "task-29213" ছিল, এটি ভুল
-            const ad = window.Adsgram.init({ blockId: "29213" }); 
+            // আপনার এরর অনুযায়ী আইডির শুরুতে 'task-' থাকতে হবে
+            const ad = window.Adsgram.init({ blockId: "task-29213" }); 
             ad.show().catch((err) => console.log("Banner Error:", err));
         }
     }
