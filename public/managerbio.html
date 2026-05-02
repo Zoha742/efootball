@@ -97,20 +97,22 @@
                 document.getElementById('m-km-p').innerText = m.km_pos;
             }
 
-            // আপনার বর্তমান কোডটি ঠিক এইরকম থাকবে:
-setTimeout(() => {
-    try {
-        if (typeof BioAdController !== 'undefined') {
-            // ১. ভিডিও অ্যাড (১২ ঘণ্টায় একবার)
-            BioAdController.showBioAd('manager_bio_page');
+          // ... (আপনার আগের কোড)
 
-            // ২. ব্যানার অ্যাড (এটি সব সময় আসবে যদি ওপরে দেওয়া div-টি থাকে)
-          //  BioAdController.loadBioBanner('banner-container');
-        }
-    } catch (e) {
-        console.log("Ad Loading Error:", e);
-    }
-}, 800);
+            setTimeout(() => {
+                try {
+                    if (typeof BioAdController !== 'undefined') {
+                        // ১. ভিডিও অ্যাড (১২ ঘণ্টায় একবার)
+                        BioAdController.showBioAd('manager_bio_page');
+
+                        // ২. ব্যানার অ্যাড (কমেন্ট করা হয়েছে)[cite: 11]
+                        // BioAdController.loadBioBanner('banner-container');
+                    }
+                } catch (e) {
+                    console.log("Ad Loading Error:", e);
+                }
+            }, 800);
+        }; // <--- এই ব্র্যাকেটটি দিতে হবে window.onload ফাংশনটি শেষ করার জন্য[cite: 11]
     </script>
 </body>
 </html>
