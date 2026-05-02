@@ -10,9 +10,8 @@
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     
-    <!-- Central Config & Ad Master -->
+    <!-- Central Config -->
     <script src="config.js"></script>
-    <script src="ads-manager.js"></script> 
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -64,12 +63,32 @@
     <script>
         const tg = window.Telegram.WebApp;
         const userId = tg.initDataUnsafe?.user?.id || "test_user";
+
+        // ১. ভিডিও অ্যাড কন্ট্রোলার (সরাসরি ইনজেক্ট করা হয়েছে)
+        const AdController = {
+            videoBlockId: "29212", 
+            showVideoAd: function(onReward, onError) {
+                if (window.Adsgram) {
+                    const ad = window.Adsgram.init({ blockId: this.videoBlockId });
+                    ad.show()
+                      .then((result) => {
+                          if (onReward) onReward(result);
+                      })
+                      .catch((err) => {
+                          if (onError) onError(err);
+                      });
+                } else {
+                    console.log("Adsgram SDK not loaded yet.");
+                }
+            }
+        };
+
         let adsWatched = 0;
         let userGP = 0;
         let totalTasksDone = 0;
         const cooldownTime = 12 * 60 * 60 * 1000;
 
-        // ১. রিয়েল-টাইম ডাটা লোড (Firebase)
+        // ২. রিয়েল-টাইম ডাটা লোড (Firebase)
         function initTask() {
             db.ref('users/' + userId).on('value', snap => {
                 const data = snap.val() || {};
@@ -86,10 +105,9 @@
             });
         }
 
-        // ২. অ্যাড হ্যান্ডলার (AdController ব্যবহার করে)[cite: 1, 7]
+        // ৩. অ্যাড হ্যান্ডলার[cite: 7]
         function handleTask() {
             if (adsWatched < 6) {
-                // ads-manager.js থেকে অ্যাড ফাংশন কল[cite: 7]
                 AdController.showVideoAd(
                     (result) => {
                         adsWatched++;
@@ -102,7 +120,7 @@
                         }
                     },
                     (error) => {
-                        alert("Ad failed to load. Please try again.");
+                        alert("Ad failed or skipped. Please try again.");
                     }
                 );
             } else {
@@ -116,23 +134,23 @@
             slot.innerHTML = '<i class="fas fa-check-circle"></i><br>Done';
         }
 
-        // ৩. রিওয়ার্ড এবং ডাটাবেস আপডেট[cite: 1]
+        // ৪. রিওয়ার্ড এবং ডাটাবেস আপডেট[cite: 1, 7]
         function collectReward() {
             db.ref('config/task_reward').once('value', s => {
                 const reward = s.val() || 100;
                 
                 db.ref('users/' + userId).update({
                     gp: userGP + reward,
-                    tasks_done: totalTasksDone + 1, // টাস্ক রেকর্ড আপডেট[cite: 1]
+                    tasks_done: totalTasksDone + 1,
                     last_task_collect: Date.now()
                 }).then(() => {
                     alert(`Congratulations! ${reward} GP Added.`);
                     adsWatched = 0;
+                    resetTaskUI(); // রিওয়ার্ড পাওয়ার পর ইউআই রিসেট এবং টাইমার শুরু হবে
                 });
             });
         }
 
-        // টাইমার এবং ইউআই ফাংশনসমূহ
         function startTimer(duration) {
             const btn = document.getElementById('task-btn');
             const timerDiv = document.getElementById('timer');
@@ -140,22 +158,30 @@
             timerDiv.style.display = "block";
 
             const interval = setInterval(() => {
-                duration -= 1000;
-                if (duration <= 0) {
-                    clearInterval(interval);
-                    resetTaskUI();
-                    return;
-                }
-                let h = Math.floor(duration / 3600000);
-                let m = Math.floor((duration % 3600000) / 60000);
-                let s = Math.floor((duration % 60000) / 1000);
-                document.getElementById('countdown').innerText = 
-                    `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+                const now = Date.now();
+                db.ref('users/' + userId + '/last_task_collect').once('value', s => {
+                    const lastCollect = s.val() || 0;
+                    const remaining = cooldownTime - (Date.now() - lastCollect);
+
+                    if (remaining <= 0) {
+                        clearInterval(interval);
+                        resetTaskUI();
+                        return;
+                    }
+
+                    let h = Math.floor(remaining / 3600000);
+                    let m = Math.floor((remaining % 3600000) / 60000);
+                    let s = Math.floor((remaining % 60000) / 1000);
+                    document.getElementById('countdown').innerText = 
+                        `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+                });
             }, 1000);
         }
 
         function resetTaskUI() {
             document.getElementById('task-btn').style.display = "block";
+            document.getElementById('task-btn').style.background = "var(--primary)";
+            document.getElementById('task-btn').innerText = "WATCH AD (1/6)";
             document.getElementById('timer').style.display = "none";
             for (let i = 1; i <= 6; i++) {
                 const slot = document.getElementById(`slot-${i}`);
