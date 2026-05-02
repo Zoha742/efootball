@@ -98,16 +98,16 @@
             }
         }
 
-      // --- ১২ ঘণ্টার লিমিটেড অ্যাড সিস্টেম ---
+      /// --- ১২ ঘণ্টার লিমিটেড অ্যাড সিস্টেম ---
         setTimeout(() => {
             try {
-                // আমরা যেহেতু নতুন ফাইল ads_manager_limit.js ব্যবহার করছি, তাই BioAdController চেক হবে
-                if (typeof BioAdController !== 'undefined') {
+                // নতুন নাম ads_manager_limit দিয়ে চেক করতে হবে
+                if (typeof ads_manager_limit !== 'undefined') {
                     // ১. ভিডিও অ্যাড (১২ ঘণ্টায় একবার আসবে)
-                    BioAdController.showBioAd('legend_bio_page'); 
+                    ads_manager_limit.showBioAd('legend_bio_page'); 
 
-                    // ২. ব্যানার অ্যাড লোড করা
-                   // BioAdController.loadBioBanner('banner-container');
+                    // ২. ব্যানার অ্যাড লোড করা (আপাতত বন্ধ)
+                   // ads_manager_limit.loadBioBanner('banner-container');
                 }
             } catch (e) {
                 console.log("Ad Loading Error:", e);
