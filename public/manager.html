@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Managers - eFootball HUB</title>
+    <!-- Firebase & SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
@@ -38,61 +39,43 @@
 
     <div id="manager-container" class="grid"></div>
 
-    <!-- ব্যানার অ্যাড কন্টেইনার -->
-    <div id="banner-container" style="display: flex; justify-content: center; margin-top: 20px; padding-bottom: 20px;"></div>
-
 <script>
-    console.log("Database connected successfully!");
+    console.log("Database connected successfully!");[cite: 10]
 
     async function loadManagers() {
-        const container = document.getElementById('manager-container');
-        container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>Loading...</p>";
+        const container = document.getElementById('manager-container');[cite: 10]
+        container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>Loading...</p>";[cite: 10]
         
         try {
-            const response = await fetch('manager.json');
-            const data = await response.json();
-            const all_managers = data.managers;
-            container.innerHTML = "";
+            const response = await fetch('manager.json');[cite: 10]
+            const data = await response.json();[cite: 10]
+            const all_managers = data.managers;[cite: 10]
+            container.innerHTML = "";[cite: 10]
 
             all_managers.forEach(manager => {
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.innerHTML = `<img src="${manager.img}"><p>${manager.name}</p>`;
+                const card = document.createElement('div');[cite: 10]
+                card.className = 'card';[cite: 10]
+                card.innerHTML = `<img src="${manager.img}"><p>${manager.name}</p>`;[cite: 10]
                 
                 card.onclick = () => {
-                    // ভিডিও অ্যাড (বর্তমানে হাইড করা আছে, চালু করতে চাইলে /* */ মুছে দিন)
-                    /*
-                    if (typeof AdController !== 'undefined') {
-                        AdController.showVideoAd(
-                            () => openBio(manager), 
-                            () => openBio(manager)
-                        );
-                        return;
-                    }
-                    */
-                    openBio(manager);
+                    // ভিডিও অ্যাড এখানেও বন্ধ রাখা হয়েছে
+                    openBio(manager);[cite: 10]
                 };
-                container.appendChild(card);
+                container.appendChild(card);[cite: 10]
             });
         } catch (e) { 
-            container.innerHTML = "Error loading managers!"; 
+            container.innerHTML = "Error loading managers!";[cite: 10]
         }
     }
 
     function openBio(manager) {
-        localStorage.setItem('selected_manager', JSON.stringify(manager));
-        window.location.href = 'managerbio.html'; 
+        localStorage.setItem('selected_manager', JSON.stringify(manager));[cite: 10]
+        window.location.href = 'managerbio.html';[cite: 10]
     }
 
     window.onload = () => {
-        loadManagers();
-        
-        // ব্যানার অ্যাড লোড
-        setTimeout(() => {
-            if (typeof AdController !== 'undefined') {
-                AdController.loadBanner("banner-container");
-            }
-        }, 1000);
+        loadManagers();[cite: 10]
+        // ব্যানার অ্যাড লোডিং লজিক পুরোপুরি সরিয়ে দেওয়া হয়েছে
     };
 </script>
 </body>
