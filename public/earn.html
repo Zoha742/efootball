@@ -71,6 +71,26 @@
     <script>
         const tg = window.Telegram.WebApp;
         const userId = tg.initDataUnsafe?.user?.id || "test_user";
+
+        // AdController Definition[cite: 9]
+        const AdController = {
+            videoBlockId: "29212", 
+            showVideoAd: function(onReward, onError) {
+                if (window.Adsgram) {
+                    const ad = window.Adsgram.init({ blockId: this.videoBlockId });
+                    ad.show()
+                      .then((result) => {
+                          if (onReward) onReward(result);
+                      })
+                      .catch((err) => {
+                          if (onError) onError(err);
+                      });
+                } else {
+                    console.log("Adsgram SDK not loaded yet.");
+                }
+            }
+        };
+
         let adsWatched = 0;
         let nextAllowedTime = 0;
         let userGP = 0;
@@ -97,7 +117,6 @@
                 if (adsWatched >= 3 && now < nextAllowedTime) {
                     showLimitReached();
                 } else if (adsWatched >= 3 && now >= nextAllowedTime) {
-                    // ২৪ ঘণ্টা পার হলে লিমিট রিসেট
                     resetDailyLimit();
                 } else {
                     showReadyState();
@@ -105,7 +124,7 @@
             }
         }
 
-        // ২. অ্যাড দেখানো (ads-manager.js ব্যবহার করে)
+        // ২. অ্যাড দেখানো (AdController ব্যবহার করে)
         function watchAd() {
             AdController.showVideoAd(
                 (result) => {
@@ -117,21 +136,19 @@
             );
         }
 
-        // ৩. রিওয়ার্ড এবং ডাটাবেস আপডেট করা[cite: 8, 9]
+        // ৩. রিওয়ার্ড এবং ডাটাবেস আপডেট করা[cite: 10]
         function handleReward() {
             db.ref('config/task_reward').once('value', s => {
                 const reward = s.val() || 100;
                 const newCount = adsWatched + 1;
 
-                // ওয়েটিং টাইম লজিক (Progressive Logic)[cite: 9]
                 let waitTime = 0;
-                if (newCount === 1) waitTime = 1 * 60 * 1000; // ১ম পর ১ মিনিট
-                else if (newCount === 2) waitTime = 3 * 60 * 1000; // ২য় পর ৩ মিনিট
-                else if (newCount >= 3) waitTime = 24 * 60 * 60 * 1000; // ৩য় পর ২৪ ঘণ্টা
+                if (newCount === 1) waitTime = 1 * 60 * 1000; 
+                else if (newCount === 2) waitTime = 3 * 60 * 1000; 
+                else if (newCount >= 3) waitTime = 24 * 60 * 60 * 1000; 
 
                 const nextTime = Date.now() + waitTime;
 
-                // Firebase এ ডাটা আপডেট[cite: 8]
                 db.ref('users/' + userId).update({
                     gp: userGP + reward,
                     earn_ads_count: newCount,
