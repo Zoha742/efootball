@@ -10,9 +10,8 @@
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     
-    <!-- Central Config & Ad Master -->
+    <!-- Central Config -->
     <script src="config.js"></script>
-    <script src="ads-manager_active.js"></script> 
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -51,7 +50,7 @@
         <div class="earn-card">
             <i class="fas fa-gem" style="font-size: 40px; color: var(--yellow); margin-bottom: 15px;"></i>
             <div class="status-info">
-                Daily Limit: <b id="ad-count">0</b> / 3 Ads Watched
+                Daily Task: <b id="ad-count">0</b> / 3 Ads Watched
             </div>
 
             <button id="earn-btn" class="btn-earn btn-blue" onclick="watchAd()">
@@ -63,7 +62,7 @@
             </div>
 
             <div class="limit-note">
-                <i class="fas fa-info-circle"></i> ভিডিও দেখলে আপনার অ্যাকাউন্টে অ্যাডমিন সেট করা GP যোগ হবে। প্রতিবার অ্যাড দেখার পর ওয়েটিং টাইম বৃদ্ধি পাবে। দিনে সর্বোচ্চ ৩টি অ্যাড দেখা যাবে।
+                <i class="fas fa-info-circle"></i> দিনে ৩টি ভিডিও সম্পূর্ণ দেখলে আপনার অ্যাকাউন্টে একসাথে ৫০০ GP যোগ হবে। প্রতিবার অ্যাড দেখার পর পরবর্তী অ্যাডের জন্য কিছুটা ওয়েটিং টাইম থাকবে।
             </div>
         </div>
     </div>
@@ -72,9 +71,9 @@
         const tg = window.Telegram.WebApp;
         const userId = tg.initDataUnsafe?.user?.id || "test_user";
 
-        // AdController Definition[cite: 9]
+        // HTML ফাইলের ভেতরের AdController
         const AdController = {
-            videoBlockId: "29212", 
+            videoBlockId: "29213", 
             showVideoAd: function(onReward, onError) {
                 if (window.Adsgram) {
                     const ad = window.Adsgram.init({ blockId: this.videoBlockId });
@@ -136,26 +135,33 @@
             );
         }
 
-        // ৩. রিওয়ার্ড এবং ডাটাবেস আপডেট করা[cite: 10]
+        // ৩. ৩টি অ্যাড দেখার পর ৫০০ GP রিওয়ার্ড দেওয়ার লজিক
         function handleReward() {
-            db.ref('config/task_reward').once('value', s => {
-                const reward = s.val() || 100;
-                const newCount = adsWatched + 1;
+            const newCount = adsWatched + 1;
+            let reward = 0;
 
-                let waitTime = 0;
-                if (newCount === 1) waitTime = 1 * 60 * 1000; 
-                else if (newCount === 2) waitTime = 3 * 60 * 1000; 
-                else if (newCount >= 3) waitTime = 24 * 60 * 60 * 1000; 
+            // শুধুমাত্র ৩ নম্বর অ্যাড কমপ্লিট হলে ৫০০ পয়েন্ট পাবে
+            if (newCount === 3) {
+                reward = 500;
+            }
 
-                const nextTime = Date.now() + waitTime;
+            let waitTime = 0;
+            if (newCount === 1) waitTime = 1 * 60 * 1000; // ১ম অ্যাডের পর ১ মিনিট ওয়েট
+            else if (newCount === 2) waitTime = 3 * 60 * 1000; // ২য় অ্যাডের পর ৩ মিনিট ওয়েট
+            else if (newCount >= 3) waitTime = 24 * 60 * 60 * 1000; // ৩য় অ্যাডের পর ২৪ ঘণ্টা ওয়েট
 
-                db.ref('users/' + userId).update({
-                    gp: userGP + reward,
-                    earn_ads_count: newCount,
-                    earn_next_time: nextTime
-                }).then(() => {
-                    alert(`Success! You earned ${reward} GP.`);
-                });
+            const nextTime = Date.now() + waitTime;
+
+            db.ref('users/' + userId).update({
+                gp: userGP + reward,
+                earn_ads_count: newCount,
+                earn_next_time: nextTime
+            }).then(() => {
+                if (newCount === 3) {
+                    alert(`Congratulations! You have completed 3 ads and earned 500 GP!`);
+                } else {
+                    alert(`Ad ${newCount}/3 watched successfully! You need to watch ${3 - newCount} more ad(s) to get 500 GP.`);
+                }
             });
         }
 
@@ -166,7 +172,7 @@
 
             btn.disabled = true;
             btn.classList.add('btn-lock');
-            btn.innerHTML = `<i class="fas fa-lock"></i> AD LOCKED`;
+            btn.innerHTML = `<i class="fas fa-lock"></i> WAIT FOR NEXT AD`;
             timerDiv.style.display = 'block';
 
             clearInterval(timerInterval);
@@ -202,7 +208,7 @@
             const btn = document.getElementById('earn-btn');
             btn.disabled = true;
             btn.classList.add('btn-lock');
-            btn.innerHTML = `<i class="fas fa-calendar-times"></i> DAILY LIMIT REACHED`;
+            btn.innerHTML = `<i class="fas fa-calendar-times"></i> DAILY TASK COMPLETED`;
             document.getElementById('timer-display').style.display = 'block';
         }
 
