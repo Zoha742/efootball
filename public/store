@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Store - eFootball HUB</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --bg: #050a18; --card: #121e36; --primary: #6a11cb; --text: #ffffff; }
+        body { background: var(--bg); color: var(--text); font-family: sans-serif; padding: 20px; margin: 0; text-align: center; }
+        .header { display: flex; align-items: center; margin-bottom: 30px; }
+        .back-btn { color: var(--text); font-size: 24px; text-decoration: none; }
+        .store-card { background: var(--card); border-radius: 20px; padding: 30px; border: 1px solid #1e2d4d; }
+        .btn-buy { 
+            width: 100%; border: none; padding: 16px; border-radius: 12px; 
+            background: linear-gradient(135deg, #6a11cb, #2575fc); color: white; 
+            font-weight: bold; cursor: pointer; font-size: 16px; margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+        <h2 style="flex:1; margin:0;">GP STORE</h2>
+    </div>
+
+    <div class="store-card">
+        <i class="fas fa-shopping-basket" style="font-size: 50px; color: #a78bfa; margin-bottom: 15px;"></i>
+        <h3>Welcome to Store</h3>
+        <p style="color: #94a3b8; font-size: 14px;">এখানে আপনি আপনার অর্জিত GP দিয়ে স্পেশাল আইটেম কিনতে পারবেন।</p>
+        
+        <!-- স্টোর বাটন -->
+        <button class="btn-buy" onclick="alert('স্টোর আইটেম শীঘ্রই আসছে!')">
+            <i class="fas fa-cart-plus"></i> BUY SPECIAL PACK
+        </button>
+    </div>
+</body>
+</html>
