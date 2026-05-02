@@ -1,48 +1,45 @@
 console.log("Database connected successfully!");[cite: 5]
 
-const AdController = {[cite: 5]
-    // ১. ভিডিও অ্যাডের ID (Reward Video)[cite: 5]
-    videoBlockId: "29212",[cite: 5]
+const AdController = {
+    // ১. ভিডিও অ্যাডের ID (সব সময় শুধু সংখ্যা হবে)
+    videoBlockId: "29212", 
 
-    // ২. ব্যানার/টাস্ক অ্যাডের ID (অবশ্যই 'task-' প্রিফিক্স থাকতে হবে)
+    // ২. ব্যানার/টাস্ক অ্যাডের ID (অবশ্যই 'task-' প্রিফিক্স থাকবে)[cite: 13]
     bannerBlockId: "task-29213", 
 
-    // ভিডিও অ্যাড (Reward) লোড করার ফাংশন[cite: 5]
-    showVideoAd: function(onReward, onError) {[cite: 5]
-        try {[cite: 5]
-            if (window.Adsgram) {[cite: 5]
-                const ad = window.Adsgram.init({ blockId: this.videoBlockId });[cite: 5]
-                ad.show()[cite: 5]
-                  .then(onReward)[cite: 5]
-                  .catch((err) => {[cite: 5]
-                      console.log("Video skipped or error:", err);[cite: 5]
-                      if (onError) onError(err);[cite: 5]
-                  });[cite: 5]
-            } else {[cite: 5]
-                console.log("Adsgram SDK not loaded yet.");[cite: 5]
-            }[cite: 5]
-        } catch (e) {[cite: 5]
-            if (onError) onError(e);[cite: 5]
-        }[cite: 5]
-    },[cite: 5]
+    // ভিডিও অ্যাড (Reward) লোড করার ফাংশন[cite: 13]
+    showVideoAd: function(onReward, onError) {
+        try {
+            if (window.Adsgram) {
+                // এখানে নিশ্চিত করা হয়েছে যেন শুধু ভিডিও আইডি ব্যবহার হয়[cite: 13]
+                const ad = window.Adsgram.init({ blockId: this.videoBlockId });
+                ad.show()
+                  .then(onReward)
+                  .catch((err) => {
+                      console.log("Video skipped or error:", err);
+                      if (onError) onError(err);
+                  });
+            } else {
+                console.log("Adsgram SDK not loaded yet.");[cite: 13]
+            }
+        } catch (e) {
+            if (onError) onError(e);
+        }
+    },
 
-    // ব্যানার (Task) অ্যাড লোড করার আপডেট করা ফাংশন
-    loadBanner: function(containerId) {[cite: 5]
-        const container = document.getElementById(containerId);[cite: 5]
-        
-        if (container && this.bannerBlockId !== "") {[cite: 5]
-            try {[cite: 5]
-                if (window.Adsgram) {[cite: 5]
-                    const bannerAd = window.Adsgram.init({ blockId: this.bannerBlockId });[cite: 5, 6]
-                    
-                    // .show() এর বদলে .render(container) ব্যবহার করা হয়েছে
-                    bannerAd.render(container)[cite: 5, 6]
-                        .then(() => console.log("Banner/Task Ad rendered successfully"))[cite: 5, 6]
-                        .catch((err) => console.log("Banner Render Error:", err));[cite: 5, 6]
-                }[cite: 5]
-            } catch (e) {[cite: 5]
-                console.error("Adsgram Banner failed", e);[cite: 5]
-            }[cite: 5]
-        }[cite: 5]
-    }[cite: 5]
-};[cite: 5]
+    // ব্যানার (Task) অ্যাড রেন্ডার করার ফাংশন[cite: 13]
+    loadBanner: function(containerId) {
+        const container = document.getElementById(containerId);
+        if (container && window.Adsgram) {
+            try {
+                const bannerAd = window.Adsgram.init({ blockId: this.bannerBlockId });
+                // ব্যানার বা টাস্ক অ্যাডের জন্য .render() ব্যবহার করা হয়েছে[cite: 13]
+                bannerAd.render(container)
+                    .then(() => console.log("Banner Ad rendered successfully"))
+                    .catch((err) => console.log("Banner Render Error:", err));
+            } catch (e) {
+                console.error("Adsgram Banner failed", e);
+            }
+        }
+    }
+};[cite: 13]
