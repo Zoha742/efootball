@@ -12,7 +12,7 @@
     
     <!-- Central Config & Ad Master -->
     <script src="config.js"></script>
-    <script src="ads-manager.js?v=2.0"></script> 
+    <script src="ads-manager.js?v=2.0"></script> <!-- সেন্ট্রাল অ্যাড ফাইল লিঙ্ক করা হলো[cite: 7] -->
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -58,13 +58,13 @@
 <script>
     const tg = window.Telegram.WebApp;
 
-    // ব্যাক বাটন লজিক: ইন্টারস্টিশিয়াল অ্যাড দেখিয়ে ব্যাক করবে[cite: 9]
+    // ব্যাক বাটন লজিক: ইন্টারস্টিশিয়াল অ্যাড দেখিয়ে ব্যাক করবে
     document.getElementById('back-trigger').addEventListener('click', function(e) {
         e.preventDefault(); 
         const targetUrl = this.getAttribute('href');
 
+        // সেন্ট্রাল অ্যাড কন্ট্রোলার ব্যবহার করা হয়েছে[cite: 7]
         if (typeof AdController !== 'undefined') {
-            // সেন্ট্রাল অ্যাড কন্ট্রোলার থেকে ইন্টারস্টিশিয়াল কল করা হচ্ছে
             AdController.showInterstitialAd(() => {
                 window.location.href = targetUrl;
             });
