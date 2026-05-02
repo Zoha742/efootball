@@ -1,8 +1,8 @@
 const BioAdController = {
     videoBlockId: "29212", 
-    bannerBlockId: "task-29213", // ব্যানার আইডি ফরম্যাট ঠিক করা হয়েছে[cite: 8]
+    bannerBlockId: "task-29213",[cite: 12]
 
-    // ১২ ঘণ্টার চেক লজিক (শুধু ভিডিওর জন্য)[cite: 8]
+    // ১২ ঘণ্টার চেক লজিক[cite: 12]
     _canShowVideo: function(key) {
         const last = localStorage.getItem('ad_' + key);
         const now = Date.now();
@@ -10,7 +10,7 @@ const BioAdController = {
         return !last || (now - last) > twelveHours;
     },
 
-    // ভিডিও অ্যাড - ১২ ঘণ্টায় একবার আসবে[cite: 8]
+    // ভিডিও অ্যাড - ১২ ঘণ্টায় একবার আসবে[cite: 12]
     showBioAd: function(pageName) {
         if (!this._canShowVideo(pageName)) {
             console.log("Video Limit: Skipping for " + pageName);
@@ -26,16 +26,15 @@ const BioAdController = {
         }
     },
 
-    // ব্যানার অ্যাড - ডকুমেন্টেশন অনুযায়ী আপডেট করা হয়েছে
+    // ব্যানার অ্যাড - রেন্ডার মেথড আপডেট করা হয়েছে[cite: 12]
     loadBioBanner: function(divId) {
         const container = document.getElementById(divId);
         if (window.Adsgram && container) {
             const banner = window.Adsgram.init({ blockId: this.bannerBlockId });
-            
-            // .show() এর বদলে .render(container) ব্যবহার করা হয়েছে
+            // ব্যানার দেখানোর সঠিক নিয়ম .render()[cite: 12]
             banner.render(container)
                 .then(() => console.log("Bio Banner Rendered Successfully"))
                 .catch(e => console.log("Bio Banner Render Fail", e));
         }
     }
-};
+};[cite: 12]
