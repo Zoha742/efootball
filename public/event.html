@@ -19,7 +19,7 @@
         body { background: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; padding: 15px; overflow-x: hidden; }
         
         .header { display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 20px; }
-        .back-btn { position: absolute; left: 0; font-size: 22px; color: var(--primary); text-decoration: none; }
+        .back-btn { position: absolute; left: 0; font-size: 22px; color: var(--primary); text-decoration: none; cursor: pointer; }
 
         .event-slider {
             width: 100%; height: 200px; overflow: hidden; border-radius: 12px;
@@ -37,21 +37,13 @@
         .vertical-list { display: flex; flex-direction: column; gap: 15px; padding-bottom: 20px; }
         .v-card { width: 100%; border-radius: 12px; overflow: hidden; border: 1px solid #1e2d4d; background: var(--card); }
         .v-card img { width: 100%; height: auto; display: block; }
-
-        /* ভিডিও অ্যাড বাটনের স্টাইল */
-        .ad-btn-container { margin: 20px 0; padding: 0 5px; }
-        .btn-video { 
-            width: 100%; border: none; padding: 15px; border-radius: 12px; 
-            background: linear-gradient(135deg, #fbbf24, #d97706); color: #050a18; 
-            font-weight: bold; cursor: pointer; font-size: 16px; 
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-        }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+        <!-- Back Button-এ আইডি যোগ করা হয়েছে লজিক হ্যান্ডেল করার জন্য -->
+        <a id="back-trigger" href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
         <h2 style="font-size: 18px; color: var(--primary);">ACTIVE EVENTS</h2>
     </div>
 
@@ -60,38 +52,26 @@
     </div>
     <div id="dots" class="dots"></div>
 
-    <!-- ভিডিও অ্যাডের জন্য বাটন -->
-    <div class="ad-btn-container">
-        <button class="btn-video" onclick="watchEventAd()">
-            <i class="fas fa-play-circle"></i> WATCH AD FOR REWARD
-        </button>
-    </div>
-
     <div class="list-title">MORE EVENTS</div>
     <div id="vertical-container" class="vertical-list"></div>
 
 <script>
-    // ভিডিও অ্যাড কন্ট্রোলার লজিক
-    const AdController = {
-        videoBlockId: "29212", 
-        showVideoAd: function(onReward, onError) {
-            if (window.Adsgram) {
-                const ad = window.Adsgram.init({ blockId: this.videoBlockId });
-                ad.show()
-                  .then((result) => { if (onReward) onReward(result); })
-                  .catch((err) => { if (onError) onError(err); });
-            } else {
-                console.log("Adsgram SDK not loaded yet.");
-            }
-        }
-    };
+    const tg = window.Telegram.WebApp;
 
-    function watchEventAd() {
-        AdController.showVideoAd(
-            (res) => alert("Success! Your reward has been added."),
-            (err) => console.log("Ad skipped or error", err)
-        );
-    }
+    // ব্যাক বাটন লজিক: ক্লিক করলে আগে অ্যাড দেখাবে, তারপর ব্যাক করবে
+    document.getElementById('back-trigger').addEventListener('click', function(e) {
+        e.preventDefault(); // সরাসরি ব্যাক হওয়া বন্ধ করা হলো
+        const targetUrl = this.getAttribute('href');
+
+        if (window.Adsgram) {
+            const ad = window.Adsgram.init({ blockId: "29212" }); // ভিডিও অ্যাড আইডি
+            ad.show()
+                .then(() => { window.location.href = targetUrl; }) // অ্যাড শেষ হলে ব্যাক করবে
+                .catch(() => { window.location.href = targetUrl; }); // এরর হলেও ব্যাক করবে
+        } else {
+            window.location.href = targetUrl;
+        }
+    });
 
     let currentIndex = 0;
     let images = [];
@@ -105,12 +85,12 @@
 
         try {
             const res = await fetch('event.json');
-            if (!res.ok) throw new Error("JSON file not found!");
+            if (!res.ok) throw new Error("JSON not found");
             const data = await res.json();
             images = data.events || data.event;
 
             if (!images || images.length === 0) {
-                track.innerHTML = "<p style='text-align:center; padding:20px;'>No Events Found!</p>";
+                track.innerHTML = "<p style='text-align:center;'>No Events Found!</p>";
                 return;
             }
 
@@ -132,7 +112,7 @@
             startAutoSlide();
             setupTouch();
         } catch (e) {
-            track.innerHTML = `<p style='text-align:center; padding:20px; color:red;'>${e.message}</p>`;
+            console.error(e.message);
         }
     }
 
@@ -169,9 +149,7 @@
         });
     }
 
-    window.onload = () => {
-        fetchEvents(); 
-    };
+    window.onload = fetchEvents;
 </script>
 </body>
 </html>
