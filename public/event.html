@@ -4,15 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Events - eFootball HUB</title>
-    <!-- Firebase & SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     
-    <!-- Central Config & Ad Master -->
     <script src="config.js"></script>
-    <script src="ads-manager.js?v=2.0"></script> <!-- সেন্ট্রাল অ্যাড ফাইল লিঙ্ক করা হলো[cite: 7] -->
+    <script src="ads-manager.js?v=2.0"></script> 
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -63,7 +61,6 @@
         e.preventDefault(); 
         const targetUrl = this.getAttribute('href');
 
-        // সেন্ট্রাল অ্যাড কন্ট্রোলার ব্যবহার করা হয়েছে[cite: 7]
         if (typeof AdController !== 'undefined') {
             AdController.showInterstitialAd(() => {
                 window.location.href = targetUrl;
@@ -84,7 +81,7 @@
         const dotsContainer = document.getElementById('dots');
 
         try {
-            const res = await fetch('event.json');[cite: 9]
+            const res = await fetch('event.json');
             if (!res.ok) throw new Error("JSON not found");
             const data = await res.json();
             images = data.events || data.event;
