@@ -104,7 +104,7 @@
     function loadAd() {
         if (window.Adsgram) {
             // এখানে শুধু নম্বর ব্যবহার করা হয়েছে কারণ SDK 'task-' প্রিফিক্স নিচ্ছে না
-            const ad = window.Adsgram.init({ blockId: "29213" }); 
+            const ad = window.Adsgram.init({ blockId: "int-29213" }); 
             ad.show().catch((err) => console.log("Ad Error:", err));
         }
     }
