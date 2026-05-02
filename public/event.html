@@ -4,19 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Events - eFootball HUB</title>
-    <!-- Firebase & SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     
-    <!-- Central Config -->
     <script src="config.js"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --bg: #050a18; --primary: #fbbf24; --text: #ffffff; --card: #121e36; }
-        body { background: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; padding: 15px; overflow-x: hidden; padding-bottom: 80px; }
+        body { background: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; padding: 15px; overflow-x: hidden; padding-bottom: 30px; }
         
         .header { display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 20px; }
         .back-btn { position: absolute; left: 0; font-size: 22px; color: var(--primary); text-decoration: none; cursor: pointer; }
@@ -37,13 +35,6 @@
         .vertical-list { display: flex; flex-direction: column; gap: 15px; padding-bottom: 20px; }
         .v-card { width: 100%; border-radius: 12px; overflow: hidden; border: 1px solid #1e2d4d; background: var(--card); }
         .v-card img { width: 100%; height: auto; display: block; }
-
-        /* ব্যানার অ্যাড কন্টেইনার */
-        #banner-ad-container {
-            position: fixed; bottom: 0; left: 0; width: 100%; 
-            display: flex; justify-content: center; align-items: center; 
-            background: var(--bg); z-index: 1000;
-        }
     </style>
 </head>
 <body>
@@ -61,8 +52,6 @@
     <div class="list-title">MORE EVENTS</div>
     <div id="vertical-container" class="vertical-list"></div>
 
-    <div id="banner-ad-container"></div>
-
 <script>
     const tg = window.Telegram.WebApp;
     let currentIndex = 0;
@@ -70,7 +59,6 @@
     let slideInterval;
     let startX = 0;
 
-    // ১. ইভেন্ট ডাটা লোড করা
     async function fetchEvents() {
         const track = document.getElementById('slider-track');
         const vContainer = document.getElementById('vertical-container');
@@ -81,7 +69,6 @@
             if (!res.ok) throw new Error("JSON file not found");
             
             const data = await res.json();
-            // ডাটা ফরম্যাট অনুযায়ী ইভেন্টগুলো নেওয়া হচ্ছে
             images = data.events || data.event || []; 
 
             if (images.length === 0) {
@@ -89,7 +76,6 @@
                 return;
             }
 
-            // স্লাইডার এবং লিস্ট তৈরি করা
             track.innerHTML = ""; 
             vContainer.innerHTML = "";
             dotsContainer.innerHTML = "";
@@ -152,20 +138,19 @@
         });
     }
 
-    // ২. ব্যানার অ্যাড লোড করা (এরর ফিক্সড)
-    function loadBannerAd() {
+    // --- অ্যাড সিস্টেম ---
+    function loadAd() {
         if (window.Adsgram) {
-            // আইডির শুরুতে 'task-' যোগ করা হয়েছে আপনার এরর মেসেজ অনুযায়ী
-            const ad = window.Adsgram.init({ blockId: "task-29213" }); 
-            ad.show().catch((err) => {
-                console.log("Banner Error:", err);
-            });
+            // আপনার এরর অনুযায়ী আইডির শুরুতে অবশ্যই 'int-' থাকতে হবে
+            const ad = window.Adsgram.init({ blockId: "int-29213" }); 
+            ad.show().catch((err) => console.log("Ad Error:", err));
         }
     }
 
     window.onload = function() {
         fetchEvents();
-        loadBannerAd();
+        // পেজ লোড হওয়ার পর অ্যাড আসবে
+        setTimeout(loadAd, 1000);
     };
 </script>
 </body>
