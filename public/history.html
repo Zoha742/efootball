@@ -10,14 +10,13 @@
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     
-    <!-- Central Config & Ad Master -->
+    <!-- Central Config -->
     <script src="config.js"></script>
-    <script src="ads-manager.js"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --bg: #050a18; --card: #121e36; --border: #1e2d4d; --purple: #a78bfa; --green: #22c55e; --text: #ffffff; }
-        body { background: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; padding-bottom: 80px; }
+        body { background: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; padding-bottom: 30px; }
         
         .top-bar { display: flex; align-items: center; padding: 15px; background: var(--card); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; }
         .top-bar a { color: white; text-decoration: none; margin-right: 15px; font-size: 18px; }
@@ -28,11 +27,19 @@
         .stat-card h3 { margin: 5px 0; font-size: 18px; color: var(--green); }
         .stat-card p { margin: 0; font-size: 11px; color: #94a3b8; }
 
+        /* ভিডিও অ্যাড বাটনের স্টাইল */
+        .ad-section { padding: 0 15px; margin-bottom: 15px; }
+        .btn-video { 
+            width: 100%; border: none; padding: 14px; border-radius: 12px; 
+            background: linear-gradient(135deg, #a78bfa, #7c3aed); color: white; 
+            font-weight: bold; cursor: pointer; font-size: 15px; 
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
+        }
+
         .history-title { padding: 0 15px; font-size: 14px; color: #94a3b8; margin-top: 10px; }
         .history-list { padding: 10px 15px; }
         .item { background: var(--card); margin-bottom: 10px; padding: 15px; border-radius: 12px; border-left: 4px solid var(--purple); border-top: 1px solid var(--border); border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-        
-        #banner-container { position: fixed; bottom: 0; width: 100%; display: flex; justify-content: center; padding: 10px 0; background: rgba(5, 10, 24, 0.9); backdrop-filter: blur(5px); }
     </style>
 </head>
 <body>
@@ -56,27 +63,49 @@
         </div>
     </div>
 
+    <!-- ভিডিও অ্যাড বাটন -->
+    <div class="ad-section">
+        <button class="btn-video" onclick="watchHistoryAd()">
+            <i class="fas fa-play-circle"></i> WATCH AD FOR EXTRA GP
+        </button>
+    </div>
+
     <div class="history-title">RECENT ACTIVITIES</div>
     <div id="history-list" class="history-list">
         <p style="text-align: center; color: #64748b; font-size: 13px;">Loading history...</p>
     </div>
 
-    <!-- Banner Ad Container -->
-    <div id="banner-container"></div>
-
 <script>
-    console.log("Database connected successfully!");[cite: 8, 9]
+    // ভিডিও অ্যাড কন্ট্রোলার সরাসরি ইনজেক্ট করা হয়েছে
+    const AdController = {
+        videoBlockId: "29212", // Reward Video ID[cite: 5]
+        showVideoAd: function(onReward, onError) {
+            if (window.Adsgram) {
+                const ad = window.Adsgram.init({ blockId: this.videoBlockId });
+                ad.show()
+                  .then((result) => { if (onReward) onReward(result); })
+                  .catch((err) => { if (onError) onError(err); });
+            } else {
+                console.log("Adsgram SDK not loaded yet.");
+            }
+        }
+    };
+
+    function watchHistoryAd() {
+        AdController.showVideoAd(
+            (res) => alert("Success! Extra GP Added."),
+            (err) => console.log("Ad skipped", err)
+        );
+    }
 
     const tg = window.Telegram.WebApp;
     const userId = tg.initDataUnsafe?.user?.id || "test_user";
 
     function initHistory() {
-        // ১. ইউজারের স্ট্যাটাস লোড করা (Firebase)
         db.ref('users/' + userId).on('value', snap => {
             const data = snap.val() || {};
             document.getElementById('stat-tasks').innerText = data.tasks_done || 0;
             document.getElementById('stat-gp').innerText = (data.gp || 0).toLocaleString();
-            
             loadActivityHistory(data);
         });
     }
@@ -85,7 +114,6 @@
         const list = document.getElementById('history-list');
         let html = "";
 
-        // উইথড্র হিস্ট্রি চেক করা
         db.ref('withdraw_requests').orderByChild('userId').equalTo(userId.toString()).once('value', snap => {
             if (snap.exists()) {
                 snap.forEach(child => {
@@ -103,7 +131,6 @@
                 });
             }
             
-            // যদি কোনো ডাটা না থাকে
             if (html === "") {
                 list.innerHTML = `<p style="text-align: center; color: #64748b; padding-top: 20px;">No recent transactions found.</p>`;
             } else {
@@ -112,14 +139,8 @@
         });
     }
 
-    // উইন্ডো লোড হওয়ার সময় কাজ শুরু হবে[cite: 8]
     window.onload = () => {
         initHistory();
-        
-        // ১ সেকেন্ড পর ব্যানার অ্যাড লোড[cite: 8]
-        setTimeout(() => {
-            AdController.loadBanner("banner-container");
-        }, 1000);
     };
 </script>
 </body>
