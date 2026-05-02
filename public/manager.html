@@ -18,7 +18,6 @@
         :root { --bg: #050a18; --card: #121e36; --primary: #fbbf24; --text: #ffffff; }
         body { background: var(--bg); color: var(--text); font-family: sans-serif; padding: 15px; margin: 0; }
         
-        /* Header Fix */
         .header { display: flex; align-items: center; position: relative; margin-bottom: 25px; height: 40px; }
         .back-btn { position: absolute; left: 0; font-size: 22px; color: var(--primary); text-decoration: none; z-index: 10; }
         .header h2 { width: 100%; text-align: center; font-size: 18px; color: var(--primary); margin: 0; }
@@ -39,42 +38,48 @@
     <div id="manager-container" class="grid"></div>
 
 <script>
-    console.log("Database connected successfully!");[cite: 10]
+    console.log("Database connected successfully!");
 
     async function loadManagers() {
-        const container = document.getElementById('manager-container');[cite: 10]
-        container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>Loading...</p>";[cite: 10]
+        const container = document.getElementById('manager-container');
+        container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>Loading...</p>";
         
         try {
-            const response = await fetch('manager.json');[cite: 10]
-            const data = await response.json();[cite: 10]
-            const all_managers = data.managers;[cite: 10]
-            container.innerHTML = "";[cite: 10]
+            const response = await fetch('manager.json');
+            if (!response.ok) throw new Error('File not found');
+            
+            const data = await response.json();
+            const all_managers = data.managers;
+            container.innerHTML = "";
+
+            if (!all_managers || all_managers.length === 0) {
+                container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>No managers found!</p>";
+                return;
+            }
 
             all_managers.forEach(manager => {
-                const card = document.createElement('div');[cite: 10]
-                card.className = 'card';[cite: 10]
-                card.innerHTML = `<img src="${manager.img}"><p>${manager.name}</p>`;[cite: 10]
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `<img src="${manager.img}"><p>${manager.name}</p>`;
                 
                 card.onclick = () => {
-                    // ভিডিও অ্যাড এখানেও বন্ধ রাখা হয়েছে
-                    openBio(manager);[cite: 10]
+                    openBio(manager);
                 };
-                container.appendChild(card);[cite: 10]
+                container.appendChild(card);
             });
         } catch (e) { 
-            container.innerHTML = "Error loading managers!";[cite: 10]
+            console.error(e);
+            container.innerHTML = "<p style='grid-column: span 3; text-align:center;'>Error loading managers!</p>";
         }
     }
 
     function openBio(manager) {
-        localStorage.setItem('selected_manager', JSON.stringify(manager));[cite: 10]
-        window.location.href = 'managerbio.html';[cite: 10]
+        localStorage.setItem('selected_manager', JSON.stringify(manager));
+        window.location.href = 'managerbio.html';
     }
 
     window.onload = () => {
-        loadManagers();[cite: 10]
-        // ব্যানার অ্যাড লোডিং লজিক পুরোপুরি সরিয়ে দেওয়া হয়েছে
+        loadManagers();
     };
 </script>
 </body>
