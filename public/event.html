@@ -10,8 +10,9 @@
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     
-    <!-- Central Config -->
+    <!-- Central Config & Ad Master -->
     <script src="config.js"></script>
+    <script src="ads-manager.js?v=2.0"></script> 
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -42,7 +43,6 @@
 <body>
 
     <div class="header">
-        <!-- Back Button-এ আইডি যোগ করা হয়েছে লজিক হ্যান্ডেল করার জন্য -->
         <a id="back-trigger" href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
         <h2 style="font-size: 18px; color: var(--primary);">ACTIVE EVENTS</h2>
     </div>
@@ -58,16 +58,16 @@
 <script>
     const tg = window.Telegram.WebApp;
 
-    // ব্যাক বাটন লজিক: ক্লিক করলে আগে অ্যাড দেখাবে, তারপর ব্যাক করবে
+    // ব্যাক বাটন লজিক: ইন্টারস্টিশিয়াল অ্যাড দেখিয়ে ব্যাক করবে[cite: 9]
     document.getElementById('back-trigger').addEventListener('click', function(e) {
-        e.preventDefault(); // সরাসরি ব্যাক হওয়া বন্ধ করা হলো
+        e.preventDefault(); 
         const targetUrl = this.getAttribute('href');
 
-        if (window.Adsgram) {
-            const ad = window.Adsgram.init({ blockId: "29212" }); // ভিডিও অ্যাড আইডি
-            ad.show()
-                .then(() => { window.location.href = targetUrl; }) // অ্যাড শেষ হলে ব্যাক করবে
-                .catch(() => { window.location.href = targetUrl; }); // এরর হলেও ব্যাক করবে
+        if (typeof AdController !== 'undefined') {
+            // সেন্ট্রাল অ্যাড কন্ট্রোলার থেকে ইন্টারস্টিশিয়াল কল করা হচ্ছে
+            AdController.showInterstitialAd(() => {
+                window.location.href = targetUrl;
+            });
         } else {
             window.location.href = targetUrl;
         }
@@ -84,7 +84,7 @@
         const dotsContainer = document.getElementById('dots');
 
         try {
-            const res = await fetch('event.json');
+            const res = await fetch('event.json');[cite: 9]
             if (!res.ok) throw new Error("JSON not found");
             const data = await res.json();
             images = data.events || data.event;
