@@ -12,7 +12,7 @@
     
     <!-- সেন্ট্রাল স্ক্রিপ্ট লিঙ্ক -->
     <script src="config.js"></script>
-    <script src="ads-manager2.js"></script>
+    <script src="ads_manager_limit.js"></script>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -40,7 +40,7 @@
 <body>
 
 <div class="header">
-    <a href="player.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+    <a href="legend.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
     <h3 style="margin:0;">Player Statistics</h3>
 </div>
 
@@ -64,8 +64,8 @@
     console.log("Database connected successfully!");
 
     function getStatColor(val) {
-        if (val >= 95) return "#09E39A"; 
-        if (val >= 90) return "#ff8c00"; 
+        if (val >= 95) return "#07F05B"; 
+        if (val >= 90) return "#0CA60F"; 
         if (val >= 80) return "#ffff00"; 
         if (val >= 70) return "#adff2f"; 
         return "#ffffff";
@@ -98,18 +98,19 @@
             }
         }
 
-       // --- ১২ ঘণ্টার লিমিটেড অ্যাড সিস্টেম (Player Bio) ---
+      // --- ১২ ঘণ্টার লিমিটেড অ্যাড সিস্টেম ---
         setTimeout(() => {
             try {
-                if (typeof BioAdController !== 'undefined') {
-                    // ১. ভিডিও অ্যাড (শুধুমাত্র Player Bio-এর জন্য ১২ ঘণ্টায় একবার)
-                    BioAdController.showBioAd('player_bio_page'); 
+                // নতুন অবজেক্ট ads_manager_limit চেক হবে[cite: 12]
+                if (typeof ads_manager_limit !== 'undefined') {
+                    // ১. ভিডিও অ্যাড (১২ ঘণ্টায় একবার আসবে)[cite: 12]
+                    ads_manager_limit.showBioAd('player_bio_page');[cite: 12]
 
-                    // ২. ব্যানার অ্যাড লোড করা
-                   // BioAdController.loadBioBanner('banner-container');
+                    // ২. ব্যানার অ্যাড লোড করা (আপাতত বন্ধ)[cite: 12]
+                   // ads_manager_limit.loadBioBanner('banner-container');[cite: 12]
                 }
             } catch (e) {
-                console.log("Ad Loading Error:", e);
+                console.log("Ad Loading Error:", e);[cite: 12]
             }
         }, 800);
     };
