@@ -12,7 +12,6 @@
     
     <!-- সেন্ট্রাল স্ক্রিপ্ট লিঙ্ক -->
     <script src="config.js"></script>
-    <script src="ads-manager.js"></script>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -66,17 +65,16 @@
 
         <div class="headline">Quick Action</div>
         <div class="quick-grid">
+            <!-- Store Option Updated -->
             <div class="quick-btn" onclick="location.href='store.html'" style="background: linear-gradient(135deg, #6a11cb, #2575fc); border: none;"><i class="fas fa-shopping-cart" style="color: white;"></i>Store</div>
             
-            <!-- Boost Button Replaced Daily -->
+            <!-- Boost Option Fixed with 6h Cooldown -->
             <div id="boostBtn" class="quick-btn" onclick="handleBoostClick()" style="background: linear-gradient(135deg, #11998e, #38ef7d); border: none;">
                 <i class="fas fa-rocket" style="color: white;"></i><span id="boostText">Boost</span>
             </div>
             
             <div class="quick-btn" onclick="location.href='admin.html'" style="background: linear-gradient(135deg, #ff4b2b, #ff416c); border: none;"><i class="fas fa-user-shield" style="color: white;"></i>Admin</div>
         </div>
-
-        <div id="banner-container" style="display: flex; justify-content: center; margin: 20px 0;"></div>
 
         <div class="headline">Top Player</div>
         <div id="home-legend-view" class="player-grid"></div>
@@ -96,11 +94,26 @@
     tg.expand();
     const user = tg.initDataUnsafe?.user;
     const startParam = tg.initDataUnsafe?.start_param;
-    const userId = user ? user.id : "test_user"; // টেস্টিংয়ের জন্য
+    const userId = user ? user.id : "test_user"; 
     
-    // ১২ ঘণ্টার মিলি-সেকেন্ড (12 hours * 60 min * 60 sec * 1000 ms)
-    const COOLDOWN_TIME = 12 * 60 * 60 * 1000; 
-    const BOOST_REWARD = 500; // 500 GP
+    // ভিডিও অ্যাড কন্ট্রোলার (সরাসরি ইনজেক্ট করা হয়েছে)
+    const AdController = {
+        videoBlockId: "29212", 
+        showVideoAd: function(onReward, onError) {
+            if (window.Adsgram) {
+                const ad = window.Adsgram.init({ blockId: this.videoBlockId });
+                ad.show()
+                  .then((result) => { if (onReward) onReward(result); })
+                  .catch((err) => { if (onError) onError(err); });
+            } else {
+                console.log("Adsgram SDK not loaded yet.");
+            }
+        }
+    };
+
+    // ৬ ঘণ্টার মিলি-সেকেন্ড (6 hours * 60 min * 60 sec * 1000 ms)
+    const COOLDOWN_TIME = 6 * 60 * 60 * 1000; 
+    const BOOST_REWARD = 500; 
 
     // ১. হোম পেজের লিজেন্ড ডাটা লোড করা
     async function loadHomeLegends() {
@@ -127,7 +140,7 @@
         }
     }
 
-    // ২. বুস্ট অপশনের লজিক
+    // ২. বুস্ট অপশনের লজিক ফিক্সড[cite: 8]
     function handleBoostClick() {
         const userRef = db.ref('users/' + userId);
         
@@ -138,43 +151,34 @@
                 const currentTime = Date.now();
                 const timePassed = currentTime - lastBoostTime;
 
-                // যদি ১২ ঘণ্টা পার না হয়ে থাকে
                 if (timePassed < COOLDOWN_TIME) {
                     const timeLeft = COOLDOWN_TIME - timePassed;
-                    const hoursLeft = Math.floor(timeLeft / (1000 * 60 * 60));
-                    const minutesLeft = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-                    alert(`আপনি ইতিমধ্যেই Boost করেছেন! আবার চেষ্টা করতে ${hoursLeft} ঘণ্টা ${minutesLeft} মিনিট অপেক্ষা করুন।`);
+                    const h = Math.floor(timeLeft / (1000 * 60 * 60));
+                    const m = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                    alert(`Boost Locked! আবার চেষ্টা করতে ${h} ঘণ্টা ${m} মিনিট অপেক্ষা করুন।`);
                     return;
                 }
 
-                // যদি ১২ ঘণ্টা পার হয়ে যায়, তবে ভিডিও অ্যাড কল করুন
-                if (typeof AdController !== 'undefined') {
-                    AdController.showVideoAd(
-                        // Success Function: ভিডিও পুরোপুরি দেখলে
-                        (result) => { 
-                            const newGp = (userData.gp || 0) + BOOST_REWARD;
-                            // ডাটাবেজ আপডেট
-                            userRef.update({
-                                gp: newGp,
-                                lastBoostTime: currentTime
-                            }).then(() => {
-                                alert(`অভিনন্দন! আপনি ভিডিওটি দেখেছেন এবং ${BOOST_REWARD} GP জিতেছেন!`);
-                                updateBoostButtonUI(currentTime);
-                            });
-                        },
-                        // Error/Skip Function: ভিডিও না দেখলে বা এরর হলে
-                        (error) => { 
-                            alert("আপনাকে সম্পূর্ণ ভিডিওটি দেখতে হবে।");
-                        }
-                    );
-                } else {
-                    alert("অ্যাড সিস্টেম লোড হতে সমস্যা হচ্ছে। একটু পর আবার চেষ্টা করুন।");
-                }
+                // ভিডিও অ্যাড কল করুন[cite: 8]
+                AdController.showVideoAd(
+                    (result) => { 
+                        const newGp = (userData.gp || 0) + BOOST_REWARD;
+                        userRef.update({
+                            gp: newGp,
+                            lastBoostTime: currentTime
+                        }).then(() => {
+                            alert(`অভিনন্দন! আপনি ভিডিওটি দেখেছেন এবং ${BOOST_REWARD} GP জিতেছেন!`);
+                            updateBoostButtonUI(currentTime);
+                        });
+                    },
+                    (error) => { 
+                        alert("আপনাকে সম্পূর্ণ ভিডিওটি দেখতে হবে।");
+                    }
+                );
             }
         });
     }
 
-    // বুস্ট বাটনের UI আপডেট (টাইমার দেখানো)
     function updateBoostButtonUI(lastBoostTime) {
         const boostBtn = document.getElementById('boostBtn');
         const boostText = document.getElementById('boostText');
@@ -183,7 +187,6 @@
 
         if (timePassed < COOLDOWN_TIME) {
             boostBtn.classList.add('boost-disabled');
-            // টাইমার সেট করা
             const interval = setInterval(() => {
                 const now = Date.now();
                 const diff = COOLDOWN_TIME - (now - lastBoostTime);
@@ -196,30 +199,21 @@
                     const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
                     boostText.innerText = `${h}h ${m}m`;
                 }
-            }, 60000); // প্রতি মিনিটে আপডেট
+            }, 60000); 
             
-            // প্রথমবার ইনস্ট্যান্ট দেখানোর জন্য
             const h = Math.floor((COOLDOWN_TIME - timePassed) / (1000 * 60 * 60));
             const m = Math.floor(((COOLDOWN_TIME - timePassed) % (1000 * 60 * 60)) / (1000 * 60));
             boostText.innerText = `${h}h ${m}m`;
         }
     }
 
-    // ৩. মেইন লজিক: ইউজার ডিটেকশন এবং মেইনটেন্যান্স চেক
+    // ৩. মেইন লজিক
     window.addEventListener('load', () => {
         loadHomeLegends();
         
-        // ব্যানার অ্যাড লোড
-        setTimeout(() => {
-            if (typeof AdController !== 'undefined') {
-                AdController.loadBanner("banner-container");
-            }
-        }, 1000);
-
         if (user) {
             const userRef = db.ref('users/' + userId);
 
-            // A. মেইনটেন্যান্স চেক
             db.ref('config/maintenance').on('value', snap => {
                 if (snap.val() === true) {
                     document.body.innerHTML = "<div style='background:#050a18; height:100vh; display:flex; align-items:center; justify-content:center; color:white; text-align:center; padding:20px;'><h1>Server Maintenance... <br> Please wait!</h1></div>";
@@ -227,11 +221,9 @@
                 }
             });
 
-            // B. রেজিস্ট্রেশন, ব্যান চেক এবং অ্যাক্টিভিটি ট্র্যাক
             userRef.on('value', snap => {
                 if (!snap.exists()) {
                     let welcomeBonus = startParam ? 1000 : 0; 
-
                     userRef.set({
                         name: user.first_name + " " + (user.last_name || ""),
                         username: user.username || "N/A",
@@ -239,10 +231,8 @@
                         referredBy: startParam || "none",
                         banned: false,
                         lastSeen: Date.now(),
-                        lastBoostTime: 0, // নতুন ইউজারের জন্য 0
+                        lastBoostTime: 0,
                         joinDate: new Date().toLocaleString()
-                    }).then(() => {
-                        console.log("New User Registered!");
                     });
                 } else {
                     const userData = snap.val();
@@ -250,7 +240,6 @@
                         document.body.innerHTML = "<div style='background:#050a18; height:100vh; display:flex; align-items:center; justify-content:center; color:red; text-align:center; padding:20px;'><h1>You are BANNED! <br> Contact Admin for help.</h1></div>";
                     } else {
                         userRef.update({ lastSeen: Date.now() });
-                        // পেজ লোড হওয়ার সময় বুস্ট বাটনের টাইমার চেক করা
                         if (userData.lastBoostTime) {
                             updateBoostButtonUI(userData.lastBoostTime);
                         }
