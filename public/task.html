@@ -13,6 +13,8 @@
     <!-- Central Config -->
     <script src="config.js"></script>
 
+    <!-- [নোট: কনফ্লিক্ট এড়াতে ads-manager.js এর লিঙ্কটি সরিয়ে দেওয়া হয়েছে কারণ কোডটি নিচে সরাসরি দেওয়া আছে] -->
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --bg: #050a18; --card: #121e36; --primary: #3b82f6; --text: #ffffff; --border: #1e2d4d; --green: #22c55e; }
@@ -71,14 +73,11 @@
                 if (window.Adsgram) {
                     const ad = window.Adsgram.init({ blockId: this.videoBlockId });
                     ad.show()
-                      .then((result) => {
-                          if (onReward) onReward(result);
-                      })
-                      .catch((err) => {
-                          if (onError) onError(err);
-                      });
+                      .then((result) => { if (onReward) onReward(result); })
+                      .catch((err) => { if (onError) onError(err); });
                 } else {
                     console.log("Adsgram SDK not loaded yet.");
+                    alert("Ad system is loading, please wait a moment.");
                 }
             }
         };
@@ -87,6 +86,7 @@
         let userGP = 0;
         let totalTasksDone = 0;
         const cooldownTime = 12 * 60 * 60 * 1000;
+        let timerInterval;
 
         // ২. রিয়েল-টাইম ডাটা লোড (Firebase)
         function initTask() {
@@ -98,14 +98,14 @@
                 const now = Date.now();
 
                 if (now - lastCollect < cooldownTime) {
-                    startTimer(cooldownTime - (now - lastCollect));
+                    startTimer(lastCollect + cooldownTime);
                 } else {
                     resetTaskUI();
                 }
             });
         }
 
-        // ৩. অ্যাড হ্যান্ডলার[cite: 7]
+        // ৩. অ্যাড হ্যান্ডলার (সঠিকভাবে আপডেট করা হয়েছে)
         function handleTask() {
             if (adsWatched < 6) {
                 AdController.showVideoAd(
@@ -120,7 +120,7 @@
                         }
                     },
                     (error) => {
-                        alert("Ad failed or skipped. Please try again.");
+                        alert("Ad failed or skipped. Please watch the full video to count the task.");
                     }
                 );
             } else {
@@ -130,63 +130,68 @@
 
         function updateSlotUI(num) {
             const slot = document.getElementById(`slot-${num}`);
-            slot.classList.add('done');
-            slot.innerHTML = '<i class="fas fa-check-circle"></i><br>Done';
+            if(slot) {
+                slot.classList.add('done');
+                slot.innerHTML = '<i class="fas fa-check-circle"></i><br>Done';
+            }
         }
 
-        // ৪. রিওয়ার্ড এবং ডাটাবেস আপডেট[cite: 1, 7]
+        // ৪. রিওয়ার্ড এবং ডাটাবেস আপডেট[cite: 10]
         function collectReward() {
             db.ref('config/task_reward').once('value', s => {
                 const reward = s.val() || 100;
-                
                 db.ref('users/' + userId).update({
                     gp: userGP + reward,
                     tasks_done: totalTasksDone + 1,
                     last_task_collect: Date.now()
                 }).then(() => {
-                    alert(`Congratulations! ${reward} GP Added.`);
+                    alert(`Success! ${reward} GP Added.`);
                     adsWatched = 0;
-                    resetTaskUI(); // রিওয়ার্ড পাওয়ার পর ইউআই রিসেট এবং টাইমার শুরু হবে
+                    // initTask অটোমেটিক টাইমার শুরু করবে
                 });
             });
         }
 
-        function startTimer(duration) {
+        // ৫. টাইমার লজিক (Firebase স্প্যামিং কমানো হয়েছে)[cite: 10]
+        function startTimer(endTime) {
             const btn = document.getElementById('task-btn');
             const timerDiv = document.getElementById('timer');
+            const countdownSpan = document.getElementById('countdown');
+            
             btn.style.display = "none";
             timerDiv.style.display = "block";
 
-            const interval = setInterval(() => {
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
                 const now = Date.now();
-                db.ref('users/' + userId + '/last_task_collect').once('value', s => {
-                    const lastCollect = s.val() || 0;
-                    const remaining = cooldownTime - (Date.now() - lastCollect);
+                const remaining = endTime - now;
 
-                    if (remaining <= 0) {
-                        clearInterval(interval);
-                        resetTaskUI();
-                        return;
-                    }
+                if (remaining <= 0) {
+                    clearInterval(timerInterval);
+                    resetTaskUI();
+                    return;
+                }
 
-                    let h = Math.floor(remaining / 3600000);
-                    let m = Math.floor((remaining % 3600000) / 60000);
-                    let s = Math.floor((remaining % 60000) / 1000);
-                    document.getElementById('countdown').innerText = 
-                        `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
-                });
+                let h = Math.floor(remaining / 3600000);
+                let m = Math.floor((remaining % 3600000) / 60000);
+                let s = Math.floor((remaining % 60000) / 1000);
+                countdownSpan.innerText = 
+                    `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
             }, 1000);
         }
 
         function resetTaskUI() {
+            clearInterval(timerInterval);
             document.getElementById('task-btn').style.display = "block";
             document.getElementById('task-btn').style.background = "var(--primary)";
-            document.getElementById('task-btn').innerText = "WATCH AD (1/6)";
+            document.getElementById('task-btn').innerText = `WATCH AD (${adsWatched + 1}/6)`;
             document.getElementById('timer').style.display = "none";
             for (let i = 1; i <= 6; i++) {
                 const slot = document.getElementById(`slot-${i}`);
-                slot.classList.remove('done');
-                slot.innerHTML = `<i class="fas fa-play"></i><br>Ad ${i}`;
+                if(slot) {
+                    slot.classList.remove('done');
+                    slot.innerHTML = `<i class="fas fa-play"></i><br>Ad ${i}`;
+                }
             }
         }
 
