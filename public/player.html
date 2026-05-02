@@ -164,15 +164,15 @@
     }
 
     window.onload = () => {
-        loadPlayers('CF');
+    loadPlayers('CF');
 
-        // ব্যানার অ্যাড লোড
-        setTimeout(() => {
-            if (typeof AdController !== 'undefined') {
-                AdController.loadBanner("banner-container");
-            }
-        }, 1000);
-    };
+    // ব্যানার অ্যাড পুরোপুরি বন্ধ করে দেওয়া হলো
+    /* 
+    if (typeof AdController !== 'undefined') {
+        AdController.loadBanner("banner-container");
+    }
+    */
+};
 </script>
 </body>
 </html>
