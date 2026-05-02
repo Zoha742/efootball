@@ -6,13 +6,15 @@
     <title>Store - eFootball HUB</title>
     <!-- ১. Adsgram SDK এবং Telegram Web App SDK লোড করা -->
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>[cite: 10]
-    <script src="config.js"></script>[cite: 10]
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
+    <!-- সেন্ট্রাল স্ক্রিপ্ট লিঙ্ক -->
+    <script src="config.js"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --bg: #050a18; --primary: #fbbf24; --text: #ffffff; --card: #121e36; --border: #1e2d4d; }
-        body { background: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; padding: 15px; padding-bottom: 110px; /* বিজ্ঞাপনের জন্য নিচে জায়গা রাখা হয়েছে */ }
+        body { background: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; padding: 15px; padding-bottom: 110px; }
         
         .header { display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 25px; }
         .back-btn { position: absolute; left: 0; font-size: 22px; color: var(--primary); text-decoration: none; }
@@ -23,7 +25,7 @@
         .store-card h3 { margin: 5px 0; font-size: 16px; }
         .price-btn { background: var(--primary); color: #000; border: none; padding: 8px 15px; border-radius: 8px; font-weight: bold; margin-top: 10px; width: 100%; cursor: pointer; }
 
-        /* ২. ব্যানার ফিক্সড পজিশন স্টাইল */
+        /* ব্যানার ফিক্সড পজিশন স্টাইল */
         .banner-fixed-bottom {
             position: fixed;
             bottom: 0;
@@ -43,14 +45,14 @@
 
     <div class="header">
         <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
-        <h2 style="font-size: 18px; color: var(--primary);">GP & COIN STORE</h2>
+        <h2 style="font-size: 18px; color: var(--primary);">COIN & GP STORE</h2>
     </div>
 
-    <!-- স্টোর আইটেম লিস্ট -->
+    <!-- স্টোর আইটেম লিস্ট (উদাহরণ) -->
     <div class="store-grid">
         <div class="store-card">
             <i class="fas fa-coins"></i>
-            <h3>1,000 GP</h3>
+            <h3>5,000 GP</h3>
             <button class="price-btn">FREE (ADS)</button>
         </div>
         <div class="store-card">
@@ -58,10 +60,19 @@
             <h3>100 Coins</h3>
             <button class="price-btn">₹ 80.00</button>
         </div>
-        <!-- আরও আইটেম এখানে যোগ করতে পারেন -->
+        <div class="store-card">
+            <i class="fas fa-coins"></i>
+            <h3>25,000 GP</h3>
+            <button class="price-btn">₹ 150.00</button>
+        </div>
+        <div class="store-card">
+            <i class="fas fa-gem"></i>
+            <h3>500 Coins</h3>
+            <button class="price-btn">₹ 450.00</button>
+        </div>
     </div>
 
-    <!-- ৩. ব্যানার অ্যাড কম্পোনেন্ট (আপনার স্ক্রিনশট অনুযায়ী) -->
+    <!-- ২. ব্যানার অ্যাড কম্পোনেন্ট (আপনার টাস্ক আইডি দিয়ে) -->
     <div class="banner-fixed-bottom">
         <adsgram-task 
             data-block-id="task-29213" 
@@ -73,9 +84,7 @@
 <script>
     const tg = window.Telegram.WebApp;
     tg.expand();
-
-    // স্টোর রিলেটেড অন্য কোনো লজিক থাকলে এখানে যোগ করতে পারেন
-    console.log("Store page loaded with Adsgram Banner.");
+    console.log("Store page with banner ad loaded.");
 </script>
 </body>
 </html>
