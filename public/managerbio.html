@@ -76,8 +76,6 @@
         <source src="https://res.cloudinary.com/dyqegwdme/video/upload/v1777200154/Screen_Recording_20260426_161047_eFootball_cckti0.mp4" type="video/mp4">
     </video>
 
-    <!-- ব্যানার কন্টেইনার -->
-    <div id="banner-container" style="display: flex; justify-content: center; margin-top: 25px; padding-bottom: 30px;"></div>
     
     <script>
        console.log("Database connected successfully!");
@@ -107,7 +105,7 @@ setTimeout(() => {
             BioAdController.showBioAd('manager_bio_page');
 
             // ২. ব্যানার অ্যাড (এটি সব সময় আসবে যদি ওপরে দেওয়া div-টি থাকে)
-            BioAdController.loadBioBanner('banner-container');
+          //  BioAdController.loadBioBanner('banner-container');
         }
     } catch (e) {
         console.log("Ad Loading Error:", e);
