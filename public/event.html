@@ -38,6 +38,7 @@
         .v-card { width: 100%; border-radius: 12px; overflow: hidden; border: 1px solid #1e2d4d; background: var(--card); }
         .v-card img { width: 100%; height: auto; display: block; }
 
+        /* ব্যানার অ্যাড কন্টেইনার */
         #banner-ad-container {
             position: fixed; bottom: 0; left: 0; width: 100%; 
             display: flex; justify-content: center; align-items: center; 
@@ -48,7 +49,7 @@
 <body>
 
     <div class="header">
-        <a id="back-trigger" href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+        <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
         <h2 style="font-size: 18px; color: var(--primary);">ACTIVE EVENTS</h2>
     </div>
 
@@ -64,36 +65,31 @@
 
 <script>
     const tg = window.Telegram.WebApp;
-
-    // ব্যাক বাটন লজিক ফিক্সড
-    document.getElementById('back-trigger').addEventListener('click', function(e) {
-        window.location.href = "index.html";
-    });
-
     let currentIndex = 0;
     let images = [];
     let slideInterval;
     let startX = 0;
 
+    // ১. ইভেন্ট ডাটা লোড করা
     async function fetchEvents() {
         const track = document.getElementById('slider-track');
         const vContainer = document.getElementById('vertical-container');
         const dotsContainer = document.getElementById('dots');
 
         try {
-            // ১. ফাইলটি 'event.json' কি না নিশ্চিত হোন (আপনার দেওয়া সোর্সে এটি উল্লেখ আছে)
             const res = await fetch('event.json');
             if (!res.ok) throw new Error("JSON file not found");
             
             const data = await res.json();
-            // ডাটা কি ফরম্যাটে আছে তা চেক করে ইনজেক্ট করা হচ্ছে
-            images = data.events || data.event || [];[cite: 17]
+            // ডাটা ফরম্যাট অনুযায়ী ইভেন্টগুলো নেওয়া হচ্ছে
+            images = data.events || data.event || []; 
 
             if (images.length === 0) {
                 track.innerHTML = "<p style='text-align:center;'>No Events Found!</p>";
                 return;
             }
 
+            // স্লাইডার এবং লিস্ট তৈরি করা
             track.innerHTML = ""; 
             vContainer.innerHTML = "";
             dotsContainer.innerHTML = "";
@@ -117,7 +113,7 @@
             setupTouch();
         } catch (e) {
             console.error("Fetch Error:", e.message);
-            track.innerHTML = "<p style='color:red;'>Data failed to load.</p>";
+            track.innerHTML = "<p style='color:red; text-align:center; padding-top:80px;'>Data failed to load.</p>";
         }
     }
 
@@ -156,12 +152,14 @@
         });
     }
 
-    // ব্যানার অ্যাড ফিক্সড[cite: 17]
+    // ২. ব্যানার অ্যাড লোড করা (এরর ফিক্সড)
     function loadBannerAd() {
         if (window.Adsgram) {
-            // আপনার এরর অনুযায়ী আইডির শুরুতে 'task-' থাকতে হবে
+            // আইডির শুরুতে 'task-' যোগ করা হয়েছে আপনার এরর মেসেজ অনুযায়ী
             const ad = window.Adsgram.init({ blockId: "task-29213" }); 
-            ad.show().catch((err) => console.log("Banner Error:", err));
+            ad.show().catch((err) => {
+                console.log("Banner Error:", err);
+            });
         }
     }
 
