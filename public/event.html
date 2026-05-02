@@ -10,14 +10,13 @@
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     
-    <!-- Central Config & Ad Master -->
+    <!-- Central Config -->
     <script src="config.js"></script>
-    <script src="ads_manager_active.js?v=2.0"></script> 
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --bg: #050a18; --primary: #fbbf24; --text: #ffffff; --card: #121e36; }
-        body { background: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; padding: 15px; overflow-x: hidden; padding-bottom: 80px; /* ব্যানার অ্যাডের জন্য নিচে জায়গা রাখা হলো */ }
+        body { background: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; padding: 15px; overflow-x: hidden; padding-bottom: 80px; }
         
         .header { display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 20px; }
         .back-btn { position: absolute; left: 0; font-size: 22px; color: var(--primary); text-decoration: none; cursor: pointer; }
@@ -39,18 +38,10 @@
         .v-card { width: 100%; border-radius: 12px; overflow: hidden; border: 1px solid #1e2d4d; background: var(--card); }
         .v-card img { width: 100%; height: auto; display: block; }
 
-        /* ব্যানার অ্যাডের কন্টেইনার স্টাইল */
         #banner-ad-container {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: var(--bg);
-            z-index: 1000;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.5);
+            position: fixed; bottom: 0; left: 0; width: 100%; 
+            display: flex; justify-content: center; align-items: center; 
+            background: var(--bg); z-index: 1000;
         }
     </style>
 </head>
@@ -69,24 +60,14 @@
     <div class="list-title">MORE EVENTS</div>
     <div id="vertical-container" class="vertical-list"></div>
 
-    <!-- ব্যানার অ্যাড দেখানোর জায়গা -->
     <div id="banner-ad-container"></div>
 
 <script>
     const tg = window.Telegram.WebApp;
 
-    // ব্যাক বাটন লজিক: ইন্টারস্টিশিয়াল অ্যাড বন্ধ আছে, সরাসরি ব্যাক করবে[cite: 5]
+    // ব্যাক বাটন লজিক ফিক্সড
     document.getElementById('back-trigger').addEventListener('click', function(e) {
-        e.preventDefault(); 
-        const targetUrl = this.getAttribute('href');
-
-        if (typeof AdController !== 'undefined') {
-            AdController.showInterstitialAd(() => {
-                window.location.href = targetUrl;
-            });
-        } else {
-            window.location.href = targetUrl;
-        }
+        window.location.href = "index.html";
     });
 
     let currentIndex = 0;
@@ -100,15 +81,22 @@
         const dotsContainer = document.getElementById('dots');
 
         try {
-            const res = await fetch('event.json');[cite: 4]
-            if (!res.ok) throw new Error("JSON not found");
+            // ১. ফাইলটি 'event.json' কি না নিশ্চিত হোন (আপনার দেওয়া সোর্সে এটি উল্লেখ আছে)
+            const res = await fetch('event.json');
+            if (!res.ok) throw new Error("JSON file not found");
+            
             const data = await res.json();
-            images = data.events || data.event;
+            // ডাটা কি ফরম্যাটে আছে তা চেক করে ইনজেক্ট করা হচ্ছে
+            images = data.events || data.event || [];[cite: 17]
 
-            if (!images || images.length === 0) {
+            if (images.length === 0) {
                 track.innerHTML = "<p style='text-align:center;'>No Events Found!</p>";
                 return;
             }
+
+            track.innerHTML = ""; 
+            vContainer.innerHTML = "";
+            dotsContainer.innerHTML = "";
 
             images.forEach((ev, index) => {
                 const sImg = document.createElement('img');
@@ -128,11 +116,13 @@
             startAutoSlide();
             setupTouch();
         } catch (e) {
-            console.error(e.message);
+            console.error("Fetch Error:", e.message);
+            track.innerHTML = "<p style='color:red;'>Data failed to load.</p>";
         }
     }
 
     function startAutoSlide() {
+        clearInterval(slideInterval);
         slideInterval = setInterval(() => {
             if(images.length > 0) {
                 currentIndex = (currentIndex + 1) % images.length;
@@ -146,8 +136,9 @@
         const dots = document.querySelectorAll('.dot');
         if(!track) return;
         track.style.transform = `translateX(-${currentIndex * 100}%)`;
-        dots.forEach(d => d.classList.remove('active'));
-        if(dots[currentIndex]) dots[currentIndex].classList.add('active');
+        dots.forEach((d, i) => {
+            d.classList.toggle('active', i === currentIndex);
+        });
     }
 
     function setupTouch() {
@@ -165,20 +156,18 @@
         });
     }
 
-    // ব্যানার অ্যাড লোড করার ফাংশন
+    // ব্যানার অ্যাড ফিক্সড[cite: 17]
     function loadBannerAd() {
         if (window.Adsgram) {
-            // "YOUR_BANNER_BLOCK_ID" এর জায়গায় আপনার ড্যাশবোর্ড থেকে পাওয়া ব্যানার আইডিটি বসান
-            const ad = window.Adsgram.init({ blockId: "task-29213" }); 
-            ad.show().catch((err) => {
-                console.log("Banner Ad Error:", err);
-            });
+            // আইডি শুধুমাত্র সংখ্যা হবে, আপনার কোডে "task-29213" ছিল, এটি ভুল
+            const ad = window.Adsgram.init({ blockId: "29213" }); 
+            ad.show().catch((err) => console.log("Banner Error:", err));
         }
     }
 
     window.onload = function() {
         fetchEvents();
-        loadBannerAd(); // পেজ লোড হলেই ব্যানার অ্যাড কল হবে
+        loadBannerAd();
     };
 </script>
 </body>
