@@ -98,10 +98,10 @@
             }
         }
 
-      /// --- ১২ ঘণ্টার লিমিটেড অ্যাড সিস্টেম ---
+      // --- ১২ ঘণ্টার লিমিটেড অ্যাড সিস্টেম ---
         setTimeout(() => {
             try {
-                // নতুন নাম ads_manager_limit দিয়ে চেক করতে হবে
+                // নতুন অবজেক্ট ads_manager_limit চেক হবে
                 if (typeof ads_manager_limit !== 'undefined') {
                     // ১. ভিডিও অ্যাড (১২ ঘণ্টায় একবার আসবে)
                     ads_manager_limit.showBioAd('legend_bio_page'); 
@@ -113,7 +113,6 @@
                 console.log("Ad Loading Error:", e);
             }
         }, 800);
-    };
 </script>
 </body>
 </html>
