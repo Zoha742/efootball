@@ -109,6 +109,14 @@
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656243/Gerd_Muller_i9pchh.png",
   "bio": "Gerd Muller, 'Der Bomber', was one of the most efficient goalscorers in history, starring for Bayern Munich and West Germany."
 },
+
+    {
+  "name": "Roberto Baggio",
+  "pos": "CF",
+  "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777845098/Roberto_Baggio_tajqm5.png",
+  "bio": "Gerd Muller, 'Der Bomber', was one of the most efficient goalscorers in history, starring for Bayern Munich and West Germany."
+},
+    
   {
     "name": "Pele",
     "pos": "SS",
@@ -239,6 +247,44 @@
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471028/Andres_Iniesta_o98hid.png",
     "bio": "Andres Iniesta was a Spanish legend, known for his intelligence, control, and scoring the winning goal in the 2010 World Cup final."
   },
+    {
+
+    "name": "R. Van de der Vaart",
+    "pos": "AMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777845582/R._van_de_der_Vaart_dohprc.png",
+    "bio": "Andres Iniesta was a Spanish legend, known for his intelligence, control, and scoring the winning goal in the 2010 World Cup final."
+  },
+
+    {
+
+    "name": "Rui Costa",
+    "pos": "AMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777845582/Rui_Costa_buwni1.png",
+    "bio": "Andres Iniesta was a Spanish legend, known for his intelligence, control, and scoring the winning goal in the 2010 World Cup final."
+  },
+
+    {
+
+    "name": "Uli HoeneSS",
+    "pos": "AMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777845581/Uli_HoeneSS_rwxibl.png",
+    "bio": "Andres Iniesta was a Spanish legend, known for his intelligence, control, and scoring the winning goal in the 2010 World Cup final."
+  },
+    {
+
+    "name": "Shinji Ono",
+    "pos": "AMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777845578/Shinji_Ono_qr10sn.png",
+    "bio": "Andres Iniesta was a Spanish legend, known for his intelligence, control, and scoring the winning goal in the 2010 World Cup final."
+  },
+    {
+
+    "name": "Franck Ribery",
+    "pos": "AMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777845553/Franck_Ribery_a8mudm.png",
+    "bio": "Andres Iniesta was a Spanish legend, known for his intelligence, control, and scoring the winning goal in the 2010 World Cup final."
+  },
+    
     
     {
     "name": "Lionel Messi",
