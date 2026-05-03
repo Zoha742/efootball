@@ -66,6 +66,13 @@
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656197/Jan_Koller_sudb2s.png",
   "bio": "Denis Law, the 'Lawman', is a Manchester United legend and the only Scottish player to win the Ballon d'Or."
 },
+    {
+
+    "name": "Roberto Baggio",
+    "pos": "CF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471029/Roberto_Baggio_tmtgsd.png",
+    "bio": "Roberto Baggio was an Italian icon, admired for his skill, vision, and creativity as one of football's greatest playmakers."
+  },
 {
   "name": "Denis Law",
   "pos": "CF",
@@ -224,13 +231,7 @@
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471030/Rivaldo_e5xhwq.png",
     "bio": "Rivaldo was a Brazilian superstar, known for his powerful shots, technique, and crucial goals for club and country."
   },
-  {
-
-    "name": "Roberto Baggio",
-    "pos": "AMF",
-    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471029/Roberto_Baggio_tmtgsd.png",
-    "bio": "Roberto Baggio was an Italian icon, admired for his skill, vision, and creativity as one of football's greatest playmakers."
-  },
+  
   {
 
     "name": "Andres Iniesta",
