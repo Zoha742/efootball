@@ -18,6 +18,12 @@
       }
 
 },
+    {
+    "name": "Lionel Messi",
+    "pos": "CF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777795268/Lionel_Messi_d1mqli.png",
+    "bio": "Lionel Messi is widely considered one of the greatest players ever, known for his dribbling, vision, and incredible goal-scoring records."
+  },
 {
   "name": "Johan Cruyff",
   "pos": "CF",
@@ -225,6 +231,13 @@
     "pos": "AMF",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471028/Andres_Iniesta_o98hid.png",
     "bio": "Andres Iniesta was a Spanish legend, known for his intelligence, control, and scoring the winning goal in the 2010 World Cup final."
+  },
+    
+    {
+    "name": "Lionel Messi",
+    "pos": "RWF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777795186/Lionel_Messi_s8byb9.png",
+    "bio": "Lionel Messi is widely considered one of the greatest players ever, known for his dribbling, vision, and incredible goal-scoring records."
   },
 
 {
