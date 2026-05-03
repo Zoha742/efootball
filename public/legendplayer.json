@@ -155,7 +155,13 @@
   },
 
     {
-
+    "name": "Lionel Messi",
+    "pos": "AMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777795374/Lionel_Messi_tognuz.png",
+    "bio": "Lionel Messi is widely considered one of the greatest players ever, known for his dribbling, vision, and incredible goal-scoring records."
+  },
+    
+    {
     "name": "Ronaldinho Gaucho",
     "pos": "AMF",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777124731/Ronaldinho_Gaucho_u87qug.png",
