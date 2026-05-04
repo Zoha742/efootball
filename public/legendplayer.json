@@ -771,7 +771,29 @@
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471240/Lilian_Thuram_phfoad.png",
     "bio": "Lilian Thuram was a legendary defender known for strength, intelligence, and defensive leadership."
   },
+{
+   
+    "name": "Carles Puyol",
+    "pos": "CB",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777893609/Carles_Puyol_iwr91z.png",
+    "bio": "Carles Puyol was an Italian defensive legend known for positioning, leadership, and reading the game."
+  },
+    {
+   
+    "name": "Fabio Cannavaro",
+    "pos": "CB",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777893709/Fabio_Cannavaro_xaiglw.png",
+    "bio": "Fabio Cannavaro was an Italian defensive legend known for positioning, leadership, and reading the game."
+  },
 
+    {
+   
+    "name": "Franz Beckenbauer",
+    "pos": "CB",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777893779/Franz_Beckenbauer_ufsvrv.png",
+    "bio": "Franz Beckenbauer was an Italian defensive legend known for positioning, leadership, and reading the game."
+  },
+    
  {
    
     "name": "Franco Baresi",
@@ -802,10 +824,10 @@
   },
   {
     
-    "name": "Frank Rijkaard",
+    "name": "Alessandro Nesta",
     "pos": "CB",
-    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472137/Frank_Rijkaard_eivbuh.png",
-    "bio": "Frank Rijkaard was a versatile defender known for intelligence, calmness, and tactical awareness."
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777893484/Alessandro_Nesta_yv28bs.png.png",
+    "bio": "Alessandro Nesta was a versatile defender known for intelligence, calmness, and tactical awareness."
   },
   {
     
@@ -814,7 +836,13 @@
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472137/Ronald_Koeman_xuoi48.png",
     "bio": "Ronald Koeman was a ball-playing defender known for powerful shooting and passing ability."
   },
-
+{
+    
+    "name": "Lilian Thuram",
+    "pos": "CB",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777894027/Lilian_Thuram_vllsot.png",
+    "bio": "Lilian Thuram was a ball-playing defender known for powerful shooting and passing ability."
+  },
     {
    
     "name": "Angelo Peruzzi",
