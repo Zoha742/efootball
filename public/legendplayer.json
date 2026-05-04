@@ -66,6 +66,14 @@
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656197/Jan_Koller_sudb2s.png",
   "bio": "Denis Law, the 'Lawman', is a Manchester United legend and the only Scottish player to win the Ballon d'Or."
 },
+
+    {
+  "name": "Ruud Gullit",
+  "pos": "CF",
+  "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777899357/Ruud_Gullit_gutlwf.png",
+  "bio": "Ruud Gullit was the ultimate big-game player for Chelsea, famously leading them to their first Champions League title."
+},
+    
     {
 
     "name": "Roberto Baggio",
@@ -91,6 +99,7 @@
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656262/Alessandro_Del_Piero_uiwgjo.png",
   "bio": "Del Piero is a Juventus icon, known for his technical brilliance and spectacular goals from his trademark 'Del Piero Zone'."
 },
+
 {
   "name": "Didier Drogba",
   "pos": "CF",
