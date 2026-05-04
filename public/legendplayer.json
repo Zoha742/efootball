@@ -170,6 +170,14 @@
   },
 
     {
+
+    "name": "Ronaldinho",
+    "pos": "LWF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777897821/Ronaldinho_Gaucho_u87qug.png",
+    "bio": "Ronaldinho was a world-class winger, known for his pace, dribbling, and creativity on the left flank."
+  },
+    
+    {
     "name": "Lionel Messi",
     "pos": "AMF",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777795374/Lionel_Messi_tognuz.png",
@@ -336,6 +344,14 @@
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471153/Luis_Garcia_na1yqj.png",
     "bio": "Luis Garcia was a skillful attacker, known for his flair and memorable goals for Liverpool."
   },
+    {
+
+    "name": "Ronaldinho",
+    "pos": "LWF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777897795/Ronaldinho_qnkefy.png",
+    "bio": "Ronaldinho was a world-class winger, known for his pace, dribbling, and creativity on the left flank."
+  },
+    
 {
 
     "name": "Franck Ribery",
