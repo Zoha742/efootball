@@ -585,13 +585,7 @@
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471237/Frank_Rijkaard_lhgdjs.png",
     "bio": "Frank Rijkaard was a legendary defensive midfielder known for composure, intelligence, and defensive control."
   },
-  {
-
-    "name": "Vitinha",
-    "pos": "DMF",
-    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471234/Vitinha_meqlbk.png",
-    "bio": "Vitinha is a modern midfielder known for passing, movement, and ball control."
-  },
+  
   {
 
     "name": "Gennaro Gattuso",
@@ -606,26 +600,12 @@
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471232/Clarence_Seedorf_cdkw3d.png",
     "bio": "Clarence Seedorf was a versatile midfielder known for strength, technique, and big-game performance."
   },
-  {
-
-    "name": "Franz Beckenbauer",
-    "pos": "DMF",
-    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471230/Franz_Beckenbauer_ms0nfb.png",
-    "bio": "Franz Beckenbauer was a football icon known for elegance, leadership, and redefining the sweeper role."
-  },
-  {
-  
-    "name": "Philipp Lahm",
-    "pos": "DMF",
-    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471228/Philipp_Lahm_zwymji.png",
-    "bio": "Philipp Lahm was a tactically intelligent midfielder and defender known for consistency and leadership."
-  },
     
   {
 
-    "name": "Xavi",
+    "name": "Xavi Alonso",
     "pos": "DMF",
-    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471227/Xavi_aozngo.png",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777893222/Xabi_Alonso_jdwkuw.png",
     "bio": "Xavi was a Barcelona legend known for passing, control, and midfield dominance."
   },
   {
@@ -635,14 +615,7 @@
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471226/Claude_Makelele_lplqxo.png",
     "bio": "Claude Makelele was a defensive midfield specialist known for interceptions and positioning."
   },
-  {
- 
-    "name": "Yaya Toure",
-    "pos": "DMF",
-    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471225/Yaya_Toure_sxbnxn.png",
-    "bio": "Yaya Toure was a powerful midfielder known for driving runs, shooting, and physical dominance."
-  }, 
-
+  
  {
    
     "name": "Roberto Carlos",
