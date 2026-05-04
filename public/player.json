@@ -2,64 +2,344 @@
   "players": [
     { 
      
-      "name": "Mohamed Salah", 
+      "name": "Luis Suarez", 
       "pos": "CF", 
-      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775845455/Mohamed_Salah_ppqmqz.jpg" 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777921669/Luis_Suarez_guas8l.png" 
     },
-    { 
-     
-      "name": "K Benzema", 
-      "pos": "CF", 
-      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775845455/K_benzema_dneowp.jpg" 
-    },
-    { 
-   
-      "name": "Kylian Mbappe", 
-      "pos": "CF", 
-      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775845455/Kylian_Mbappe_xtyk9y.jpg" 
-    },
+    
     { 
       
-      "name": "Haaland", 
-      "pos": "CF", 
-      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1775765528/Haaland_kcp6it.jpg" 
-    },
-    { 
-   
-      "name": "Lewandowski", 
-      "pos": "CF", 
-      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775845455/K_benzema_dneowp.jpg" 
-    },
-    { 
-      
-      "name": "K Benzema", 
+      "name": "Neymar JR", 
       "pos": "SS", 
-      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775845455/K_benzema_dneowp.jpg" 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777924871/Neymar_JR_mfrszl.png" 
+    },
+
+    { 
+      
+      "name": "Neymar JR", 
+      "pos": "AMF", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777925983/Neymar_Jr_j0fhjy.png" 
     },
     { 
-    
-      "name": "K Benzema", 
+      
+      "name": "G. de Arrascaeta", 
+      "pos": "AMF", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777925851/G._de_Arrascaeta_sopkpj.png" 
+    },
+    { 
+      
+      "name": "B. Fernandes", 
+      "pos": "AMF", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777925849/B._Fernandes_cbqi15.png" 
+    },
+    { 
+      
+      "name": "V. Junior", 
+      "pos": "LWF", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777924903/V._Junior_rdp5rj.png" 
+    },
+    { 
+      
+      "name": "Sadio Mane", 
+      "pos": "LWF", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777924898/Sadio_Mane_vj8zml.png" 
+    },
+    { 
+      
+      "name": "Neymar Jr", 
+      "pos": "LWF", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777924896/Neymar_Jr_bmrqgu.png" 
+    },
+    { 
+      
+      "name": "Marcus Rashford", 
+      "pos": "LWF", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777924894/Marcus_Rashford_tmozxt.png" 
+    },
+    { 
+      
+      "name": "K. Kvaratskhelia", 
+      "pos": "LWF", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777924891/K._Kvaratskhelia_of4n2w.png" 
+    },
+    { 
+      
+      "name": "Vitinho", 
+      "pos": "LWF", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777925244/Vitinho_xmqgco.png" 
+    },
+
+    { 
+      
+      "name": "Mohamed Salah", 
+      "pos": "RWF", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777925813/Mohamed_Salah_w4b9f8.png" 
+    },
+    { 
+      
+      "name": "Lamine Yamal", 
+      "pos": "RWF", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777925542/Lamine_Yamal_ylkifq.png" 
+    },
+    { 
+      
+      "name": "Bukayo Saka", 
+      "pos": "RWF", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777925537/Bukayo_Saka_cxfmjk.png" 
+    },
+    { 
+      
+      "name": "B. Silva", 
+      "pos": "RWF", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777925534/B._Silva_knuzbe.pngg" 
+    },
+
+    { 
+      
+      "name": "Marco Reus", 
+      "pos": "RMF", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777922210/Marco_Reus_baksyy.png" 
+    },
+
+    { 
+      
+      "name": "Marco Reus", 
+      "pos": "LMF", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777922210/Marco_Reus_baksyy.png" 
+    },
+
+    { 
+      
+      "name": "Jamal Musiala", 
+      "pos": "LMF", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777926003/Jamal_Musiala_lptuj9.png" 
+    },
+
+    { 
+      
+      "name": "Rodri", 
+      "pos": "CMF", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777926913/Rodri_rbn8kh.png.png" 
+    },
+    { 
+      
+      "name": "Pedri", 
+      "pos": "CMF", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777926728/Pedri_ngqghw.png" 
+    },
+    { 
+      
+      "name": "Federico Valverde", 
+      "pos": "CMF", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777926725/Federico_Valverde_qhapuj.png" 
+    },
+    { 
+      
+      "name": "Clarence Seedorf", 
+      "pos": "CMF", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777926723/Clarence_Seedorf_kufmwg.png" 
+    },
+    { 
+      
+      "name": "Alexis Mac Allister", 
+      "pos": "CMF", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777926721/Alexis_Mac_Allister_lr7lsc.png" 
+    },
+
+    { 
+      
+      "name": "Moises Caicedo", 
+      "pos": "DMF", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777928101/Moises_Caicedo_yku3vq.png" 
+    },
+    { 
+      
+      "name": "Jordan Henderson", 
+      "pos": "DMF", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777928099/Jordan_Henderson_woix5s.png" 
+    },
+    { 
+      
+      "name": "Fabinho", 
+      "pos": "DMF", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777928095/Fabinho_mk9yrr.png" 
+    },
+    { 
+      
+      "name": "Edmilson", 
+      "pos": "DMF", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777928094/Edmilson_khxldb.png" 
+    },
+    { 
+      
+      "name": "A. Tchouameni", 
+      "pos": "DMF", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777928092/Aurelien_Tchouameni_ijfweo.png" 
+    },
+
+    { 
+      "name": "Medhi Benatia", 
       "pos": "CB", 
-      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775845455/K_benzema_dneowp.jpg" 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777930896/Medhi_Benatia_oeidcp.png" 
+    },
+    { 
+      "name": "V. Van Dijk", 
+      "pos": "CB", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777930873/Virgil_van_Dijk_gaed1k.png" 
+    },
+    { 
+      "name": "PEPE", 
+      "pos": "CB", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777930870/Pepe_op03cj.png" 
+    },
+    
+    { 
+      "name": "Raphael Varane", 
+      "pos": "CB", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777930865/Raphael_Varane_sgdm6o.png" 
+    },
+    { 
+      "name": "Ivan Cordoba", 
+      "pos": "CB", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777930862/Ivan_Cordoba_xwtrjx.png" 
+    },
+    { 
+      "name": "Giorgio Chiellini", 
+      "pos": "CB", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777930859/Giorgio_Chiellini_shsou7.png" 
+    },
+
+  { 
+      "name": "Gerard Pique", 
+      "pos": "CB", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777930857/Gerard_Pique_nxx0be.png" 
+    },
+    { 
+      "name": "William Saliba", 
+      "pos": "CB", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777930852/William_Saliba_cztyld.png" 
+    },
+    { 
+      "name": "Ronald Araujo", 
+      "pos": "CB", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777930849/Ronald_araujo_c15k2l.png" 
+    },
+    
+    { 
+      "name": "Pau Cubarsi", 
+      "pos": "CB", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777930846/Pau_Cubarsi_fyx3ja.png" 
+    },
+    { 
+      "name": "Marquinhos", 
+      "pos": "CB", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777930843/Marquinhos_avpgho.png" 
+    },
+    { 
+      "name": "Makoto Hasebe", 
+      "pos": "CB", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777930840/Makoto_Hasebe_p5s5az.png" 
+    },
+    { 
+      "name": "Ibrahima Konate", 
+      "pos": "CB", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777930837/Ibrahima_Konate_ua39sf.png" 
+    },
+    { 
+      "name": "Dean Huijsen", 
+      "pos": "CB", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777930833/Dean_Huijsen_wbvq3l.png" 
+    },
+    { 
+      "name": "D. Sanchez", 
+      "pos": "CB", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777930832/Davinson_Sanchez_nuyse6.png" 
+    },
+
+  { 
+      "name": "A. Bastoni", 
+      "pos": "CB", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777930830/Alessandro_Bastoni_anj4mi.png" 
+    },
+  
+    
+    { 
+    
+      "name": "Riccardo Calafiori", 
+      "pos": "LB", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777921999/Riccardo_Calafiori_pcngtq.png" 
+    },
+
+    { 
+    
+      "name": "Marcelo", 
+      "pos": "LB", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777921998/Marcelo_itmw4i.png" 
     },
     { 
     
-      "name": "K Benzema", 
+      "name": "JoskoGvardiol", 
       "pos": "LB", 
-      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775845455/K_benzema_dneowp.jpg" 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777921996/Josko_Gvardiol_ngucej.png" 
+    },
+
+    { 
+    
+      "name": "Andrew Robertson", 
+      "pos": "LB", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777921995/Andrew_Robertson_utux33.png" 
+    },
+    { 
+    
+      "name": "Yuto Nagatomo", 
+      "pos": "LB", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777921993/Yuto_Nagatomo_pzysk6.png" 
+    },
+    
+
+    { 
+     
+      "name": "Jurrien Timber", 
+      "pos": "RB", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777921936/Jurrien_Timber_l7ntps.png" 
     },
     { 
      
-      "name": "K Benzema", 
+      "name": "Dani Carvajal", 
       "pos": "RB", 
-      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775845455/K_benzema_dneowp.jpg" 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777921935/Dani_Carvajal_amdni2.png" 
+    },
+    { 
+     
+      "name": "Jules Kounde", 
+      "pos": "RB", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777921934/Jules_Kounde_fs5rpr.png" 
+    },
+
+    { 
+     
+      "name": "David de Gea", 
+      "pos": "GK", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777922040/David_de_Gea_ht5tvy.png" 
+    },
+    { 
+     
+      "name": "Alisson Becker", 
+      "pos": "GK", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777922039/Alisson_Becker_yr8agg.png" 
+    },
+    { 
+     
+      "name": "Tomoki_Hayakawa", 
+      "pos": "GK", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777922037/Tomoki_Hayakawa_q0ixpp.png" 
     },
 
     { 
        
-      "name": "K Benzema", 
+      "name": "G. Donnarumma", 
       "pos": "GK", 
-      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775845455/K_benzema_dneowp.jpg" 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777922035/G._Donnarumma_iljjoy.png" 
     }
   ],
   "ads_config": {
