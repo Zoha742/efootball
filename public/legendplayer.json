@@ -708,6 +708,14 @@
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471251/Cafu_q8ip7b.png",
     "bio": "Cafu was a legendary Brazilian right-back known for his stamina, speed, and attacking runs."
   },
+    {
+   
+    "name": "Javier Zanetti",
+    "pos": "RB",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777896901/Javier_Zanetti_u3wsdo.png",
+    "bio": "Javier Zanetti was an Italian defender known for leadership, positioning, and consistency."
+  },
+    
   {
    
     "name": "Giuseppe Bergomi",
@@ -715,8 +723,9 @@
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471249/Giuseppe_Bergomi_i32uuk.png",
     "bio": "Giuseppe Bergomi was an Italian defender known for leadership, positioning, and consistency."
   },
+    
   {
-   
+  
     "name": "A. Costacurta",
     "pos": "RB",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471248/A._Costacurta_izj5dg.png",
