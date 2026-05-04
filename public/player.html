@@ -112,7 +112,7 @@
         container.innerHTML = "<p style='grid-column: span 3; text-align:center; color: #3b82f6;'>Loading Players...</p>";
         
         try {
-            const response = await fetch('legendplayer.json'); 
+            const response = await fetch('player.json'); 
             
             if (!response.ok) {
                 throw new Error("ফাইল খুঁজে পাওয়া যায়নি (File not found)");
