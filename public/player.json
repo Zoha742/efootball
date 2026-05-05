@@ -9,6 +9,13 @@
 
     { 
      
+      "name": "CR7", 
+      "pos": "CF", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777973786/Cristiano_Ronaldo_axacin.png" 
+    },
+
+    { 
+     
       "name": "Ruud Van Nistelrooij", 
       "pos": "CF", 
       "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777973793/Ruud_van_Nistelrooij_r6cjva.png" 
@@ -47,13 +54,6 @@
       "name": "Erling Haaland", 
       "pos": "CF", 
       "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777973787/Erling_Haaland_v5ad0k.png" 
-    },
-
-    { 
-     
-      "name": "CR7", 
-      "pos": "CF", 
-      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777973786/Cristiano_Ronaldo_axacin.png" 
     },
 
      { 
