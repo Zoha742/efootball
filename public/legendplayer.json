@@ -19,6 +19,13 @@
 
 },
     {
+    "name": "PELE",
+    "pos": "CF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009816/Pele_rrvdvz.png",
+    "bio": "PELE is widely considered one of the greatest players ever, known for his dribbling, vision, and incredible goal-scoring records."
+  },
+    
+    {
     "name": "Lionel Messi",
     "pos": "CF",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777795268/Lionel_Messi_d1mqli.png",
@@ -104,6 +111,48 @@
       "pos": "CF", 
       "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777973786/Cristiano_Ronaldo_axacin.png" 
     },
+    {
+    "name": "Adriano",
+    "pos": "CF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009524/Adriano_nxjncq.png",
+    "bio": "Adriano is widely considered one of the greatest players ever, known for his dribbling, vision, and incredible goal-scoring records."
+  },
+    {
+    "name": "Dennis Bergkamp",
+    "pos": "CF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009520/Dennis_Bergkamp_w9qegb.png",
+    "bio": "Dennis Bergkamp is widely considered one of the greatest players ever, known for his dribbling, vision, and incredible goal-scoring records."
+  },
+    {
+    "name": "Andy Cole",
+    "pos": "CF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009519/Andy_Cole_qmomqp.png",
+    "bio": "Andy Cole is widely considered one of the greatest players ever, known for his dribbling, vision, and incredible goal-scoring records."
+  },
+    {
+    "name": "Bebeto",
+    "pos": "CF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009518/Bebeto_o714hs.png",
+    "bio": "Lionel Messi is widely considered one of the greatest players ever, known for his dribbling, vision, and incredible goal-scoring records."
+  },
+    {
+    "name": "D. Berbatov",
+    "pos": "CF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009518/D._Berbatov_v2e44y.png",
+    "bio": "D. Berbatov is widely considered one of the greatest players ever, known for his dribbling, vision, and incredible goal-scoring records."
+  },
+    {
+    "name": "Carlos Tevez",
+    "pos": "CF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009518/Carlos_Tevez_t4diol.png",
+    "bio": "Carlos Tevez is widely considered one of the greatest players ever, known for his dribbling, vision, and incredible goal-scoring records."
+  },
+    {
+    "name": "A. Pato",
+    "pos": "CF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009517/A._Pato_eogios.png",
+    "bio": "A. pato is widely considered one of the greatest players ever, known for his dribbling, vision, and incredible goal-scoring records."
+  },
 
 {
   "name": "Didier Drogba",
