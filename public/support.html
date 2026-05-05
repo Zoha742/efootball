@@ -34,14 +34,14 @@
             <option value="Account Issue">Account Issue</option>
             <option value="Other">Other</option>
         </select>
-        <label>বিস্তারিত লিখুন (Details):</label>
-        <textarea id="issue-details" rows="4" placeholder="আপনার সমস্যাটি বিস্তারিত লিখুন..."></textarea>
+        <label>Provide details (Details):</label>
+        <textarea id="issue-details" rows="4" placeholder="Please describe your problem in detail..."></textarea>
         <button class="send-btn" onclick="sendMsg()">মেসেজ পাঠান</button>
     </div>
 
     <div id="my-messages">
-        <h4 style="margin-top:20px;">আপনার মেসেজগুলো:</h4>
-        <div id="msg-list">লোড হচ্ছে...</div>
+        <h4 style="margin-top:20px;">Your messages:</h4>
+        <div id="msg-list">Loading...</div>
     </div>
 
     <script>
@@ -51,12 +51,12 @@
         function sendMsg() {
             const type = document.getElementById('issue-type').value;
             const text = document.getElementById('issue-details').value;
-            if(!text) return alert("মেসেজ লিখুন!");
+            if(!text) return alert("Write message!");
             
             db.ref('support/' + userId).push({
                 type: type, text: text, date: new Date().toLocaleString(), reply: ""
             }).then(() => {
-                alert("মেসেজ পাঠানো হয়েছে!");
+                alert("Message sent!");
                 document.getElementById('issue-details').value = "";
             });
         }
@@ -70,7 +70,7 @@
                     ${m.reply ? `<div class="reply">Admin: ${m.reply}</div>` : ""}
                 </div>`;
             });
-            document.getElementById('msg-list').innerHTML = html || "কোনো মেসেজ নেই।";
+            document.getElementById('msg-list').innerHTML = html || "There are no messages.";
         });
     </script>
 </body>
