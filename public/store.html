@@ -5,46 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Store & Offers - eFootball HUB</title>
     
-    <!-- ১. Firebase & SDKs লোড করা -->
+    <!-- SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
-    <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    
-    <!-- সেন্ট্রাল কনফিগ লিঙ্ক -->
     <script src="config.js"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --bg: #050a18; --primary: #fbbf24; --text: #ffffff; --card: #121e36; --border: #1e2d4d; }
-        body { background: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; padding: 15px; padding-bottom: 120px; }
+        body { background: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; padding: 15px; padding-bottom: 50px; }
         
-        /* Header */
         .header { display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 25px; }
         .back-btn { position: absolute; left: 0; font-size: 22px; color: var(--primary); text-decoration: none; }
         .header h2 { font-size: 18px; color: var(--primary); margin: 0; }
 
-        /* Affiliate Section Title */
         .section-title { font-size: 14px; color: #94a3b8; margin: 20px 0 10px; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* ৪টি লম্বা বাটন (Affiliate Links) */
-        .affiliate-container { display: flex; flex-direction: column; gap: 12px; }
+        .affiliate-container { display: flex; flex-direction: column; gap: 10px; }
         .affiliate-btn { 
             display: flex; align-items: center; justify-content: space-between;
-            background: var(--card); border: 1px solid var(--border); padding: 15px;
-            border-radius: 12px; color: var(--text); text-decoration: none; transition: 0.3s;
+            background: var(--card); border: 1px solid var(--border); padding: 12px 15px;
+            border-radius: 10px; color: var(--text); text-decoration: none; cursor: default;
         }
-        .affiliate-btn:hover { border-color: var(--primary); background: #1a2947; }
-        .affiliate-btn i { font-size: 20px; color: var(--primary); }
+        .affiliate-btn i:first-child { font-size: 20px; color: var(--primary); width: 25px; text-align: center; }
         .btn-text { flex-grow: 1; margin-left: 15px; font-weight: bold; font-size: 14px; }
-
-        /* ব্যানার অ্যাড ফিক্সড পজিশন */
-        .banner-container {
-            position: fixed; bottom: 0; left: 0; width: 100%; 
-            display: flex; justify-content: center; align-items: center; 
-            background: var(--bg); padding: 10px 0; z-index: 1000;
-            border-top: 1px solid var(--border);
-        }
+        .coming-soon { font-size: 10px; background: #1e2947; color: var(--primary); padding: 2px 8px; border-radius: 4px; text-transform: uppercase; }
     </style>
 </head>
 <body>
@@ -54,54 +40,83 @@
         <h2>STORE & DEALS</h2>
     </div>
 
-    <div class="section-title">Special Offers & Links</div>
+    <div class="section-title">Coming Soon Platforms</div>
 
-    <!-- ৪টি লম্বা বাটন (এখানে আপনার লিঙ্ক বসান) -->
     <div class="affiliate-container">
-        <!-- ১. প্রথম লিঙ্ক -->
-        <a href="https://yourlink1.com" target="_blank" class="affiliate-btn">
-            <i class="fas fa-shopping-cart"></i>
-            <span class="btn-text">Best E-foot Gear Deals</span>
-            <i class="fas fa-external-link-alt" style="font-size: 12px; color: #4b5563;"></i>
-        </a>
+        <!-- ১. Payoneer -->
+        <div class="affiliate-btn">
+            <i class="fas fa-university"></i>
+            <span class="btn-text">Payoneer</span>
+            <span class="coming-soon">Coming Soon</span>
+        </div>
 
-        <!-- ২. দ্বিতীয় লিঙ্ক -->
-        <a href="https://yourlink2.com" target="_blank" class="affiliate-btn">
-            <i class="fas fa-gift"></i>
-            <span class="btn-text">Get Free Gift Cards</span>
-            <i class="fas fa-external-link-alt" style="font-size: 12px; color: #4b5563;"></i>
-        </a>
+        <!-- ২. Fiverr -->
+        <div class="affiliate-btn">
+            <i class="fas fa-briefcase"></i>
+            <span class="btn-text">Fiverr</span>
+            <span class="coming-soon">Coming Soon</span>
+        </div>
 
-        <!-- ৩. তৃতীয় লিঙ্ক -->
-        <a href="https://yourlink3.com" target="_blank" class="affiliate-btn">
-            <i class="fas fa-star"></i>
-            <span class="btn-text">Premium Account Offers</span>
-            <i class="fas fa-external-link-alt" style="font-size: 12px; color: #4b5563;"></i>
-        </a>
+        <!-- ৩. Hostinger -->
+        <div class="affiliate-btn">
+            <i class="fas fa-server"></i>
+            <span class="btn-text">Hostinger</span>
+            <span class="coming-soon">Coming Soon</span>
+        </div>
 
-        <!-- ৪. চতুর্থ লিঙ্ক -->
-        <a href="https://yourlink4.com" target="_blank" class="affiliate-btn">
-            <i class="fas fa-ad"></i>
-            <span class="btn-text">Latest Tech Discounts</span>
-            <i class="fas fa-external-link-alt" style="font-size: 12px; color: #4b5563;"></i>
-        </a>
-    </div>
+        <!-- ৪. AliExpress -->
+        <div class="affiliate-btn">
+            <i class="fas fa-shopping-bag"></i>
+            <span class="btn-text">AliExpress</span>
+            <span class="coming-soon">Coming Soon</span>
+        </div>
 
-    <!-- ব্যানার অ্যাড (আপনার টাস্ক আইডি দিয়ে) -->
-    <div class="banner-container">
-        <adsgram-task 
-            data-block-id="task-29213" 
-            data-debug="false" 
-            class="task">
-        </adsgram-task>
+        <!-- ৫. Amazon -->
+        <div class="affiliate-btn">
+            <i class="fab fa-amazon"></i>
+            <span class="btn-text">Amazon</span>
+            <span class="coming-soon">Coming Soon</span>
+        </div>
+
+        <!-- ৬. Binance -->
+        <div class="affiliate-btn">
+            <i class="fas fa-chart-line"></i>
+            <span class="btn-text">Binance</span>
+            <span class="coming-soon">Coming Soon</span>
+        </div>
+
+        <!-- ৭. Namecheap -->
+        <div class="affiliate-btn">
+            <i class="fas fa-globe"></i>
+            <span class="btn-text">Namecheap</span>
+            <span class="coming-soon">Coming Soon</span>
+        </div>
+
+        <!-- ৮. Envato -->
+        <div class="affiliate-btn">
+            <i class="fas fa-code"></i>
+            <span class="btn-text">Envato Market</span>
+            <span class="coming-soon">Coming Soon</span>
+        </div>
+
+        <!-- ৯. AppSumo -->
+        <div class="affiliate-btn">
+            <i class="fas fa-rocket"></i>
+            <span class="btn-text">AppSumo</span>
+            <span class="coming-soon">Coming Soon</span>
+        </div>
+
+        <!-- ১০. Bluehost -->
+        <div class="affiliate-btn">
+            <i class="fas fa-cloud"></i>
+            <span class="btn-text">Bluehost</span>
+            <span class="coming-soon">Coming Soon</span>
+        </div>
     </div>
 
 <script>
     const tg = window.Telegram.WebApp;
     tg.expand();
-    
-    // ফায়ারবেস ইনিশিয়ালাইজ (আপনার config.js এর মাধ্যমে হবে)
-    console.log("Store page with affiliate links loaded.");
 </script>
 </body>
 </html>
