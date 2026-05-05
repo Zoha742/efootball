@@ -2,7 +2,7 @@
   "players": [
     { 
      
-      "name": "Zlatan Ibrahimovic", 
+      "name": "Z. Ibrahimovic", 
       "pos": "CF", 
       "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777973797/Zlatan_Ibrahimovic_zqp4qb.png" 
     },
@@ -15,7 +15,7 @@
 
     { 
      
-      "name": "Ruud Van Nistelrooij", 
+      "name": "R.Van Nistelrooij", 
       "pos": "CF", 
       "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777973793/Ruud_van_Nistelrooij_r6cjva.png" 
     },
@@ -43,35 +43,35 @@
 
     { 
      
-      "name": "Kylian Mbappe", 
+      "name": "K. Mbappe", 
       "pos": "CF", 
       "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777973788/Kylian_Mbappe_jvfi9h.png" 
     },
 
     { 
      
-      "name": "Erling Haaland", 
+      "name": "E. Haaland", 
       "pos": "CF", 
       "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777973787/Erling_Haaland_v5ad0k.png" 
     },
 
      { 
      
-      "name": "Andriy Shevchenko", 
+      "name": "A. Shevchenko", 
       "pos": "CF", 
       "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777973785/Andriy_Shevchenko_evxcuf.png" 
     },
 
     { 
      
-      "name": "Viktor Gyokeres", 
+      "name": "V. Gyokeres", 
       "pos": "CF", 
       "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777973756/Viktor_Gyokeres_hambaz.png" 
     },
 
     { 
      
-      "name": "Victor Osimhen", 
+      "name": "V. Osimhen", 
       "pos": "CF", 
       "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777973755/Victor_Osimhen_vlvbwx.png" 
     },
@@ -92,14 +92,14 @@
 
     { 
      
-      "name": "Lautaro Martinez", 
+      "name": "L. Martinez", 
       "pos": "CF", 
       "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777973753/Lautaro_Martinez_es9sbi.png" 
     },
 
     { 
      
-      "name": "Javier Saviola", 
+      "name": "J. Saviola", 
       "pos": "CF", 
       "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777973752/Javier_Saviola_kuawuw.png" 
     },
