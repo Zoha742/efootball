@@ -86,6 +86,18 @@
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009933/Diego_Forlan_kfifnk.png",
     "bio": "PELE is widely considered one of the greatest players ever, known for his dribbling, vision, and incredible goal-scoring records."
   },
+    { 
+     
+      "name": "Z. Ibrahimovic", 
+      "pos": "CF", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777973797/Zlatan_Ibrahimovic_zqp4qb.png" 
+    },
+    { 
+     
+      "name": "K. Mbappe", 
+      "pos": "CF", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777973788/Kylian_Mbappe_jvfi9h.png" 
+    },
      {
     "name": "G. Batistuta",
     "pos": "CF",
