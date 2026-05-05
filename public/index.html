@@ -155,7 +155,7 @@
                     const timeLeft = COOLDOWN_TIME - timePassed;
                     const h = Math.floor(timeLeft / (1000 * 60 * 60));
                     const m = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-                    alert(`Boost Locked! আবার চেষ্টা করতে ${h} ঘণ্টা ${m} মিনিট অপেক্ষা করুন।`);
+                    alert(`Boost Locked! Tried againে ${h} hoursটা ${m} Wait a minute.`);
                     return;
                 }
 
@@ -167,12 +167,12 @@
                             gp: newGp,
                             lastBoostTime: currentTime
                         }).then(() => {
-                            alert(`অভিনন্দন! আপনি ভিডিওটি দেখেছেন এবং ${BOOST_REWARD} GP জিতেছেন!`);
+                            alert(`Congratulations! You watched the video and won ${BOOST_REWARD} GP!`);
                             updateBoostButtonUI(currentTime);
                         });
                     },
                     (error) => { 
-                        alert("আপনাকে সম্পূর্ণ ভিডিওটি দেখতে হবে।");
+                        alert("You need to watch the full video.");
                     }
                 );
             }
