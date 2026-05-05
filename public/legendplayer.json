@@ -99,6 +99,11 @@
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656262/Alessandro_Del_Piero_uiwgjo.png",
   "bio": "Del Piero is a Juventus icon, known for his technical brilliance and spectacular goals from his trademark 'Del Piero Zone'."
 },
+    { 
+      "name": "CR7", 
+      "pos": "CF", 
+      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777973786/Cristiano_Ronaldo_axacin.png" 
+    },
 
 {
   "name": "Didier Drogba",
