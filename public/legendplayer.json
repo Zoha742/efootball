@@ -484,6 +484,13 @@
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471158/Ludovic_Giuly_dvluiu.png",
     "bio": "Ludovic Giuly was a quick and intelligent winger, known for his movement and contributions at Barcelona."
   },
+    {
+
+    "name": "George Best",
+    "pos": "RWF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778091104/George_Best_lbblwc.png",
+    "bio": "George Best was a quick and intelligent winger, known for his movement and contributions at Barcelona."
+  },
   {
 
     "name": "Bojan Krkic",
@@ -612,6 +619,13 @@
     "pos": "RMF",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471182/Hasan_Salihamidzic_zaf3oc.png",
     "bio": "Hasan Salihamidzic was a versatile Bosnian player known for his work rate and attacking support."
+  },
+    {
+
+    "name": "C. Karembeu",
+    "pos": "RMF",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778091094/Christian_Karembeu_qk3t8c.png",
+    "bio": "C. Karembeu was a versatile Bosnian player known for his work rate and attacking support."
   },
 
   {
@@ -1123,6 +1137,20 @@
     "pos": "GK",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472274/Petr_Cech_pqj4gn.png",
     "bio": "Petr Cech was a Chelsea legend known for shot-stopping, consistency, and calmness under pressure."
+  },
+    {
+   
+    "name": "Edwin van der Sar",
+    "pos": "GK",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778091295/Edwin_van_der_Sar_gcvkyo.png",
+    "bio": "Edwin van der Sar is a French goalkeeper known for reflexes, leadership, and World Cup success."
+  },
+    {
+   
+    "name": "Jordan Pickford",
+    "pos": "GK",
+    "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778091296/Jordan_Pickford_lacuwn.png",
+    "bio": "Jordan Pickford is a French goalkeeper known for reflexes, leadership, and World Cup success."
   },
   {
    
