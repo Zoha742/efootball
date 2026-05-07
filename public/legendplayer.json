@@ -20,7 +20,9 @@
     {
     "name": "PELE",
     "pos": "CF",
-    "style": "Adv. Striker",  
+    "style": "Adv. Striker",
+    "nationality": "Brazil",
+    "foot": "Right",  
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009816/Pele_rrvdvz.png",
       "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -34,6 +36,9 @@
     {
     "name": "Lionel Messi",
     "pos": "CF",
+   "style": "Deep-Lying Forward",
+   "nationality": "Argentina",
+   "foot": "Left",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777795268/Lionel_Messi_d1mqli.png",
       "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
