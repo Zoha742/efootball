@@ -323,6 +323,9 @@
 {
   "name": "Denis Law",
   "pos": "CF",
+  "style": "Goal Poacher",
+"nationality": "Scotland",
+"foot": "Right",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656272/Denis_Law_c1ieki.png",
   "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -336,6 +339,9 @@
 {
   "name": "Romario",
   "pos": "CF",
+  "style": "Goal Poacher",
+"nationality": "Brazil",
+"foot": "Right",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656224/Romario_lth26a.png",
   "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -349,6 +355,9 @@
     {
   "name": "Marco van Basten",
   "pos": "CF",
+  "style": "Fox in the Box",
+"nationality": "Netherlands",
+"foot": "Right",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778010206/Marco_van_Basten_zgaovb.png",
       "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -362,6 +371,9 @@
     {
   "name": "M. Owen",
   "pos": "CF",
+      "style": "Goal Poacher",
+"nationality": "England",
+"foot": "Right",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778010207/Michael_Owen_gg5aes.png",
       "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -388,6 +400,9 @@
 {
   "name": "Alessandro Del Piero",
   "pos": "CF",
+  "style": "Deep-Lying Forward",
+"nationality": "Italy",
+"foot": "Right",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656262/Alessandro_Del_Piero_uiwgjo.png",
   "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -401,6 +416,9 @@
     { 
       "name": "CR7", 
       "pos": "CF", 
+      "style": "Goal Poacher",
+"nationality": "Portugal",
+"foot": "Right",
       "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777973786/Cristiano_Ronaldo_axacin.png",
       "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -414,6 +432,9 @@
     {
     "name": "Adriano",
     "pos": "CF",
+      "style": "Target Man",
+"nationality": "Brazil",
+"foot": "Left",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009524/Adriano_nxjncq.png",
       "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -427,6 +448,9 @@
     {
     "name": "Dennis Bergkamp",
     "pos": "CF",
+      "style": "Deep-Lying Forward",
+"nationality": "Netherlands",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009520/Dennis_Bergkamp_w9qegb.png",
       "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
