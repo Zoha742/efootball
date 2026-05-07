@@ -4,8 +4,6 @@
       
   "name": "K. Heinz Rummenigge",
   "pos": "CF",
-  "Nationality": "Germany",
-  "foot": "Right",
   "style": "Adv. Striker",
       "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656871/K.H_Rummenigge_l0okbe.png",
       "stats": {
@@ -20,8 +18,6 @@
     {
     "name": "PELE",
     "pos": "CF",
-    "age": 28,
-    "Nationality": "Brazil",
     "style": "Adv. Striker",  
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009816/Pele_rrvdvz.png",
     "stats": {
@@ -37,8 +33,6 @@
     "name": "Lionel Messi",
     "pos": "CF",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777795268/Lionel_Messi_d1mqli.png",
-    "age": 28,
-    "Nationality": "Brazil",
     "style": "Adv. Striker",
     "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -52,8 +46,7 @@
   "name": "Johan Cruyff",
   "pos": "CF",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656257/Johan_Cruyff_ramebw.png",
-  "age": 28,
-    "Nationality": "Brazil",
+
     "style": "Adv. Striker",
   "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -67,8 +60,7 @@
   "name": "Andriy Shevchenko",
   "pos": "CF",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656277/Andriy_Shevchenko_fbyciw.png",
-  "age": 28,
-    "Nationality": "Brazil",
+  
     "style": "Adv. Striker",
   "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -82,8 +74,7 @@
   "name": "Eric Cantona",
   "pos": "CF",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656267/Eric_Cantona_l3mrwy.png",
-  "age": 28,
-    "Nationality": "Brazil",
+
     "style": "Adv. Striker",
   "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -97,8 +88,7 @@
   "name": "Samuel Eto'o",
   "pos": "CF",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777803795/samuel_eto_o_pyt3hv.png",
-  "age": 28,
-    "Nationality": "Brazil",
+  
     "style": "Adv. Striker",
   "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -112,8 +102,7 @@
   "name": "Christian Vieri",
   "pos": "CF",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656282/Christian_Vieri_cmptpr.png",
-  "age": 28,
-    "Nationality": "Brazil",
+ 
     "style": "Adv. Striker",
   "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -127,8 +116,7 @@
   "name": "Ferenc Puskas",
   "pos": "CF",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656247/Ferenc_Puskas_oa2tuw.png",
-  "age": 28,
-    "Nationality": "Brazil",
+  
     "style": "Adv. Striker",
   "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -142,8 +130,7 @@
   "name": "Jan Koller",
   "pos": "CF",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656197/Jan_Koller_sudb2s.png",
-  "age": 28,
-  "Nationality": "Brazil",
+  
   "style": "Adv. Striker",
   "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -158,8 +145,7 @@
   "name": "Ruud Gullit",
   "pos": "CF",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777899357/Ruud_Gullit_gutlwf.png",
-  "age": 28,
-  "Nationality": "Brazil",
+  
   "style": "Adv. Striker",  
   "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -174,8 +160,7 @@
     "name": "Diego Forlan",
     "pos": "CF",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009933/Diego_Forlan_kfifnk.png",
-    "age": 28,
-    "Nationality": "Brazil",
+    
     "style": "Adv. Striker",
     "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -190,8 +175,7 @@
       "name": "Z. Ibrahimovic", 
       "pos": "CF", 
       "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777973797/Zlatan_Ibrahimovic_zqp4qb.png" 
-      "age": 28,
-    "Nationality": "Brazil",
+  
     "style": "Adv. Striker",
       "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -206,8 +190,7 @@
       "name": "K. Mbappe", 
       "pos": "CF", 
       "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777973788/Kylian_Mbappe_jvfi9h.png" 
-      "age": 28,
-    "Nationality": "Brazil",
+     
     "style": "Adv. Striker",
       "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -221,8 +204,7 @@
     "name": "G. Batistuta",
     "pos": "CF",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009933/Gabriel_Batistuta_ti4eom.png",
-       "age": 28,
-    "Nationality": "Brazil",
+      
     "style": "Adv. Striker",
     "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -236,8 +218,7 @@
     "name": "Fernando Torres",
     "pos": "CF",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009933/Fernando_Torres_irflej.png",
-       "age": 28,
-    "Nationality": "Brazil",
+      
     "style": "Adv. Striker",
    "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -251,8 +232,7 @@
     "name": "Filippo Inzaghi",
     "pos": "CF",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009933/Filippo_Inzaghi_mch9ec.png",
-       "age": 28,
-    "Nationality": "Brazil",
+       
     "style": "Adv. Striker",
     "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -266,8 +246,7 @@
     "name": "El-Hadji Diouf",
     "pos": "CF",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009932/El-Hadji_Diouf_faj1xu.png",
-       "age": 28,
-    "Nationality": "Brazil",
+       
     "style": "Adv. Striker",
     "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -281,8 +260,7 @@
     "name": "Dwight Yorke",
     "pos": "CF",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009930/Dwight_Yorke_szi9om.png",
-       "age": 28,
-    "Nationality": "Brazil",
+     
     "style": "Adv. Striker",
     "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -298,8 +276,7 @@
     "name": "Roberto Baggio",
     "pos": "CF",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777845098/Roberto_Baggio_tajqm5.png",
-      "age": 28,
-    "Nationality": "Brazil",
+      
     "style": "Adv. Striker",
     "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -313,8 +290,7 @@
   "name": "Denis Law",
   "pos": "CF",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656272/Denis_Law_c1ieki.png",
-  "age": 28,
-    "Nationality": "Brazil",
+ 
     "style": "Adv. Striker",
   "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -328,8 +304,7 @@
   "name": "Romario",
   "pos": "CF",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656224/Romario_lth26a.png",
-  "age": 28,
-    "Nationality": "Brazil",
+  
     "style": "Adv. Striker",
   "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -343,8 +318,7 @@
   "name": "Marco van Basten",
   "pos": "CF",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778010206/Marco_van_Basten_zgaovb.png",
-      "age": 28,
-    "Nationality": "Brazil",
+    
     "style": "Adv. Striker",
   "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -358,8 +332,7 @@
   "name": "M. Owen",
   "pos": "CF",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778010207/Michael_Owen_gg5aes.png",
-      "age": 28,
-    "Nationality": "Brazil",
+    
     "style": "Adv. Striker",
   "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -373,8 +346,7 @@
   "name": "Roy Makaay",
   "pos": "CF",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778010208/Roy_Makaay_cisrxv.png",
-      "age": 28,
-    "Nationality": "Brazil",
+   
     "style": "Adv. Striker",
   "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -388,8 +360,7 @@
   "name": "Alessandro Del Piero",
   "pos": "CF",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656262/Alessandro_Del_Piero_uiwgjo.png",
-  "age": 28,
-    "Nationality": "Brazil",
+ 
     "style": "Adv. Striker",
   "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -403,8 +374,7 @@
       "name": "CR7", 
       "pos": "CF", 
       "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777973786/Cristiano_Ronaldo_axacin.png" 
-      "age": 28,
-    "Nationality": "Brazil",
+     
     "style": "Adv. Striker",
       "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -418,8 +388,7 @@
     "name": "Adriano",
     "pos": "CF",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009524/Adriano_nxjncq.png",
-      "age": 28,
-    "Nationality": "Brazil",
+    
     "style": "Adv. Striker",
     "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -433,8 +402,7 @@
     "name": "Dennis Bergkamp",
     "pos": "CF",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009520/Dennis_Bergkamp_w9qegb.png",
-      "age": 28,
-    "Nationality": "Brazil",
+    
     "style": "Adv. Striker",
     "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -448,8 +416,7 @@
     "name": "Andy Cole",
     "pos": "CF",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009519/Andy_Cole_qmomqp.png",
-      "age": 28,
-    "Nationality": "Brazil",
+   
     "style": "Adv. Striker",
     "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -463,8 +430,7 @@
     "name": "Bebeto",
     "pos": "CF",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009518/Bebeto_o714hs.png",
-      "age": 28,
-    "Nationality": "Brazil",
+    
     "style": "Adv. Striker",
     "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -478,8 +444,7 @@
     "name": "D. Berbatov",
     "pos": "CF",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009518/D._Berbatov_v2e44y.png",
-      "age": 28,
-    "Nationality": "Brazil",
+   
     "style": "Adv. Striker",
     "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -493,8 +458,7 @@
     "name": "Carlos Tevez",
     "pos": "CF",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009518/Carlos_Tevez_t4diol.png",
-      "age": 28,
-    "Nationality": "Brazil",
+    
     "style": "Adv. Striker",
     "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -508,8 +472,7 @@
     "name": "A. Pato",
     "pos": "CF",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009517/A._Pato_eogios.png",
-      "age": 28,
-    "Nationality": "Brazil",
+     
     "style": "Adv. Striker",
     "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -524,8 +487,7 @@
   "name": "Didier Drogba",
   "pos": "CF",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656252/Didier_Drogba_blhvnh.png",
-  "age": 28,
-    "Nationality": "Brazil",
+ 
     "style": "Adv. Striker",
   "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -539,8 +501,7 @@
   "name": "Ruud van Nistelrooij",
   "pos": "CF",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656189/Ruud_van_Nistelrooij_dj3deu.png",
-  "age": 28,
-    "Nationality": "Brazil",
+  
     "style": "Adv. Striker",
   "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -554,8 +515,7 @@
   "name": "Gerd Muller",
   "pos": "CF",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656243/Gerd_Muller_i9pchh.png",
-  "age": 28,
-    "Nationality": "Brazil",
+ 
     "style": "Adv. Striker",
   "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -570,8 +530,7 @@
   "name": "Roberto Baggio",
   "pos": "CF",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777845098/Roberto_Baggio_tajqm5.png",
-      "age": 28,
-    "Nationality": "Brazil",
+    
     "style": "Adv. Striker",
   "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
