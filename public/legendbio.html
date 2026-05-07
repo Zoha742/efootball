@@ -51,10 +51,10 @@
 
 <div class="info-grid">
     <div class="info-box"><span class="info-label">Nationality</span><span class="info-value" id="p-nation">--</span></div>
- 
+    <div class="info-box"><span class="info-label">Team</span><span class="info-value" id="p-team">--</span></div>
     <div class="info-box"><span class="info-label">Position</span><span class="info-value" id="p-pos">--</span></div>
     <div class="info-box"><span class="info-label">Foot</span><span class="info-value" id="p-foot">--</span></div>
-    
+    <div class="info-box"><span class="info-label">Height</span><span class="info-value" id="p-height">--</span></div>
     <div class="info-box"><span class="info-label">Playing Style</span><span class="info-value" id="p-style">--</span></div>
 </div>
 
@@ -64,22 +64,24 @@
     console.log("Database connected successfully!");
 
     function getStatColor(val) {
-        if (val >= 95) return "#00EAFF"; 
-        if (val >= 90) return "#3BFF00"; 
-        if (val >= 80) return "#FCFF00"; 
-        if (val >= 70) return "#1B1C25"; 
+        if (val >= 95) return "#07F05B"; 
+        if (val >= 90) return "#0CA60F"; 
+        if (val >= 80) return "#ffff00"; 
+        if (val >= 70) return "#adff2f"; 
         return "#ffffff";
     }
 
-    window.onload = () => {
+   window.onload = () => {
         const pData = localStorage.getItem('selected_player');
         if (pData) {
             const p = JSON.parse(pData);
             document.getElementById('p-img').src = p.img;
             document.getElementById('p-name').innerText = p.name;
             document.getElementById('p-nation').innerText = p.nationality || "N/A";
+            document.getElementById('p-team').innerText = p.team || "N/A";
             document.getElementById('p-pos').innerText = p.pos || "N/A";
             document.getElementById('p-foot').innerText = p.foot || "N/A";
+            document.getElementById('p-height').innerText = p.height || "N/A";
             document.getElementById('p-style').innerText = p.style || "N/A";
 
             const container = document.getElementById('stats-container');
