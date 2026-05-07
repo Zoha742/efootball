@@ -27,9 +27,9 @@
       "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
         "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
-        "Curl": 88, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
-        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
-        "Stamina": 90
+        "Curl": 85, "Set Pieces": 88, "Speed": 93,   "Acceleration": 95,
+        "Kicking Power": 95, "Jumping": 80, "Physical Contact": 80, "Balance": 95,
+        "Stamina": 85
       }
   },
     
@@ -41,9 +41,9 @@
    "foot": "Left",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777795268/Lionel_Messi_d1mqli.png",
       "stats": {
-        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
-        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
-        "Curl": 88, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
+        "Overall Rating": 111, "Offensive Awareness": 96, "Ball Control": 102, "Dribbling": 99, "Tight Possession": 99,
+        "Low Pass": 87, "Lofted Pass": 81, "Finishing": 95, "Heading": 74,
+        "Curl": 88, "Set Pieces": 88, "Speed": 101,  "Acceleration": 98,
         "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
         "Stamina": 90
       }
