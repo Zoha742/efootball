@@ -4,11 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Player Bio</title>
+    <!-- Firebase & SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     
+    <!-- সেন্ট্রাল স্ক্রিপ্ট লিঙ্ক -->
     <script src="config.js"></script>
     <script src="ads_manager_limit.js"></script>
     
@@ -17,103 +19,65 @@
         :root { --bg: #050a18; --card: #121e36; --primary: #fbbf24; --text: #ffffff; }
         body { background: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; padding: 15px; padding-bottom: 50px; }
         
-        .header { display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 25px; }
+        .header { display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 15px; }
         .back-btn { position: absolute; left: 0; font-size: 22px; color: var(--primary); text-decoration: none; }
-        .header h2 { font-size: 18px; color: var(--primary); margin: 0; }
+        
+        .profile-card { background: var(--card); border-radius: 12px; padding: 15px; text-align: center; border: 1px solid #1e2d4d; margin-bottom: 15px; }
+        .profile-img { width: 120px; border-radius: 12px; border: 2px solid var(--primary); margin-bottom: 10px; }
+        .profile-name { font-size: 18px; font-weight: bold; color: var(--primary); }
 
-        .player-card { background: var(--card); border-radius: 20px; overflow: hidden; border: 1px solid #1e2d4d; position: relative; }
-        .player-img { width: 100%; display: block; }
-        .player-name-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.9)); padding: 20px 15px 10px; text-align: center; }
-        .player-name-overlay h1 { font-size: 24px; margin: 0; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; }
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .info-box { background: var(--card); padding: 10px; border-radius: 8px; border: 1px solid #1e2d4d; }
+        .info-label { font-size: 10px; color: #94a3b8; display: block; margin-bottom: 15px; }
+        .info-value { font-size: 13px; font-weight: bold; }
 
-        .bio-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
-        .bio-item { background: var(--card); padding: 12px; border-radius: 12px; border: 1px solid #1e2d4d; display: flex; flex-direction: column; gap: 4px; }
-        .bio-label { font-size: 11px; color: #94a3b8; text-transform: uppercase; }
-        .bio-val { font-size: 14px; font-weight: bold; color: #fff; }
-
-        .section-title { font-size: 14px; color: var(--primary); margin: 25px 0 12px; text-transform: uppercase; letter-spacing: 1px; border-left: 3px solid var(--primary); padding-left: 10px; }
-
-        .stats-grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
-        .stat-box { background: var(--card); padding: 10px 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #1e2d4d; }
-        .stat-name { font-size: 14px; color: #cbd5e1; }
-        .stat-num { width: 35px; height: 35px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 14px; color: #000; }
+        .stats-container { display: flex; flex-direction: column; gap: 8px; }
+        .stat-box { display: flex; justify-content: space-between; align-items: center; background: #0f172a; padding: 8px 12px; border-radius: 6px; border: 1px solid #1e2d4d; }
+        .stat-name { font-size: 12px; color: #cbd5e1; }
+        .stat-num { font-size: 14px; font-weight: bold; color: #000; padding: 2px 8px; border-radius: 4px; min-width: 35px; text-align: center; }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <a href="javascript:history.back()" class="back-btn"><i class="fas fa-arrow-left"></i></a>
-        <h2>PLAYER DETAILS</h2>
-    </div>
+<div class="header">
+    <a href="legend.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+    <h3 style="margin:0;">Player Statistics</h3>
+</div>
 
-    <div class="player-card">
-        <img id="p-img" src="" alt="" class="player-img">
-        <div class="player-name-overlay">
-            <h1 id="p-name">-</h1>
-        </div>
-    </div>
+<div class="profile-card">
+    <img id="p-img" src="" class="profile-img">
+    <div id="p-name" class="profile-name">Loading...</div>
+</div>
 
-    <div class="bio-grid">
-        <div class="bio-item">
-            <span class="bio-label">Nationality</span>
-            <span class="bio-val" id="p-nation">-</span>
-        </div>
-        <div class="bio-item">
-            <span class="bio-label">Position</span>
-            <span class="bio-val" id="p-pos">-</span>
-        </div>
-        <div class="bio-item">
-            <span class="bio-label">Playing Foot</span>
-            <span class="bio-val" id="p-foot">-</span>
-        </div>
-        <div class="bio-item">
-            <span class="bio-label">Playing Style</span>
-            <span class="bio-val" id="p-style">-</span>
-        </div>
-    </div>
+<div class="info-grid">
+    <div class="info-box"><span class="info-label">Nationality</span><span class="info-value" id="p-nation">--</span></div>
+ 
+    <div class="info-box"><span class="info-label">Position</span><span class="info-value" id="p-pos">--</span></div>
+    <div class="info-box"><span class="info-label">Foot</span><span class="info-value" id="p-foot">--</span></div>
+    
+    <div class="info-box"><span class="info-label">Playing Style</span><span class="info-value" id="p-style">--</span></div>
+</div>
 
-    <div class="section-title">Player Statistics</div>
-    <div id="stats-container" class="stats-grid"></div>
+<div class="stats-container" id="stats-container"></div>
 
 <script>
-    const tg = window.Telegram.WebApp;
-    tg.expand();
+    console.log("Database connected successfully!");
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const playerId = urlParams.get('id');
-
-    async function loadPlayer() {
-        try {
-            // আপনার অরিজিনাল ফাইল legendplayer.json ই রাখা হয়েছে
-            const res = await fetch('legendplayer.json');
-            const data = await res.json();
-            
-            // ডাটা লোড করার লজিক
-            const playerList = data.players || [];
-            const player = playerList.find(p => p.id == playerId);
-            
-            if(player) {
-                displayPlayerDetails(player);
-            }
-        } catch (e) { 
-            console.error("Error loading legendplayer.json:", e); 
-        }
+    function getStatColor(val) {
+        if (val >= 95) return "#00EAFF"; 
+        if (val >= 90) return "#3BFF00"; 
+        if (val >= 80) return "#FCFF00"; 
+        if (val >= 70) return "#1B1C25"; 
+        return "#ffffff";
     }
 
-    const getStatColor = (val) => {
-        if (val >= 90) return "#fbbf24";
-        if (val >= 80) return "#a3e635";
-        if (val >= 70) return "#fde047";
-        return "#94a3b8";
-    };
-
-    const displayPlayerDetails = (p) => {
-        if (p) {
-            document.getElementById('p-img').src = p.img || "";
-            document.getElementById('p-name').innerText = p.name || "Unknown";
-            
-            // ডাটা ম্যাপিং
-            document.getElementById('p-nation').innerText = p.nationality || p.country || "N/A";
+    window.onload = () => {
+        const pData = localStorage.getItem('selected_player');
+        if (pData) {
+            const p = JSON.parse(pData);
+            document.getElementById('p-img').src = p.img;
+            document.getElementById('p-name').innerText = p.name;
+            document.getElementById('p-nation').innerText = p.nationality || "N/A";
             document.getElementById('p-pos').innerText = p.pos || "N/A";
             document.getElementById('p-foot').innerText = p.foot || "N/A";
             document.getElementById('p-style').innerText = p.style || "N/A";
@@ -132,17 +96,17 @@
             }
         }
 
-        // অ্যাড সিস্টেম
+        // --- ১২ ঘণ্টার লিমিটেড অ্যাড সিস্টেম ---
         setTimeout(() => {
             try {
                 if (typeof ads_manager_limit !== 'undefined') {
                     ads_manager_limit.showBioAd('player_bio_page');
                 }
-            } catch (e) { console.log("Ad Error:", e); }
+            } catch (e) {
+                console.log("Ad Loading Error:", e);
+            }
         }, 800);
-    };
-
-    window.onload = loadPlayer;
+    }; // <--- এই ব্র্যাকেটটি ঠিকভাবে বসানো হয়েছে
 </script>
 </body>
 </html>
