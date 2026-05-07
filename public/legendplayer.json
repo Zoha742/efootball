@@ -53,6 +53,9 @@
 {
   "name": "Johan Cruyff",
   "pos": "CF",
+  "style": "Hole Player",
+"nationality": "Netherlands",
+"foot": "Right",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656257/Johan_Cruyff_ramebw.png",
   "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -67,6 +70,9 @@
 {
   "name": "Andriy Shevchenko",
   "pos": "CF",
+  "style": "Goal Poacher",
+"nationality": "Ukraine",
+"foot": "Right",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656277/Andriy_Shevchenko_fbyciw.png",
   "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -80,6 +86,9 @@
 {
   "name": "Eric Cantona",
   "pos": "CF",
+  "style": "Deep-Lying Forward",
+"nationality": "France",
+"foot": "Right",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656267/Eric_Cantona_l3mrwy.png",
   "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -92,6 +101,9 @@
 {
   "name": "Samuel Eto'o",
   "pos": "CF",
+  "style": "Goal Poacher",
+"nationality": "Cameroon",
+"foot": "Right",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777803795/samuel_eto_o_pyt3hv.png",
   "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -104,6 +116,9 @@
 {
   "name": "Christian Vieri",
   "pos": "CF",
+  "style": "Target Man",
+"nationality": "Italy",
+"foot": "Left",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656282/Christian_Vieri_cmptpr.png",
   "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -117,6 +132,9 @@
 {
   "name": "Ferenc Puskas",
   "pos": "CF",
+  "style": "Deep-Lying Forward",
+"nationality": "Hungary",
+"foot": "Left",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656247/Ferenc_Puskas_oa2tuw.png",
   "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -129,6 +147,9 @@
 {
   "name": "Jan Koller",
   "pos": "CF",
+  "style": "Target Man",
+"nationality": "Czech Republic",
+"foot": "Right",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656197/Jan_Koller_sudb2s.png",
   "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -142,6 +163,9 @@
     {
   "name": "Ruud Gullit",
   "pos": "CF",
+      "style": "Hole Player",
+"nationality": "Netherlands",
+"foot": "Right",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777899357/Ruud_Gullit_gutlwf.png",
       "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -155,6 +179,9 @@
  {
     "name": "Diego Forlan",
     "pos": "CF",
+   "style": "Goal Poacher",
+"nationality": "Uruguay",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009933/Diego_Forlan_kfifnk.png",
    "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -168,6 +195,9 @@
      
       "name": "Z. Ibrahimovic", 
       "pos": "CF", 
+      "style": "Target Man",
+"nationality": "Sweden",
+"foot": "Right",
       "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777973797/Zlatan_Ibrahimovic_zqp4qb.png" ,
       "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -180,7 +210,10 @@
     { 
      
       "name": "K. Mbappe", 
-      "pos": "CF", 
+      "pos": "CF",
+      "style": "Goal Poacher",
+"nationality": "France",
+"foot": "Right",
       "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777973788/Kylian_Mbappe_jvfi9h.png",
       "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -194,6 +227,9 @@
      {
     "name": "G. Batistuta",
     "pos": "CF",
+    "style": "Goal Poacher",
+"nationality": "Argentina",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009933/Gabriel_Batistuta_ti4eom.png",
        "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -206,6 +242,9 @@
      {
     "name": "Fernando Torres",
     "pos": "CF",
+       "style": "Goal Poacher",
+"nationality": "Spain",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009933/Fernando_Torres_irflej.png",
        "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -218,6 +257,9 @@
      {
     "name": "Filippo Inzaghi",
     "pos": "CF",
+       "style": "Goal Poacher",
+"nationality": "Italy",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009933/Filippo_Inzaghi_mch9ec.png",
        "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -231,6 +273,9 @@
      {
     "name": "El-Hadji Diouf",
     "pos": "CF",
+       "style": "Goal Poacher",
+"nationality": "Senegal",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009932/El-Hadji_Diouf_faj1xu.png",
        "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -244,6 +289,9 @@
      {
     "name": "Dwight Yorke",
     "pos": "CF",
+       "style": "Goal Poacher",
+"nationality": "Trinidad and Tobago",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009930/Dwight_Yorke_szi9om.png",
        "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -259,6 +307,9 @@
 
     "name": "Roberto Baggio",
     "pos": "CF",
+      "style": "Deep-Lying Forward",
+"nationality": "Italy",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777845098/Roberto_Baggio_tajqm5.png",
       "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
