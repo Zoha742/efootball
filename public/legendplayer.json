@@ -464,6 +464,9 @@
     {
     "name": "Andy Cole",
     "pos": "CF",
+      "style": "Goal Poacher",
+"nationality": "England",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009519/Andy_Cole_qmomqp.png",
       "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -477,6 +480,9 @@
     {
     "name": "Bebeto",
     "pos": "CF",
+      "style": "Deep-Lying Forward",
+"nationality": "Brazil",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009518/Bebeto_o714hs.png",
       "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -490,6 +496,9 @@
     {
     "name": "D. Berbatov",
     "pos": "CF",
+      "style": "Deep-Lying Forward",
+"nationality": "Bulgaria",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009518/D._Berbatov_v2e44y.png",
       "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -503,6 +512,9 @@
     {
     "name": "Carlos Tevez",
     "pos": "CF",
+      "style": "Deep-Lying Forward",
+"nationality": "Argentina",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009518/Carlos_Tevez_t4diol.png",
       "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -516,6 +528,9 @@
     {
     "name": "A. Pato",
     "pos": "CF",
+      "style": "Goal Poacher",
+"nationality": "Brazil",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009517/A._Pato_eogios.png",
       "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -530,6 +545,9 @@
 {
   "name": "Didier Drogba",
   "pos": "CF",
+  "style": "Target Man",
+"nationality": "Cote d'Ivoire",
+"foot": "Right",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656252/Didier_Drogba_blhvnh.png",
   "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -543,6 +561,9 @@
 {
   "name": "Ruud van Nistelrooij",
   "pos": "CF",
+  "style": "Fox in the Box",
+"nationality": "Netherlands",
+"foot": "Right",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656189/Ruud_van_Nistelrooij_dj3deu.png",
   "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -556,6 +577,9 @@
 {
   "name": "Gerd Muller",
   "pos": "CF",
+  "style": "Fox in the Box",
+"nationality": "Germany",
+"foot": "Right",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656243/Gerd_Muller_i9pchh.png",
   "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
@@ -570,6 +594,9 @@
     {
   "name": "Roberto Baggio",
   "pos": "CF",
+      "style": "Deep-Lying Forward",
+"nationality": "Italy",
+"foot": "Right",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777845098/Roberto_Baggio_tajqm5.png",
       "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
