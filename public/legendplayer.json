@@ -2,14 +2,13 @@
   "legend": [
     {
       
-  "name": "K. Heinz Rummenigge",
+"name": "K. Heinz Rummenigge",
 "pos": "CF",
 "style": "Adv. Striker",
 "nationality": "Germany",
 "foot": "Right"
-      
-      "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656871/K.H_Rummenigge_l0okbe.png",
-      "stats": {
+"img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656871/K.H_Rummenigge_l0okbe.png",
+"stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
         "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
         "Curl": 88, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
