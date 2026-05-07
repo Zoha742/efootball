@@ -12,7 +12,7 @@
     
     <!-- সেন্ট্রাল স্ক্রিপ্ট লিঙ্ক -->
     <script src="config.js"></script>
-    <script src="ads_manager_limit.js"></script>
+    <script src="ads-manager2.js"></script>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -40,7 +40,7 @@
 <body>
 
 <div class="header">
-    <a href="player.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+    <a href="legend.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
     <h3 style="margin:0;">Player Statistics</h3>
 </div>
 
@@ -71,7 +71,7 @@
         return "#ffffff";
     }
 
-   window.onload = () => {
+    window.onload = () => {
         const pData = localStorage.getItem('selected_player');
         if (pData) {
             const p = JSON.parse(pData);
@@ -98,17 +98,22 @@
             }
         }
 
-        // --- ১২ ঘণ্টার লিমিটেড অ্যাড সিস্টেম ---
+      // --- ১২ ঘণ্টার লিমিটেড অ্যাড সিস্টেম ---
         setTimeout(() => {
             try {
-                if (typeof ads_manager_limit !== 'undefined') {
-                    ads_manager_limit.showBioAd('player_bio_page');
+                // আমরা যেহেতু নতুন ফাইল ads-manager2.js ব্যবহার করছি, তাই BioAdController চেক হবে
+                if (typeof BioAdController !== 'undefined') {
+                    // ১. ভিডিও অ্যাড (১২ ঘণ্টায় একবার আসবে)
+                    BioAdController.showBioAd('legend_bio_page'); 
+
+                    // ২. ব্যানার অ্যাড লোড করা
+                   // BioAdController.loadBioBanner('banner-container');
                 }
             } catch (e) {
                 console.log("Ad Loading Error:", e);
             }
         }, 800);
-    }; // <--- এই ব্র্যাকেটটি ঠিকভাবে বসানো হয়েছে
+    };
 </script>
 </body>
 </html>
