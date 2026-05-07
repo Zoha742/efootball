@@ -4,7 +4,10 @@
       
   "name": "K. Heinz Rummenigge",
   "pos": "CF",
-  "style": "Adv. Striker",
+  "style": "name",
+  "nationality": "name",
+  "foot": "name",
+      
       "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656871/K.H_Rummenigge_l0okbe.png",
       "stats": {
         "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
