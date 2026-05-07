@@ -21,112 +21,273 @@
     {
     "name": "PELE",
     "pos": "CF",
+    "age": 28,
+    "country": "Brazil",
+    "style": "Adv. Striker",  
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009816/Pele_rrvdvz.png",
-    "bio": "PELE is widely considered one of the greatest players ever, known for his dribbling, vision, and incredible goal-scoring records."
+    "stats": {
+        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
+        "Curl": 88, "Speed": 81, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
+        "Stamina": 90
+      }
   },
     
     {
     "name": "Lionel Messi",
     "pos": "CF",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777795268/Lionel_Messi_d1mqli.png",
-    "bio": "Lionel Messi is widely considered one of the greatest players ever, known for his dribbling, vision, and incredible goal-scoring records."
+    "age": 28,
+    "country": "Brazil",
+    "style": "Adv. Striker",
+    "stats": {
+        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
+        "Curl": 88, "Speed": 81, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
+        "Stamina": 90
+      }
   },
 {
   "name": "Johan Cruyff",
   "pos": "CF",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656257/Johan_Cruyff_ramebw.png",
-  "bio": "Johan Cruyff was the architect of Total Football. A visionary forward whose technical skill changed the game forever."
+  "age": 28,
+    "country": "Brazil",
+    "style": "Adv. Striker",
+  "stats": {
+        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
+        "Curl": 88, "Speed": 81, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
+        "Stamina": 90
+      }
 },
 {
   "name": "Andriy Shevchenko",
   "pos": "CF",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656277/Andriy_Shevchenko_fbyciw.png",
-  "bio": "The Ukrainian legend Shevchenko was a nightmare for defenders, winning the Ballon d'Or in 2004 with AC Milan."
+  "age": 28,
+    "country": "Brazil",
+    "style": "Adv. Striker",
+  "stats": {
+        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
+        "Curl": 88, "Speed": 81, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
+        "Stamina": 90
+      }
 },
 {
   "name": "Eric Cantona",
   "pos": "CF",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656267/Eric_Cantona_l3mrwy.png",
-  "bio": "Known as 'The King', Cantona was a charismatic and powerful forward who led Manchester United to dominance in the 90s."
+  "age": 28,
+    "country": "Brazil",
+    "style": "Adv. Striker",
+  "stats": {
+        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
+        "Curl": 88, "Speed": 81, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
+        "Stamina": 90
+      }
 },
 {
   "name": "Samuel Eto'o",
   "pos": "CF",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777803795/samuel_eto_o_pyt3hv.png",
-  "bio": "Samuel Eto'o is a four-time African Player of the Year, known for his lightning speed and clinical finishing."
+  "age": 28,
+    "country": "Brazil",
+    "style": "Adv. Striker",
+  "stats": {
+        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
+        "Curl": 88, "Speed": 81, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
+        "Stamina": 90
+      }
 },
 {
   "name": "Christian Vieri",
   "pos": "CF",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656282/Christian_Vieri_cmptpr.png",
-  "bio": "Christian Vieri was a physical powerhouse and a prolific Italian striker, feared for his aerial ability and strength."
+  "age": 28,
+    "country": "Brazil",
+    "style": "Adv. Striker",
+  "stats": {
+        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
+        "Curl": 88, "Speed": 81, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
+        "Stamina": 90
+      }
 },
 {
   "name": "Ferenc Puskas",
   "pos": "CF",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656247/Ferenc_Puskas_oa2tuw.png",
-  "bio": "Ferenc Puskas was a Hungarian legend and one of the greatest scorers ever, famously leading Real Madrid to multiple titles."
+  "age": 28,
+    "country": "Brazil",
+    "style": "Adv. Striker",
+  "stats": {
+        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
+        "Curl": 88, "Speed": 81, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
+        "Stamina": 90
+      }
 },
 {
   "name": "Jan Koller",
   "pos": "CF",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656197/Jan_Koller_sudb2s.png",
-  "bio": "Denis Law, the 'Lawman', is a Manchester United legend and the only Scottish player to win the Ballon d'Or."
+  "age": 28,
+    "country": "Brazil",
+    "style": "Adv. Striker",
+  "stats": {
+        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
+        "Curl": 88, "Speed": 81, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
+        "Stamina": 90
+      }
 },
 
     {
   "name": "Ruud Gullit",
   "pos": "CF",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777899357/Ruud_Gullit_gutlwf.png",
-  "bio": "Ruud Gullit was the ultimate big-game player for Chelsea, famously leading them to their first Champions League title."
-},
+      
+  "stats": {
+        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
+        "Curl": 88, "Speed": 81, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
+        "Stamina": 90
+      }
      {
     "name": "Diego Forlan",
     "pos": "CF",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009933/Diego_Forlan_kfifnk.png",
-    "bio": "PELE is widely considered one of the greatest players ever, known for his dribbling, vision, and incredible goal-scoring records."
+      "age": 28,
+    "country": "Brazil",
+    "style": "Adv. Striker",
+    "stats": {
+        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
+        "Curl": 88, "Speed": 81, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
+        "Stamina": 90
+      }
   },
     { 
      
       "name": "Z. Ibrahimovic", 
       "pos": "CF", 
       "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777973797/Zlatan_Ibrahimovic_zqp4qb.png" 
+      "age": 28,
+    "country": "Brazil",
+    "style": "Adv. Striker",
+      "stats": {
+        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
+        "Curl": 88, "Speed": 81, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
+        "Stamina": 90
+      }
     },
     { 
      
       "name": "K. Mbappe", 
       "pos": "CF", 
       "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777973788/Kylian_Mbappe_jvfi9h.png" 
+      "age": 28,
+    "country": "Brazil",
+    "style": "Adv. Striker",
+      "stats": {
+        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
+        "Curl": 88, "Speed": 81, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
+        "Stamina": 90
+      }
     },
      {
     "name": "G. Batistuta",
     "pos": "CF",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009933/Gabriel_Batistuta_ti4eom.png",
-    "bio": "PELE is widely considered one of the greatest players ever, known for his dribbling, vision, and incredible goal-scoring records."
+       "age": 28,
+    "country": "Brazil",
+    "style": "Adv. Striker",
+    "stats": {
+        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
+        "Curl": 88, "Speed": 81, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
+        "Stamina": 90
+      }
   },
      {
     "name": "Fernando Torres",
     "pos": "CF",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009933/Fernando_Torres_irflej.png",
-    "bio": "PELE is widely considered one of the greatest players ever, known for his dribbling, vision, and incredible goal-scoring records."
+       "age": 28,
+    "country": "Brazil",
+    "style": "Adv. Striker",
+   "stats": {
+        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
+        "Curl": 88, "Speed": 81, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
+        "Stamina": 90
+      }
   },
      {
     "name": "Filippo Inzaghi",
     "pos": "CF",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009933/Filippo_Inzaghi_mch9ec.png",
-    "bio": "PELE is widely considered one of the greatest players ever, known for his dribbling, vision, and incredible goal-scoring records."
+       "age": 28,
+    "country": "Brazil",
+    "style": "Adv. Striker",
+    "stats": {
+        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
+        "Curl": 88, "Speed": 81, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
+        "Stamina": 90
+      }
   },
      {
     "name": "El-Hadji Diouf",
     "pos": "CF",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009932/El-Hadji_Diouf_faj1xu.png",
-    "bio": "PELE is widely considered one of the greatest players ever, known for his dribbling, vision, and incredible goal-scoring records."
+       "age": 28,
+    "country": "Brazil",
+    "style": "Adv. Striker",
+    "stats": {
+        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
+        "Curl": 88, "Speed": 81, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
+        "Stamina": 90
+      }
   },
      {
     "name": "Dwight Yorke",
     "pos": "CF",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009930/Dwight_Yorke_szi9om.png",
-    "bio": "Dwight Yorke is widely considered one of the greatest players ever, known for his dribbling, vision, and incredible goal-scoring records."
+       "age": 28,
+    "country": "Brazil",
+    "style": "Adv. Striker",
+    "stats": {
+        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
+        "Curl": 88, "Speed": 81, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
+        "Stamina": 90
+      }
   },
     
     {
@@ -134,122 +295,295 @@
     "name": "Roberto Baggio",
     "pos": "CF",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777845098/Roberto_Baggio_tajqm5.png",
-    "bio": "Roberto Baggio was an Italian icon, admired for his skill, vision, and creativity as one of football's greatest playmakers."
+      "age": 28,
+    "country": "Brazil",
+    "style": "Adv. Striker",
+    "stats": {
+        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
+        "Curl": 88, "Speed": 81, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
+        "Stamina": 90
+      }
   },
 {
   "name": "Denis Law",
   "pos": "CF",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656272/Denis_Law_c1ieki.png",
-  "bio": "Denis Law, the 'Lawman', is a Manchester United legend and the only Scottish player to win the Ballon d'Or."
+  "age": 28,
+    "country": "Brazil",
+    "style": "Adv. Striker",
+  "stats": {
+        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
+        "Curl": 88, "Speed": 81, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
+        "Stamina": 90
+      }
 },
 {
   "name": "Romario",
   "pos": "CF",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656224/Romario_lth26a.png",
-  "bio": "Romario was a master of efficiency in the box, a clinical finisher who scored over 1,000 goals in his career."
+  "age": 28,
+    "country": "Brazil",
+    "style": "Adv. Striker",
+  "stats": {
+        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
+        "Curl": 88, "Speed": 81, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
+        "Stamina": 90
+      }
 },
     {
   "name": "Marco van Basten",
   "pos": "CF",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778010206/Marco_van_Basten_zgaovb.png",
-  "bio": "Romario was a master of efficiency in the box, a clinical finisher who scored over 1,000 goals in his career."
+      "age": 28,
+    "country": "Brazil",
+    "style": "Adv. Striker",
+  "stats": {
+        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
+        "Curl": 88, "Speed": 81, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
+        "Stamina": 90
+      }
 },
     {
   "name": "M. Owen",
   "pos": "CF",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778010207/Michael_Owen_gg5aes.png",
-  "bio": "M. owen was a master of efficiency in the box, a clinical finisher who scored over 1,000 goals in his career."
+      "age": 28,
+    "country": "Brazil",
+    "style": "Adv. Striker",
+  "stats": {
+        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
+        "Curl": 88, "Speed": 81, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
+        "Stamina": 90
+      }
 },
     {
   "name": "Roy Makaay",
   "pos": "CF",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778010208/Roy_Makaay_cisrxv.png",
-  "bio": "Roy Makaay was a master of efficiency in the box, a clinical finisher who scored over 1,000 goals in his career."
+      "age": 28,
+    "country": "Brazil",
+    "style": "Adv. Striker",
+  "stats": {
+        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
+        "Curl": 88, "Speed": 81, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
+        "Stamina": 90
+      }
 },
 {
   "name": "Alessandro Del Piero",
   "pos": "CF",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656262/Alessandro_Del_Piero_uiwgjo.png",
-  "bio": "Del Piero is a Juventus icon, known for his technical brilliance and spectacular goals from his trademark 'Del Piero Zone'."
+  "age": 28,
+    "country": "Brazil",
+    "style": "Adv. Striker",
+  "stats": {
+        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
+        "Curl": 88, "Speed": 81, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
+        "Stamina": 90
+      }
 },
     { 
       "name": "CR7", 
       "pos": "CF", 
       "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777973786/Cristiano_Ronaldo_axacin.png" 
+      "age": 28,
+    "country": "Brazil",
+    "style": "Adv. Striker",
+      "stats": {
+        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
+        "Curl": 88, "Speed": 81, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
+        "Stamina": 90
+      }
     },
     {
     "name": "Adriano",
     "pos": "CF",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009524/Adriano_nxjncq.png",
-    "bio": "Adriano is widely considered one of the greatest players ever, known for his dribbling, vision, and incredible goal-scoring records."
+      "age": 28,
+    "country": "Brazil",
+    "style": "Adv. Striker",
+    "stats": {
+        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
+        "Curl": 88, "Speed": 81, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
+        "Stamina": 90
+      }
   },
     {
     "name": "Dennis Bergkamp",
     "pos": "CF",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009520/Dennis_Bergkamp_w9qegb.png",
-    "bio": "Dennis Bergkamp is widely considered one of the greatest players ever, known for his dribbling, vision, and incredible goal-scoring records."
+      "age": 28,
+    "country": "Brazil",
+    "style": "Adv. Striker",
+    "stats": {
+        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
+        "Curl": 88, "Speed": 81, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
+        "Stamina": 90
+      }
   },
     {
     "name": "Andy Cole",
     "pos": "CF",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009519/Andy_Cole_qmomqp.png",
-    "bio": "Andy Cole is widely considered one of the greatest players ever, known for his dribbling, vision, and incredible goal-scoring records."
+      "age": 28,
+    "country": "Brazil",
+    "style": "Adv. Striker",
+    "stats": {
+        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
+        "Curl": 88, "Speed": 81, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
+        "Stamina": 90
+      }
   },
     {
     "name": "Bebeto",
     "pos": "CF",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009518/Bebeto_o714hs.png",
-    "bio": "Lionel Messi is widely considered one of the greatest players ever, known for his dribbling, vision, and incredible goal-scoring records."
+      "age": 28,
+    "country": "Brazil",
+    "style": "Adv. Striker",
+    "stats": {
+        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
+        "Curl": 88, "Speed": 81, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
+        "Stamina": 90
+      }
   },
     {
     "name": "D. Berbatov",
     "pos": "CF",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009518/D._Berbatov_v2e44y.png",
-    "bio": "D. Berbatov is widely considered one of the greatest players ever, known for his dribbling, vision, and incredible goal-scoring records."
+      "age": 28,
+    "country": "Brazil",
+    "style": "Adv. Striker",
+    "stats": {
+        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
+        "Curl": 88, "Speed": 81, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
+        "Stamina": 90
+      }
   },
     {
     "name": "Carlos Tevez",
     "pos": "CF",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009518/Carlos_Tevez_t4diol.png",
-    "bio": "Carlos Tevez is widely considered one of the greatest players ever, known for his dribbling, vision, and incredible goal-scoring records."
+      "age": 28,
+    "country": "Brazil",
+    "style": "Adv. Striker",
+    "stats": {
+        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
+        "Curl": 88, "Speed": 81, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
+        "Stamina": 90
+      }
   },
     {
     "name": "A. Pato",
     "pos": "CF",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009517/A._Pato_eogios.png",
-    "bio": "A. pato is widely considered one of the greatest players ever, known for his dribbling, vision, and incredible goal-scoring records."
+      "age": 28,
+    "country": "Brazil",
+    "style": "Adv. Striker",
+    "stats": {
+        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
+        "Curl": 88, "Speed": 81, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
+        "Stamina": 90
+      }
   },
 
 {
   "name": "Didier Drogba",
   "pos": "CF",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656252/Didier_Drogba_blhvnh.png",
-  "bio": "Didier Drogba was the ultimate big-game player for Chelsea, famously leading them to their first Champions League title."
+  "age": 28,
+    "country": "Brazil",
+    "style": "Adv. Striker",
+  "stats": {
+        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
+        "Curl": 88, "Speed": 81, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
+        "Stamina": 90
+      }
 },
 {
   "name": "Ruud van Nistelrooij",
   "pos": "CF",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656189/Ruud_van_Nistelrooij_dj3deu.png",
-  "bio": "Ruud van Nistelrooy was a pure goal-poacher, known for his incredible positioning and finishing inside the penalty area."
+  "age": 28,
+    "country": "Brazil",
+    "style": "Adv. Striker",
+  "stats": {
+        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
+        "Curl": 88, "Speed": 81, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
+        "Stamina": 90
+      }
 },
 {
   "name": "Gerd Muller",
   "pos": "CF",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656243/Gerd_Muller_i9pchh.png",
-  "bio": "Gerd Muller, 'Der Bomber', was one of the most efficient goalscorers in history, starring for Bayern Munich and West Germany."
+  "age": 28,
+    "country": "Brazil",
+    "style": "Adv. Striker",
+  "stats": {
+        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
+        "Curl": 88, "Speed": 81, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
+        "Stamina": 90
+      }
 },
 
     {
   "name": "Roberto Baggio",
   "pos": "CF",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777845098/Roberto_Baggio_tajqm5.png",
-  "bio": "Gerd Muller, 'Der Bomber', was one of the most efficient goalscorers in history, starring for Bayern Munich and West Germany."
+      "age": 28,
+    "country": "Brazil",
+    "style": "Adv. Striker",
+  "stats": {
+        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
+        "Curl": 88, "Speed": 81, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
+        "Stamina": 90
+      }
 },
     
   {
     "name": "Pele",
     "pos": "SS",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470969/Pele_wudkac.png",
+    
     "bio": "Pele was a Brazilian legend, widely regarded as one of the greatest footballers of all time, known for his creativity, flair, and goal-scoring ability."
   },
   {
