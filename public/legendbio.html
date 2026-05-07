@@ -84,11 +84,20 @@
 
     async function loadPlayer() {
         try {
+            // আপনার অরিজিনাল ফাইল legendplayer.json ই রাখা হয়েছে
             const res = await fetch('legendplayer.json');
             const data = await res.json();
-            const player = data.players.find(p => p.id == playerId);
-            if(player) displayPlayerDetails(player);
-        } catch (e) { console.error("Error:", e); }
+            
+            // ডাটা লোড করার লজিক
+            const playerList = data.players || [];
+            const player = playerList.find(p => p.id == playerId);
+            
+            if(player) {
+                displayPlayerDetails(player);
+            }
+        } catch (e) { 
+            console.error("Error loading legendplayer.json:", e); 
+        }
     }
 
     const getStatColor = (val) => {
@@ -103,8 +112,8 @@
             document.getElementById('p-img').src = p.img || "";
             document.getElementById('p-name').innerText = p.name || "Unknown";
             
-            // আপনার JSON-এ 'country' আছে তাই p.country ব্যবহার করা হয়েছে
-            document.getElementById('p-nation').innerText = p.country || "N/A";
+            // ডাটা ম্যাপিং
+            document.getElementById('p-nation').innerText = p.nationality || p.country || "N/A";
             document.getElementById('p-pos').innerText = p.pos || "N/A";
             document.getElementById('p-foot').innerText = p.foot || "N/A";
             document.getElementById('p-style').innerText = p.style || "N/A";
@@ -123,6 +132,7 @@
             }
         }
 
+        // অ্যাড সিস্টেম
         setTimeout(() => {
             try {
                 if (typeof ads_manager_limit !== 'undefined') {
