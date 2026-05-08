@@ -970,6 +970,9 @@
 
     "name": "Dirk Kuyt",
     "pos": "RWF",
+    "style": "High-Pressure",
+"nationality": "Netherlands",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471156/Dirk_Kuyt_n0laqp.png",
     "bio": "Dirk Kuyt was known for his work rate, versatility, and crucial goals, especially during his time at Liverpool."
   },
@@ -977,6 +980,9 @@
 
     "name": "Paulo Sergio",
     "pos": "RWF",
+    "style": "Prolific Winger",
+"nationality": "Brazil",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471155/Paulo_Sergio_chwofn.png",
     "bio": "Paulo Sergio was a Brazilian forward known for his pace, movement, and contributions in European football."
   },
@@ -985,6 +991,9 @@
 
     "name": "Luis Garcia",
     "pos": "RWF",
+    "style": "Roaming Flank",
+"nationality": "Spain",
+"foot": "Left",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471153/Luis_Garcia_na1yqj.png",
     "bio": "Luis Garcia was a skillful attacker, known for his flair and memorable goals for Liverpool."
   },
