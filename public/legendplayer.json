@@ -599,10 +599,10 @@
 "foot": "Right",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777845098/Roberto_Baggio_tajqm5.png",
       "stats": {
-        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
-        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
-        "Curl": 88, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
-        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
+        "Overall Rating": 108, "Offensive Awareness": 95, "Ball Control": 100, "Dribbling": 100, "Tight Possession": 102,
+        "Low Pass": 95, "Lofted Pass": 85, "Finishing": 88, "Heading": 60,
+        "Curl": 82, "Speed": 91, "Acceleration": 92,
+        "Kicking Power": 96, "Jumping": 57, "Physical Contact": 85, "Balance": 95,
         "Stamina": 90
       }
   
