@@ -58,11 +58,11 @@
 "foot": "Right",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656257/Johan_Cruyff_ramebw.png",
   "stats": {
-        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
-        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
-        "Curl": 88, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
-        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
-        "Stamina": 90
+        "Overall Rating": 105, "Offensive Awareness": 95, "Ball Control": 90, "Dribbling": 90, "Tight Possession": 87,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 60,
+        "Curl": 88, "Speed": 93, "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 94,
+        "Stamina": 85
       }
 
   
@@ -75,11 +75,11 @@
 "foot": "Right",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656277/Andriy_Shevchenko_fbyciw.png",
   "stats": {
-        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
-        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
-        "Curl": 88, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
-        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
-        "Stamina": 90
+        "Overall Rating": 105, "Offensive Awareness": 95, "Ball Control": 90, "Dribbling": 90, "Tight Possession": 87,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 60,
+        "Curl": 88, "Speed": 93, "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 94,
+        "Stamina": 85
       }
 
 },
@@ -91,11 +91,11 @@
 "foot": "Right",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656267/Eric_Cantona_l3mrwy.png",
   "stats": {
-        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
-        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
-        "Curl": 88, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
-        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
-        "Stamina": 90
+        "Overall Rating": 105, "Offensive Awareness": 95, "Ball Control": 90, "Dribbling": 90, "Tight Possession": 87,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 60,
+        "Curl": 88, "Speed": 93, "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 94,
+        "Stamina": 85
       }
 },
 {
@@ -105,12 +105,12 @@
 "nationality": "Cameroon",
 "foot": "Right",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777803795/samuel_eto_o_pyt3hv.png",
-  "stats": {
-        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
-        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
-        "Curl": 88, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
-        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
-        "Stamina": 90
+ "stats": {
+        "Overall Rating": 105, "Offensive Awareness": 95, "Ball Control": 90, "Dribbling": 90, "Tight Possession": 87,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 60,
+        "Curl": 88, "Speed": 93, "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 94,
+        "Stamina": 85
       }
 },
 {
@@ -121,11 +121,11 @@
 "foot": "Left",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656282/Christian_Vieri_cmptpr.png",
   "stats": {
-        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
-        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
-        "Curl": 88, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
-        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
-        "Stamina": 90
+        "Overall Rating": 105, "Offensive Awareness": 95, "Ball Control": 90, "Dribbling": 90, "Tight Possession": 87,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 60,
+        "Curl": 88, "Speed": 93, "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 94,
+        "Stamina": 85
       }
 
 },
@@ -137,11 +137,11 @@
 "foot": "Left",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656247/Ferenc_Puskas_oa2tuw.png",
   "stats": {
-        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
-        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
-        "Curl": 88, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
-        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
-        "Stamina": 90
+        "Overall Rating": 105, "Offensive Awareness": 95, "Ball Control": 90, "Dribbling": 90, "Tight Possession": 87,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 60,
+        "Curl": 88, "Speed": 93, "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 94,
+        "Stamina": 85
       }
 },
 {
@@ -152,11 +152,11 @@
 "foot": "Right",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656197/Jan_Koller_sudb2s.png",
   "stats": {
-        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
-        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
-        "Curl": 88, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
-        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
-        "Stamina": 90
+        "Overall Rating": 105, "Offensive Awareness": 95, "Ball Control": 90, "Dribbling": 90, "Tight Possession": 87,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 60,
+        "Curl": 88, "Speed": 93, "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 94,
+        "Stamina": 85
       }
 },
 
@@ -168,11 +168,11 @@
 "foot": "Right",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777899357/Ruud_Gullit_gutlwf.png",
       "stats": {
-        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
-        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
-        "Curl": 88, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
-        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
-        "Stamina": 90
+        "Overall Rating": 105, "Offensive Awareness": 95, "Ball Control": 90, "Dribbling": 90, "Tight Possession": 87,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 60,
+        "Curl": 88, "Speed": 93, "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 94,
+        "Stamina": 85
       }
 },
     
@@ -184,11 +184,11 @@
 "foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009933/Diego_Forlan_kfifnk.png",
    "stats": {
-        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
-        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
-        "Curl": 88, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
-        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
-        "Stamina": 90
+        "Overall Rating": 105, "Offensive Awareness": 95, "Ball Control": 90, "Dribbling": 90, "Tight Possession": 87,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 60,
+        "Curl": 88, "Speed": 93, "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 94,
+        "Stamina": 85
       }
   },
     { 
@@ -200,11 +200,11 @@
 "foot": "Right",
       "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777973797/Zlatan_Ibrahimovic_zqp4qb.png" ,
       "stats": {
-        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
-        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
-        "Curl": 88, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
-        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
-        "Stamina": 90
+        "Overall Rating": 105, "Offensive Awareness": 95, "Ball Control": 90, "Dribbling": 90, "Tight Possession": 87,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 60,
+        "Curl": 88, "Speed": 93, "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 94,
+        "Stamina": 85
       }
     },
     { 
@@ -216,11 +216,11 @@
 "foot": "Right",
       "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777973788/Kylian_Mbappe_jvfi9h.png",
       "stats": {
-        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
-        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
-        "Curl": 88, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
-        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
-        "Stamina": 90
+        "Overall Rating": 105, "Offensive Awareness": 95, "Ball Control": 90, "Dribbling": 90, "Tight Possession": 87,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 60,
+        "Curl": 88, "Speed": 93, "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 94,
+        "Stamina": 85
       }
      
     },
@@ -231,12 +231,12 @@
 "nationality": "Argentina",
 "foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009933/Gabriel_Batistuta_ti4eom.png",
-       "stats": {
-        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
-        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
-        "Curl": 88, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
-        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
-        "Stamina": 90
+      "stats": {
+        "Overall Rating": 105, "Offensive Awareness": 95, "Ball Control": 90, "Dribbling": 90, "Tight Possession": 87,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 60,
+        "Curl": 88, "Speed": 93, "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 94,
+        "Stamina": 85
       }
   },
      {
@@ -246,12 +246,12 @@
 "nationality": "Spain",
 "foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009933/Fernando_Torres_irflej.png",
-       "stats": {
-        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
-        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
-        "Curl": 88, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
-        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
-        "Stamina": 90
+      "stats": {
+        "Overall Rating": 105, "Offensive Awareness": 95, "Ball Control": 90, "Dribbling": 90, "Tight Possession": 87,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 60,
+        "Curl": 88, "Speed": 93, "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 94,
+        "Stamina": 85
       }
   },
      {
@@ -261,12 +261,12 @@
 "nationality": "Italy",
 "foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009933/Filippo_Inzaghi_mch9ec.png",
-       "stats": {
-        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
-        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
-        "Curl": 88, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
-        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
-        "Stamina": 90
+      "stats": {
+        "Overall Rating": 105, "Offensive Awareness": 95, "Ball Control": 90, "Dribbling": 90, "Tight Possession": 87,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 60,
+        "Curl": 88, "Speed": 93, "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 94,
+        "Stamina": 85
       }
     
   },
@@ -277,12 +277,12 @@
 "nationality": "Senegal",
 "foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009932/El-Hadji_Diouf_faj1xu.png",
-       "stats": {
-        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
-        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
-        "Curl": 88, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
-        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
-        "Stamina": 90
+      "stats": {
+        "Overall Rating": 105, "Offensive Awareness": 95, "Ball Control": 90, "Dribbling": 90, "Tight Possession": 87,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 60,
+        "Curl": 88, "Speed": 93, "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 94,
+        "Stamina": 85
       }
     
   },
@@ -293,12 +293,12 @@
 "nationality": "Trinidad and Tobago",
 "foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009930/Dwight_Yorke_szi9om.png",
-       "stats": {
-        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
-        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
-        "Curl": 88, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
-        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
-        "Stamina": 90
+      "stats": {
+        "Overall Rating": 105, "Offensive Awareness": 95, "Ball Control": 90, "Dribbling": 90, "Tight Possession": 87,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 60,
+        "Curl": 88, "Speed": 93, "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 94,
+        "Stamina": 85
       }
     
   },
@@ -312,11 +312,11 @@
 "foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777845098/Roberto_Baggio_tajqm5.png",
       "stats": {
-        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
-        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
-        "Curl": 88, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
-        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
-        "Stamina": 90
+        "Overall Rating": 105, "Offensive Awareness": 95, "Ball Control": 90, "Dribbling": 90, "Tight Possession": 87,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 60,
+        "Curl": 88, "Speed": 93, "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 94,
+        "Stamina": 85
       }
     
   },
@@ -328,11 +328,11 @@
 "foot": "Right",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656272/Denis_Law_c1ieki.png",
   "stats": {
-        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
-        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
-        "Curl": 88, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
-        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
-        "Stamina": 90
+        "Overall Rating": 105, "Offensive Awareness": 95, "Ball Control": 90, "Dribbling": 90, "Tight Possession": 87,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 60,
+        "Curl": 88, "Speed": 93, "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 94,
+        "Stamina": 85
       }
 
 },
@@ -344,11 +344,11 @@
 "foot": "Right",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656224/Romario_lth26a.png",
   "stats": {
-        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
-        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
-        "Curl": 88, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
-        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
-        "Stamina": 90
+        "Overall Rating": 105, "Offensive Awareness": 95, "Ball Control": 90, "Dribbling": 90, "Tight Possession": 87,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 60,
+        "Curl": 88, "Speed": 93, "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 94,
+        "Stamina": 85
       }
   
 },
@@ -359,12 +359,12 @@
 "nationality": "Netherlands",
 "foot": "Right",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778010206/Marco_van_Basten_zgaovb.png",
-      "stats": {
-        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
-        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
-        "Curl": 88, "Speed": 81, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
-        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
-        "Stamina": 90
+     "stats": {
+        "Overall Rating": 105, "Offensive Awareness": 95, "Ball Control": 90, "Dribbling": 90, "Tight Possession": 87,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 60,
+        "Curl": 88, "Speed": 93, "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 94,
+        "Stamina": 85
       }
    
 },
@@ -375,12 +375,12 @@
 "nationality": "England",
 "foot": "Right",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778010207/Michael_Owen_gg5aes.png",
-      "stats": {
-        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
-        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
-        "Curl": 88, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
-        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
-        "Stamina": 90
+     "stats": {
+        "Overall Rating": 105, "Offensive Awareness": 95, "Ball Control": 90, "Dribbling": 90, "Tight Possession": 87,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 60,
+        "Curl": 88, "Speed": 93, "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 94,
+        "Stamina": 85
       }
    
 },
@@ -389,11 +389,11 @@
   "pos": "CF",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778010208/Roy_Makaay_cisrxv.png",
       "stats": {
-        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
-        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
-        "Curl": 88, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
-        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
-        "Stamina": 90
+        "Overall Rating": 105, "Offensive Awareness": 95, "Ball Control": 90, "Dribbling": 90, "Tight Possession": 87,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 60,
+        "Curl": 88, "Speed": 93, "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 94,
+        "Stamina": 85
       }
    
 },
@@ -405,11 +405,11 @@
 "foot": "Right",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656262/Alessandro_Del_Piero_uiwgjo.png",
   "stats": {
-        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
-        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
-        "Curl": 88, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
-        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
-        "Stamina": 90
+        "Overall Rating": 105, "Offensive Awareness": 95, "Ball Control": 90, "Dribbling": 90, "Tight Possession": 87,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 60,
+        "Curl": 88, "Speed": 93, "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 94,
+        "Stamina": 85
       }
  
 },
@@ -420,12 +420,12 @@
 "nationality": "Portugal",
 "foot": "Right",
       "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777973786/Cristiano_Ronaldo_axacin.png",
-      "stats": {
-        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
-        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
-        "Curl": 88, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
-        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
-        "Stamina": 90
+     "stats": {
+        "Overall Rating": 105, "Offensive Awareness": 95, "Ball Control": 90, "Dribbling": 90, "Tight Possession": 87,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 60,
+        "Curl": 88, "Speed": 93, "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 94,
+        "Stamina": 85
       }
     
     },
@@ -437,11 +437,11 @@
 "foot": "Left",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009524/Adriano_nxjncq.png",
       "stats": {
-        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
-        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
-        "Curl": 88, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
-        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
-        "Stamina": 90
+        "Overall Rating": 105, "Offensive Awareness": 95, "Ball Control": 90, "Dribbling": 90, "Tight Possession": 87,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 60,
+        "Curl": 88, "Speed": 93, "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 94,
+        "Stamina": 85
       }
     
   },
@@ -453,11 +453,11 @@
 "foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009520/Dennis_Bergkamp_w9qegb.png",
       "stats": {
-        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
-        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
-        "Curl": 88, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
-        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
-        "Stamina": 90
+        "Overall Rating": 105, "Offensive Awareness": 95, "Ball Control": 90, "Dribbling": 90, "Tight Possession": 87,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 60,
+        "Curl": 88, "Speed": 93, "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 94,
+        "Stamina": 85
       }
     
   },
@@ -469,11 +469,11 @@
 "foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009519/Andy_Cole_qmomqp.png",
       "stats": {
-        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
-        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
-        "Curl": 88, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
-        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
-        "Stamina": 90
+        "Overall Rating": 105, "Offensive Awareness": 95, "Ball Control": 90, "Dribbling": 90, "Tight Possession": 87,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 60,
+        "Curl": 88, "Speed": 93, "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 94,
+        "Stamina": 85
       }
    
   },
@@ -485,11 +485,11 @@
 "foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009518/Bebeto_o714hs.png",
       "stats": {
-        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
-        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
-        "Curl": 88, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
-        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
-        "Stamina": 90
+        "Overall Rating": 105, "Offensive Awareness": 95, "Ball Control": 90, "Dribbling": 90, "Tight Possession": 87,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 60,
+        "Curl": 88, "Speed": 93, "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 94,
+        "Stamina": 85
       }
   
   },
@@ -501,11 +501,11 @@
 "foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009518/D._Berbatov_v2e44y.png",
       "stats": {
-        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
-        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
-        "Curl": 88, "Speed": 81, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
-        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
-        "Stamina": 90
+        "Overall Rating": 105, "Offensive Awareness": 95, "Ball Control": 90, "Dribbling": 90, "Tight Possession": 87,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 60,
+        "Curl": 88, "Speed": 93, "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 94,
+        "Stamina": 85
       }
    
   },
@@ -516,12 +516,12 @@
 "nationality": "Argentina",
 "foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009518/Carlos_Tevez_t4diol.png",
-      "stats": {
-        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
-        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
-        "Curl": 88, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
-        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
-        "Stamina": 90
+     "stats": {
+        "Overall Rating": 105, "Offensive Awareness": 95, "Ball Control": 90, "Dribbling": 90, "Tight Possession": 87,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 60,
+        "Curl": 88, "Speed": 93, "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 94,
+        "Stamina": 85
       }
     
   },
@@ -532,12 +532,12 @@
 "nationality": "Brazil",
 "foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778009517/A._Pato_eogios.png",
-      "stats": {
-        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
-        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
-        "Curl": 88, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
-        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
-        "Stamina": 90
+     "stats": {
+        "Overall Rating": 105, "Offensive Awareness": 95, "Ball Control": 90, "Dribbling": 90, "Tight Possession": 87,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 60,
+        "Curl": 88, "Speed": 93, "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 94,
+        "Stamina": 85
       }
     
   },
@@ -550,11 +550,11 @@
 "foot": "Right",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656252/Didier_Drogba_blhvnh.png",
   "stats": {
-        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
-        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
-        "Curl": 88, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
-        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
-        "Stamina": 90
+        "Overall Rating": 105, "Offensive Awareness": 95, "Ball Control": 90, "Dribbling": 90, "Tight Possession": 87,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 60,
+        "Curl": 88, "Speed": 93, "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 94,
+        "Stamina": 85
       }
 
 },
@@ -565,12 +565,12 @@
 "nationality": "Netherlands",
 "foot": "Right",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656189/Ruud_van_Nistelrooij_dj3deu.png",
-  "stats": {
-        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
-        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
-        "Curl": 88, "Set Pieces": 88, "Speed": 101, "Acceleration": 98,
-        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
-        "Stamina": 90
+ "stats": {
+        "Overall Rating": 105, "Offensive Awareness": 95, "Ball Control": 90, "Dribbling": 90, "Tight Possession": 87,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 60,
+        "Curl": 88, "Speed": 93, "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 94,
+        "Stamina": 85
       }
  
 },
@@ -582,11 +582,11 @@
 "foot": "Right",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777656243/Gerd_Muller_i9pchh.png",
   "stats": {
-        "Overall Rating": 104, "Offensive Awareness": 97, "Ball Control": 96, "Dribbling": 99, "Tight Possession": 96,
-        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 88,
-        "Curl": 88, "Set Pieces": 88, "Speed": 101,   "Acceleration": 98,
-        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 95,
-        "Stamina": 90
+        "Overall Rating": 105, "Offensive Awareness": 95, "Ball Control": 90, "Dribbling": 90, "Tight Possession": 87,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 60,
+        "Curl": 88, "Speed": 93, "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 94,
+        "Stamina": 85
       }
  
 },
@@ -594,16 +594,16 @@
     {
   "name": "Roberto Baggio",
   "pos": "CF",
-      "style": "Deep-Lying Forward",
+  "style": "Deep-Lying Forward",
 "nationality": "Italy",
 "foot": "Right",
   "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777845098/Roberto_Baggio_tajqm5.png",
-      "stats": {
-        "Overall Rating": 108, "Offensive Awareness": 95, "Ball Control": 100, "Dribbling": 100, "Tight Possession": 102,
-        "Low Pass": 95, "Lofted Pass": 85, "Finishing": 88, "Heading": 60,
-        "Curl": 82, "Speed": 91, "Acceleration": 92,
-        "Kicking Power": 96, "Jumping": 57, "Physical Contact": 85, "Balance": 95,
-        "Stamina": 90
+    "stats": {
+        "Overall Rating": 105, "Offensive Awareness": 95, "Ball Control": 90, "Dribbling": 90, "Tight Possession": 87,
+        "Low Pass": 82, "Lofted Pass": 88, "Finishing": 95, "Heading": 60,
+        "Curl": 88, "Speed": 93, "Acceleration": 98,
+        "Kicking Power": 95, "Jumping": 85, "Physical Contact": 90, "Balance": 94,
+        "Stamina": 85
       }
   
 },
