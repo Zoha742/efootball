@@ -611,6 +611,9 @@
   {
     "name": "Pele",
     "pos": "SS",
+    "style": "Adv. Striker",
+    "nationality": "Brazil",
+    "foot": "Right",  
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470969/Pele_wudkac.png",
     
     "bio": "Pele was a Brazilian legend, widely regarded as one of the greatest footballers of all time, known for his creativity, flair, and goal-scoring ability."
@@ -618,24 +621,36 @@
   {
     "name": "Gianfranco Zola",
     "pos": "SS",
+    "style": "Creative Playmaker",
+"nationality": "Italy",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470969/Gianfranco_Zola_svjo2f.png",
     "bio": "Gianfranco Zola was an Italian playmaker famous for his technique, vision, and creativity, especially during his time at Chelsea."
   },
   {
     "name": "Wayne Rooney",
     "pos": "SS",
+    "style": "Deep-Lying Forward",
+"nationality": "England",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470968/Wayne_Rooney_c95ozq.png",
     "bio": "Wayne Rooney was a powerful and versatile forward, Manchester United's all-time top scorer, known for his work rate and finishing."
   },
   {
     "name": "Hristo Stoichkov",
     "pos": "SS",
+    "style": "Dummy Runner",
+"nationality": "Bulgaria",
+"foot": "Left",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470968/Hristo_Stoichkov_kaviw0.png",
     "bio": "Hristo Stoichkov was a Bulgarian icon, known for his aggressive style, powerful left foot, and key role in Barcelona's success."
   },
   {
     "name": "Lionel Messi",
     "pos": "SS",
+    "style": "Deep-Lying Forward",
+"nationality": "Argentina",
+"foot": "Left",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470967/Lionel_Messi_cjusph.png",
     "bio": "Lionel Messi is widely considered one of the greatest players ever, known for his dribbling, vision, and incredible goal-scoring records."
   },
@@ -643,6 +658,9 @@
 
     "name": "Diego Maradona",
     "pos": "SS",
+   "style": "Classic No. 10",
+"nationality": "Argentina",
+"foot": "Left",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470966/Diego_Maradona_xjo0gg.png",
     "bio": "Diego Maradona was an Argentine legend, famous for his dribbling, vision, and leading Argentina to World Cup glory in 1986."
   },
@@ -650,6 +668,9 @@
 
     "name": "Dennis Bergkamp",
     "pos": "SS",
+    "style": "Deep-Lying Forward",
+"nationality": "Netherlands",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470967/Dennis_Bergkamp_egt1y3.png",
     "bio": "Dennis Bergkamp was a Dutch maestro known for his elegant touch, creativity, and memorable goals during his time at Arsenal."
   },
@@ -657,6 +678,9 @@
 
     "name": "Raul",
     "pos": "SS",
+    "style": "Dummy Runner",
+"nationality": "Spain",
+"foot": "Left",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775470967/Raul_gstyse.png",
     "bio": "Raul was a Real Madrid legend, known for his intelligence, positioning, and consistent goal-scoring throughout his career."
   },
@@ -665,6 +689,9 @@
 
     "name": "Ronaldinho",
     "pos": "LWF",
+      "style": "Creative Playmaker",
+"nationality": "Brazil",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777897821/Ronaldinho_Gaucho_u87qug.png",
     "bio": "Ronaldinho was a world-class winger, known for his pace, dribbling, and creativity on the left flank."
   },
@@ -672,6 +699,9 @@
     {
     "name": "Lionel Messi",
     "pos": "AMF",
+      "style": "Deep-Lying Forward",
+"nationality": "Argentina",
+"foot": "Left",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777795374/Lionel_Messi_tognuz.png",
     "bio": "Lionel Messi is widely considered one of the greatest players ever, known for his dribbling, vision, and incredible goal-scoring records."
   },
@@ -679,6 +709,9 @@
     {
     "name": "Ronaldinho Gaucho",
     "pos": "AMF",
+      "style": "Classic No. 10",
+"nationality": "Brazil",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777124731/Ronaldinho_Gaucho_u87qug.png",
     "bio": "Francesco Totti was a Roma legend, known for his vision, creativity, and loyalty, spending his entire career at one club."
   },
@@ -686,6 +719,9 @@
     {
     "name": "Ruud Gullit",
     "pos": "AMF",
+      "style": "Classic No. 10",
+"nationality": "Netherlands",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777898562/Ruud_Gullit_jwsji4.png",
     "bio": "Ruud Gullit was a Roma legend, known for his vision, creativity, and loyalty, spending his entire career at one club."
   },
@@ -695,6 +731,9 @@
 
     "name": "Francesco Totti",
     "pos": "AMF",
+  "style": "Classic No. 10",
+"nationality": "Italy",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777124661/Francesco_Totti_mb8lyu.png",
     "bio": "Francesco Totti was a Roma legend, known for his vision, creativity, and loyalty, spending his entire career at one club."
   },
@@ -702,6 +741,9 @@
 
     "name": "Michel Platini",
     "pos": "AMF",
+    "style": "Classic No. 10",
+"nationality": "France",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471034/Michel_Platini_ofioqt.png",
     "bio": "Michel Platini was a French maestro, famous for his playmaking, leadership, and winning three consecutive Ballon d'Or awards."
   },
@@ -709,6 +751,9 @@
 
     "name": "Zico",
     "pos": "AMF",
+    "style": "Classic No. 10",
+"nationality": "Brazil",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471033/Zico_erq6a8.png",
     "bio": "Zico was a Brazilian legend, known for his technical brilliance, free-kick ability, and attacking creativity."
   },
@@ -716,6 +761,9 @@
 
     "name": "Pavel Nedved",
     "pos": "AMF",
+    "style": "Hole Player",
+"nationality": "Czech Republic",
+"foot": "Both",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471033/Pavel_Nedved_xldyek.png",
     "bio": "Pavel Nedved was a tireless midfielder, known for his energy, long-range shooting, and leadership on the pitch."
   },
@@ -723,6 +771,9 @@
 
     "name": "Eden Hazard",
     "pos": "AMF",
+    "style": "Hole Player",
+"nationality": "Belgium",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471032/Eden_Hazard_vbd5oh.png",
     "bio": "Eden Hazard was a dazzling playmaker, known for his dribbling, creativity, and match-winning performances."
   },
@@ -730,20 +781,29 @@
 
     "name": "Kaka",
     "pos": "AMF",
+    "style": "Hole Player",
+"nationality": "Brazil",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471031/Kaka_v87qem.png",
     "bio": "Kaka was a Brazilian star, famous for his elegance, pace, and winning the Ballon d'Or in 2007."
   },
   {
 
     "name": "Juan Sebastian Veron",
-    "pos": "AMF",
+    "pos": "AMF", 
+    "style": "Orchestrator",
+"nationality": "Argentina",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471030/Juan_Sebastian_Veron_yfkknk.png",
     "bio": "Juan Sebastian Veron was an Argentine playmaker known for his passing range, vision, and midfield control."
   },
   {
  
     "name": "Rivaldo",
-    "pos": "AMF",
+    "pos": "AMF", 
+    "style": "Hole Player",
+"nationality": "Brazil",
+"foot": "Left",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471030/Rivaldo_e5xhwq.png",
     "bio": "Rivaldo was a Brazilian superstar, known for his powerful shots, technique, and crucial goals for club and country."
   },
@@ -752,6 +812,9 @@
 
     "name": "Andres Iniesta",
     "pos": "AMF",
+    "style": "Creative Playmaker",
+"nationality": "Spain",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471028/Andres_Iniesta_o98hid.png",
     "bio": "Andres Iniesta was a Spanish legend, known for his intelligence, control, and scoring the winning goal in the 2010 World Cup final."
   },
@@ -759,6 +822,9 @@
 
     "name": "R. Van de der Vaart",
     "pos": "AMF",
+      "style": "Classic No. 10",
+"nationality": "Netherlands",
+"foot": "Left",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777845582/R._van_de_der_Vaart_dohprc.png",
     "bio": "Andres Iniesta was a Spanish legend, known for his intelligence, control, and scoring the winning goal in the 2010 World Cup final."
   },
@@ -766,7 +832,10 @@
     {
 
     "name": "Rui Costa",
-    "pos": "AMF",
+    "pos": "AMF", 
+      "style": "Classic No. 10",
+"nationality": "Portugal",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777845582/Rui_Costa_buwni1.png",
     "bio": "Andres Iniesta was a Spanish legend, known for his intelligence, control, and scoring the winning goal in the 2010 World Cup final."
   },
@@ -775,6 +844,9 @@
 
     "name": "W. Sneijder",
     "pos": "AMF",
+      "style": "Orchestrator",
+"nationality": "Netherlands",
+"foot": "Both",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778005006/Wesley_Sneijder_b36zld.png",
     "bio": "Andres Iniesta was a Spanish legend, known for his intelligence, control, and scoring the winning goal in the 2010 World Cup final."
   },
@@ -782,7 +854,10 @@
     {
 
     "name": "D. Stojkovic",
-    "pos": "AMF",
+    "pos": "AMF", 
+    "style": "Classic No. 10",
+"nationality": "Serbia",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778005007/D._Stojkovic_ivjvl2.png",
     "bio": "Andres Iniesta was a Spanish legend, known for his intelligence, control, and scoring the winning goal in the 2010 World Cup final."
   },
@@ -791,6 +866,9 @@
 
     "name": "H. Nakata",
     "pos": "AMF",
+      "style": "Hole Player",
+"nationality": "Japan",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778005007/Hidetoshi_Nakata_btdpw6.png",
     "bio": "Andres Iniesta was a Spanish legend, known for his intelligence, control, and scoring the winning goal in the 2010 World Cup final."
   },
@@ -799,6 +877,9 @@
 
     "name": "Tomas Rosicky",
     "pos": "AMF",
+      "style": "Hole Player",
+"nationality": "Czech Republic",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778005008/Tomas_Rosicky_oexscq.png",
     "bio": "Andres Iniesta was a Spanish legend, known for his intelligence, control, and scoring the winning goal in the 2010 World Cup final."
   },
@@ -807,6 +888,9 @@
 
     "name": "Uli HoeneSS",
     "pos": "AMF",
+      "style": "Hole Player",
+"nationality": "Germany",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777845581/Uli_HoeneSS_rwxibl.png",
     "bio": "Andres Iniesta was a Spanish legend, known for his intelligence, control, and scoring the winning goal in the 2010 World Cup final."
   },
@@ -814,6 +898,9 @@
 
     "name": "Shinji Ono",
     "pos": "AMF",
+      "style": "Creative Playmaker",
+"nationality": "Japan",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777845578/Shinji_Ono_qr10sn.png",
     "bio": "Andres Iniesta was a Spanish legend, known for his intelligence, control, and scoring the winning goal in the 2010 World Cup final."
   },
@@ -821,6 +908,9 @@
     {
     "name": "Lionel Messi",
     "pos": "RWF",
+      "style": "Creative Playmaker",
+"nationality": "Argentina",
+"foot": "Left",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777795186/Lionel_Messi_s8byb9.png",
     "bio": "Lionel Messi is widely considered one of the greatest players ever, known for his dribbling, vision, and incredible goal-scoring records."
   },
@@ -828,6 +918,9 @@
     {
     "name": "Gareth Bale",
     "pos": "RWF",
+      "style": "Roaming Flank",
+"nationality": "Wales",
+"foot": "Left",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777890529/Gareth_Bale_mfeupk.png",
     "bio": "Gareth_Bale is widely considered one of the greatest players ever, known for his dribbling, vision, and incredible goal-scoring records."
   },
@@ -836,6 +929,9 @@
 
     "name": "Luis Figo",
     "pos": "RWF",
+  "style": "Prolific Winger",
+"nationality": "Portugal",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471160/Luis_Figo_btsf31.png",
     "bio": "Luis Figo was a Portuguese legend, known for his dribbling, crossing, and creativity on the right wing."
   },
@@ -844,6 +940,9 @@
 
     "name": "Ludovic Giuly",
     "pos": "RWF",
+    "style": "Prolific Winger",
+"nationality": "France",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471158/Ludovic_Giuly_dvluiu.png",
     "bio": "Ludovic Giuly was a quick and intelligent winger, known for his movement and contributions at Barcelona."
   },
@@ -851,6 +950,9 @@
 
     "name": "George Best",
     "pos": "RWF",
+      "style": "Prolific Winger",
+"nationality": "Northern Ireland",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778091104/George_Best_lbblwc.png",
     "bio": "George Best was a quick and intelligent winger, known for his movement and contributions at Barcelona."
   },
@@ -858,6 +960,9 @@
 
     "name": "Bojan Krkic",
     "pos": "RWF",
+    "style": "Creative Playmaker",
+"nationality": "Spain",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471157/Bojan_Krkic_sa9i44.png",
     "bio": "Bojan Krkic was a talented forward, known for his technical ability and early promise at Barcelona."
   },
