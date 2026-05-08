@@ -1610,6 +1610,9 @@
    
     "name": "Cafu",
     "pos": "RB",
+   "style": "Offensive Full-back",
+"nationality": "Brazil",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471251/Cafu_q8ip7b.png",
     "bio": "Cafu was a legendary Brazilian right-back known for his stamina, speed, and attacking runs."
   },
@@ -1617,6 +1620,9 @@
    
     "name": "Javier Zanetti",
     "pos": "RB",
+      "style": "Offensive Full-back",
+"nationality": "Argentina",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777896901/Javier_Zanetti_u3wsdo.png",
     "bio": "Javier Zanetti was an Italian defender known for leadership, positioning, and consistency."
   },
@@ -1625,6 +1631,9 @@
    
     "name": "Giuseppe Bergomi",
     "pos": "RB",
+    "style": "Defensive Full-back",
+"nationality": "Italy",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471249/Giuseppe_Bergomi_i32uuk.png",
     "bio": "Giuseppe Bergomi was an Italian defender known for leadership, positioning, and consistency."
   },
@@ -1633,6 +1642,9 @@
   
     "name": "A. Costacurta",
     "pos": "RB",
+    "style": "Defensive Full-back",
+"nationality": "Italy",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471248/A._Costacurta_izj5dg.png",
     "bio": "Alessandro Costacurta was a disciplined defender known for intelligence and tactical awareness."
   },
@@ -1640,6 +1652,9 @@
    
     "name": "Massimo Oddo",
     "pos": "RB",
+    "style": "Offensive Full-back",
+"nationality": "Italy",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471248/Massimo_Oddo_xpck4f.png",
     "bio": "Massimo Oddo was an Italian right-back known for crossing ability and attacking support."
   },
@@ -1647,6 +1662,9 @@
    
     "name": "Albert Ferrer",
     "pos": "RB",
+    "style": "Offensive Full-back",
+"nationality": "Spain",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471246/Albert_Ferrer_qng0fo.png",
     "bio": "Albert Ferrer was a Spanish defender known for reliability and defensive discipline."
   },
@@ -1654,6 +1672,9 @@
    
     "name": "Maicon",
     "pos": "RB",
+    "style": "Offensive Full-back",
+"nationality": "Brazil",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471245/Maicon_rvq53y.png",
     "bio": "Maicon was a powerful Brazilian right-back known for strength, pace, and attacking runs."
   },
@@ -1661,6 +1682,9 @@
     
     "name": "Christian Panucci",
     "pos": "RB",
+    "style": "Offensive Full-back",
+"nationality": "Italy",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471243/Christian_Panucci_as9dsc.png",
     "bio": "Christian Panucci was an Italian defender known for versatility and experience at top clubs."
   },
@@ -1668,6 +1692,9 @@
     
     "name": "Lee Dixon",
     "pos": "RB",
+    "style": "Offensive Full-back",
+"nationality": "England",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471242/Lee_Dixon_qjoxxh.png",
     "bio": "Lee Dixon was an Arsenal right-back known for consistency and defensive awareness."
   },
@@ -1675,6 +1702,9 @@
     
     "name": "Juliano Belletti",
     "pos": "RB",
+    "style": "Offensive Full-back",
+"nationality": "Brazil",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777895434/Belletti_ftlmo8.png",
     "bio": "Juliano Belletti was a Brazilian full-back known for important goals and attacking support."
   },
@@ -1683,6 +1713,9 @@
    
     "name": "Carles Puyol",
     "pos": "CB",
+  "style": "The Destroyer",
+"nationality": "Spain",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777893609/Carles_Puyol_iwr91z.png",
     "bio": "Carles Puyol was an Italian defensive legend known for positioning, leadership, and reading the game."
   },
@@ -1690,6 +1723,9 @@
    
     "name": "Fabio Cannavaro",
     "pos": "CB",
+      "style": "The Destroyer",
+"nationality": "Italy",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777893709/Fabio_Cannavaro_xaiglw.png",
     "bio": "Fabio Cannavaro was an Italian defensive legend known for positioning, leadership, and reading the game."
   },
@@ -1698,6 +1734,9 @@
    
     "name": "Franz Beckenbauer",
     "pos": "CB",
+      "style": "Build Up",
+"nationality": "Germany",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777893779/Franz_Beckenbauer_ufsvrv.png",
     "bio": "Franz Beckenbauer was an Italian defensive legend known for positioning, leadership, and reading the game."
   },
@@ -1706,6 +1745,9 @@
    
     "name": "Franco Baresi",
     "pos": "CB",
+   "style": "Build Up",
+"nationality": "Italy",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472137/Franco_Baresi_n7ftqj.png",
     "bio": "Franco Baresi was an Italian defensive legend known for positioning, leadership, and reading the game."
   },
@@ -1713,6 +1755,9 @@
     
     "name": "Ivan Cordoba",
     "pos": "CB",
+      "style": "The Destroyer",
+"nationality": "Colombia",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777972083/Ivan_Cordoba_rwi2ad.png",
     "bio": "Lilian Thuram was a ball-playing defender known for powerful shooting and passing ability."
   },
@@ -1721,6 +1766,9 @@
     
     "name": "Jaap Stam",
     "pos": "CB",
+    "style": "The Destroyer",
+"nationality": "Netherlands",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472137/Jaap_Stam_lotymx.png",
     "bio": "Jaap Stam was a powerful Dutch defender known for strength, tackling, and aerial dominance."
   },
@@ -1728,6 +1776,9 @@
    
     "name": "Marcel Desailly",
     "pos": "CB",
+    "style": "The Destroyer",
+"nationality": "France",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472137/Marcel_Desailly_kka0he.png",
     "bio": "Marcel Desailly was a French defender known for physical strength, versatility, and composure."
   },
@@ -1735,6 +1786,9 @@
    
     "name": "Rio Ferdinand",
     "pos": "CB",
+    "style": "Build Up",
+"nationality": "England",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472137/Rio_Ferdinand_giigds.png",
     "bio": "Rio Ferdinand was a modern defender known for pace, ball control, and clean defending."
   },
@@ -1742,6 +1796,9 @@
     
     "name": "Alessandro Nesta",
     "pos": "CB",
+    "style": "Build Up",
+"nationality": "Italy",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777893484/Alessandro_Nesta_yv28bs.png",
     "bio": "Alessandro Nesta was a versatile defender known for intelligence, calmness, and tactical awareness."
   },
@@ -1749,6 +1806,9 @@
     
     "name": "Ronald Koeman",
     "pos": "CB",
+    "style": "Build Up",
+"nationality": "Netherlands",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472137/Ronald_Koeman_xuoi48.png",
     "bio": "Ronald Koeman was a ball-playing defender known for powerful shooting and passing ability."
   },
@@ -1756,6 +1816,9 @@
     
     "name": "Lilian Thuram",
     "pos": "CB",
+  "style": "The Destroyer",
+"nationality": "France",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777894027/Lilian_Thuram_vllsot.png",
     "bio": "Lilian Thuram was a ball-playing defender known for powerful shooting and passing ability."
   },
@@ -1763,6 +1826,9 @@
    
     "name": "Angelo Peruzzi",
     "pos": "GK",
+      "style": "Offensive GK",
+"nationality": "Italy",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777123018/Angelo_Peruzzi_jsvsmi.png",
     "bio": "Angelo Peruzzi was a fierce German goalkeeper known for leadership, aggression, and shot-stopping."
   },
@@ -1771,6 +1837,9 @@
    
     "name": "Gianluigi Buffon",
     "pos": "GK",
+   "style": "Defensive GK",
+"nationality": "Italy",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472278/Gianluigi_Buffon_owhxfv.png",
     "bio": "Gianluigi Buffon was an Italian goalkeeping legend known for his reflexes, leadership, and consistency."
   },
@@ -1778,6 +1847,9 @@
    
     "name": "Peter Schmeichel",
     "pos": "GK",
+    "style": "Defensive GK",
+"nationality": "Denmark",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472276/Peter_Schmeichel_lnpuvq.png",
     "bio": "Peter Schmeichel was a dominant goalkeeper known for his presence, saves, and leadership at Manchester United."
   },
@@ -1785,6 +1857,9 @@
     
     "name": "Iker Casillas",
     "pos": "GK",
+    "style": "Offensive GK",
+"nationality": "Spain",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472275/Iker_Casillas_kux68y.png",
     "bio": "Iker Casillas was a Spanish legend known for quick reflexes and crucial saves in big matches."
   },
@@ -1792,6 +1867,9 @@
     
     "name": "Petr Cech",
     "pos": "GK",
+    "style": "Defensive GK",
+"nationality": "Czech Republic",
+"foot": "Left",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472274/Petr_Cech_pqj4gn.png",
     "bio": "Petr Cech was a Chelsea legend known for shot-stopping, consistency, and calmness under pressure."
   },
@@ -1799,6 +1877,9 @@
    
     "name": "Edwin van der Sar",
     "pos": "GK",
+      "style": "Offensive GK",
+"nationality": "Netherlands",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778091295/Edwin_van_der_Sar_gcvkyo.png",
     "bio": "Edwin van der Sar is a French goalkeeper known for reflexes, leadership, and World Cup success."
   },
@@ -1806,6 +1887,9 @@
    
     "name": "Jordan Pickford",
     "pos": "GK",
+      "style": "Offensive GK",
+"nationality": "England",
+"foot": "Left",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778091296/Jordan_Pickford_lacuwn.png",
     "bio": "Jordan Pickford is a French goalkeeper known for reflexes, leadership, and World Cup success."
   },
@@ -1813,6 +1897,9 @@
    
     "name": "Hugo Lloris",
     "pos": "GK",
+    "style": "Offensive GK",
+"nationality": "France",
+"foot": "Left",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472273/Hugo_Lloris_qnjud0.png",
     "bio": "Hugo Lloris is a French goalkeeper known for reflexes, leadership, and World Cup success."
   },
@@ -1820,6 +1907,9 @@
     
     "name": "Dida",
     "pos": "GK",
+    "style": "Defensive GK",
+"nationality": "Brazil",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472272/Dida_n3glms.png",
     "bio": "Dida was a Brazilian goalkeeper known for composure, penalty saves, and success with AC Milan."
   },
@@ -1827,6 +1917,9 @@
     
     "name": "Christian Abbiati",
     "pos": "GK",
+    "style": "Defensive GK",
+"nationality": "Italy",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472272/Christian_Abbiati_kahurw.png",
     "bio": "Christian Abbiati was an Italian goalkeeper known for reliability and long career at AC Milan."
   },
@@ -1834,6 +1927,9 @@
     
     "name": "Oliver Kahn",
     "pos": "GK",
+    "style": "Defensive GK",
+"nationality": "Germany",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472272/Oliver_Kahn_zkzlbr.png",
     "bio": "Oliver Kahn was a fierce German goalkeeper known for leadership, aggression, and shot-stopping."
   }
