@@ -1001,6 +1001,9 @@
 
     "name": "Ronaldinho",
     "pos": "LWF",
+      "style": "Creative Playmaker",
+"nationality": "Brazil",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777897795/Ronaldinho_qnkefy.png",
     "bio": "Ronaldinho was a world-class winger, known for his pace, dribbling, and creativity on the left flank."
   },
@@ -1009,6 +1012,9 @@
 
     "name": "Franck Ribery",
     "pos": "LWF",
+  "style": "Prolific Winger",
+"nationality": "France",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471167/Franck_Ribery_kfskxt.png",
     "bio": "Franck Ribery was a world-class winger, known for his pace, dribbling, and creativity on the left flank."
   },
@@ -1016,6 +1022,9 @@
 
     "name": "David Villa",
     "pos": "LWF",
+    "style": "Prolific Winger",
+"nationality": "Spain",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471166/David_Villa_opqael.png",
     "bio": "David Villa was a prolific Spanish forward, known for his finishing, movement, and key role in Spain's golden era."
   },
@@ -1023,6 +1032,9 @@
 
     "name": "Denilson",
     "pos": "LWF",
+    "style": "Trickster",
+"nationality": "Brazil",
+"foot": "Left",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471165/Denilson_dfnbjh.png",
     "bio": "Denilson was a Brazilian winger famous for his flair, dribbling skills, and entertaining style of play."
   },
@@ -1030,6 +1042,9 @@
 
     "name": "Shinji Okazaki",
     "pos": "LWF",
+    "style": "Dummy Runner",
+"nationality": "Japan",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471164/Shinji_Okazaki_hydt0t.png",
     "bio": "Shinji Okazaki was a hardworking attacker, known for his pressing, intelligent movement, and team play."
   },
@@ -1037,6 +1052,9 @@
 
     "name": "Atep Rizal",
     "pos": "LWF",
+    "style": "Prolific Winger",
+"nationality": "Indonesia",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471163/Atep_Rizal_srqqys.png",
     "bio": "Atep Rizal is an Indonesian winger known for his speed, dribbling ability, and contributions on the left wing."
   },
@@ -1045,6 +1063,9 @@
 
     "name": "David Beckham",
     "pos": "RMF",
+    "style": "Cross Specialist",
+"nationality": "England",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471190/David_Beckham_sy3eyq.png",
     "bio": "David Beckham was famous for his pinpoint crosses, free-kicks, and passing accuracy."
   },
@@ -1052,6 +1073,9 @@
 
     "name": "Takefusa Kubo",
     "pos": "RMF",
+    "style": "Creative Playmaker",
+"nationality": "Japan",
+"foot": "Left",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471189/Takefusa_Kubo_puojbp.png",
     "bio": "Takefusa Kubo is a Japanese winger known for his dribbling, agility, and creativity."
   },
@@ -1059,6 +1083,9 @@
 
     "name": "Steve McManaman",
     "pos": "RMF",
+    "style": "Prolific Winger",
+"nationality": "England",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471187/Steve_McManaman_dgxnls.png",
     "bio": "Steve McManaman was an English winger known for his dribbling, movement, and versatility."
   },
@@ -1066,6 +1093,9 @@
 
     "name": "Stefano Fiore",
     "pos": "RMF",
+    "style": "Creative Playmaker",
+"nationality": "Italy",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471186/Stefano_Fiore_w8pkoh.png",
     "bio": "Stefano Fiore was an Italian midfielder known for his passing, vision, and attacking support."
   },
@@ -1073,6 +1103,9 @@
 
     "name": "Ray Parlour",
     "pos": "RMF",
+    "style": "Box-to-Box",
+"nationality": "England",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471185/Ray_Parlour_qsoyjj.png",
     "bio": "Ray Parlour was an Arsenal midfielder known for his work rate, energy, and consistency."
   },
@@ -1080,6 +1113,9 @@
 
     "name": "Freddie Ljungberg",
     "pos": "RMF",
+    "style": "Prolific Winger",
+"nationality": "Sweden",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471184/Freddie_Ljungberg_tsxrdf.png",
     "bio": "Freddie Ljungberg was a Swedish winger known for his intelligent runs and goal-scoring ability."
   },
@@ -1087,6 +1123,9 @@
 
     "name": "Gaizka Mendieta",
     "pos": "RMF",
+    "style": "Box-to-Box",
+"nationality": "Spain",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471183/Gaizka_Mendieta_nkrbmg.png",
     "bio": "Gaizka Mendieta was a Spanish midfielder known for his technique, passing, and leadership."
   },
@@ -1094,6 +1133,9 @@
 
     "name": "Hasan Salihamidzic",
     "pos": "RMF",
+    "style": "Full-back Finisher",
+"nationality": "Bosnia and Herzegovina",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471182/Hasan_Salihamidzic_zaf3oc.png",
     "bio": "Hasan Salihamidzic was a versatile Bosnian player known for his work rate and attacking support."
   },
@@ -1101,6 +1143,9 @@
 
     "name": "C. Karembeu",
     "pos": "RMF",
+      "style": "Box-to-Box",
+"nationality": "France",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778091094/Christian_Karembeu_qk3t8c.png",
     "bio": "C. Karembeu was a versatile Bosnian player known for his work rate and attacking support."
   },
@@ -1109,6 +1154,9 @@
 
     "name": "Pavel Nedved",
     "pos": "LMF",
+    "style": "Box-to-Box",
+"nationality": "Czech Republic",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471195/Pavel_Nedved_sjiq5h.png",
     "bio": "Pavel Nedved was a tireless midfielder known for his energy, shooting, and leadership."
   },
@@ -1116,6 +1164,9 @@
 
     "name": "Roberto Donadoni",
     "pos": "LMF",
+    "style": "Creative Playmaker",
+"nationality": "Italy",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471199/Roberto_Donadoni_xn1ujr.png",
     "bio": "Roberto Donadoni was an elegant Italian winger known for his technique and creativity."
   },
@@ -1123,6 +1174,9 @@
 
     "name": "Park Ji-Sung",
     "pos": "LMF",
+    "style": "Box-to-Box",
+"nationality": "South Korea",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471198/Park_Ji-Sung_qbo7vz.png",
     "bio": "Park Ji-Sung was a hardworking midfielder known for his stamina, pressing, and team play."
   },
@@ -1130,6 +1184,9 @@
 
     "name": "Ze Roberto",
     "pos": "LMF",
+    "style": "Box-to-Box",
+"nationality": "Brazil",
+"foot": "Left",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471197/Ze_Roberto_burgvp.png",
     "bio": "Ze Roberto was a versatile Brazilian midfielder known for his dribbling and consistency."
   },
@@ -1137,6 +1194,9 @@
 
     "name": "Robert Pires",
     "pos": "LMF",
+    "style": "Creative Playmaker",
+"nationality": "France",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471196/Robert_Pires_t1aynr.png",
     "bio": "Robert Pires was a French winger known for his intelligence, finishing, and creativity."
   },
@@ -1144,6 +1204,9 @@
 
     "name": "Serginho",
     "pos": "LMF",
+    "style": "Full-back Finisher",
+"nationality": "Brazil",
+"foot": "Left",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471194/Serginho_i5jpgu.png",
     "bio": "Serginho was a Brazilian winger known for his speed, dribbling, and attacking runs."
   },
@@ -1152,6 +1215,9 @@
 
     "name": "Andres Iniesta",
     "pos": "CMF",
+   "style": "Orchestrator",
+"nationality": "Spain",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471223/Andres_Iniesta_f6djcy.png",
     "bio": "Andres Iniesta was a Spanish legend known for his dribbling, intelligence, and match-winning vision."
   },
@@ -1159,6 +1225,9 @@
 
     "name": "Lothar Matthaus",
     "pos": "CMF",
+    "style": "Box-to-Box",
+"nationality": "Germany",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471220/Lothar_Matthaus_fwdviw.png",
     "bio": "Lothar Matthaus was a complete midfielder known for leadership, tackling, and long-range shooting."
   },
@@ -1166,6 +1235,9 @@
 
     "name": "Juan Sebastian Veron",
     "pos": "CMF",
+    "style": "Orchestrator",
+"nationality": "Argentina",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471219/Juan_Sebastian_Veron_bgioaq.png",
     "bio": "Juan Sebastian Veron was an Argentine playmaker known for passing range and vision."
   },
@@ -1173,6 +1245,9 @@
 
     "name": "Steven Gerrard",
     "pos": "CMF",
+    "style": "Box-to-Box",
+"nationality": "England",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471218/Steven_Gerrard_rj8b5k.png",
     "bio": "Steven Gerrard was a Liverpool icon known for leadership, long shots, and all-round midfield power."
   },
@@ -1180,6 +1255,9 @@
 
     "name": "Xavi",
     "pos": "CMF",
+    "style": "Orchestrator",
+"nationality": "Spain",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777892593/Xavi_wsxtiw.png",
     "bio": "Xavi was a complete midfielder known for strength, technique, and Champions League success."
   },
@@ -1187,6 +1265,9 @@
 
     "name": "Paul Scholes",
     "pos": "CMF",
+    "style": "Orchestrator",
+"nationality": "England",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471216/Paul_Scholes_ug4p2v.png",
     "bio": "Paul Scholes was a Manchester United legend known for passing accuracy and long-range shooting."
   },
@@ -1194,6 +1275,9 @@
 
     "name": "Frank Lampard",
     "pos": "CMF",
+    "style": "Hole Player",
+"nationality": "England",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777125745/Frank_Lampard_kj2ra0.png",
     "bio": "Frank Lampard was a goal-scoring midfielder known for late runs and finishing ability."
   },
@@ -1201,6 +1285,9 @@
 
     "name": "Guti",
     "pos": "CMF",
+    "style": "Creative Playmaker",
+"nationality": "Spain",
+"foot": "Left",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471209/Guti_b5n13n.png",
     "bio": "Guti was a Real Madrid playmaker known for creativity and unpredictable passing."
   },
@@ -1208,6 +1295,9 @@
 
     "name": "Mark van Bommel",
     "pos": "CMF",
+    "style": "The Destroyer",
+"nationality": "Netherlands",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471208/Mark_van_Bommel_wdpctx.png",
     "bio": "Mark van Bommel was a strong midfielder known for leadership and defensive contribution."
   },
@@ -1215,6 +1305,9 @@
 
     "name": "Bryan Robson",
     "pos": "CMF",
+    "style": "Box-to-Box",
+"nationality": "England",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471207/Bryan_Robson_d7yudy.png",
     "bio": "Bryan Robson was a Manchester United captain known for stamina and box-to-box play."
   },
@@ -1222,6 +1315,9 @@
 
     "name": "Thiago Alcantara",
     "pos": "CMF",
+    "style": "Orchestrator",
+"nationality": "Spain",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471205/Thiago_Alcantara_mcpxfd.png",
     "bio": "Thiago Alcantara is a Spanish midfielder known for technique, control, and passing creativity."
   },
@@ -1229,6 +1325,9 @@
 
     "name": "Roberto Donadoni",
     "pos": "CMF",
+    "style": "Creative Playmaker",
+"nationality": "Italy",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471204/Roberto_Donadoni_oh8b7c.png",
     "bio": "Roberto Donadoni was an elegant Italian midfielder known for dribbling and balance."
   },
@@ -1236,6 +1335,9 @@
 
     "name": "R. Van De Der Vaart",
     "pos": "CMF",
+      "style": "Classic No. 10",
+"nationality": "Netherlands",
+"foot": "Left",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777892299/R._van_de_der_Vaart_idsbq9.png",
     "bio": "Roberto Donadoni was an elegant Italian midfielder known for dribbling and balance."
   },
@@ -1243,6 +1345,9 @@
 
     "name": "Deco",
     "pos": "CMF",
+      "style": "Creative Playmaker",
+"nationality": "Portugal",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778010917/Deco_okh2se.png",
     "bio": "Deco was an elegant Italian midfielder known for dribbling and balance."
   },
@@ -1251,6 +1356,9 @@
 
     "name": "Andrea Pirlo",
     "pos": "DMF",
+   "style": "Orchestrator",
+"nationality": "Italy",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471237/Andrea_Pirlo_psnvig.png",
     "bio": "Andrea Pirlo was a deep-lying playmaker known for his vision, passing, and set-piece mastery."
   },
@@ -1258,6 +1366,9 @@
 
     "name": "Patrick Vieira",
     "pos": "DMF",
+    "style": "The Destroyer",
+"nationality": "France",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471236/Patrick_Vieira_ggsvop.png",
     "bio": "Patrick Vieira was a dominant midfielder known for strength, leadership, and box-to-box ability."
   },
@@ -1265,6 +1376,9 @@
 
     "name": "Frank Rijkaard",
     "pos": "DMF",
+    "style": "Orchestrator",
+"nationality": "Netherlands",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471237/Frank_Rijkaard_lhgdjs.png",
     "bio": "Frank Rijkaard was a legendary defensive midfielder known for composure, intelligence, and defensive control."
   },
@@ -1273,6 +1387,9 @@
 
     "name": "Gennaro Gattuso",
     "pos": "DMF",
+    "style": "The Destroyer",
+"nationality": "Italy",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471233/Gennaro_Gattuso_mbjpr4.png",
     "bio": "Gennaro Gattuso was a fierce midfielder known for aggression, tackling, and work rate."
   },
@@ -1280,6 +1397,9 @@
 
     "name": "Clarence Seedorf",
     "pos": "DMF",
+    "style": "Box-to-Box",
+"nationality": "Netherlands",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471232/Clarence_Seedorf_cdkw3d.png",
     "bio": "Clarence Seedorf was a versatile midfielder known for strength, technique, and big-game performance."
   },
@@ -1288,6 +1408,9 @@
 
     "name": "Xavi Alonso",
     "pos": "DMF",
+    "style": "Orchestrator",
+"nationality": "Spain",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1777893222/Xabi_Alonso_jdwkuw.png",
     "bio": "Xavi was a Barcelona legend known for passing, control, and midfield dominance."
   },
@@ -1295,6 +1418,9 @@
  
     "name": "Claude Makelele",
     "pos": "DMF",
+    "style": "The Destroyer",
+"nationality": "France",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775471226/Claude_Makelele_lplqxo.png",
     "bio": "Claude Makelele was a defensive midfield specialist known for interceptions and positioning."
   },
@@ -1302,6 +1428,9 @@
  
     "name": "Phillip Cocu",
     "pos": "DMF",
+      "style": "Box-to-Box",
+"nationality": "Netherlands",
+"foot": "Left",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778090657/Phillip_Cocu_ztasyq.png",
     "bio": "Phillip Cocu was a defensive midfield specialist known for interceptions and positioning."
   },
@@ -1309,6 +1438,9 @@
  
     "name": "Pep Guardiola",
     "pos": "DMF",
+      "style": "Orchestrator",
+"nationality": "Spain",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778090657/Pep_Guardiola_zt2scj.png",
     "bio": "Pep Guardiola was a defensive midfield specialist known for interceptions and positioning."
   },
@@ -1316,6 +1448,9 @@
  
     "name": "Darren Fletcher",
     "pos": "DMF",
+      "style": "Box-to-Box",
+"nationality": "Scotland",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778090657/Darren_Fletcher_jyzbxk.png",
     "bio": "Darren Fletcher was a defensive midfield specialist known for interceptions and positioning."
   },
@@ -1323,6 +1458,9 @@
  
     "name": "D. Albertini",
     "pos": "DMF",
+      "style": "Orchestrator",
+"nationality": "Italy",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778090657/Demetrio_Albertini_l69xkd.png",
     "bio": "D. Albertini was a defensive midfield specialist known for interceptions and positioning."
   },
@@ -1330,6 +1468,9 @@
  
     "name": "Massimo Ambrosini",
     "pos": "DMF",
+      "style": "The Destroyer",
+"nationality": "Italy",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778090657/Massimo_Ambrosini_oq56q7.png",
     "bio": "Massimo Ambrosini was a defensive midfield specialist known for interceptions and positioning."
   },
@@ -1337,6 +1478,9 @@
  
     "name": "Gilberto Silva",
     "pos": "DMF",
+      "style": "The Destroyer",
+"nationality": "Brazil",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1778090657/Gilberto_Silva_altn0s.png",
     "bio": "Gilberto Silva was a defensive midfield specialist known for interceptions and positioning."
   },
@@ -1345,6 +1489,9 @@
    
     "name": "Roberto Carlos",
     "pos": "LB",
+   "style": "Offensive Full-back",
+"nationality": "Brazil",
+"foot": "Left",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472226/Roberto_Carlos_hcxkok.png",
     "bio": "Roberto Carlos was a legendary Brazilian left-back known for his powerful shots, speed, and attacking runs."
   },
@@ -1352,6 +1499,9 @@
     
     "name": "Martin Caceres",
     "pos": "LB",
+    "style": "Defensive Full-back",
+"nationality": "Uruguay",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472221/Martin_Caceres_sbmmyl.png",
     "bio": "Martin Caceres is a versatile defender known for his ability to play across the backline."
   },
@@ -1359,13 +1509,19 @@
     
     "name": "Javier Zanetti",
     "pos": "LB",
+    "style": "Offensive Full-back",
+"nationality": "Argentina",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472226/Javier_Zanetti_ej0eqo.png",
     "bio": "Javier Zanetti was a legendary defender known for leadership, consistency, and versatility."
   },
+    
   {
-  
     "name": "Gareth Bale",
     "pos": "LB",
+    "style": "Offensive Full-back",
+"nationality": "Wales",
+"foot": "Left",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472225/Gareth_Bale_u89xpu.png",
     "bio": "Gareth Bale started as a left-back before becoming a world-class winger known for pace and power."
   },
@@ -1373,6 +1529,9 @@
    
     "name": "Paolo Maldini",
     "pos": "LB",
+    "style": "Defensive Full-back",
+"nationality": "Italy",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472224/Paolo_Maldini_yr9pd6.png",
     "bio": "Paolo Maldini was an iconic defender known for elegance, positioning, and loyalty to AC Milan."
   },
@@ -1380,6 +1539,9 @@
    
     "name": "G. van Bronckhorst",
     "pos": "LB",
+    "style": "Offensive Full-back",
+"nationality": "Netherlands",
+"foot": "Left",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472224/G._van_Bronckhorst_eglzu6.png",
     "bio": "Giovanni van Bronckhorst was a Dutch left-back known for technique, leadership, and long-range goals."
   },
@@ -1387,6 +1549,9 @@
    
     "name": "Sergi Barjuan",
     "pos": "LB",
+    "style": "Offensive Full-back",
+"nationality": "Spain",
+"foot": "Left",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472223/Sergi_Barjuan_zzb16r.png",
     "bio": "Sergi Barjuan was a Spanish left-back known for attacking support and consistency."
   },
@@ -1394,6 +1559,9 @@
    
     "name": "Denis Irwin",
     "pos": "LB",
+    "style": "Offensive Full-back",
+"nationality": "Ireland",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472222/Denis_Irwin_jlprxg.png",
     "bio": "Denis Irwin was a reliable full-back known for defensive solidity and set-piece ability."
   },
@@ -1401,6 +1569,9 @@
     
     "name": "A. Costacurta",
     "pos": "LB",
+    "style": "Defensive Full-back",
+"nationality": "Italy",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472222/A._Costacurta_wvdtrp.png",
     "bio": "Alessandro Costacurta was an Italian defender known for intelligence, positioning, and discipline."
   },
@@ -1408,6 +1579,9 @@
     
     "name": "Bixente Lizarazu",
     "pos": "LB",
+    "style": "Offensive Full-back",
+"nationality": "France",
+"foot": "Left",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472221/Bixente_Lizarazu_iyikqc.png",
     "bio": "Bixente Lizarazu was a French left-back known for pace, aggression, and defensive strength."
   },
@@ -1415,6 +1589,9 @@
    
     "name": "Yuto Nagatomo",
     "pos": "LB",
+    "style": "Offensive Full-back",
+"nationality": "Japan",
+"foot": "Right",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472220/Yuto_Nagatomo_xqnh3i.png",
     "bio": "Yuto Nagatomo is a Japanese full-back known for energy, stamina, and attacking support."
   },
@@ -1422,6 +1599,9 @@
    
     "name": "Mikael Silvestre",
     "pos": "LB",
+    "style": "Offensive Full-back",
+"nationality": "France",
+"foot": "Left",
     "img": "https://res.cloudinary.com/dyqegwdme/image/upload/q_auto/f_auto/v1775472220/Mikael_Silvestre_ovphto.png",
     "bio": "Mikael Silvestre was a French defender known for versatility and composure at the back."
   },
