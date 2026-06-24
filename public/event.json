@@ -1,8 +1,7 @@
 {
   "events": [
-    { "https://res.cloudinary.com/dyqegwdme/image/upload/v1781873961/National_star_1994_y5jaom.png" },
-  
-    { "img": "https://res.cloudinary.com/dyqegwdme/image/upload/v1781873961/National_star_1994_y5jaom.png" }
-    
+    "https://res.cloudinary.com/dyqegwdme/image/upload/v1781873961/National_star_1994_y5jaom.png",
+    "https://res.cloudinary.com/dyqegwdme/image/upload/v1781873961/National_star_1994_y5jaom.png",
+    "https://res.cloudinary.com/dyqegwdme/image/upload/v1781873961/National_star_1994_y5jaom.png"
   ]
 }
