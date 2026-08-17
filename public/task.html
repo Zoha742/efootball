@@ -24,9 +24,12 @@
         .task-card { background: var(--card); border-radius: 20px; padding: 25px; border: 1px solid var(--border); margin-bottom: 20px; }
         .reward-info i { font-size: 40px; color: #fbbf24; margin-bottom: 10px; }
         .reward-info h2 { margin: 5px 0; color: var(--green); }
+        
         .ad-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0; }
-        .ad-slot { background: #050a18; border: 1px solid var(--border); padding: 15px 5px; border-radius: 12px; font-size: 12px; transition: 0.3s; }
+        .ad-slot { background: #050a18; border: 1px solid var(--border); padding: 10px 5px; border-radius: 12px; font-size: 11px; transition: 0.3s; text-align: center; }
+        .ad-slot img { width: 40px; height: 40px; object-fit: cover; border-radius: 8px; margin-bottom: 5px; display: block; margin-left: auto; margin-right: auto; border: 1px solid var(--primary); }
         .ad-slot.done { border-color: var(--green); color: var(--green); }
+        
         .btn-main { width: 100%; border: none; padding: 15px; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 16px; }
         .btn-blue { background: var(--primary); box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); }
         .btn-lock { background: #334155; cursor: not-allowed; opacity: 0.8; }
@@ -53,13 +56,32 @@
                 <h2>500 GP Points</h2>
             </div>
 
+            <!-- ৬টি স্লটে আপনার দেওয়া ৬টি ছবি যুক্ত করা হলো -->
             <div class="ad-grid" id="ad-slots">
-                <div class="ad-slot" id="slot-1"><i class="fas fa-play"></i><br>Ad 1</div>
-                <div class="ad-slot" id="slot-2"><i class="fas fa-play"></i><br>Ad 2</div>
-                <div class="ad-slot" id="slot-3"><i class="fas fa-play"></i><br>Ad 3</div>
-                <div class="ad-slot" id="slot-4"><i class="fas fa-play"></i><br>Ad 4</div>
-                <div class="ad-slot" id="slot-5"><i class="fas fa-play"></i><br>Ad 5</div>
-                <div class="ad-slot" id="slot-6"><i class="fas fa-play"></i><br>Ad 6</div>
+                <div class="ad-slot" id="slot-1">
+                    <img src="https://res.cloudinary.com/dyqegwdme/image/upload/v1786994788/1._start_wmufid.png" alt="Ad 1">
+                    <span>Ad 1</span>
+                </div>
+                <div class="ad-slot" id="slot-2">
+                    <img src="https://res.cloudinary.com/dyqegwdme/image/upload/v1786994788/2._goal_sbspgy.png" alt="Ad 2">
+                    <span>Ad 2</span>
+                </div>
+                <div class="ad-slot" id="slot-3">
+                    <img src="https://res.cloudinary.com/dyqegwdme/image/upload/v1786994788/3._kick_wvbdfw.png" alt="Ad 3">
+                    <span>Ad 3</span>
+                </div>
+                <div class="ad-slot" id="slot-4">
+                    <img src="https://res.cloudinary.com/dyqegwdme/image/upload/v1786994787/4.star_zxgufd.png" alt="Ad 4">
+                    <span>Ad 4</span>
+                </div>
+                <div class="ad-slot" id="slot-5">
+                    <img src="https://res.cloudinary.com/dyqegwdme/image/upload/v1786994787/5.Cup_khdiku.png" alt="Ad 5">
+                    <span>Ad 5</span>
+                </div>
+                <div class="ad-slot" id="slot-6">
+                    <img src="https://res.cloudinary.com/dyqegwdme/image/upload/v1786994787/6.Win_ypr6bc.png" alt="Ad 6">
+                    <span>Ad 6</span>
+                </div>
             </div>
 
             <button id="task-btn" class="btn-main btn-blue" onclick="handleTask()">WATCH AD (1/6)</button>
@@ -79,6 +101,16 @@
         const tg = window.Telegram.WebApp;
         tg.expand();
         const userId = tg.initDataUnsafe?.user?.id || "test_user";
+
+        // ছবিগুলোর লিংক অ্যারে আকারে রাখা হলো (রিস্টোর করার সময় ব্যবহারের জন্য)
+        const slotImages = [
+            "https://res.cloudinary.com/dyqegwdme/image/upload/v1786994788/1._start_wmufid.png",
+            "https://res.cloudinary.com/dyqegwdme/image/upload/v1786994788/2._goal_sbspgy.png",
+            "https://res.cloudinary.com/dyqegwdme/image/upload/v1786994788/3._kick_wvbdfw.png",
+            "https://res.cloudinary.com/dyqegwdme/image/upload/v1786994787/4.star_zxgufd.png",
+            "https://res.cloudinary.com/dyqegwdme/image/upload/v1786994787/5.Cup_khdiku.png",
+            "https://res.cloudinary.com/dyqegwdme/image/upload/v1786994787/6.Win_ypr6bc.png"
+        ];
 
         const AdController = {
             videoBlockId: "29212", 
@@ -164,7 +196,7 @@
             const slot = document.getElementById(`slot-${num}`);
             if(slot) {
                 slot.classList.add('done');
-                slot.innerHTML = '<i class="fas fa-check-circle"></i><br>Done';
+                slot.innerHTML = `<img src="${slotImages[num-1]}" alt="Done"><span>Done</span>`;
             }
         }
 
@@ -248,10 +280,10 @@
                 if(slot) {
                     if (i <= adsWatched) {
                         slot.classList.add('done');
-                        slot.innerHTML = '<i class="fas fa-check-circle"></i><br>Done';
+                        slot.innerHTML = `<img src="${slotImages[i-1]}" alt="Done"><span>Done</span>`;
                     } else {
                         slot.classList.remove('done');
-                        slot.innerHTML = `<i class="fas fa-play"></i><br>Ad ${i}`;
+                        slot.innerHTML = `<img src="${slotImages[i-1]}" alt="Ad ${i}"><span>Ad ${i}</span>`;
                     }
                 }
             }
