@@ -1,1 +1,180 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lucky Spin - eFootball TM</title>
+    <!-- Firebase & SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
+    <!-- Central Config -->
+    <script src="config.js"></script>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --bg: #050a18; --card: #121e36; --primary: #3b82f6; --text: #ffffff; --border: #1e2d4d; --yellow: #fbbf24; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; padding-bottom: 90px; }
+        
+        .top-bar { display: flex; align-items: center; padding: 15px; background: rgba(18, 30, 54, 0.7); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; }
+        .top-bar a { color: white; text-decoration: none; margin-right: 15px; }
+
+        .container { padding: 20px; text-align: center; }
+        .spin-card { background: var(--card); border-radius: 20px; padding: 25px; border: 1px solid var(--border); margin-bottom: 20px; }
+        
+        /* হুইল বা চাকার ডিজাইন */
+        .wheel-container { position: relative; width: 260px; height: 260px; margin: 20px auto; }
+        .wheel { width: 100%; height: 100%; border-radius: 50%; border: 6px solid var(--yellow); position: relative; overflow: hidden; transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99); background: conic-gradient(#1e2d4d 0deg 60deg, #3b82f6 60deg 120deg, #1e2d4d 120deg 180deg, #3b82f6 180deg 240deg, #1e2d4d 240deg 300deg, #3b82f6 300deg 360deg); box-shadow: 0 0 20px rgba(251, 191, 36, 0.3); }
+        .wheel-pointer { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 12px solid transparent; border-right: 12px solid transparent; border-bottom: 25px solid var(--yellow); z-index: 10; }
+        
+        .btn-spin { width: 100%; border: none; padding: 16px; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; font-size: 16px; background: linear-gradient(135deg, #fbbf24, #d97706); box-shadow: 0 4px 15px rgba(251, 191, 36, 0.4); margin-top: 15px; transition: 0.3s; }
+        .btn-spin:disabled { background: #334155; cursor: not-allowed; opacity: 0.7; box-shadow: none; }
+
+        .btn-back { display: block; width: 60%; margin: 15px auto 0 auto; padding: 12px; border-radius: 12px; background: rgba(30, 45, 77, 0.6); border: 1px solid var(--border); color: #ffffff; text-decoration: none; font-weight: bold; font-size: 14px; text-align: center; transition: 0.3s; }
+        .btn-back:hover { background: rgba(59, 130, 246, 0.2); border-color: var(--primary); }
+
+        #timer-display { margin-top: 15px; font-size: 16px; font-weight: bold; color: #f87171; display: none; }
+        .limit-note { font-size: 11px; color: #64748b; margin-top: 15px; line-height: 1.4; }
+
+        /* Bottom Nav */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 70px; background: #070d19; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid var(--border); z-index: 1000; }
+        .nav-item { text-align: center; color: #94a3b8; font-size: 11px; text-decoration: none; flex: 1; }
+        .nav-item i { font-size: 20px; display: block; margin-bottom: 4px; }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <a href="index.html"><i class="fas fa-chevron-left"></i></a>
+        <span>Lucky Spin Wheel</span>
+    </div>
+
+    <div class="container">
+        <div class="spin-card">
+            <i class="fas fa-dharmachakra" style="font-size: 35px; color: var(--yellow); margin-bottom: 10px;"></i>
+            <h3 style="margin-bottom: 15px;">Spin & Win GP</h3>
+            
+            <div class="wheel-container">
+                <div class="wheel-pointer"></div>
+                <div class="wheel" id="inner-wheel"></div>
+            </div>
+
+            <button id="spin-btn" class="btn-spin" onclick="spinWheel()">SPIN NOW</button>
+
+            <div id="timer-display">
+                Next Spin In: <span id="countdown">00:00</span>
+            </div>
+
+            <div class="limit-note">
+                <i class="fas fa-info-circle"></i> You can spin the wheel once every 6 hours to win free GP rewards!
+            </div>
+
+            <a href="index.html" class="btn-back">
+                <i class="fas fa-arrow-left" style="margin-right: 6px;"></i> Back
+            </a>
+        </div>
+    </div>
+
+    <!-- নিচের নেভিগেশন বার -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item" style="color: #3b82f6;"><i class="fas fa-home"></i>Home</a>
+        <a href="legend.html" class="nav-item"><i class="fas fa-crown"></i>Legend</a>
+        <a href="task.html" class="nav-item"><i class="fas fa-clipboard-check"></i>Earn</a>
+        <a href="profile.html" class="nav-item"><i class="fas fa-user-circle"></i>Profile</a>
+    </nav>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+        const userId = tg.initDataUnsafe?.user?.id || "test_user";
+
+        const prizes = [100, 20, 200, 50, 500, 10]; 
+        const cooldownTime = 6 * 60 * 60 * 1000;      
+        let nextSpinTime = 0;
+        let userGP = 0;
+        let timerInterval;
+        let isSpinning = false;
+
+        function initSpin() {
+            db.ref('users/' + userId).on('value', snap => {
+                const data = snap.val() || {};
+                userGP = data.gp || 0;
+                nextSpinTime = data.spin_next_time || 0;
+                updateUI();
+            });
+        }
+
+        function updateUI() {
+            const now = Date.now();
+            const btn = document.getElementById('spin-btn');
+            const timerDiv = document.getElementById('timer-display');
+
+            if (now < nextSpinTime) {
+                btn.disabled = true;
+                timerDiv.style.display = 'block';
+                startTimer(nextSpinTime - now);
+            } else {
+                btn.disabled = false;
+                timerDiv.style.display = 'none';
+            }
+        }
+
+        function spinWheel() {
+            if (isSpinning) return;
+            isSpinning = true;
+            
+            const btn = document.getElementById('spin-btn');
+            btn.disabled = true;
+
+            const randomIndex = Math.floor(Math.random() * prizes.length);
+            const wonAmount = prizes[randomIndex];
+
+            const degreesPerItem = 360 / prizes.length;
+            const extraSpins = 360 * 5;
+            const targetDegree = extraSpins + (360 - (randomIndex * degreesPerItem + degreesPerItem / 2));
+
+            const wheel = document.getElementById('inner-wheel');
+            wheel.style.transform = `rotate(${targetDegree}deg)`;
+
+            setTimeout(() => {
+                isSpinning = false;
+                const newGP = userGP + wonAmount;
+                const nextTime = Date.now() + cooldownTime;
+
+                db.ref('users/' + userId).update({
+                    gp: newGP,
+                    spin_next_time: nextTime
+                }).then(() => {
+                    alert(`Congratulations! You won ${wonAmount} GP! Added to your profile.`);
+                });
+            }, 4000);
+        }
+
+        function startTimer(remaining) {
+            const countdownSpan = document.getElementById('countdown');
+            clearInterval(timerInterval);
+
+            timerInterval = setInterval(() => {
+                const now = Date.now();
+                const diff = nextSpinTime - now;
+
+                if (diff <= 0) {
+                    clearInterval(timerInterval);
+                    updateUI();
+                    return;
+                }
+
+                let h = Math.floor(diff / 3600000);
+                let m = Math.floor((diff % 3600000) / 60000);
+                let s = Math.floor((diff % 60000) / 1000);
+
+                countdownSpan.innerText = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+            }, 1000);
+        }
+
+        window.onload = initSpin;
+    </script>
+</body>
+</html>
