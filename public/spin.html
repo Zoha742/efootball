@@ -25,7 +25,7 @@
         .container { padding: 20px; text-align: center; }
         .spin-card { background: linear-gradient(135deg, #121e36, #1a2c50); border-radius: 24px; padding: 25px; border: 1px solid rgba(251, 191, 36, 0.3); box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin-bottom: 20px; position: relative; overflow: hidden; }
         
-        /* চাকার ডিজাইন এবং নিখুঁত টেক্সট পজিশনিং */
+        /* চাকার ডিজাইন এবং টেক্সট সোজা ও নিখুঁতভাবে সাজানো */
         .wheel-container { position: relative; width: 280px; height: 280px; margin: 25px auto; }
         .wheel { 
             width: 100%; height: 100%; border-radius: 50%; border: 8px solid #fbbf24; 
@@ -46,13 +46,13 @@
             position: absolute; width: 100%; height: 100%; top: 0; left: 0;
         }
         .w-text {
-            position: absolute; width: 50%; height: 40px; top: 50%; left: 50%;
-            margin-top: -20px; transform-origin: left center;
+            position: absolute; width: 50%; height: 35px; top: 50%; left: 50%;
+            margin-top: -17px; transform-origin: left center;
             font-size: 13px; font-weight: bold; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.9);
-            display: flex; align-items: center; justify-content: flex-end; padding-right: 25px;
+            display: flex; align-items: center; justify-content: flex-end; padding-right: 30px;
         }
         
-        /* ৬টি সেগমেন্টের নিখুঁত এঙ্গেল */
+        /* প্রতিটি সেগমেন্টের সঠিক পজিশন ও সোজা টেক্সট এঙ্গেল */
         .wt-1 { transform: rotate(30deg); }
         .wt-2 { transform: rotate(90deg); }
         .wt-3 { transform: rotate(150deg); }
@@ -112,12 +112,13 @@
                 <div class="wheel-pointer"></div>
                 <div class="wheel" id="inner-wheel">
                     <div class="wheel-texts">
+                        <!-- সেগমেন্টগুলোর সঠিক ক্রমানুসারে টেক্সট পজিশন -->
                         <span class="w-text wt-1">500 GP</span>
-                        <span class="w-text wt-2">150 GP</span>
-                        <span class="w-text wt-3">600 GP</span>
-                        <span class="w-text wt-4">1000 GP</span>
-                        <span class="w-text wt-5">500 GP</span>
-                        <span class="w-text wt-6">600 GP</span>
+                        <span class="w-text wt-2">600 GP</span>
+                        <span class="w-text wt-3">1000 GP</span>
+                        <span class="w-text wt-4">500 GP</span>
+                        <span class="w-text wt-5">600 GP</span>
+                        <span class="w-text wt-6">150 GP</span>
                     </div>
                 </div>
                 <div class="wheel-center"><i class="fas fa-star" style="font-size: 18px; color: #fff;"></i></div>
@@ -171,7 +172,8 @@
             }
         };
 
-        const prizes = [500, 150, 600, 1000, 500, 600]; 
+        // সেগমেন্ট লিস্ট এবং কালার কনিকা গ্রেডিয়েন্টের সাথে মিল রেখে সাজানো
+        const prizes = [500, 600, 1000, 500, 600, 150]; 
         const cooldownTime = 3 * 60 * 60 * 1000; 
         const adInterval = 5 * 1000;             
 
@@ -284,23 +286,25 @@
             const btn = document.getElementById('spin-btn');
             btn.disabled = true;
 
+            // সিকোয়েন্স লজিক: প্রথম স্পিনে 500 GP (index 0), দ্বিতীয় স্পিনে নিশ্চিত 600 GP (index 1)
             let winningIndex;
             if (freeSpinsLeft === 1) {
                 winningIndex = 0; // 500 GP
             } else if (freeSpinsLeft === 0 && !isFinalCycle) {
-                winningIndex = 2; // 600 GP
+                winningIndex = 1; // 600 GP
             } else {
                 const luckyRoll = Math.random();
                 if (luckyRoll < 0.45) winningIndex = 0; // 500 GP
-                else if (luckyRoll < 0.90) winningIndex = 2; // 600 GP
-                else if (luckyRoll < 0.95) winningIndex = 4; // 500 GP
-                else winningIndex = 3; // 1000 GP
+                else if (luckyRoll < 0.90) winningIndex = 1; // 600 GP
+                else if (luckyRoll < 0.95) winningIndex = 3; // 500 GP
+                else winningIndex = 2; // 1000 GP
             }
 
             const wonAmount = prizes[winningIndex];
 
             const degreesPerItem = 360 / prizes.length;
             const extraSpins = 360 * 6; 
+            // সঠিক সেগমেন্ট পয়েন্ট এবং ইনডিকেটরের সাথে ডিগ্রি নিখুঁতভাবে মেলানো
             const targetDegree = extraSpins + (360 - (winningIndex * degreesPerItem + degreesPerItem / 2));
 
             const wheel = document.getElementById('inner-wheel');
