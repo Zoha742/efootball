@@ -25,12 +25,12 @@
         .container { padding: 20px; text-align: center; }
         .spin-card { background: linear-gradient(135deg, #121e36, #1a2c50); border-radius: 24px; padding: 25px; border: 1px solid rgba(251, 191, 36, 0.3); box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin-bottom: 20px; position: relative; overflow: hidden; }
         
-        /* চাকার ডিজাইন এবং টেক্সট */
+        /* চাকার ডিজাইন এবং প্রিমিয়াম লেবেল */
         .wheel-container { position: relative; width: 280px; height: 280px; margin: 25px auto; }
         .wheel { 
             width: 100%; height: 100%; border-radius: 50%; border: 8px solid #fbbf24; 
             position: relative; overflow: hidden; 
-            transition: transform 4s cubic-bezier(0.15, 0.75, 0.1, 1); 
+            transition: transform 4.5s cubic-bezier(0.15, 0.75, 0.1, 1); 
             background: conic-gradient(
                 #ef4444 0deg 60deg, 
                 #f97316 60deg 120deg, 
@@ -118,7 +118,7 @@
             </div>
 
             <button id="spin-btn" class="btn-spin" onclick="handleSpinAction()">
-                <i class="fas fa-play-circle"></i> FREE SPIN (2 Left)
+                <i class="fas fa-gift"></i> FREE SPIN (2 Left)
             </button>
 
             <div id="timer-display">
@@ -192,7 +192,6 @@
             const timerDiv = document.getElementById('timer-display');
             const statusText = document.getElementById('status-text');
 
-            // ১. যদি ৩ ঘণ্টার কোডাউন চলতে থাকে
             if (now < nextSpinTime) {
                 btn.disabled = true;
                 timerDiv.style.display = 'block';
@@ -200,7 +199,6 @@
                 startTimer(nextSpinTime - now);
                 return;
             } else if (nextSpinTime > 0 && now >= nextSpinTime && freeSpinsLeft === 0 && adsWatched >= 3) {
-                // কোডাউন শেষ হলে সবকিছু রিসেট করে আবার ফ্রি স্পিন ফিরিয়ে দেওয়া
                 db.ref('users/' + userId).update({
                     spin_free_left: 2,
                     spin_ads_count: 0,
@@ -210,7 +208,6 @@
                 adsWatched = 0;
             }
 
-            // ২. অ্যাড দেখার মাঝে ৫ সেকেন্ডের ওয়েটিং টাইম চেক
             if (now < nextAllowedTime) {
                 btn.disabled = true;
                 timerDiv.style.display = 'block';
@@ -222,7 +219,6 @@
             timerDiv.style.display = 'none';
             btn.disabled = false;
 
-            // ৩. স্ট্যাটাস অনুযায়ী বাটন টেক্সট পরিবর্তন
             if (freeSpinsLeft > 0) {
                 statusText.innerText = `Free Spins Left: ${freeSpinsLeft}`;
                 btn.innerHTML = `<i class="fas fa-gift"></i> FREE SPIN (${freeSpinsLeft} Left)`;
@@ -241,15 +237,13 @@
             const now = Date.now();
             if (now < nextAllowedTime) return;
 
-            // ক. প্রথমে ২টা ফ্রি স্পিন মারতে পারবে
             if (freeSpinsLeft > 0) {
                 freeSpinsLeft--;
                 db.ref('users/' + userId).update({
                     spin_free_left: freeSpinsLeft
                 });
-                executeSpin(false); // ফ্রি স্পিন হলে কোডাউন লাগবে না, তবে ফ্রি শেষ হলে অ্যাড অপশন আসবে
+                executeSpin(false); 
             } 
-            // খ. ফ্রি শেষ হলে ৩টি অ্যাড দেখার লজিক
             else if (adsWatched < 3) {
                 AdController.showVideoAd(
                     (result) => {
@@ -273,7 +267,6 @@
                     }
                 );
             } 
-            // গ. ৩টি অ্যাড দেখা শেষ হলে চাকা ঘোরাবে এবং ৩ ঘণ্টা কোডাউন শুরু হবে
             else {
                 executeSpin(true);
             }
@@ -284,21 +277,19 @@
             const btn = document.getElementById('spin-btn');
             btn.disabled = true;
 
-            // ইউজারের জন্য উইনিং প্রবাবিলিটি (বেশিভাগ সময় ৫০০ বা ৬০০ GP পড়বে)
-            const luckyRoll = Math.random();
+            // সিকোয়েন্স লজিক: প্রথম স্পিনে 500 GP (index 0), দ্বিতীয় স্পিনে নিশ্চিত 600 GP (index 2)
             let winningIndex;
-            if (luckyRoll < 0.40) {
+            if (freeSpinsLeft === 1) {
                 winningIndex = 0; // 500 GP
-            } else if (luckyRoll < 0.80) {
+            } else if (freeSpinsLeft === 0 && !isFinalCycle) {
                 winningIndex = 2; // 600 GP
-            } else if (luckyRoll < 0.90) {
-                winningIndex = 4; // 500 GP
-            } else if (luckyRoll < 0.96) {
-                winningIndex = 5; // 600 GP
-            } else if (luckyRoll < 0.99) {
-                winningIndex = 3; // 1000 GP
             } else {
-                winningIndex = 1; // 150 GP
+                // অ্যাড দেখার পরের স্পিনগুলোতেও বেশিরভাগ সময় 500 বা 600 GP (ইউজার খুশি রাখতে)
+                const luckyRoll = Math.random();
+                if (luckyRoll < 0.45) winningIndex = 0; // 500 GP
+                else if (luckyRoll < 0.90) winningIndex = 2; // 600 GP
+                else if (luckyRoll < 0.95) winningIndex = 4; // 500 GP
+                else winningIndex = 3; // 1000 GP জ্যাকপট
             }
 
             const wonAmount = prizes[winningIndex];
@@ -316,7 +307,6 @@
                 
                 let updateData = { gp: newGP };
 
-                // যদি ফ্রি স্পিন শেষ থাকে এবং অ্যাড সাইকেল শেষ হয়ে স্পিন মারে, তবে ৩ ঘণ্টার কোডাউন শুরু হবে
                 if (isFinalCycle) {
                     updateData.spin_cooldown_time = Date.now() + cooldownTime;
                     updateData.spin_next_ad_time = 0;
@@ -325,7 +315,7 @@
                 db.ref('users/' + userId).update(updateData).then(() => {
                     alert(`🎉 Congratulations! You won ${wonAmount} GP! Added to your profile.`);
                 });
-            }, 4000);
+            }, 4500); // ৪.৫ সেকেন্ড স্পিন ঘোরার সময়
         }
 
         function startTimer(remaining) {
