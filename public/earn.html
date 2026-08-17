@@ -62,13 +62,14 @@
             </div>
 
             <div class="limit-note">
-                <i class="fas fa-info-circle"></i> If you watch 3 videos completely in a day, 500 GP will be added to your account at once. After watching each ad, there will be a short waiting time for the next one.
+                <i class="fas fa-info-circle"></i> If you watch 3 videos completely, 500 GP will be added to your account. There is a 15-second waiting time between each ad and an 8-hour cooldown after completing all 3 ads[cite: 7].
             </div>
         </div>
     </div>
 
     <script>
         const tg = window.Telegram.WebApp;
+        tg.expand();
         const userId = tg.initDataUnsafe?.user?.id || "test_user";
 
         // HTML ফাইলের ভেতরের AdController
@@ -113,10 +114,10 @@
             if (now < nextAllowedTime) {
                 startTimer(nextAllowedTime - now);
             } else {
-                if (adsWatched >= 3 && now < nextAllowedTime) {
-                    showLimitReached();
-                } else if (adsWatched >= 3 && now >= nextAllowedTime) {
+                if (adsWatched >= 3 && now >= nextAllowedTime) {
                     resetDailyLimit();
+                } else if (adsWatched >= 3) {
+                    showLimitReached();
                 } else {
                     showReadyState();
                 }
@@ -135,7 +136,7 @@
             );
         }
 
-        // ৩. ৩টি অ্যাড দেখার পর ৫০০ GP রিওয়ার্ড দেওয়ার লজিক
+        // ৩. ৩টি অ্যাড দেখার পর ৫০০ GP রিওয়ার্ড এবং ৮ ঘণ্টার কোডাউন লজিক
         function handleReward() {
             const newCount = adsWatched + 1;
             let reward = 0;
@@ -146,9 +147,11 @@
             }
 
             let waitTime = 0;
-            if (newCount === 1) waitTime = 1 * 60 * 1000; // ১ম অ্যাডের পর ১ মিনিট ওয়েট
-            else if (newCount === 2) waitTime = 2 * 60 * 1000; // ২য় অ্যাডের পর 2 মিনিট ওয়েট
-            else if (newCount >= 3) waitTime = 5 * 60 * 60 * 1000; // ৩য় অ্যাডের পর 3 ঘণ্টা ওয়েট
+            if (newCount < 3) {
+                waitTime = 15 * 1000; // ১ম ও ২য় অ্যাডের পর ১৫ সেকেন্ড ওয়েট[cite: 7]
+            } else {
+                waitTime = 8 * 60 * 60 * 1000; // ৩টি অ্যাড শেষ হলে ৮ ঘণ্টা (8 hours) কোডাউন[cite: 7]
+            }
 
             const nextTime = Date.now() + waitTime;
 
@@ -160,7 +163,7 @@
                 if (newCount === 3) {
                     alert(`Congratulations! You have completed 3 ads and earned 500 GP!`);
                 } else {
-                    alert(`Ad ${newCount}/3 watched successfully! You need to watch ${3 - newCount} more ad(s) to get 500 GP.`);
+                    alert(`Ad ${newCount}/3 watched successfully! Please wait 15 seconds for the next ad[cite: 7].`);
                 }
             });
         }
@@ -208,7 +211,7 @@
             const btn = document.getElementById('earn-btn');
             btn.disabled = true;
             btn.classList.add('btn-lock');
-            btn.innerHTML = `<i class="fas fa-calendar-times"></i> DAILY TASK COMPLETED`;
+            btn.innerHTML = `<i class="fas fa-calendar-times"></i> COOLDOWN ACTIVE`;
             document.getElementById('timer-display').style.display = 'block';
         }
 
