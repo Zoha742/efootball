@@ -149,18 +149,22 @@
         const userId = tg.initDataUnsafe?.user?.id || "test_user";
 
         const AdController = {
-            videoBlockId: "29212", 
-            showVideoAd: function(onReward, onError) {
-                if (window.Adsgram) {
-                    const ad = window.Adsgram.init({ blockId: this.videoBlockId });
-                    ad.show()
-                      .then((result) => { if (onReward) onReward(result); })
-                      .catch((err) => { if (onError) onError(err); });
-                } else {
-                    alert("Ad system is loading, please wait.");
-                }
-            }
-        };
+    videoBlockId: "29212",
+    showVideoAd: function(onReward, onError) {
+        if (window.Adsgram) {
+            const ad = window.Adsgram.init({ blockId: this.videoBlockId });
+            ad.show()
+              .then((result) => { if (onReward) onReward(result); })
+              .catch((err) => { 
+                  // এখানে কাস্টম এরর মেসেজ দিয়ে দিলাম
+                  alert("No ads available right now! Please wait 3 minutes and try again.");
+                  if (onError) onError(err); 
+              });
+        } else {
+            alert("No ads available right now! Please wait 3 minutes and try again.");
+        }
+    }
+};
 
         const prizes = [500, 150, 600, 1000, 500, 600]; 
         const cooldownTime = 3 * 60 * 60 * 1000; // ৩ ঘণ্টার কাউন্টডাউন
