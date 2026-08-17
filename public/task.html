@@ -26,7 +26,8 @@
         .reward-info h2 { margin: 5px 0; color: var(--green); }
         
         .ad-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0; }
-        .ad-slot { background: #050a18; border: 1px solid var(--border); padding: 15px 5px; border-radius: 12px; font-size: 12px; transition: 0.3s; text-align: center; }
+        .ad-slot { background: #050a18; border: 1px solid var(--border); padding: 8px; border-radius: 12px; font-size: 11px; transition: 0.3s; text-align: center; }
+        .ad-slot img { width: 100%; height: 65px; object-fit: cover; border-radius: 8px; margin-bottom: 5px; display: block; border: 1px solid var(--primary); }
         .ad-slot.done { border-color: var(--green); color: var(--green); }
         
         .btn-main { width: 100%; border: none; padding: 15px; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 16px; }
@@ -55,23 +56,44 @@
                 <h2>500 GP Points</h2>
             </div>
 
-            <!-- ৩টি ভিডিও স্লট (কোনো ছবি ছাড়া) -->
+            <!-- ৬টি স্লটে বড় সাইজের ছবিসহ ভিডিও অপশন -->
             <div class="ad-grid" id="ad-slots">
-                <div class="ad-slot" id="slot-1"><i class="fas fa-play"></i><br>Ad 1</div>
-                <div class="ad-slot" id="slot-2"><i class="fas fa-play"></i><br>Ad 2</div>
-                <div class="ad-slot" id="slot-3"><i class="fas fa-play"></i><br>Ad 3</div>
+                <div class="ad-slot" id="slot-1">
+                    <img src="https://res.cloudinary.com/dyqegwdme/image/upload/v1786994788/1._start_wmufid.png" alt="Ad 1">
+                    <span>Ad 1</span>
+                </div>
+                <div class="ad-slot" id="slot-2">
+                    <img src="https://res.cloudinary.com/dyqegwdme/image/upload/v1786994788/2._goal_sbspgy.png" alt="Ad 2">
+                    <span>Ad 2</span>
+                </div>
+                <div class="ad-slot" id="slot-3">
+                    <img src="https://res.cloudinary.com/dyqegwdme/image/upload/v1786994788/3._kick_wvbdfw.png" alt="Ad 3">
+                    <span>Ad 3</span>
+                </div>
+                <div class="ad-slot" id="slot-4">
+                    <img src="https://res.cloudinary.com/dyqegwdme/image/upload/v1786994787/4.star_zxgufd.png" alt="Ad 4">
+                    <span>Ad 4</span>
+                </div>
+                <div class="ad-slot" id="slot-5">
+                    <img src="https://res.cloudinary.com/dyqegwdme/image/upload/v1786994787/5.Cup_khdiku.png" alt="Ad 5">
+                    <span>Ad 5</span>
+                </div>
+                <div class="ad-slot" id="slot-6">
+                    <img src="https://res.cloudinary.com/dyqegwdme/image/upload/v1786994787/6.Win_ypr6bc.png" alt="Ad 6">
+                    <span>Ad 6</span>
+                </div>
             </div>
 
-            <button id="task-btn" class="btn-main btn-blue" onclick="handleTask()">WATCH AD (1/3)</button>
-            <div id="timer">Next Ad In: <span id="countdown">00:15</span></div>
+            <button id="task-btn" class="btn-main btn-blue" onclick="handleTask()">WATCH AD (1/6)</button>
+            <div id="timer">Next Ad In: <span id="countdown">00:05</span></div>
         </div>
     </div>
 
-    <!-- নিচের নেভিগেশন বার (সঠিক হোম বাটনসহ) -->
+    <!-- নিচের নেভিগেশন বার (সঠিক হোম বাটনসহ)[cite: 3] -->
     <nav class="bottom-nav">
-        <a href="index.html" class="nav-item"><i class="fas fa-home"></i>Home</a>
+        <a href="index.html" class="nav-item" style="color: #3b82f6;"><i class="fas fa-home"></i>Home</a>
         <a href="legend.html" class="nav-item"><i class="fas fa-crown"></i>Legend</a>
-        <a href="task.html" class="nav-item" style="color: #3b82f6;"><i class="fas fa-clipboard-check"></i>Earn</a>
+        <a href="task.html" class="nav-item"><i class="fas fa-clipboard-check"></i>Earn</a>
         <a href="profile.html" class="nav-item"><i class="fas fa-user-circle"></i>Profile</a>
     </nav>
 
@@ -79,6 +101,15 @@
         const tg = window.Telegram.WebApp;
         tg.expand();
         const userId = tg.initDataUnsafe?.user?.id || "test_user";
+
+        const slotImages = [
+            "https://res.cloudinary.com/dyqegwdme/image/upload/v1786994788/1._start_wmufid.png",
+            "https://res.cloudinary.com/dyqegwdme/image/upload/v1786994788/2._goal_sbspgy.png",
+            "https://res.cloudinary.com/dyqegwdme/image/upload/v1786994788/3._kick_wvbdfw.png",
+            "https://res.cloudinary.com/dyqegwdme/image/upload/v1786994787/4.star_zxgufd.png",
+            "https://res.cloudinary.com/dyqegwdme/image/upload/v1786994787/5.Cup_khdiku.png",
+            "https://res.cloudinary.com/dyqegwdme/image/upload/v1786994787/6.Win_ypr6bc.png"
+        ];
 
         const AdController = {
             videoBlockId: "29212", 
@@ -98,8 +129,8 @@
         let userGP = 0;
         let nextAllowedTime = 0;
         let timerInterval;
-        const adCooldown = 15 * 1000;              // প্রতিটি অ্যাডের মাঝে ১৫ সেকেন্ড ওয়েটিং টাইম
-        const finalCooldown = 8 * 60 * 60 * 1000;  // ৩টি শেষ হলে ৮ ঘণ্টার কাউন্টডাউন
+        const adCooldown = 5 * 1000;              // প্রতিটি অ্যাডের মাঝে ৫ সেকেন্ড ওয়েটিং টাইম
+        const finalCooldown = 3 * 60 * 60 * 1000;  // ৬টি শেষ হলে ৩ ঘণ্টার কাউন্টডাউন
 
         function initTask() {
             db.ref('users/' + userId).on('value', snap => {
@@ -126,11 +157,11 @@
         function handleTask() {
             const now = Date.now();
             if (now < nextAllowedTime) {
-                alert("Please wait for the 15-second timer to finish!");
+                alert("Please wait for the 5-second timer to finish!");
                 return;
             }
 
-            if (adsWatched < 3) {
+            if (adsWatched < 6) {
                 AdController.showVideoAd(
                     (result) => {
                         adsWatched++;
@@ -142,12 +173,12 @@
                             task_next_time: nextWait
                         });
 
-                        if (adsWatched === 3) {
+                        if (adsWatched === 6) {
                             document.getElementById('task-btn').innerText = "COLLECT 500 GP";
                             document.getElementById('task-btn').style.background = "var(--green)";
                             document.getElementById('timer').style.display = "none";
                         } else {
-                            document.getElementById('task-btn').innerText = `WATCH AD (${adsWatched + 1}/3)`;
+                            document.getElementById('task-btn').innerText = `WATCH AD (${adsWatched + 1}/6)`;
                             startAdTimer(nextWait);
                         }
                     },
@@ -164,7 +195,7 @@
             const slot = document.getElementById(`slot-${num}`);
             if(slot) {
                 slot.classList.add('done');
-                slot.innerHTML = '<i class="fas fa-check-circle"></i><br>Done';
+                slot.innerHTML = `<img src="${slotImages[num-1]}" alt="Done"><span>Done</span>`;
             }
         }
 
@@ -176,7 +207,7 @@
                 last_task_collect: Date.now(),
                 task_next_time: Date.now() + finalCooldown
             }).then(() => {
-                alert(`Wish You Success! Congratulations, you have successfully completed 3 ads and ${rewardAmount} GP has been added to your profile!`);
+                alert(`Wish You Success! Congratulations, you have successfully completed 6 ads and ${rewardAmount} GP has been added to your profile!`);
                 startFullCooldownTimer(Date.now() + finalCooldown);
             });
         }
@@ -200,8 +231,8 @@
                     timerDiv.style.display = "none";
                     btn.disabled = false;
                     btn.classList.remove('btn-lock');
-                    if(adsWatched < 3) {
-                        btn.innerText = `WATCH AD (${adsWatched + 1}/3)`;
+                    if(adsWatched < 6) {
+                        btn.innerText = `WATCH AD (${adsWatched + 1}/6)`;
                     }
                     return;
                 }
@@ -243,25 +274,25 @@
             document.getElementById('task-btn').style.display = "block";
             document.getElementById('task-btn').style.background = "var(--primary)";
             
-            for (let i = 1; i <= 3; i++) {
+            for (let i = 1; i <= 6; i++) {
                 const slot = document.getElementById(`slot-${i}`);
                 if(slot) {
                     if (i <= adsWatched) {
                         slot.classList.add('done');
-                        slot.innerHTML = '<i class="fas fa-check-circle"></i><br>Done';
+                        slot.innerHTML = `<img src="${slotImages[i-1]}" alt="Done"><span>Done</span>`;
                     } else {
                         slot.classList.remove('done');
-                        slot.innerHTML = `<i class="fas fa-play"></i><br>Ad ${i}`;
+                        slot.innerHTML = `<img src="${slotImages[i-1]}" alt="Ad ${i}"><span>Ad ${i}</span>`;
                     }
                 }
             }
 
-            if (adsWatched === 3) {
+            if (adsWatched === 6) {
                 document.getElementById('task-btn').innerText = "COLLECT 500 GP";
                 document.getElementById('task-btn').style.background = "var(--green)";
                 document.getElementById('timer').style.display = "none";
             } else {
-                document.getElementById('task-btn').innerText = `WATCH AD (${adsWatched + 1}/3)`;
+                document.getElementById('task-btn').innerText = `WATCH AD (${adsWatched + 1}/6)`;
                 if (now < nextAllowedTime) {
                     startAdTimer(nextAllowedTime);
                 } else {
