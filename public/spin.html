@@ -25,7 +25,7 @@
         .container { padding: 20px; text-align: center; }
         .spin-card { background: linear-gradient(135deg, #121e36, #1a2c50); border-radius: 24px; padding: 25px; border: 1px solid rgba(251, 191, 36, 0.3); box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin-bottom: 20px; position: relative; overflow: hidden; }
         
-        /* হুইল এবং চাকার ভেতরের টেক্সট একসাথে ঘোরার জন্য .wheel এর ভেতর রাখা হয়েছে */
+        /* চাকার ডিজাইন এবং নিখুঁত টেক্সট পজিশনিং */
         .wheel-container { position: relative; width: 280px; height: 280px; margin: 25px auto; }
         .wheel { 
             width: 100%; height: 100%; border-radius: 50%; border: 8px solid #fbbf24; 
@@ -42,21 +42,23 @@
             box-shadow: 0 0 30px rgba(251, 191, 36, 0.5), inset 0 0 20px rgba(0,0,0,0.4); 
         }
 
-        /* চাকার ভেতরের নম্বরগুলো যেন চাকার সাথেই ঘোরে */
         .wheel-texts {
             position: absolute; width: 100%; height: 100%; top: 0; left: 0;
         }
         .w-text {
-            position: absolute; font-size: 14px; font-weight: bold; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.9);
-            width: 50%; text-align: right; transform-origin: right center;
+            position: absolute; width: 50%; height: 40px; top: 50%; left: 50%;
+            margin-top: -20px; transform-origin: left center;
+            font-size: 13px; font-weight: bold; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.9);
+            display: flex; align-items: center; justify-content: flex-end; padding-right: 25px;
         }
-        /* প্রতিটি সেগমেন্টের সঠিক এঙ্গেল ও পজিশন */
-        .wt-1 { top: 43%; left: -8%; transform: rotate(30deg); }
-        .wt-2 { top: 43%; left: -8%; transform: rotate(90deg); }
-        .wt-3 { top: 43%; left: -8%; transform: rotate(150deg); }
-        .wt-4 { top: 43%; left: -8%; transform: rotate(210deg); }
-        .wt-5 { top: 43%; left: -8%; transform: rotate(270deg); }
-        .wt-6 { top: 43%; left: -8%; transform: rotate(330deg); }
+        
+        /* ৬টি সেগমেন্টের নিখুঁত এঙ্গেল */
+        .wt-1 { transform: rotate(30deg); }
+        .wt-2 { transform: rotate(90deg); }
+        .wt-3 { transform: rotate(150deg); }
+        .wt-4 { transform: rotate(210deg); }
+        .wt-5 { transform: rotate(270deg); }
+        .wt-6 { transform: rotate(330deg); }
 
         .wheel-pointer { 
             position: absolute; top: -18px; left: 50%; transform: translateX(-50%); 
@@ -108,7 +110,6 @@
             
             <div class="wheel-container">
                 <div class="wheel-pointer"></div>
-                <!-- চাকা এবং তার ভেতরের টেক্সট এখন একসাথে ঘুরবে -->
                 <div class="wheel" id="inner-wheel">
                     <div class="wheel-texts">
                         <span class="w-text wt-1">500 GP</span>
@@ -270,9 +271,7 @@
                         }
                         updateUI();
                     },
-                    (error) => {
-                        // Error handled inside AdController
-                    }
+                    (error) => {}
                 );
             } 
             else {
@@ -285,7 +284,6 @@
             const btn = document.getElementById('spin-btn');
             btn.disabled = true;
 
-            // সিকোয়েন্স লজিক: প্রথম স্পিনে 500 GP (index 0), দ্বিতীয় স্পিনে নিশ্চিত 600 GP (index 2)
             let winningIndex;
             if (freeSpinsLeft === 1) {
                 winningIndex = 0; // 500 GP
@@ -303,7 +301,6 @@
 
             const degreesPerItem = 360 / prizes.length;
             const extraSpins = 360 * 6; 
-            // সঠিক সেগমেন্ট পয়েন্টে গিয়ে থামার হিসাব
             const targetDegree = extraSpins + (360 - (winningIndex * degreesPerItem + degreesPerItem / 2));
 
             const wheel = document.getElementById('inner-wheel');
