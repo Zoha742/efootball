@@ -23,7 +23,6 @@
         .container { padding: 20px; text-align: center; }
         .spin-card { background: linear-gradient(135deg, #121e36, #1a2c50); border-radius: 24px; padding: 25px; border: 1px solid rgba(251, 191, 36, 0.3); box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin-bottom: 20px; position: relative; overflow: hidden; }
         
-        /* Wheel Container */
         .wheel-container { position: relative; width: 280px; height: 280px; margin: 25px auto; }
         .wheel { 
             width: 100%; height: 100%; border-radius: 50%; border: 8px solid #fbbf24; 
@@ -41,22 +40,17 @@
         }
 
         .wheel-texts {
-            position: absolute; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none;
+            position: absolute; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; z-index: 5;
         }
         .w-text {
-            position: absolute; width: 50%; height: 35px; top: 50%; left: 50%;
-            margin-top: -17px; transform-origin: left center;
-            font-size: 14px; font-weight: bold; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.9);
-            display: flex; align-items: center; justify-content: flex-end; padding-right: 25px;
+            position: absolute; font-size: 14px; font-weight: bold; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.9);
         }
-        
-        /* Fixed Segments Angle */
-        .wt-1 { transform: rotate(30deg); }
-        .wt-2 { transform: rotate(90deg); }
-        .wt-3 { transform: rotate(150deg); }
-        .wt-4 { transform: rotate(210deg); }
-        .wt-5 { transform: rotate(270deg); }
-        .wt-6 { transform: rotate(330deg); }
+        .wt-1 { top: 22%; left: 62%; }
+        .wt-2 { top: 43%; left: 74%; }
+        .wt-3 { top: 68%; left: 58%; }
+        .wt-4 { top: 68%; left: 30%; }
+        .wt-5 { top: 43%; left: 16%; }
+        .wt-6 { top: 22%; left: 30%; }
 
         .wheel-pointer { 
             position: absolute; top: -18px; left: 50%; transform: translateX(-50%); 
@@ -69,7 +63,7 @@
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
             width: 55px; height: 55px; background: radial-gradient(circle, #fbbf24, #d97706);
             border-radius: 50%; border: 4px solid #fff; box-shadow: 0 0 15px rgba(0,0,0,0.6);
-            z-index: 5; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 20px;
+            z-index: 6; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 20px;
         }
         
         .btn-spin { 
@@ -120,7 +114,7 @@
             </div>
 
             <button id="spin-btn" class="btn-spin" onclick="handleSpinAction()">
-                <i class="fas fa-gift"></i> FREE SPIN (2 Left)
+                <i class="fas fa-gift"></i> FREE SPIN (10 Left)
             </button>
 
             <div id="timer-display">
@@ -128,7 +122,7 @@
             </div>
 
             <div class="limit-note">
-                <i class="fas fa-info-circle"></i> First 2 spins are FREE! After that, watch 3 ads to spin. 3 hours cooldown after completing cycle.
+                <i class="fas fa-info-circle"></i> Testing Mode: 10 FREE spins available for testing! After that, ads will appear.
             </div>
 
             <a href="index.html" class="btn-back">
@@ -170,7 +164,7 @@
         const cooldownTime = 3 * 60 * 60 * 1000; 
         const adInterval = 5 * 1000;             
 
-        let freeSpinsLeft = 2;
+        let freeSpinsLeft = 10; // testing er jonno 10 kora holo
         let adsWatched = 0;
         let nextAllowedTime = 0;
         let nextSpinTime = 0;
@@ -183,7 +177,7 @@
             db.ref('users/' + userId).on('value', snap => {
                 const data = snap.val() || {};
                 userGP = data.gp || 0;
-                freeSpinsLeft = data.spin_free_left !== undefined ? data.spin_free_left : 2;
+                freeSpinsLeft = data.spin_free_left !== undefined ? data.spin_free_left : 10;
                 adsWatched = data.spin_ads_count || 0;
                 nextAllowedTime = data.spin_next_ad_time || 0;
                 nextSpinTime = data.spin_cooldown_time || 0;
@@ -205,11 +199,11 @@
                 return;
             } else if (nextSpinTime > 0 && now >= nextSpinTime && freeSpinsLeft === 0 && adsWatched >= 3) {
                 db.ref('users/' + userId).update({
-                    spin_free_left: 2,
+                    spin_free_left: 10,
                     spin_ads_count: 0,
                     spin_cooldown_time: 0
                 });
-                freeSpinsLeft = 2;
+                freeSpinsLeft = 10;
                 adsWatched = 0;
             }
 
@@ -281,73 +275,12 @@
             btn.disabled = true;
 
             let winningIndex;
-            if (freeSpinsLeft === 1) {
-                winningIndex = 0; // 500 GP
-            } else if (freeSpinsLeft === 0 && !isFinalCycle) {
-                winningIndex = 1; // 600 GP
-            } else {
-                const luckyRoll = Math.random();
-                if (luckyRoll < 0.45) winningIndex = 0; // 500 GP
-                else if (luckyRoll < 0.90) winningIndex = 1; // 600 GP
-                else if (luckyRoll < 0.95) winningIndex = 3; // 500 GP
-                else winningIndex = 2; // 1000 GP
-            }
+            const luckyRoll = Math.random();
+            if (luckyRoll < 0.45) winningIndex = 0; // 500 GP
+            else if (luckyRoll < 0.90) winningIndex = 1; // 600 GP
+            else if (luckyRoll < 0.95) winningIndex = 3; // 500 GP
+            else winningIndex = 2; // 1000 GP
 
             const wonAmount = prizes[winningIndex];
 
-            // Correct degree calculation for static text layout
-            const segmentAngle = 360 / prizes.length;
-            const targetOffset = winningIndex * segmentAngle + (segmentAngle / 2);
-            currentDegree += 360 * 6 + (360 - targetDegree - currentDegree % 360);
-
-            const wheel = document.getElementById('inner-wheel');
-            wheel.style.transform = `rotate(${currentDegree}deg)`;
-
-            setTimeout(() => {
-                isSpinning = false;
-                const newGP = userGP + wonAmount;
-                
-                let updateData = { gp: newGP };
-
-                if (isFinalCycle) {
-                    updateData.spin_cooldown_time = Date.now() + cooldownTime;
-                    updateData.spin_next_ad_time = 0;
-                }
-
-                db.ref('users/' + userId).update(updateData).then(() => {
-                    alert(`🎉 Congratulations! You won ${wonAmount} GP! Added to your profile.`);
-                });
-            }, 4500);
-        }
-
-        function startTimer(remaining) {
-            const countdownSpan = document.getElementById('countdown');
-            clearInterval(timerInterval);
-
-            let targetTime = Date.now() + remaining;
-
-            timerInterval = setInterval(() => {
-                const now = Date.now();
-                const diff = targetTime - now;
-
-                if (diff <= 0) {
-                    clearInterval(timerInterval);
-                    updateUI();
-                    return;
-                }
-
-                let h = Math.floor(diff / 3600000);
-                let m = Math.floor((diff % 3600000) / 60000);
-                let s = Math.floor((diff % 60000) / 1000);
-
-                countdownSpan.innerText = 
-                    (h > 0 ? h + "h " : "") + 
-                    m.toString().padStart(2,'0') + ":" + 
-                    s.toString().padStart(2,'0');
-            }, 1000);
-        }
-
-        window.onload = initSpin;
-    </script>
-</body>
-</html>
+            const
