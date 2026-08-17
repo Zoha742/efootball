@@ -30,8 +30,13 @@
         .ad-slot img { width: 100%; height: 65px; object-fit: cover; border-radius: 8px; margin-bottom: 5px; display: block; border: 1px solid var(--primary); }
         .ad-slot.done { border-color: var(--green); color: var(--green); }
         
-        .btn-main { width: 100%; border: none; padding: 15px; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 16px; }
+        .btn-main { width: 100%; border: none; padding: 15px; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 16px; margin-bottom: 12px; }
         .btn-blue { background: var(--primary); box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); }
+        
+        /* লাল বক্সের জায়গার হোম বাটন স্টাইল */
+        .btn-home { display: block; width: 100%; padding: 12px; border-radius: 12px; background: rgba(30, 45, 77, 0.6); border: 1px solid var(--border); color: #ffffff; text-decoration: none; font-weight: bold; font-size: 14px; transition: 0.3s; }
+        .btn-home:hover { background: rgba(59, 130, 246, 0.2); border-color: var(--primary); }
+
         .btn-lock { background: #334155; cursor: not-allowed; opacity: 0.8; }
         #timer { font-size: 18px; font-weight: bold; color: #f87171; margin-top: 10px; display: none; }
 
@@ -56,7 +61,7 @@
                 <h2>500 GP Points</h2>
             </div>
 
-            <!-- ৬টি স্লটে বড় সাইজের ছবিসহ ভিডিও অপশন -->
+            <!-- ৬টি স্লটে বড় সাইজের ছবি -->
             <div class="ad-grid" id="ad-slots">
                 <div class="ad-slot" id="slot-1">
                     <img src="https://res.cloudinary.com/dyqegwdme/image/upload/v1786994788/1._start_wmufid.png" alt="Ad 1">
@@ -86,10 +91,15 @@
 
             <button id="task-btn" class="btn-main btn-blue" onclick="handleTask()">WATCH AD (1/6)</button>
             <div id="timer">Next Ad In: <span id="countdown">00:05</span></div>
+
+            <!-- আপনার দেওয়া লাল বক্সের জায়গায় হোম বাটন -->
+            <a href="index.html" class="btn-home">
+                <i class="fas fa-home" style="margin-right: 8px;"></i> HOME
+            </a>
         </div>
     </div>
 
-    <!-- নিচের নেভিগেশন বার (সঠিক হোম বাটনসহ)[cite: 3] -->
+    <!-- নিচের নেভিগেশন বার -->
     <nav class="bottom-nav">
         <a href="index.html" class="nav-item" style="color: #3b82f6;"><i class="fas fa-home"></i>Home</a>
         <a href="legend.html" class="nav-item"><i class="fas fa-crown"></i>Legend</a>
