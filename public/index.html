@@ -23,7 +23,6 @@
         .hub-title { text-align: center; margin: 15px 0 25px; font-weight: bold; font-size: 20px; text-transform: uppercase; }
         .hub-title span { color: var(--primary); }
 
-        
         /* Interface Buttons */
         .id-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px; }
         .id-btn-card { display: block; width: 100%; text-decoration: none; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); transition: transform 0.2s ease, filter 0.2s ease; }
@@ -57,31 +56,31 @@
     <div class="container">
         <div class="hub-title">eFootball <span>TM</span></div>
 
-    <div class="id-grid">
-        
-    <a href="player.html" class="id-btn-card"><img src="https://res.cloudinary.com/dyqegwdme/image/upload/v1786990044/epic_player_k2unx5.png" alt="Epic Player"></a>
-    <a href="manager.html" class="id-btn-card"><img src="https://res.cloudinary.com/dyqegwdme/image/upload/v1786990044/manager_eo9v6b.png" alt="Manager"></a>
-    <a href="event.html" class="id-btn-card"><img src="https://res.cloudinary.com/dyqegwdme/image/upload/v1786990044/events_ofr8wy.png" alt="Events"></a>
-    <a href="legend.html" class="id-btn-card"><img src="https://res.cloudinary.com/dyqegwdme/image/upload/v1786990044/legend_kf0yt8.png" alt="Legend"></a>
-</div>
+        <div class="id-grid">
+            <a href="player.html" class="id-btn-card"><img src="https://res.cloudinary.com/dyqegwdme/image/upload/v1786990044/epic_player_k2unx5.png" alt="Epic Player"></a>
+            <a href="manager.html" class="id-btn-card"><img src="https://res.cloudinary.com/dyqegwdme/image/upload/v1786990044/manager_eo9v6b.png" alt="Manager"></a>
+            <a href="event.html" class="id-btn-card"><img src="https://res.cloudinary.com/dyqegwdme/image/upload/v1786990044/events_ofr8wy.png" alt="Events"></a>
+            <a href="legend.html" class="id-btn-card"><img src="https://res.cloudinary.com/dyqegwdme/image/upload/v1786990044/legend_kf0yt8.png" alt="Legend"></a>
+        </div>
 
         <div class="headline">Quick Action</div>
-          <div class="quick-grid">
-    <!-- Store -->
-    <a href="store.html" class="id-btn-card" style="display: block;">
-        <img src="https://res.cloudinary.com/dyqegwdme/image/upload/v1786992420/Store_dvtbcb.png" alt="Store" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">
-    </a>
+        <div class="quick-grid">
+            <!-- Store -->
+            <a href="store.html" class="id-btn-card" style="display: block;">
+                <img src="https://res.cloudinary.com/dyqegwdme/image/upload/v1786992420/Store_dvtbcb.png" alt="Store" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">
+            </a>
 
-    <!-- Boost -->
-    <div id="boostBtn" class="id-btn-card" onclick="handleBoostClick()" style="cursor: pointer; display: block;">
-        <img src="https://res.cloudinary.com/dyqegwdme/image/upload/v1786992421/Boost_ptdlbx.png" alt="Boost" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">
-    </div>
+            <!-- Boost -->
+            <div id="boostBtn" class="id-btn-card" onclick="handleBoostClick()" style="cursor: pointer; display: block;">
+                <img src="https://res.cloudinary.com/dyqegwdme/image/upload/v1786992421/Boost_ptdlbx.png" alt="Boost" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">
+            </div>
 
-    <!-- Admin -->
-    <a href="admin.html" class="id-btn-card" style="display: block;">
-        <img src="https://res.cloudinary.com/dyqegwdme/image/upload/v1786992421/Admin_i7mfbc.png" alt="Admin" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">
-    </a>
-</div>
+            <!-- Spin (অ্যাডমিন বাটন সরিয়ে এখানে নতুন স্পিন বাটন যুক্ত করা হলো) -->
+            <a href="spin.html" class="id-btn-card" style="display: block;">
+                <img src="https://res.cloudinary.com/dyqegwdme/image/upload/v1787002000/Spin_wm5pzz.png" alt="Spin" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">
+            </a>
+        </div>
+
         <div class="headline">Top Player</div>
         <div id="home-legend-view" class="player-grid"></div>
     </div>
@@ -93,7 +92,7 @@
         <a href="profile.html" class="nav-item"><i class="fas fa-user-circle"></i>Profile</a>
     </nav>
 
-   <script>
+    <script>
     console.log("Database connected successfully!");
 
     const tg = window.Telegram.WebApp;
@@ -102,7 +101,6 @@
     const startParam = tg.initDataUnsafe?.start_param;
     const userId = user ? user.id : "test_user"; 
     
-    // ভিডিও অ্যাড কন্ট্রোলার (সরাসরি ইনজেক্ট করা হয়েছে)
     const AdController = {
         videoBlockId: "29212", 
         showVideoAd: function(onReward, onError) {
@@ -117,11 +115,9 @@
         }
     };
 
-    // ৬ ঘণ্টার মিলি-সেকেন্ড (6 hours * 60 min * 60 sec * 1000 ms)
     const COOLDOWN_TIME = 6 * 60 * 60 * 1000; 
     const BOOST_REWARD = 500; 
 
-    // ১. হোম পেজের লিজেন্ড ডাটা লোড করা
     async function loadHomeLegends() {
         const container = document.getElementById('home-legend-view');
         try {
@@ -146,7 +142,6 @@
         }
     }
 
-    // ২. বুস্ট অপশনের লজিক ফিক্সড[cite: 8]
     function handleBoostClick() {
         const userRef = db.ref('users/' + userId);
         
@@ -161,11 +156,10 @@
                     const timeLeft = COOLDOWN_TIME - timePassed;
                     const h = Math.floor(timeLeft / (1000 * 60 * 60));
                     const m = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-                    alert(`Boost Locked! Tried againে ${h} hoursটা ${m} Wait a minute.`);
+                    alert(`Boost Locked! Try again after ${h} hours ${m} minutes.`);
                     return;
                 }
 
-                // ভিডিও অ্যাড কল করুন[cite: 8]
                 AdController.showVideoAd(
                     (result) => { 
                         const newGp = (userData.gp || 0) + BOOST_REWARD;
@@ -174,7 +168,6 @@
                             lastBoostTime: currentTime
                         }).then(() => {
                             alert(`Congratulations! You watched the video and won ${BOOST_REWARD} GP!`);
-                            updateBoostButtonUI(currentTime);
                         });
                     },
                     (error) => { 
@@ -185,35 +178,6 @@
         });
     }
 
-    function updateBoostButtonUI(lastBoostTime) {
-        const boostBtn = document.getElementById('boostBtn');
-        const boostText = document.getElementById('boostText');
-        const currentTime = Date.now();
-        const timePassed = currentTime - lastBoostTime;
-
-        if (timePassed < COOLDOWN_TIME) {
-            boostBtn.classList.add('boost-disabled');
-            const interval = setInterval(() => {
-                const now = Date.now();
-                const diff = COOLDOWN_TIME - (now - lastBoostTime);
-                if (diff <= 0) {
-                    clearInterval(interval);
-                    boostBtn.classList.remove('boost-disabled');
-                    boostText.innerText = "Boost";
-                } else {
-                    const h = Math.floor(diff / (1000 * 60 * 60));
-                    const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                    boostText.innerText = `${h}h ${m}m`;
-                }
-            }, 60000); 
-            
-            const h = Math.floor((COOLDOWN_TIME - timePassed) / (1000 * 60 * 60));
-            const m = Math.floor(((COOLDOWN_TIME - timePassed) % (1000 * 60 * 60)) / (1000 * 60));
-            boostText.innerText = `${h}h ${m}m`;
-        }
-    }
-
-    // ৩. মেইন লজিক
     window.addEventListener('load', () => {
         loadHomeLegends();
         
@@ -246,9 +210,6 @@
                         document.body.innerHTML = "<div style='background:#050a18; height:100vh; display:flex; align-items:center; justify-content:center; color:red; text-align:center; padding:20px;'><h1>You are BANNED! <br> Contact Admin for help.</h1></div>";
                     } else {
                         userRef.update({ lastSeen: Date.now() });
-                        if (userData.lastBoostTime) {
-                            updateBoostButtonUI(userData.lastBoostTime);
-                        }
                     }
                 }
             });
