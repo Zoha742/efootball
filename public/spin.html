@@ -25,7 +25,7 @@
         .container { padding: 20px; text-align: center; }
         .spin-card { background: linear-gradient(135deg, #121e36, #1a2c50); border-radius: 24px; padding: 25px; border: 1px solid rgba(251, 191, 36, 0.3); box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin-bottom: 20px; position: relative; overflow: hidden; }
         
-        /* চাকার ডিজাইন এবং প্রিমিয়াম লেবেল */
+        /* হুইল এবং চাকার ভেতরের টেক্সট একসাথে ঘোরার জন্য .wheel এর ভেতর রাখা হয়েছে */
         .wheel-container { position: relative; width: 280px; height: 280px; margin: 25px auto; }
         .wheel { 
             width: 100%; height: 100%; border-radius: 50%; border: 8px solid #fbbf24; 
@@ -42,18 +42,21 @@
             box-shadow: 0 0 30px rgba(251, 191, 36, 0.5), inset 0 0 20px rgba(0,0,0,0.4); 
         }
 
+        /* চাকার ভেতরের নম্বরগুলো যেন চাকার সাথেই ঘোরে */
         .wheel-texts {
-            position: absolute; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none;
+            position: absolute; width: 100%; height: 100%; top: 0; left: 0;
         }
         .w-text {
-            position: absolute; font-size: 13px; font-weight: bold; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.9);
+            position: absolute; font-size: 14px; font-weight: bold; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.9);
+            width: 50%; text-align: right; transform-origin: right center;
         }
-        .wt-1 { top: 22%; left: 62%; transform: rotate(30deg); }
-        .wt-2 { top: 44%; left: 75%; transform: rotate(90deg); }
-        .wt-3 { top: 68%; left: 60%; transform: rotate(150deg); }
-        .wt-4 { top: 70%; left: 30%; transform: rotate(210deg); }
-        .wt-5 { top: 44%; left: 16%; transform: rotate(270deg); }
-        .wt-6 { top: 22%; left: 32%; transform: rotate(330deg); }
+        /* প্রতিটি সেগমেন্টের সঠিক এঙ্গেল ও পজিশন */
+        .wt-1 { top: 43%; left: -8%; transform: rotate(30deg); }
+        .wt-2 { top: 43%; left: -8%; transform: rotate(90deg); }
+        .wt-3 { top: 43%; left: -8%; transform: rotate(150deg); }
+        .wt-4 { top: 43%; left: -8%; transform: rotate(210deg); }
+        .wt-5 { top: 43%; left: -8%; transform: rotate(270deg); }
+        .wt-6 { top: 43%; left: -8%; transform: rotate(330deg); }
 
         .wheel-pointer { 
             position: absolute; top: -18px; left: 50%; transform: translateX(-50%); 
@@ -105,14 +108,16 @@
             
             <div class="wheel-container">
                 <div class="wheel-pointer"></div>
-                <div class="wheel" id="inner-wheel"></div>
-                <div class="wheel-texts">
-                    <span class="w-text wt-1">500 GP</span>
-                    <span class="w-text wt-2">150 GP</span>
-                    <span class="w-text wt-3">600 GP</span>
-                    <span class="w-text wt-4">1000 GP</span>
-                    <span class="w-text wt-5">500 GP</span>
-                    <span class="w-text wt-6">600 GP</span>
+                <!-- চাকা এবং তার ভেতরের টেক্সট এখন একসাথে ঘুরবে -->
+                <div class="wheel" id="inner-wheel">
+                    <div class="wheel-texts">
+                        <span class="w-text wt-1">500 GP</span>
+                        <span class="w-text wt-2">150 GP</span>
+                        <span class="w-text wt-3">600 GP</span>
+                        <span class="w-text wt-4">1000 GP</span>
+                        <span class="w-text wt-5">500 GP</span>
+                        <span class="w-text wt-6">600 GP</span>
+                    </div>
                 </div>
                 <div class="wheel-center"><i class="fas fa-star" style="font-size: 18px; color: #fff;"></i></div>
             </div>
@@ -149,26 +154,25 @@
         const userId = tg.initDataUnsafe?.user?.id || "test_user";
 
         const AdController = {
-    videoBlockId: "29212",
-    showVideoAd: function(onReward, onError) {
-        if (window.Adsgram) {
-            const ad = window.Adsgram.init({ blockId: this.videoBlockId });
-            ad.show()
-              .then((result) => { if (onReward) onReward(result); })
-              .catch((err) => { 
-                  // এখানে কাস্টম এরর মেসেজ দিয়ে দিলাম
-                  alert("No ads available right now! Please wait 3 minutes and try again.");
-                  if (onError) onError(err); 
-              });
-        } else {
-            alert("No ads available right now! Please wait 3 minutes and try again.");
-        }
-    }
-};
+            videoBlockId: "29212", 
+            showVideoAd: function(onReward, onError) {
+                if (window.Adsgram) {
+                    const ad = window.Adsgram.init({ blockId: this.videoBlockId });
+                    ad.show()
+                      .then((result) => { if (onReward) onReward(result); })
+                      .catch((err) => { 
+                          alert("No ads available right now! Please wait 3 minutes and try again.");
+                          if (onError) onError(err); 
+                      });
+                } else {
+                    alert("No ads available right now! Please wait 3 minutes and try again.");
+                }
+            }
+        };
 
         const prizes = [500, 150, 600, 1000, 500, 600]; 
-        const cooldownTime = 3 * 60 * 60 * 1000; // ৩ ঘণ্টার কাউন্টডাউন
-        const adInterval = 5 * 1000;             // প্রতিটি অ্যাডের মাঝে ৫ সেকেন্ড ওয়েটিং
+        const cooldownTime = 3 * 60 * 60 * 1000; 
+        const adInterval = 5 * 1000;             
 
         let freeSpinsLeft = 2;
         let adsWatched = 0;
@@ -267,7 +271,7 @@
                         updateUI();
                     },
                     (error) => {
-                        alert("Ad failed or skipped. Please watch the full ad.");
+                        // Error handled inside AdController
                     }
                 );
             } 
@@ -288,18 +292,18 @@
             } else if (freeSpinsLeft === 0 && !isFinalCycle) {
                 winningIndex = 2; // 600 GP
             } else {
-                // অ্যাড দেখার পরের স্পিনগুলোতেও বেশিরভাগ সময় 500 বা 600 GP (ইউজার খুশি রাখতে)
                 const luckyRoll = Math.random();
                 if (luckyRoll < 0.45) winningIndex = 0; // 500 GP
                 else if (luckyRoll < 0.90) winningIndex = 2; // 600 GP
                 else if (luckyRoll < 0.95) winningIndex = 4; // 500 GP
-                else winningIndex = 3; // 1000 GP জ্যাকপট
+                else winningIndex = 3; // 1000 GP
             }
 
             const wonAmount = prizes[winningIndex];
 
             const degreesPerItem = 360 / prizes.length;
             const extraSpins = 360 * 6; 
+            // সঠিক সেগমেন্ট পয়েন্টে গিয়ে থামার হিসাব
             const targetDegree = extraSpins + (360 - (winningIndex * degreesPerItem + degreesPerItem / 2));
 
             const wheel = document.getElementById('inner-wheel');
@@ -319,7 +323,7 @@
                 db.ref('users/' + userId).update(updateData).then(() => {
                     alert(`🎉 Congratulations! You won ${wonAmount} GP! Added to your profile.`);
                 });
-            }, 4500); // ৪.৫ সেকেন্ড স্পিন ঘোরার সময়
+            }, 4500);
         }
 
         function startTimer(remaining) {
