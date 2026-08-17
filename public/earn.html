@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --bg: #050a18; --card: #121e36; --primary: #818cf8; --text: #ffffff; --border: #1e2d4d; --yellow: #fbbf24; }
-        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 90px; }
+        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 30px; }
         
         .top-bar { display: flex; align-items: center; padding: 15px; background: rgba(18, 30, 54, 0.7); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; }
         .top-bar a { color: white; text-decoration: none; margin-right: 15px; }
@@ -35,8 +35,8 @@
         .btn-blue { background: linear-gradient(135deg, #818cf8, #6366f1); box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3); }
         .btn-lock { background: #334155; cursor: not-allowed; opacity: 0.8; }
 
-        /* ব্যাক বাটন স্টাইল (লাল বক্সের জায়গা) */
-        .btn-back { display: block; width: 100%; padding: 12px; border-radius: 12px; background: rgba(30, 45, 77, 0.6); border: 1px solid var(--border); color: #ffffff; text-decoration: none; font-weight: bold; font-size: 14px; transition: 0.3s; }
+        /* ছোট ব্যাক বাটন স্টাইল (আপনার লাল বক্সের মতো) */
+        .btn-back { display: block; width: 60%; margin: 15px auto 0 auto; padding: 12px; border-radius: 12px; background: rgba(30, 45, 77, 0.6); border: 1px solid var(--border); color: #ffffff; text-decoration: none; font-weight: bold; font-size: 14px; text-align: center; transition: 0.3s; }
         .btn-back:hover { background: rgba(129, 140, 248, 0.2); border-color: var(--primary); }
 
         #timer-display { margin-top: 15px; font-size: 18px; font-weight: bold; color: #f87171; display: none; }
@@ -74,9 +74,9 @@
                 <i class="fas fa-info-circle"></i> If you watch 3 videos completely, 500 GP will be added. There is a 15-second waiting time between each ad and an 8-hour cooldown after 3 ads.
             </div>
 
-            <!-- আপনার দেওয়া লাল বক্সের জায়গায় ব্যাক বাটন -->
-            <a href="profile.html" class="btn-back" style="margin-top: 15px;">
-                <i class="fas fa-arrow-left" style="margin-right: 8px;"></i> Back
+            <!-- ছোট ব্যাক বাটন (লাল বক্সের মতো) -->
+            <a href="profile.html" class="btn-back">
+                <i class="fas fa-arrow-left" style="margin-right: 6px;"></i> Back
             </a>
         </div>
     </div>
