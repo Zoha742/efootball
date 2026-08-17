@@ -66,15 +66,16 @@
         <div class="headline">Quick Action</div>
         <div class="quick-grid">
             <!-- Store Option Updated -->
-            <div class="quick-btn" onclick="location.href='store.html'" style="background: linear-gradient(135deg, #6a11cb, #2575fc); border: none;"><i class="fas fa-shopping-cart" style="color: white;"></i>Store</div>
-            
-            <!-- Boost Option Fixed with 6h Cooldown -->
-            <div id="boostBtn" class="quick-btn" onclick="handleBoostClick()" style="background: linear-gradient(135deg, #11998e, #38ef7d); border: none;">
-                <i class="fas fa-rocket" style="color: white;"></i><span id="boostText">Boost</span>
-            </div>
-            
-            <div class="quick-btn" onclick="location.href='admin.html'" style="background: linear-gradient(135deg, #ff4b2b, #ff416c); border: none;"><i class="fas fa-user-shield" style="color: white;"></i>Admin</div>
-        </div>
+            <!-- Store -->
+<div class="quick-btn" onclick="location.href='store.html'" style="background: linear-gradient(135deg, #0284c7, #06b6d4); border: none; box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);"><i class="fas fa-shopping-cart" style="color: #cffaff;"></i>Store</div>
+
+<!-- Boost -->
+<div id="boostBtn" class="quick-btn" onclick="handleBoostClick()" style="background: linear-gradient(135deg, #059669, #10b981); border: none; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);">
+    <i class="fas fa-rocket" style="color: #a7f3d0;"></i><span id="boostText">Boost</span>
+</div>
+
+<!-- Admin -->
+<div class="quick-btn" onclick="location.href='admin.html'" style="background: linear-gradient(135deg, #e11d48, #f43f5e); border: none; box-shadow: 0 4px 12px rgba(244, 63, 94, 0.3);"><i class="fas fa-user-shield" style="color: #ffe4e6;"></i>Admin</div>
 
         <div class="headline">Top Player</div>
         <div id="home-legend-view" class="player-grid"></div>
