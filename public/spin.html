@@ -7,6 +7,7 @@
     <!-- Firebase & SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
+    <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     
     <!-- Central Config -->
@@ -30,7 +31,6 @@
             width: 100%; height: 100%; border-radius: 50%; border: 8px solid #fbbf24; 
             position: relative; overflow: hidden; 
             transition: transform 4s cubic-bezier(0.15, 0.75, 0.1, 1); 
-            /* আকর্ষণীয় মাল্টি-কালার রেইনবো গ্রেডিয়েন্ট */
             background: conic-gradient(
                 #ef4444 0deg 60deg, 
                 #f97316 60deg 120deg, 
@@ -41,16 +41,6 @@
             ); 
             box-shadow: 0 0 30px rgba(251, 191, 36, 0.5), inset 0 0 20px rgba(0,0,0,0.4); 
         }
-        
-        /* হুইলের ভেতরের লেবেল বা টেক্সট ডিজাইন */
-        .wheel-label {
-            position: absolute; width: 100%; height: 100%; top: 0; left: 0;
-            pointer-events: none;
-        }
-        .wheel-label span {
-            position: absolute; top: 18%; left: 50%; transform: translate(-50%, -50%);
-            font-size: 14px; font-weight: bold; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-        }
 
         .wheel-pointer { 
             position: absolute; top: -18px; left: 50%; transform: translateX(-50%); 
@@ -59,7 +49,6 @@
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6)); z-index: 10; 
         }
 
-        /* সেন্টার গোল রত্ন বা বাটন */
         .wheel-center {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
             width: 55px; height: 55px; background: radial-gradient(circle, #fbbf24, #d97706);
@@ -71,7 +60,7 @@
             width: 100%; border: none; padding: 16px; border-radius: 14px; color: white; font-weight: bold; cursor: pointer; font-size: 16px; 
             background: linear-gradient(135deg, #f59e0b, #ef4444); 
             box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4); margin-top: 15px; transition: 0.3s; 
-            text-transform: uppercase; letter-spacing: 1px;
+            text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; justify-content: center; gap: 10px;
         }
         .btn-spin:active { transform: scale(0.96); }
         .btn-spin:disabled { background: #334155; cursor: not-allowed; opacity: 0.7; box-shadow: none; }
@@ -99,7 +88,7 @@
         <div class="spin-card">
             <i class="fas fa-dharmachakra" style="font-size: 35px; color: var(--yellow); margin-bottom: 8px; filter: drop-shadow(0 0 10px rgba(251,191,36,0.5));"></i>
             <h3 style="margin-bottom: 5px; font-size: 20px; letter-spacing: 0.5px;">Lucky Spin Wheel</h3>
-            <p style="font-size: 12px; color: #fbbf24; margin-bottom: 15px;">Win up to 500 GP Free!</p>
+            <p style="font-size: 12px; color: #fbbf24; margin-bottom: 15px;">Watch Ad & Spin to Win GP!</p>
             
             <div class="wheel-container">
                 <div class="wheel-pointer"></div>
@@ -107,14 +96,17 @@
                 <div class="wheel-center"><i class="fas fa-star" style="font-size: 18px; color: #fff;"></i></div>
             </div>
 
-            <button id="spin-btn" class="btn-spin" onclick="spinWheel()">SPIN NOW</button>
+            <!-- ভিডিও অ্যাড দেখার পর স্পিন বাটন চালু হবে -->
+            <button id="spin-btn" class="btn-spin" onclick="watchAdAndSpin()">
+                <i class="fas fa-play-circle"></i> WATCH AD & SPIN
+            </button>
 
             <div id="timer-display">
                 Next Spin In: <span id="countdown">00:00</span>
             </div>
 
             <div class="limit-note">
-                <i class="fas fa-info-circle"></i> You can spin the wheel once every 6 hours to win free GP rewards!
+                <i class="fas fa-info-circle"></i> Watch a short video ad to spin the wheel. Available once every 6 hours!
             </div>
 
             <a href="index.html" class="btn-back">
@@ -135,6 +127,20 @@
         const tg = window.Telegram.WebApp;
         tg.expand();
         const userId = tg.initDataUnsafe?.user?.id || "test_user";
+
+        const AdController = {
+            videoBlockId: "29212", 
+            showVideoAd: function(onReward, onError) {
+                if (window.Adsgram) {
+                    const ad = window.Adsgram.init({ blockId: this.videoBlockId });
+                    ad.show()
+                      .then((result) => { if (onReward) onReward(result); })
+                      .catch((err) => { if (onError) onError(err); });
+                } else {
+                    alert("Ad system is loading, please wait.");
+                }
+            }
+        };
 
         const prizes = [100, 20, 200, 50, 500, 10]; 
         const cooldownTime = 6 * 60 * 60 * 1000;      
@@ -167,10 +173,22 @@
             }
         }
 
-        function spinWheel() {
+        // প্রথমে ভিডিও অ্যাড দেখাবে, তারপর সফলভাবে দেখলে স্পিন শুরু হবে
+        function watchAdAndSpin() {
             if (isSpinning) return;
+
+            AdController.showVideoAd(
+                (result) => {
+                    executeSpin();
+                },
+                (error) => {
+                    alert("Ad failed or skipped. Please watch the full ad to spin.");
+                }
+            );
+        }
+
+        function executeSpin() {
             isSpinning = true;
-            
             const btn = document.getElementById('spin-btn');
             btn.disabled = true;
 
@@ -178,7 +196,7 @@
             const wonAmount = prizes[randomIndex];
 
             const degreesPerItem = 360 / prizes.length;
-            const extraSpins = 360 * 6; // ৬ পাক ঘুরবে
+            const extraSpins = 360 * 6; 
             const targetDegree = extraSpins + (360 - (randomIndex * degreesPerItem + degreesPerItem / 2));
 
             const wheel = document.getElementById('inner-wheel');
