@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --bg: #050a18; --card: #121e36; --primary: #818cf8; --text: #ffffff; --border: #1e2d4d; --yellow: #fbbf24; }
-        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 30px; }
+        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 90px; }
         
         .top-bar { display: flex; align-items: center; padding: 15px; background: rgba(18, 30, 54, 0.7); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; }
         .top-bar a { color: white; text-decoration: none; margin-right: 15px; }
@@ -37,10 +37,16 @@
 
         #timer-display { margin-top: 15px; font-size: 18px; font-weight: bold; color: #f87171; display: none; }
         .limit-note { font-size: 11px; color: #64748b; margin-top: 15px; line-height: 1.4; }
+
+        /* Bottom Nav */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 70px; background: #070d19; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid var(--border); z-index: 1000; }
+        .nav-item { text-align: center; color: #94a3b8; font-size: 11px; text-decoration: none; flex: 1; }
+        .nav-item i { font-size: 20px; display: block; margin-bottom: 4px; }
     </style>
 </head>
 <body>
 
+    <!-- প্রোফাইল পেজে যাওয়ার জন্য ব্যাক বাটন -->
     <div class="top-bar">
         <a href="profile.html"><i class="fas fa-chevron-left"></i></a>
         <span>Earn More GP</span>
@@ -66,6 +72,14 @@
             </div>
         </div>
     </div>
+
+    <!-- নিচের নেভিগেশন বার -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item"><i class="fas fa-home"></i>Home</a>
+        <a href="legend.html" class="nav-item"><i class="fas fa-crown"></i>Legend</a>
+        <a href="task.html" class="nav-item"><i class="fas fa-clipboard-check"></i>Task</a>
+        <a href="profile.html" class="nav-item" style="color: #818cf8;"><i class="fas fa-user-circle"></i>Profile</a>
+    </nav>
 
     <script>
         const tg = window.Telegram.WebApp;
