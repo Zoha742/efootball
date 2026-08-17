@@ -16,7 +16,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --bg: #050a18; --card: #121e36; --primary: #3b82f6; --text: #ffffff; --border: #1e2d4d; --green: #22c55e; }
-        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 30px; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; padding-bottom: 90px; }
         .top-bar { display: flex; align-items: center; padding: 15px; background: rgba(18, 30, 54, 0.7); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; }
         .top-bar a { color: white; text-decoration: none; margin-right: 15px; }
         .container { padding: 20px; text-align: center; }
@@ -28,7 +29,13 @@
         .ad-slot.done { border-color: var(--green); color: var(--green); }
         .btn-main { width: 100%; border: none; padding: 15px; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 16px; }
         .btn-blue { background: var(--primary); box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); }
+        .btn-lock { background: #334155; cursor: not-allowed; opacity: 0.8; }
         #timer { font-size: 18px; font-weight: bold; color: #f87171; margin-top: 10px; display: none; }
+
+        /* Bottom Nav */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 70px; background: #070d19; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid var(--border); z-index: 1000; }
+        .nav-item { text-align: center; color: #94a3b8; font-size: 11px; text-decoration: none; flex: 1; }
+        .nav-item i { font-size: 20px; display: block; margin-bottom: 4px; }
     </style>
 </head>
 <body>
@@ -43,7 +50,7 @@
             <div class="reward-info">
                 <i class="fas fa-gift"></i>
                 <span>Task Reward</span>
-                <h2 id="display-reward">500 GP Points</h2>
+                <h2>500 GP Points</h2>
             </div>
 
             <div class="ad-grid" id="ad-slots">
@@ -56,12 +63,21 @@
             </div>
 
             <button id="task-btn" class="btn-main btn-blue" onclick="handleTask()">WATCH AD (1/6)</button>
-            <div id="timer">Next Task In: <span id="countdown">12:00:00</span></div>
+            <div id="timer">Next Ad In: <span id="countdown">00:10</span></div>
         </div>
     </div>
 
+    <!-- নিচের নেভিগেশন বার (হোম ও প্রোফাইলসহ) -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item"><i class="fas fa-home"></i>Home</a>
+        <a href="legend.html" class="nav-item"><i class="fas fa-crown"></i>Legend</a>
+        <a href="task.html" class="nav-item" style="color: #3b82f6;"><i class="fas fa-clipboard-check"></i>Earn</a>
+        <a href="profile.html" class="nav-item"><i class="fas fa-user-circle"></i>Profile</a>
+    </nav>
+
     <script>
         const tg = window.Telegram.WebApp;
+        tg.expand();
         const userId = tg.initDataUnsafe?.user?.id || "test_user";
 
         const AdController = {
@@ -80,37 +96,59 @@
 
         let adsWatched = 0;
         let userGP = 0;
-        let totalTasksDone = 0;
-        const cooldownTime = 12 * 60 * 60 * 1000;
+        let nextAllowedTime = 0;
         let timerInterval;
+        const adCooldown = 10 * 1000; 
+        const finalCooldown = 12 * 60 * 60 * 1000; 
 
         function initTask() {
             db.ref('users/' + userId).on('value', snap => {
                 const data = snap.val() || {};
                 userGP = data.gp || 0;
-                totalTasksDone = data.tasks_done || 0;
+                adsWatched = data.task_ads_count || 0;
+                nextAllowedTime = data.task_next_time || 0;
+                const isCompleted = data.task_completed || false;
                 const lastCollect = data.last_task_collect || 0;
                 const now = Date.now();
 
-                if (now - lastCollect < cooldownTime) {
-                    startTimer(lastCollect + cooldownTime);
+                if (isCompleted && (now - lastCollect < finalCooldown)) {
+                    startFullCooldownTimer(lastCollect + finalCooldown);
                 } else {
-                    resetTaskUI();
+                    if (isCompleted && (now - lastCollect >= finalCooldown)) {
+                        db.ref('users/' + userId).update({ task_completed: false, task_ads_count: 0 });
+                        adsWatched = 0;
+                    }
+                    updateUIRestore();
                 }
             });
         }
 
         function handleTask() {
+            const now = Date.now();
+            if (now < nextAllowedTime) {
+                alert("Please wait for the timer to finish!");
+                return;
+            }
+
             if (adsWatched < 6) {
                 AdController.showVideoAd(
                     (result) => {
                         adsWatched++;
                         updateSlotUI(adsWatched);
+                        
+                        const nextWait = Date.now() + adCooldown;
+                        db.ref('users/' + userId).update({
+                            task_ads_count: adsWatched,
+                            task_next_time: nextWait
+                        });
+
                         if (adsWatched === 6) {
                             document.getElementById('task-btn').innerText = "COLLECT 500 GP";
                             document.getElementById('task-btn').style.background = "var(--green)";
+                            document.getElementById('timer').style.display = "none";
                         } else {
                             document.getElementById('task-btn').innerText = `WATCH AD (${adsWatched + 1}/6)`;
+                            startAdTimer(nextWait);
                         }
                     },
                     (error) => {
@@ -131,18 +169,49 @@
         }
 
         function collectReward() {
-            const rewardAmount = 500; // আপনি ৫০০ জিপি চেয়েছিলেন
+            const rewardAmount = 500;
             db.ref('users/' + userId).update({
                 gp: userGP + rewardAmount,
-                tasks_done: totalTasksDone + 1,
-                last_task_collect: Date.now()
+                task_completed: true,
+                last_task_collect: Date.now(),
+                task_next_time: Date.now() + finalCooldown
             }).then(() => {
-                alert(`Congratulations! You have completed 6 adds and received ${rewardAmount} GP`);
-                adsWatched = 0;
+                alert(`Congratulations! You have completed 6 ads and received ${rewardAmount} GP`);
+                startFullCooldownTimer(Date.now() + finalCooldown);
             });
         }
 
-        function startTimer(endTime) {
+        function startAdTimer(endTime) {
+            const btn = document.getElementById('task-btn');
+            const timerDiv = document.getElementById('timer');
+            const countdownSpan = document.getElementById('countdown');
+            
+            btn.disabled = true;
+            btn.classList.add('btn-lock');
+            timerDiv.style.display = "block";
+
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                const now = Date.now();
+                const remaining = endTime - now;
+
+                if (remaining <= 0) {
+                    clearInterval(timerInterval);
+                    timerDiv.style.display = "none";
+                    btn.disabled = false;
+                    btn.classList.remove('btn-lock');
+                    if(adsWatched < 6) {
+                        btn.innerText = `WATCH AD (${adsWatched + 1}/6)`;
+                    }
+                    return;
+                }
+
+                let s = Math.floor((remaining % 60000) / 1000);
+                countdownSpan.innerText = `00:${s.toString().padStart(2,'0')}`;
+            }, 1000);
+        }
+
+        function startFullCooldownTimer(endTime) {
             const btn = document.getElementById('task-btn');
             const timerDiv = document.getElementById('timer');
             const countdownSpan = document.getElementById('countdown');
@@ -157,7 +226,7 @@
 
                 if (remaining <= 0) {
                     clearInterval(timerInterval);
-                    resetTaskUI();
+                    initTask();
                     return;
                 }
 
@@ -169,17 +238,36 @@
             }, 1000);
         }
 
-        function resetTaskUI() {
-            clearInterval(timerInterval);
+        function updateUIRestore() {
+            const now = Date.now();
             document.getElementById('task-btn').style.display = "block";
             document.getElementById('task-btn').style.background = "var(--primary)";
-            document.getElementById('task-btn').innerText = `WATCH AD (${adsWatched + 1}/6)`;
-            document.getElementById('timer').style.display = "none";
+            
             for (let i = 1; i <= 6; i++) {
                 const slot = document.getElementById(`slot-${i}`);
                 if(slot) {
-                    slot.classList.remove('done');
-                    slot.innerHTML = `<i class="fas fa-play"></i><br>Ad ${i}`;
+                    if (i <= adsWatched) {
+                        slot.classList.add('done');
+                        slot.innerHTML = '<i class="fas fa-check-circle"></i><br>Done';
+                    } else {
+                        slot.classList.remove('done');
+                        slot.innerHTML = `<i class="fas fa-play"></i><br>Ad ${i}`;
+                    }
+                }
+            }
+
+            if (adsWatched === 6) {
+                document.getElementById('task-btn').innerText = "COLLECT 500 GP";
+                document.getElementById('task-btn').style.background = "var(--green)";
+                document.getElementById('timer').style.display = "none";
+            } else {
+                document.getElementById('task-btn').innerText = `WATCH AD (${adsWatched + 1}/6)`;
+                if (now < nextAllowedTime) {
+                    startAdTimer(nextAllowedTime);
+                } else {
+                    document.getElementById('timer').style.display = "none";
+                    document.getElementById('task-btn').disabled = false;
+                    document.getElementById('task-btn').classList.remove('btn-lock');
                 }
             }
         }
