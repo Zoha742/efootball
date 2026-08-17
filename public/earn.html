@@ -94,12 +94,12 @@
 
         // আপনার দেওয়া ৬টি ছবির লিস্ট
         const stepImages = [
-            "https://res.cloudinary.com/dyqegwdme/image/upload/v1786994788/1._start_wmufid.png", // ০টি অ্যাড (শুরু)
-            "https://res.cloudinary.com/dyqegwdme/image/upload/v1786994788/2._goal_sbspgy.png",  // ১টি অ্যাড দেখা হলে
-            "https://res.cloudinary.com/dyqegwdme/image/upload/v1786994788/3._kick_wvbdfw.png", // ২টি অ্যাড দেখা হলে
-            "https://res.cloudinary.com/dyqegwdme/image/upload/v1786994787/4.star_zxgufd.png",  // ৩টি পূর্ণ হলে
-            "https://res.cloudinary.com/dyqegwdme/image/upload/v1786994787/5.Cup_khdiku.png",    // কাপ ইমেজ
-            "https://res.cloudinary.com/dyqegwdme/image/upload/v1786994787/6.Win_ypr6bc.png"    // উইন/কমপ্লিটেড ফাইনাল ইমেজ
+            "https://res.cloudinary.com/dyqegwdme/image/upload/v1786994788/1._start_wmufid.png", 
+            "https://res.cloudinary.com/dyqegwdme/image/upload/v1786994788/2._goal_sbspgy.png",  
+            "https://res.cloudinary.com/dyqegwdme/image/upload/v1786994788/3._kick_wvbdfw.png", 
+            "https://res.cloudinary.com/dyqegwdme/image/upload/v1786994787/4.star_zxgufd.png",  
+            "https://res.cloudinary.com/dyqegwdme/image/upload/v1786994787/5.Cup_khdiku.png",    
+            "https://res.cloudinary.com/dyqegwdme/image/upload/v1786994787/6.Win_ypr6bc.png"    
         ];
 
         const AdController = {
@@ -135,7 +135,6 @@
             const now = Date.now();
             document.getElementById('ad-count').innerText = adsWatched;
 
-            // যতগুলো অ্যাড দেখা হয়েছে সেই অনুযায়ী ছবি পরিবর্তন হবে
             const imgElement = document.getElementById('earn-dynamic-img');
             if (adsWatched === 0) {
                 imgElement.src = stepImages[0];
@@ -236,12 +235,11 @@
             const btn = document.getElementById('earn-btn');
             const imgElement = document.getElementById('earn-dynamic-img');
             
-            // ৩টি অ্যাড দেখা শেষ হলে ফাইনাল উইন বা ৬ নম্বর ছবি সেট হবে
             imgElement.src = stepImages[5]; 
 
             btn.disabled = true;
             btn.classList.remove('btn-blue', 'btn-lock');
-            btn.classList.add('btn-success'); // বাটন সবুজ রঙে রূপ নেবে
+            btn.classList.add('btn-success'); 
             btn.innerHTML = `<i class="fas fa-check-circle"></i> DAILY TASK COMPLETED`;
             document.getElementById('timer-display').style.display = 'block';
         }
