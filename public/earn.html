@@ -62,7 +62,7 @@
             </div>
 
             <div class="limit-note">
-                <i class="fas fa-info-circle"></i> If you watch 3 videos completely, 500 GP will be added to your account. There is a 15-second waiting time between each ad and an 8-hour cooldown after completing all 3 ads[cite: 7].
+                <i class="fas fa-info-circle"></i> If you watch 3 videos completely, 500 GP will be added. There is a 15-second waiting time between each ad and an 8-hour cooldown after 3 ads.
             </div>
         </div>
     </div>
@@ -72,19 +72,14 @@
         tg.expand();
         const userId = tg.initDataUnsafe?.user?.id || "test_user";
 
-        // HTML ফাইলের ভেতরের AdController
         const AdController = {
             videoBlockId: "29212", 
             showVideoAd: function(onReward, onError) {
                 if (window.Adsgram) {
                     const ad = window.Adsgram.init({ blockId: this.videoBlockId });
                     ad.show()
-                      .then((result) => {
-                          if (onReward) onReward(result);
-                      })
-                      .catch((err) => {
-                          if (onError) onError(err);
-                      });
+                      .then((result) => { if (onReward) onReward(result); })
+                      .catch((err) => { if (onError) onError(err); });
                 } else {
                     console.log("Adsgram SDK not loaded yet.");
                 }
@@ -96,7 +91,6 @@
         let userGP = 0;
         let timerInterval;
 
-        // ১. রিয়েল-টাইম ডাটা লোড করা (Firebase)
         function initEarn() {
             db.ref('users/' + userId).on('value', snap => {
                 const data = snap.val() || {};
@@ -124,8 +118,12 @@
             }
         }
 
-        // ২. অ্যাড দেখানো (AdController ব্যবহার করে)
         function watchAd() {
+            if (adsWatched >= 3) {
+                alert("Daily limit reached! Please wait for the cooldown.");
+                return;
+            }
+
             AdController.showVideoAd(
                 (result) => {
                     handleReward();
@@ -136,21 +134,21 @@
             );
         }
 
-        // ৩. ৩টি অ্যাড দেখার পর ৫০০ GP রিওয়ার্ড এবং ৮ ঘণ্টার কোডাউন লজিক
         function handleReward() {
+            if (adsWatched >= 3) return;
+
             const newCount = adsWatched + 1;
             let reward = 0;
 
-            // শুধুমাত্র ৩ নম্বর অ্যাড কমপ্লিট হলে ৫০০ পয়েন্ট পাবে
             if (newCount === 3) {
                 reward = 500;
             }
 
             let waitTime = 0;
             if (newCount < 3) {
-                waitTime = 15 * 1000; // ১ম ও ২য় অ্যাডের পর ১৫ সেকেন্ড ওয়েট[cite: 7]
+                waitTime = 15 * 1000; // ১৫ সেকেন্ড ওয়েট
             } else {
-                waitTime = 8 * 60 * 60 * 1000; // ৩টি অ্যাড শেষ হলে ৮ ঘণ্টা (8 hours) কোডাউন[cite: 7]
+                waitTime = 8 * 60 * 60 * 1000; // ৮ ঘণ্টা কোডাউন
             }
 
             const nextTime = Date.now() + waitTime;
@@ -161,9 +159,9 @@
                 earn_next_time: nextTime
             }).then(() => {
                 if (newCount === 3) {
-                    alert(`Congratulations! You have completed 3 ads and earned 500 GP!`);
+                    alert("Congratulations! You have completed 3 ads and earned 500 GP!");
                 } else {
-                    alert(`Ad ${newCount}/3 watched successfully! Please wait 15 seconds for the next ad[cite: 7].`);
+                    alert(`Ad ${newCount}/3 watched successfully! Please wait 15 seconds for the next ad.`);
                 }
             });
         }
