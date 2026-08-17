@@ -147,8 +147,8 @@
 
             let waitTime = 0;
             if (newCount === 1) waitTime = 1 * 60 * 1000; // ১ম অ্যাডের পর ১ মিনিট ওয়েট
-            else if (newCount === 2) waitTime = 2 * 60 * 1000; // ২য় অ্যাডের পর ৩ মিনিট ওয়েট
-            else if (newCount >= 3) waitTime = 5 * 60 * 60 * 1000; // ৩য় অ্যাডের পর ২৪ ঘণ্টা ওয়েট
+            else if (newCount === 2) waitTime = 2 * 60 * 1000; // ২য় অ্যাডের পর 2 মিনিট ওয়েট
+            else if (newCount >= 3) waitTime = 5 * 60 * 60 * 1000; // ৩য় অ্যাডের পর 3 ঘণ্টা ওয়েট
 
             const nextTime = Date.now() + waitTime;
 
