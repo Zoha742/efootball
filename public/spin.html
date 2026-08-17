@@ -4,13 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lucky Spin - eFootball TM</title>
-    <!-- Firebase & SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     
-    <!-- Central Config -->
     <script src="config.js"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -25,7 +23,7 @@
         .container { padding: 20px; text-align: center; }
         .spin-card { background: linear-gradient(135deg, #121e36, #1a2c50); border-radius: 24px; padding: 25px; border: 1px solid rgba(251, 191, 36, 0.3); box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin-bottom: 20px; position: relative; overflow: hidden; }
         
-        /* চাকার ডিজাইন এবং টেক্সট সোজা ও নিখুঁতভাবে সাজানো */
+        /* Wheel Container */
         .wheel-container { position: relative; width: 280px; height: 280px; margin: 25px auto; }
         .wheel { 
             width: 100%; height: 100%; border-radius: 50%; border: 8px solid #fbbf24; 
@@ -43,16 +41,16 @@
         }
 
         .wheel-texts {
-            position: absolute; width: 100%; height: 100%; top: 0; left: 0;
+            position: absolute; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none;
         }
         .w-text {
             position: absolute; width: 50%; height: 35px; top: 50%; left: 50%;
             margin-top: -17px; transform-origin: left center;
-            font-size: 13px; font-weight: bold; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.9);
-            display: flex; align-items: center; justify-content: flex-end; padding-right: 30px;
+            font-size: 14px; font-weight: bold; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.9);
+            display: flex; align-items: center; justify-content: flex-end; padding-right: 25px;
         }
         
-        /* প্রতিটি সেগমেন্টের সঠিক পজিশন ও সোজা টেক্সট এঙ্গেল */
+        /* Fixed Segments Angle */
         .wt-1 { transform: rotate(30deg); }
         .wt-2 { transform: rotate(90deg); }
         .wt-3 { transform: rotate(150deg); }
@@ -89,7 +87,6 @@
         #timer-display { margin-top: 15px; font-size: 16px; font-weight: bold; color: #f87171; display: none; }
         .limit-note { font-size: 11px; color: #94a3b8; margin-top: 15px; line-height: 1.4; }
 
-        /* Bottom Nav */
         .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 70px; background: #070d19; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid var(--border); z-index: 1000; }
         .nav-item { text-align: center; color: #94a3b8; font-size: 11px; text-decoration: none; flex: 1; }
         .nav-item i { font-size: 20px; display: block; margin-bottom: 4px; }
@@ -110,16 +107,14 @@
             
             <div class="wheel-container">
                 <div class="wheel-pointer"></div>
-                <div class="wheel" id="inner-wheel">
-                    <div class="wheel-texts">
-                        <!-- সেগমেন্টগুলোর সঠিক ক্রমানুসারে টেক্সট পজিশন -->
-                        <span class="w-text wt-1">500 GP</span>
-                        <span class="w-text wt-2">600 GP</span>
-                        <span class="w-text wt-3">1000 GP</span>
-                        <span class="w-text wt-4">500 GP</span>
-                        <span class="w-text wt-5">600 GP</span>
-                        <span class="w-text wt-6">150 GP</span>
-                    </div>
+                <div class="wheel" id="inner-wheel"></div>
+                <div class="wheel-texts">
+                    <span class="w-text wt-1">500 GP</span>
+                    <span class="w-text wt-2">600 GP</span>
+                    <span class="w-text wt-3">1000 GP</span>
+                    <span class="w-text wt-4">500 GP</span>
+                    <span class="w-text wt-5">600 GP</span>
+                    <span class="w-text wt-6">150 GP</span>
                 </div>
                 <div class="wheel-center"><i class="fas fa-star" style="font-size: 18px; color: #fff;"></i></div>
             </div>
@@ -142,7 +137,6 @@
         </div>
     </div>
 
-    <!-- নিচের নেভিগেশন বার -->
     <nav class="bottom-nav">
         <a href="index.html" class="nav-item" style="color: #3b82f6;"><i class="fas fa-home"></i>Home</a>
         <a href="legend.html" class="nav-item"><i class="fas fa-crown"></i>Legend</a>
@@ -172,7 +166,6 @@
             }
         };
 
-        // সেগমেন্ট লিস্ট এবং কালার কনিকা গ্রেডিয়েন্টের সাথে মিল রেখে সাজানো
         const prizes = [500, 600, 1000, 500, 600, 150]; 
         const cooldownTime = 3 * 60 * 60 * 1000; 
         const adInterval = 5 * 1000;             
@@ -184,6 +177,7 @@
         let userGP = 0;
         let timerInterval;
         let isSpinning = false;
+        let currentDegree = 0;
 
         function initSpin() {
             db.ref('users/' + userId).on('value', snap => {
@@ -286,7 +280,6 @@
             const btn = document.getElementById('spin-btn');
             btn.disabled = true;
 
-            // সিকোয়েন্স লজিক: প্রথম স্পিনে 500 GP (index 0), দ্বিতীয় স্পিনে নিশ্চিত 600 GP (index 1)
             let winningIndex;
             if (freeSpinsLeft === 1) {
                 winningIndex = 0; // 500 GP
@@ -302,13 +295,13 @@
 
             const wonAmount = prizes[winningIndex];
 
-            const degreesPerItem = 360 / prizes.length;
-            const extraSpins = 360 * 6; 
-            // সঠিক সেগমেন্ট পয়েন্ট এবং ইনডিকেটরের সাথে ডিগ্রি নিখুঁতভাবে মেলানো
-            const targetDegree = extraSpins + (360 - (winningIndex * degreesPerItem + degreesPerItem / 2));
+            // Correct degree calculation for static text layout
+            const segmentAngle = 360 / prizes.length;
+            const targetOffset = winningIndex * segmentAngle + (segmentAngle / 2);
+            currentDegree += 360 * 6 + (360 - targetDegree - currentDegree % 360);
 
             const wheel = document.getElementById('inner-wheel');
-            wheel.style.transform = `rotate(${targetDegree}deg)`;
+            wheel.style.transform = `rotate(${currentDegree}deg)`;
 
             setTimeout(() => {
                 isSpinning = false;
