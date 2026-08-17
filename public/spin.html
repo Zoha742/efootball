@@ -15,7 +15,7 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --bg: #050a18; --card: #121e36; --primary: #3b82f6; --text: #ffffff; --border: #1e2d4d; --yellow: #fbbf24; }
+        :root { --bg: #050a18; --card: #121e36; --primary: #3b82f6; --text: #ffffff; --border: #1e2d4d; --yellow: #fbbf24; --green: #22c55e; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; padding-bottom: 90px; }
         
@@ -25,7 +25,7 @@
         .container { padding: 20px; text-align: center; }
         .spin-card { background: linear-gradient(135deg, #121e36, #1a2c50); border-radius: 24px; padding: 25px; border: 1px solid rgba(251, 191, 36, 0.3); box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin-bottom: 20px; position: relative; overflow: hidden; }
         
-        /* প্রিমিয়াম কালারফুল হুইল বা চাকা */
+        /* হুইল বা চাকার ডিজাইন এবং টেক্সট */
         .wheel-container { position: relative; width: 280px; height: 280px; margin: 25px auto; }
         .wheel { 
             width: 100%; height: 100%; border-radius: 50%; border: 8px solid #fbbf24; 
@@ -41,6 +41,21 @@
             ); 
             box-shadow: 0 0 30px rgba(251, 191, 36, 0.5), inset 0 0 20px rgba(0,0,0,0.4); 
         }
+
+        /* চাকার ভেতরে GP টেক্সটগুলো পজিশন করার জন্য */
+        .wheel-texts {
+            position: absolute; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none;
+        }
+        .w-text {
+            position: absolute; font-size: 13px; font-weight: bold; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.9);
+        }
+        /* ৬টি সেগমেন্টের টেক্সটের পজিশন */
+        .wt-1 { top: 22%; left: 62%; transform: rotate(30deg); }
+        .wt-2 { top: 44%; left: 75%; transform: rotate(90deg); }
+        .wt-3 { top: 68%; left: 60%; transform: rotate(150deg); }
+        .wt-4 { top: 70%; left: 30%; transform: rotate(210deg); }
+        .wt-5 { top: 44%; left: 16%; transform: rotate(270deg); }
+        .wt-6 { top: 22%; left: 32%; transform: rotate(330deg); }
 
         .wheel-pointer { 
             position: absolute; top: -18px; left: 50%; transform: translateX(-50%); 
@@ -88,17 +103,25 @@
         <div class="spin-card">
             <i class="fas fa-dharmachakra" style="font-size: 35px; color: var(--yellow); margin-bottom: 8px; filter: drop-shadow(0 0 10px rgba(251,191,36,0.5));"></i>
             <h3 style="margin-bottom: 5px; font-size: 20px; letter-spacing: 0.5px;">Lucky Spin Wheel</h3>
-            <p style="font-size: 12px; color: #fbbf24; margin-bottom: 15px;">Watch Ad & Spin to Win GP!</p>
+            <p style="font-size: 12px; color: var(--yellow); margin-bottom: 10px;" id="status-text">Watch 3 Ads to Spin (0/3)</p>
             
             <div class="wheel-container">
                 <div class="wheel-pointer"></div>
                 <div class="wheel" id="inner-wheel"></div>
+                <!-- চাকার ওপর ১৫ থেকে ১০০০ GP লেবেল -->
+                <div class="wheel-texts">
+                    <span class="w-text wt-1">500 GP</span>
+                    <span class="w-text wt-2">150 GP</span>
+                    <span class="w-text wt-3">600 GP</span>
+                    <span class="w-text wt-4">1000 GP</span>
+                    <span class="w-text wt-5">500 GP</span>
+                    <span class="w-text wt-6">600 GP</span>
+                </div>
                 <div class="wheel-center"><i class="fas fa-star" style="font-size: 18px; color: #fff;"></i></div>
             </div>
 
-            <!-- ভিডিও অ্যাড দেখার পর স্পিন বাটন চালু হবে -->
-            <button id="spin-btn" class="btn-spin" onclick="watchAdAndSpin()">
-                <i class="fas fa-play-circle"></i> WATCH AD & SPIN
+            <button id="spin-btn" class="btn-spin" onclick="handleSpinAction()">
+                <i class="fas fa-play-circle"></i> WATCH AD (1/3)
             </button>
 
             <div id="timer-display">
@@ -106,7 +129,7 @@
             </div>
 
             <div class="limit-note">
-                <i class="fas fa-info-circle"></i> Watch a short video ad to spin the wheel. Available once every 6 hours!
+                <i class="fas fa-info-circle"></i> Watch 3 ads (5s interval) to spin the wheel. 3 hours cooldown after spinning!
             </div>
 
             <a href="index.html" class="btn-back">
@@ -142,8 +165,13 @@
             }
         };
 
-        const prizes = [100, 20, 200, 50, 500, 10]; 
-        const cooldownTime = 6 * 60 * 60 * 1000;      
+        // সেগमेंट অনুযায়ী প্রাইজ ইনডেক্স: [0:500, 1:150, 2:600, 3:1000, 4:500, 5:600]
+        const prizes = [500, 150, 600, 1000, 500, 600]; 
+        const cooldownTime = 3 * 60 * 60 * 1000; // ৩ ঘণ্টার কাউন্টডাউন
+        const adInterval = 5 * 1000;             // প্রতিটি অ্যাডের মাঝে ৫ সেকেন্ড ওয়েটিং
+
+        let adsWatched = 0;
+        let nextAllowedTime = 0;
         let nextSpinTime = 0;
         let userGP = 0;
         let timerInterval;
@@ -153,7 +181,9 @@
             db.ref('users/' + userId).on('value', snap => {
                 const data = snap.val() || {};
                 userGP = data.gp || 0;
-                nextSpinTime = data.spin_next_time || 0;
+                adsWatched = data.spin_ads_count || 0;
+                nextAllowedTime = data.spin_next_ad_time || 0;
+                nextSpinTime = data.spin_cooldown_time || 0;
                 updateUI();
             });
         }
@@ -162,29 +192,78 @@
             const now = Date.now();
             const btn = document.getElementById('spin-btn');
             const timerDiv = document.getElementById('timer-display');
+            const statusText = document.getElementById('status-text');
 
+            // ১. যদি ৩ ঘণ্টার কোডাউন চলতে থাকে
             if (now < nextSpinTime) {
                 btn.disabled = true;
                 timerDiv.style.display = 'block';
+                statusText.innerText = "Cooldown Active!";
                 startTimer(nextSpinTime - now);
+                return;
+            } else if (nextSpinTime > 0 && now >= nextSpinTime && adsWatched >= 3) {
+                // কোডাউন শেষ হলে রসেট করা
+                db.ref('users/' + userId).update({
+                    spin_ads_count: 0,
+                    spin_cooldown_time: 0
+                });
+                adsWatched = 0;
+            }
+
+            // ২. অ্যাড দেখার প্রসেস চলাকালীন ৫ সেকেন্ডের টাইমার চেক
+            if (now < nextAllowedTime) {
+                btn.disabled = true;
+                timerDiv.style.display = 'block';
+                startTimer(nextAllowedTime - now);
+                statusText.innerText = `Watch Ad (${adsWatched}/3)`;
+                return;
+            }
+
+            timerDiv.style.display = 'none';
+            btn.disabled = false;
+
+            if (adsWatched < 3) {
+                statusText.innerText = `Watch Ads to Spin (${adsWatched}/3)`;
+                btn.innerHTML = `<i class="fas fa-play-circle"></i> WATCH AD (${adsWatched + 1}/3)`;
             } else {
-                btn.disabled = false;
-                timerDiv.style.display = 'none';
+                statusText.innerText = `Ready to Spin!`;
+                btn.innerHTML = `<i class="fas fa-dharmachakra"></i> SPIN THE WHEEL NOW`;
             }
         }
 
-        // প্রথমে ভিডিও অ্যাড দেখাবে, তারপর সফলভাবে দেখলে স্পিন শুরু হবে
-        function watchAdAndSpin() {
+        function handleSpinAction() {
             if (isSpinning) return;
 
-            AdController.showVideoAd(
-                (result) => {
-                    executeSpin();
-                },
-                (error) => {
-                    alert("Ad failed or skipped. Please watch the full ad to spin.");
-                }
-            );
+            const now = Date.now();
+            if (now < nextAllowedTime) return;
+
+            if (adsWatched < 3) {
+                // ভিডিও অ্যাড দেখাও
+                AdController.showVideoAd(
+                    (result) => {
+                        adsWatched++;
+                        const nextAdWait = Date.now() + adInterval;
+                        
+                        db.ref('users/' + userId).update({
+                            spin_ads_count: adsWatched,
+                            spin_next_ad_time: nextAdWait
+                        });
+
+                        if (adsWatched < 3) {
+                            alert(`Ad ${adsWatched}/3 watched! Please wait 5 seconds for the next ad.`);
+                        } else {
+                            alert("All 3 ads watched successfully! Click 'Spin the Wheel Now'.");
+                        }
+                        updateUI();
+                    },
+                    (error) => {
+                        alert("Ad failed or skipped. Please watch the full ad.");
+                    }
+                );
+            } else {
+                // ৩টি অ্যাড দেখা শেষ, এখন চাকা ঘোরাবে
+                executeSpin();
+            }
         }
 
         function executeSpin() {
@@ -192,12 +271,29 @@
             const btn = document.getElementById('spin-btn');
             btn.disabled = true;
 
-            const randomIndex = Math.floor(Math.random() * prizes.length);
-            const wonAmount = prizes[randomIndex];
+            // ইউজারের জন্য সুসংবাদ: বেশিরভাগ সময় যেন ৫০০০/৬০০ GP বা ভালো পয়েন্ট পড়ে
+            // সেগমেন্ট ইনডেক্স: 0 (500), 1 (150), 2 (600), 3 (1000), 4 (500), 5 (600)
+            const luckyRoll = Math.random();
+            let winningIndex;
+            if (luckyRoll < 0.40) {
+                winningIndex = 0; // 500 GP (40% চান্স)
+            } else if (luckyRoll < 0.80) {
+                winningIndex = 2; // 600 GP (40% চান্স)
+            } else if (luckyRoll < 0.90) {
+                winningIndex = 4; // 500 GP (10% চান্স)
+            } else if (luckyRoll < 0.96) {
+                winningIndex = 5; // 600 GP (6% চান্স)
+            } else if (luckyRoll < 0.99) {
+                winningIndex = 3; // 1000 GP (3% চান্স জ্যাকপট)
+            } else {
+                winningIndex = 1; // 150 GP (1% চান্স)
+            }
+
+            const wonAmount = prizes[winningIndex];
 
             const degreesPerItem = 360 / prizes.length;
             const extraSpins = 360 * 6; 
-            const targetDegree = extraSpins + (360 - (randomIndex * degreesPerItem + degreesPerItem / 2));
+            const targetDegree = extraSpins + (360 - (winningIndex * degreesPerItem + degreesPerItem / 2));
 
             const wheel = document.getElementById('inner-wheel');
             wheel.style.transform = `rotate(${targetDegree}deg)`;
@@ -205,13 +301,14 @@
             setTimeout(() => {
                 isSpinning = false;
                 const newGP = userGP + wonAmount;
-                const nextTime = Date.now() + cooldownTime;
+                const cooldownEnd = Date.now() + cooldownTime;
 
                 db.ref('users/' + userId).update({
                     gp: newGP,
-                    spin_next_time: nextTime
+                    spin_cooldown_time: cooldownEnd,
+                    spin_next_ad_time: 0
                 }).then(() => {
-                    alert(`Congratulations! You won ${wonAmount} GP! Added to your profile.`);
+                    alert(`🎉 Congratulations! You won ${wonAmount} GP! Added to your profile.`);
                 });
             }, 4000);
         }
@@ -220,9 +317,11 @@
             const countdownSpan = document.getElementById('countdown');
             clearInterval(timerInterval);
 
+            let targetTime = Date.now() + remaining;
+
             timerInterval = setInterval(() => {
                 const now = Date.now();
-                const diff = nextSpinTime - now;
+                const diff = targetTime - now;
 
                 if (diff <= 0) {
                     clearInterval(timerInterval);
@@ -234,7 +333,10 @@
                 let m = Math.floor((diff % 3600000) / 60000);
                 let s = Math.floor((diff % 60000) / 1000);
 
-                countdownSpan.innerText = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+                countdownSpan.innerText = 
+                    (h > 0 ? h + "h " : "") + 
+                    m.toString().padStart(2,'0') + ":" + 
+                    s.toString().padStart(2,'0');
             }, 1000);
         }
 
