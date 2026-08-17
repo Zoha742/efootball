@@ -26,8 +26,8 @@
         .reward-info h2 { margin: 5px 0; color: var(--green); }
         
         .ad-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0; }
-        .ad-slot { background: #050a18; border: 1px solid var(--border); padding: 10px 5px; border-radius: 12px; font-size: 11px; transition: 0.3s; text-align: center; }
-        .ad-slot img { width: 40px; height: 40px; object-fit: cover; border-radius: 8px; margin-bottom: 5px; display: block; margin-left: auto; margin-right: auto; border: 1px solid var(--primary); }
+        .ad-slot { background: #050a18; border: 1px solid var(--border); padding: 8px; border-radius: 12px; font-size: 11px; transition: 0.3s; text-align: center; }
+        .ad-slot img { width: 100%; height: 65px; object-fit: cover; border-radius: 8px; margin-bottom: 5px; display: block; border: 1px solid var(--primary); }
         .ad-slot.done { border-color: var(--green); color: var(--green); }
         
         .btn-main { width: 100%; border: none; padding: 15px; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 16px; }
@@ -56,7 +56,7 @@
                 <h2>500 GP Points</h2>
             </div>
 
-            <!-- ৬টি স্লটে আপনার দেওয়া ৬টি ছবি যুক্ত করা হলো -->
+            <!-- ৬টি স্লটে বড় সাইজের ছবি -->
             <div class="ad-grid" id="ad-slots">
                 <div class="ad-slot" id="slot-1">
                     <img src="https://res.cloudinary.com/dyqegwdme/image/upload/v1786994788/1._start_wmufid.png" alt="Ad 1">
@@ -85,7 +85,7 @@
             </div>
 
             <button id="task-btn" class="btn-main btn-blue" onclick="handleTask()">WATCH AD (1/6)</button>
-            <div id="timer">Next Ad In: <span id="countdown">00:10</span></div>
+            <div id="timer">Next Ad In: <span id="countdown">00:05</span></div>
         </div>
     </div>
 
@@ -102,7 +102,6 @@
         tg.expand();
         const userId = tg.initDataUnsafe?.user?.id || "test_user";
 
-        // ছবিগুলোর লিংক অ্যারে আকারে রাখা হলো (রিস্টোর করার সময় ব্যবহারের জন্য)
         const slotImages = [
             "https://res.cloudinary.com/dyqegwdme/image/upload/v1786994788/1._start_wmufid.png",
             "https://res.cloudinary.com/dyqegwdme/image/upload/v1786994788/2._goal_sbspgy.png",
@@ -130,8 +129,8 @@
         let userGP = 0;
         let nextAllowedTime = 0;
         let timerInterval;
-        const adCooldown = 10 * 1000; 
-        const finalCooldown = 12 * 60 * 60 * 1000; 
+        const adCooldown = 5 * 1000;              // প্রতিটি অ্যাডের মাঝে ৫ সেকেন্ড ওয়েটিং টাইম
+        const finalCooldown = 3 * 60 * 60 * 1000;  // ৬টি শেষ হলে ৩ ঘণ্টার কাউন্টডাউন
 
         function initTask() {
             db.ref('users/' + userId).on('value', snap => {
@@ -158,13 +157,14 @@
         function handleTask() {
             const now = Date.now();
             if (now < nextAllowedTime) {
-                alert("Please wait for the timer to finish!");
+                alert("Please wait for the 5-second timer to finish!");
                 return;
             }
 
             if (adsWatched < 6) {
                 AdController.showVideoAd(
                     (result) => {
+                        // প্রতিটি সফল অ্যাড দেখার পর Wish শুভেচ্ছা বার্তা ও ডাটা আপডেট
                         adsWatched++;
                         updateSlotUI(adsWatched);
                         
@@ -208,7 +208,8 @@
                 last_task_collect: Date.now(),
                 task_next_time: Date.now() + finalCooldown
             }).then(() => {
-                alert(`Congratulations! You have completed 6 ads and received ${rewardAmount} GP`);
+                // ৬টি অ্যাড কমপ্লিট করে রিਵোর্ড কালেক্ট করার সময় Wish ও জিপি প্রোফাইলে যোগ হওয়ার মেসেজ[cite: 6]
+                alert(`Wish You Success! Congratulations, you have successfully completed 6 ads and ${rewardAmount} GP has been added to your profile!`);
                 startFullCooldownTimer(Date.now() + finalCooldown);
             });
         }
