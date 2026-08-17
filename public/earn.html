@@ -16,8 +16,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --bg: #050a18; --card: #121e36; --primary: #818cf8; --text: #ffffff; --border: #1e2d4d; --yellow: #fbbf24; }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; padding-bottom: 90px; }
+        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 30px; }
         
         .top-bar { display: flex; align-items: center; padding: 15px; background: rgba(18, 30, 54, 0.7); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; }
         .top-bar a { color: white; text-decoration: none; margin-right: 15px; }
@@ -25,9 +24,6 @@
         .container { padding: 20px; text-align: center; }
         .earn-card { background: var(--card); border-radius: 20px; padding: 25px; border: 1px solid var(--border); margin-bottom: 20px; }
         
-        /* ডাইনামিক ছবির স্টাইল */
-        .earn-img { width: 90px; height: 90px; object-fit: cover; border-radius: 16px; margin-bottom: 15px; border: 2px solid var(--primary); box-shadow: 0 4px 15px rgba(0,0,0,0.4); }
-
         .status-info { margin-bottom: 20px; font-size: 14px; color: #94a3b8; }
         .status-info b { color: var(--yellow); }
 
@@ -37,16 +33,10 @@
             font-size: 16px; display: flex; align-items: center; justify-content: center; gap: 10px;
         }
         .btn-blue { background: linear-gradient(135deg, #818cf8, #6366f1); box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3); }
-        .btn-success { background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); }
         .btn-lock { background: #334155; cursor: not-allowed; opacity: 0.8; }
 
         #timer-display { margin-top: 15px; font-size: 18px; font-weight: bold; color: #f87171; display: none; }
         .limit-note { font-size: 11px; color: #64748b; margin-top: 15px; line-height: 1.4; }
-
-        /* Bottom Nav */
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 70px; background: #070d19; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid var(--border); z-index: 1000; }
-        .nav-item { text-align: center; color: #94a3b8; font-size: 11px; text-decoration: none; flex: 1; }
-        .nav-item i { font-size: 20px; display: block; margin-bottom: 4px; }
     </style>
 </head>
 <body>
@@ -58,9 +48,7 @@
 
     <div class="container">
         <div class="earn-card">
-            <!-- ডাইনামিক ইমেজ ডিসপ্লে -->
-            <img id="earn-dynamic-img" src="https://res.cloudinary.com/dyqegwdme/image/upload/v1786994788/1._start_wmufid.png" alt="Earn Step" class="earn-img">
-            
+            <i class="fas fa-gem" style="font-size: 40px; color: var(--yellow); margin-bottom: 15px;"></i>
             <div class="status-info">
                 Daily Task: <b id="ad-count">0</b> / 3 Ads Watched
             </div>
@@ -79,37 +67,23 @@
         </div>
     </div>
 
-    <!-- নিচের নেভিগেশন বার (হোম ও প্রোফাইলসহ) -->
-    <nav class="bottom-nav">
-        <a href="index.html" class="nav-item"><i class="fas fa-home"></i>Home</a>
-        <a href="legend.html" class="nav-item"><i class="fas fa-crown"></i>Legend</a>
-        <a href="task.html" class="nav-item" style="color: #3b82f6;"><i class="fas fa-clipboard-check"></i>Earn</a>
-        <a href="profile.html" class="nav-item"><i class="fas fa-user-circle"></i>Profile</a>
-    </nav>
-
     <script>
         const tg = window.Telegram.WebApp;
-        tg.expand();
         const userId = tg.initDataUnsafe?.user?.id || "test_user";
 
-        // আপনার দেওয়া ৬টি ছবির লিস্ট
-        const stepImages = [
-            "https://res.cloudinary.com/dyqegwdme/image/upload/v1786994788/1._start_wmufid.png", 
-            "https://res.cloudinary.com/dyqegwdme/image/upload/v1786994788/2._goal_sbspgy.png",  
-            "https://res.cloudinary.com/dyqegwdme/image/upload/v1786994788/3._kick_wvbdfw.png", 
-            "https://res.cloudinary.com/dyqegwdme/image/upload/v1786994787/4.star_zxgufd.png",  
-            "https://res.cloudinary.com/dyqegwdme/image/upload/v1786994787/5.Cup_khdiku.png",    
-            "https://res.cloudinary.com/dyqegwdme/image/upload/v1786994787/6.Win_ypr6bc.png"    
-        ];
-
+        // HTML ফাইলের ভেতরের AdController
         const AdController = {
             videoBlockId: "29212", 
             showVideoAd: function(onReward, onError) {
                 if (window.Adsgram) {
                     const ad = window.Adsgram.init({ blockId: this.videoBlockId });
                     ad.show()
-                      .then((result) => { if (onReward) onReward(result); })
-                      .catch((err) => { if (onError) onError(err); });
+                      .then((result) => {
+                          if (onReward) onReward(result);
+                      })
+                      .catch((err) => {
+                          if (onError) onError(err);
+                      });
                 } else {
                     console.log("Adsgram SDK not loaded yet.");
                 }
@@ -121,6 +95,7 @@
         let userGP = 0;
         let timerInterval;
 
+        // ১. রিয়েল-টাইম ডাটা লোড করা (Firebase)
         function initEarn() {
             db.ref('users/' + userId).on('value', snap => {
                 const data = snap.val() || {};
@@ -135,47 +110,45 @@
             const now = Date.now();
             document.getElementById('ad-count').innerText = adsWatched;
 
-            const imgElement = document.getElementById('earn-dynamic-img');
-            if (adsWatched === 0) {
-                imgElement.src = stepImages[0];
-            } else if (adsWatched === 1) {
-                imgElement.src = stepImages[1];
-            } else if (adsWatched === 2) {
-                imgElement.src = stepImages[2];
-            } else if (adsWatched >= 3) {
-                imgElement.src = stepImages[3]; 
-            }
-
             if (now < nextAllowedTime) {
                 startTimer(nextAllowedTime - now);
             } else {
-                if (adsWatched >= 3) {
+                if (adsWatched >= 3 && now < nextAllowedTime) {
                     showLimitReached();
+                } else if (adsWatched >= 3 && now >= nextAllowedTime) {
+                    resetDailyLimit();
                 } else {
                     showReadyState();
                 }
             }
         }
 
+        // ২. অ্যাড দেখানো (AdController ব্যবহার করে)
         function watchAd() {
             AdController.showVideoAd(
-                (result) => { handleReward(); },
-                (error) => { alert("Ad failed or skipped. Please try again."); }
+                (result) => {
+                    handleReward();
+                },
+                (error) => {
+                    alert("Ad failed or skipped. Please try again.");
+                }
             );
         }
 
+        // ৩. ৩টি অ্যাড দেখার পর ৫০০ GP রিওয়ার্ড দেওয়ার লজিক
         function handleReward() {
             const newCount = adsWatched + 1;
             let reward = 0;
 
+            // শুধুমাত্র ৩ নম্বর অ্যাড কমপ্লিট হলে ৫০০ পয়েন্ট পাবে
             if (newCount === 3) {
                 reward = 500;
             }
 
             let waitTime = 0;
-            if (newCount === 1) waitTime = 1 * 60 * 1000; 
-            else if (newCount === 2) waitTime = 3 * 60 * 1000; 
-            else if (newCount >= 3) waitTime = 24 * 60 * 60 * 1000; 
+            if (newCount === 1) waitTime = 1 * 60 * 1000; // ১ম অ্যাডের পর ১ মিনিট ওয়েট
+            else if (newCount === 2) waitTime = 2 * 60 * 1000; // ২য় অ্যাডের পর ৩ মিনিট ওয়েট
+            else if (newCount >= 3) waitTime = 5 * 60 * 60 * 1000; // ৩য় অ্যাডের পর ২৪ ঘণ্টা ওয়েট
 
             const nextTime = Date.now() + waitTime;
 
@@ -187,7 +160,7 @@
                 if (newCount === 3) {
                     alert(`Congratulations! You have completed 3 ads and earned 500 GP!`);
                 } else {
-                    alert(`Ad ${newCount}/3 watched successfully!`);
+                    alert(`Ad ${newCount}/3 watched successfully! You need to watch ${3 - newCount} more ad(s) to get 500 GP.`);
                 }
             });
         }
@@ -225,7 +198,7 @@
         function showReadyState() {
             const btn = document.getElementById('earn-btn');
             btn.disabled = false;
-            btn.classList.remove('btn-lock', 'btn-success');
+            btn.classList.remove('btn-lock');
             btn.classList.add('btn-blue');
             btn.innerHTML = `<i class="fas fa-play-circle"></i> WATCH VIDEO AD`;
             document.getElementById('timer-display').style.display = 'none';
@@ -233,15 +206,17 @@
 
         function showLimitReached() {
             const btn = document.getElementById('earn-btn');
-            const imgElement = document.getElementById('earn-dynamic-img');
-            
-            imgElement.src = stepImages[5]; 
-
             btn.disabled = true;
-            btn.classList.remove('btn-blue', 'btn-lock');
-            btn.classList.add('btn-success'); 
-            btn.innerHTML = `<i class="fas fa-check-circle"></i> DAILY TASK COMPLETED`;
+            btn.classList.add('btn-lock');
+            btn.innerHTML = `<i class="fas fa-calendar-times"></i> DAILY TASK COMPLETED`;
             document.getElementById('timer-display').style.display = 'block';
+        }
+
+        function resetDailyLimit() {
+            db.ref('users/' + userId).update({
+                earn_ads_count: 0,
+                earn_next_time: 0
+            });
         }
 
         window.onload = initEarn;
