@@ -36,9 +36,16 @@
             cursor: pointer; z-index: 10;
         }
 
-        .info-box { margin-top: 10px; background: rgba(30, 45, 77, 0.8); padding: 12px; border-radius: 12px; }
+        /* নিচের অ্যাড বক্স স্টাইল */
+        .ad-box { 
+            margin-top: 12px; background: rgba(30, 45, 77, 0.9); padding: 14px; 
+            border-radius: 12px; border: 1px solid rgba(251, 191, 36, 0.4); 
+            cursor: pointer; transition: 0.2s;
+        }
+        .ad-box:active { transform: scale(0.98); }
         #status-text { font-size: 14px; font-weight: bold; color: var(--yellow); }
-        .btn-back { display: inline-block; margin-top: 10px; padding: 8px 20px; border-radius: 8px; background: #1e2d4d; color: #fff; text-decoration: none; font-weight: bold; }
+
+        .btn-back { display: inline-block; margin-top: 12px; padding: 8px 20px; border-radius: 8px; background: #1e2d4d; color: #fff; text-decoration: none; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -50,10 +57,12 @@
                 <div class="reel" id="reel-2">7</div>
                 <div class="reel" id="reel-3">7</div>
             </div>
+            <!-- মূল স্পিন বাটন (এখানে ক্লিক করলে শুধু স্পিন ঘুরবে) -->
             <div class="spin-click-area" onclick="handleSpinAction()"></div>
         </div>
 
-        <div class="info-box">
+        <!-- নিচের সিগন্যাল বা অ্যাড বক্স (এখানে ক্লিক করলে অ্যাড আসবে) -->
+        <div class="ad-box" id="adBoxContainer" onclick="handleAdTrigger()">
             <div id="status-text">Free Spins Left: 3</div>
         </div>
 
@@ -83,10 +92,10 @@
         };
 
         const symbols = ['🍇', '🔔', '🪙', '7️⃣', '💎', '⭐'];
-        let freeSpinsLeft = 3; // ফ্রি স্পিন ৩টি করা হলো
+        let freeSpinsLeft = 3; 
         let userGP = 0;
         let isSpinning = false;
-        let adSpinsEarned = 0; // অ্যাড দেখার পর স্পিন কাউন্ট
+        let adSpinsEarned = 0; 
 
         function initSpin() {
             db.ref('users/' + userId).on('value', snap => {
@@ -103,12 +112,13 @@
             if (freeSpinsLeft > 0) {
                 statusText.innerText = `Free Spins Left: ${freeSpinsLeft}`;
             } else if (adSpinsEarned > 0) {
-                statusText.innerText = `Ad Spins Left: ${adSpinsEarned}`;
+                statusText.innerText = `Ready to Spin! Spins Available: ${adSpinsEarned}`;
             } else {
-                statusText.innerText = `Out of free spins! Watch ad to spin.`;
+                statusText.innerText = `Out of free spins! Click here to watch ad & spin.`;
             }
         }
 
+        // মূল স্পিন বাটনে ক্লিক করলে শুধু স্পিন ঘুরবে
         function handleSpinAction() {
             if (isSpinning) return;
 
@@ -121,17 +131,23 @@
                 db.ref('users/' + userId).update({ spin_ad_earned: adSpinsEarned });
                 executeSlotSpin();
             } else {
-                // Trigger Ad
-                AdController.showVideoAd(
-                    (result) => {
-                        adSpinsEarned++;
-                        db.ref('users/' + userId).update({ spin_ad_earned: adSpinsEarned });
-                        alert("Ad watched successfully! You got 1 spin.");
-                        updateUI();
-                    },
-                    (error) => {}
-                );
+                alert("You have no spins left! Please click the bottom ad box to watch an ad and get a spin.");
             }
+        }
+
+        // নিচের অ্যাড বক্সে ক্লিক করলে অ্যাড দেখাবে
+        function handleAdTrigger() {
+            if (freeSpinsLeft > 0 || isSpinning) return; // ফ্রি স্পিন থাকলে অ্যাড দরকার নেই
+
+            AdController.showVideoAd(
+                (result) => {
+                    adSpinsEarned++;
+                    db.ref('users/' + userId).update({ spin_ad_earned: adSpinsEarned });
+                    alert("You got 1 spin!");
+                    updateUI();
+                },
+                (error) => {}
+            );
         }
 
         function executeSlotSpin() {
@@ -156,14 +172,12 @@
                     r1.innerText = f1; r2.innerText = f2; r3.innerText = f3;
                     isSpinning = false;
 
-                    let win = 100; // ডিফল্ট ড্র
+                    let win = 100; 
                     
-                    // ৩টি মিললে ১০০০ GP
                     if (f1 === f2 && f2 === f3) {
                         win = 1000;
                         triggerConfetti();
                     } 
-                    // যে কোনো ২টি মিললে (যেমন ১ম-২য়, ২য়-৩য় বা ১ম-৩য়)
                     else if (f1 === f2 || f2 === f3 || f1 === f3) {
                         win = Math.random() < 0.5 ? 400 : 200;
                     }
