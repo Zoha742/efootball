@@ -62,17 +62,19 @@
     let slideInterval;
     let startX = 0;
 
-    // AdsGram অ্যাড কন্ট্রোলার ইনিশিয়ালাইজ (আপনার ব্লক আইডি অনুযায়ী)
-    const adController = window.AdsGram ? window.AdsGram.init({ blockId: "int-6916" }) : null;
-
-    // পেজে ঢোকার সাথে সাথে অ্যাড দেখানোর ফাংশন
+    // সঠিক ব্লক আইডি (29212) দিয়ে অ্যাড কন্ট্রোলার ইনিশিয়ালাইজ করা হয়েছে
     function showEntryAd() {
-        if (adController) {
-            adController.show().then(() => {
-                console.log("Event entry ad watched successfully.");
-            }).catch((err) => {
-                console.log("Ad skipped or failed:", err);
-            });
+        if (window.Adsgram) {
+            try {
+                const adController = window.Adsgram.init({ blockId: "29212" });
+                adController.show().then(() => {
+                    console.log("Event entry ad watched successfully.");
+                }).catch((err) => {
+                    console.log("Ad skipped or failed:", err);
+                });
+            } catch (e) {
+                console.log("Adsgram init error:", e);
+            }
         }
     }
 
@@ -82,7 +84,7 @@
         const dotsContainer = document.getElementById('dots');
 
         try {
-            // event.json থেকে ডেটা ফেচ করা[cite: 9]
+            // event.json থেকে ডেটা ফেচ করা[cite: 15]
             const res = await fetch('event.json');
             if (!res.ok) throw new Error("JSON not found");
             const data = await res.json();
@@ -156,10 +158,10 @@
         });
     }
 
-    // পেজ লোড হওয়ার সাথে সাথে অ্যাড শো করবে এবং ইভেন্ট লোড হবে
+    // পেজ লোড হওয়ার সাথে সাথে অ্যাড শো করবে এবং ইভেন্ট লোড হবে[cite: 15]
     window.onload = function() {
-        showEntryAd(); // ইউজার পেজে ঢুকলেই বিজ্ঞাপন দেখাবে
-        fetchEvents(); // ইভেন্ট লোড হবে
+        showEntryAd(); 
+        fetchEvents(); 
     };
 </script>
 </body>
