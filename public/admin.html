@@ -70,6 +70,12 @@
                 <div class="stat-box"><small>Banned</small><h2 id="st-banned" style="color: var(--red);">0</h2></div>
             </div>
 
+            <!-- নতুন সেকশন: ক্রিপ্টো মাইনিং ও বুস্ট পেমেন্ট অ্যাপ্রুভ্যাল -->
+            <div class="card" style="border-color: var(--orange);">
+                <h4><i class="fas fa-rocket" style="color:var(--orange);"></i> Pending Mining Boost Requests</h4>
+                <div id="boost-req-list" style="max-height: 250px; overflow-y: auto; margin-top: 10px;">Loading pending boosts...</div>
+            </div>
+
             <div class="card">
                 <h4><i class="fas fa-hand-holding-usd"></i> Financial Settings</h4>
                 <div class="grid">
@@ -142,7 +148,7 @@
         }
 
         function init() {
-            // ১. অ্যাডমিন প্যানেলে ডাটা লোড করা[cite: 7]
+            // ১. অ্যাডমিন প্যানেলে ডাটা লোড করা[cite: 2]
             db.ref('config').on('value', s => {
                 if(s.exists()){
                     document.getElementById('cfg-min').value = s.val().min_limit || 5000;
@@ -151,26 +157,46 @@
                 }
             });
 
-            // ২. ইউজার স্ট্যাটস এবং লিস্ট[cite: 8]
+            // ২. ইউজার স্ট্যাটস, লিস্ট এবং বুস্ট রিকোয়েস্ট লোড করা[cite: 2]
             db.ref('users').on('value', snap => {
                 let count = snap.numChildren();
                 let banned = 0, totalGP = 0, activeCount = 0;
                 let currentTime = Date.now();
                 let html = "";
+                let boostHtml = "";
                 
                 snap.forEach(c => {
                     let u = c.val();
+                    let uId = c.key;
                     if(u.banned) banned++;
                     totalGP += (u.gp || 0);
                     if (u.lastSeen && (currentTime - u.lastSeen) < (5 * 60 * 1000)) { activeCount++; }
 
+                    // ইউজার লিস্ট রেন্ডার
                     html += `<div class="user-item">
                         <div>
-                            <b>${c.key}</b> ${u.banned ? '<span class="badge-banned">BANNED</span>' : ''}<br>
+                            <b>${uId}</b> ${u.banned ? '<span class="badge-banned">BANNED</span>' : ''}<br>
                             <small>${u.gp || 0} GP</small>
                         </div>
-                        <button class="btn btn-blue" style="width:auto; padding:5px 12px;" onclick="openUser('${c.key}', ${u.gp || 0}, ${u.banned || false})">Manage</button>
+                        <button class="btn btn-blue" style="width:auto; padding:5px 12px;" onclick="openUser('${uId}', ${u.gp || 0}, ${u.banned || false})">Manage</button>
                     </div>`;
+
+                    // পেন্ডিং বুস্ট রিকোয়েস্ট চেক করা
+                    if(u.pending_boosts) {
+                        Object.keys(u.pending_boosts).forEach(coinId => {
+                            let req = u.pending_boosts[coinId];
+                            if(req && req.status === true) {
+                                boostHtml += `<div class="list-item" style="border-left-color: var(--orange);">
+                                    <b>User: ${uId} (${req.userName || 'N/A'})</b><br>
+                                    <small>Coin: <b>${coinId.toUpperCase()}</b> | Method: ${req.method || 'Wallet'}</small><br>
+                                    <div class="grid" style="margin-top:10px;">
+                                        <button class="btn btn-green" style="padding:6px;" onclick="approveBoost('${uId}', '${coinId}')">Approve Boost</button>
+                                        <button class="btn btn-red" style="padding:6px;" onclick="rejectBoost('${uId}', '${coinId}')">Reject</button>
+                                    </div>
+                                </div>`;
+                            }
+                        });
+                    }
                 });
 
                 document.getElementById('st-users').innerText = count;
@@ -178,9 +204,10 @@
                 document.getElementById('st-banned').innerText = banned;
                 document.getElementById('st-total-gp').innerText = totalGP.toLocaleString();
                 document.getElementById('user-list').innerHTML = html;
+                document.getElementById('boost-req-list').innerHTML = boostHtml || "No pending boost requests.";
             });
 
-            // ৩. উইথড্র রিকোয়েস্ট ম্যানেজমেন্ট[cite: 8]
+            // ৩. উইথড্র রিকোয়েস্ট ম্যানেজমেন্ট[cite: 2]
             db.ref('withdraw_requests').on('value', snap => {
                 let pending = 0;
                 let html = "";
@@ -202,7 +229,7 @@
                 document.getElementById('wd-list').innerHTML = html || "No Pending Requests.";
             });
 
-            // ৪. সাপোর্ট হিস্ট্রি[cite: 8]
+            // ৪. সাপোর্ট হিস্ট্রি[cite: 2]
             db.ref('support').on('value', snap => {
                 let html = "";
                 snap.forEach(userSnap => {
@@ -220,7 +247,30 @@
             });
         }
 
-        // ৫. ডাটাবেসে সেটিিংস সেভ করা[cite: 7]
+        // ৫. ক্রিপ্টো মাইনিং বুস্ট অ্যাপ্রুভ বা রিজেক্ট করার ফাংশন
+        function approveBoost(uid, coinId) {
+            let boostDuration = 15 * 24 * 60 * 60 * 1000; // ১৫ দিন
+            let expireTime = Date.now() + boostDuration;
+
+            db.ref(`users/${uid}`).update({
+                [`boosts/${coinId}/expireTime`]: expireTime,
+                [`pending_boosts/${coinId}`]: null // পেন্ডিং রিকোয়েস্ট ক্লিয়ার করা
+            }).then(() => {
+                db.ref('notifications/' + uid).push({ text: `Your ${coinId.toUpperCase()} 15-Days Boost has been approved by Admin!`, date: new Date().toLocaleString() });
+                alert("Boost Approved and Activated Successfully!");
+            });
+        }
+
+        function rejectBoost(uid, coinId) {
+            if(confirm("Are you sure you want to reject this boost request?")) {
+                db.ref(`users/${uid}/pending_boosts/${coinId}`).remove().then(() => {
+                    db.ref('notifications/' + uid).push({ text: `Your ${coinId.toUpperCase()} Boost request was rejected.`, date: new Date().toLocaleString() });
+                    alert("Boost Request Rejected.");
+                });
+            }
+        }
+
+        // ৬. ডাটাবেসে সেটিংস সেভ করা[cite: 2]
         function saveConfig() {
             db.ref('config').update({
                 min_limit: parseInt(document.getElementById('cfg-min').value),
