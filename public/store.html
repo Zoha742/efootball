@@ -54,7 +54,7 @@
         <h2>CRYPTO MINING</h2>
     </div>
 
-    <div class="section-title">Active Mining Rigs (12 Hours Interval)</div>
+    <div class="section-title">Active Mining Rigs (12 Hours Interval)[cite: 1]</div>
 
     <div class="mining-container" id="miningList">
         <!-- Dynamic Mining Cards will load here -->
@@ -64,6 +64,7 @@
     const tg = window.Telegram.WebApp;
     tg.expand();
     const userId = tg.initDataUnsafe?.user?.id || "test_user";
+    const ADMIN_WALLET = "UQApIeZRdy3eRi3FkZBFHCbu_P7Dgc3Jc9IjW7lgw8Ktaf9z";
 
     const coins = [
         { id: 'btc', name: 'Bitcoin (BTC)', icon: 'fa-bitcoin' },
@@ -73,7 +74,7 @@
         { id: 'lite', name: 'Litecoin (LITE)', icon: 'fa-coins' }
     ];
 
-    const INTERVAL_TIME = 12 * 60 * 60 * 1000; // 12 Hours in milliseconds
+    const INTERVAL_TIME = 12 * 60 * 60 * 1000; // 12 Hours in milliseconds[cite: 1]
     let userGP = 0;
     let miningData = {};
 
@@ -143,10 +144,12 @@
     }
 
     function claimMining(coinId, isPaid) {
-        let reward = 100; // নরমাল মাইনিং ১০০ জিপি
+        let reward = 100; // নরমাল মাইনিং ১০০ জিপি[cite: 1]
         if (isPaid) {
-            alert("Payment gateway simulated: $1 paid successfully!");
-            reward = 500; // পেইড করলে ৫০০ জিপি
+            let confirmPay = confirm(`To boost to 500 GP, please send exactly $1 (USDT via TON Network) to this wallet address:\n\n${ADMIN_WALLET}\n\nClick OK after completing your payment to verify and claim.`);
+            if (!confirmPay) return;
+            
+            reward = 500; // পেইড করলে ৫০০ জিপি[cite: 1]
         }
 
         userGP += reward;
@@ -175,3 +178,4 @@
 </script>
 </body>
 </html>
+[cite: 1]
