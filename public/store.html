@@ -13,37 +13,51 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --bg: #050a18; --primary: #fbbf24; --text: #ffffff; --card: #121e36; --border: #1e2d4d; --green: #22c55e; }
+        :root { --bg: #050a18; --primary: #fbbf24; --text: #ffffff; --card: #121e36; --border: #1e2d4d; }
         body { background: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; padding: 15px; padding-bottom: 50px; }
         
         .header { display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 20px; }
         .back-btn { position: absolute; left: 0; font-size: 22px; color: var(--primary); text-decoration: none; }
         .header h2 { font-size: 18px; color: var(--primary); margin: 0; }
 
-        .section-title { font-size: 14px; color: #94a3b8; margin: 20px 0 10px; text-transform: uppercase; letter-spacing: 1px; }
+        .section-title { font-size: 13px; color: #94a3b8; margin: 20px 0 10px; text-transform: uppercase; letter-spacing: 1px; }
 
-        .mining-container { display: flex; flex-direction: column; gap: 12px; }
+        .mining-container { display: flex; flex-direction: column; gap: 14px; }
         .mining-card { 
             background: var(--card); border: 1px solid var(--border); padding: 15px;
-            border-radius: 14px; display: flex; flex-direction: column; gap: 10px;
+            border-radius: 14px; display: flex; flex-direction: column; gap: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
         .mining-info { display: flex; align-items: center; justify-content: space-between; }
         .coin-details { display: flex; align-items: center; gap: 12px; }
-        .coin-icon { font-size: 24px; color: var(--primary); width: 35px; text-align: center; }
+        
+        /* কয়েনের লোগো ইমেজ স্টাইল */
+        .coin-img { width: 38px; height: 38px; object-fit: contain; }
+        
         .coin-name { font-weight: bold; font-size: 15px; }
-        .coin-reward { font-size: 12px; color: #94a3b8; margin-top: 3px; }
+        .coin-reward { font-size: 11px; color: #94a3b8; margin-top: 3px; }
 
+        /* দুটি বাটন পাশাপাশি রাখার লেআউট */
         .mining-actions { display: flex; gap: 8px; }
+        
+        /* ১. ফ্রি মাইনিং বাটন */
         .btn-mine { 
             flex: 1; background: linear-gradient(135deg, #f59e0b, #d97706); border: none; 
-            padding: 10px; border-radius: 8px; color: #fff; font-weight: bold; font-size: 13px; cursor: pointer; 
+            padding: 12px; border-radius: 10px; color: #fff; font-weight: bold; font-size: 12px; cursor: pointer; 
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3); transition: 0.2s; text-align: center;
         }
-        .btn-mine:disabled { background: #334155; color: #94a3b8; cursor: not-allowed; }
+        .btn-mine:active { transform: scale(0.98); }
+        .btn-mine:disabled { background: #1e293b; color: #64748b; cursor: not-allowed; box-shadow: none; }
         
-        .btn-double { 
-            background: linear-gradient(135deg, #22c55e, #15803d); border: none; 
-            padding: 10px 12px; border-radius: 8px; color: #fff; font-weight: bold; font-size: 12px; cursor: pointer; 
+        /* ২. পেইড বুস্ট বাটন ($1.4 / 15 Days) */
+        .btn-boost { 
+            flex: 1; background: linear-gradient(135deg, #10b981, #059669); border: none; 
+            padding: 12px; border-radius: 10px; color: #fff; font-weight: bold; font-size: 12px; cursor: pointer; 
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); transition: 0.2s; text-align: center;
         }
+        .btn-boost:active { transform: scale(0.98); }
+        .btn-boost.active-boost { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+
         .timer-text { font-size: 12px; color: #f87171; font-weight: bold; text-align: center; }
     </style>
 </head>
@@ -54,7 +68,7 @@
         <h2>CRYPTO MINING</h2>
     </div>
 
-    <div class="section-title">Active Mining Rigs (12 Hours Interval)[cite: 1]</div>
+    <div class="section-title">Active Mining Rigs (12 Hours Interval)</div>
 
     <div class="mining-container" id="miningList">
         <!-- Dynamic Mining Cards will load here -->
@@ -66,23 +80,27 @@
     const userId = tg.initDataUnsafe?.user?.id || "test_user";
     const ADMIN_WALLET = "UQApIeZRdy3eRi3FkZBFHCbu_P7Dgc3Jc9IjW7lgw8Ktaf9z";
 
+    // সাজানো লিংক ও কয়েন ডাটা (BTC, BNB, GRAM, AVAX, LITE)
     const coins = [
-        { id: 'btc', name: 'Bitcoin (BTC)', icon: 'fa-bitcoin' },
-        { id: 'bnb', name: 'Binance (BNB)', icon: 'fa-chart-line' },
-        { id: 'gram', name: 'Gram Token (GRAM)', icon: 'fa-gem' },
-        { id: 'avax', name: 'Avalanche (AVAX)', icon: 'fa-mountain' },
-        { id: 'lite', name: 'Litecoin (LITE)', icon: 'fa-coins' }
+        { id: 'btc', name: 'Bitcoin (BTC)', img: 'https://res.cloudinary.com/dyqegwdme/image/upload/v1787066064/BTC_ouxigz.jpg' },
+        { id: 'bnb', name: 'Binance (BNB)', img: 'https://res.cloudinary.com/dyqegwdme/image/upload/v1787066063/BNB_xscpvh.jpg' },
+        { id: 'gram', name: 'Gram Token (GRAM)', img: 'https://res.cloudinary.com/dyqegwdme/image/upload/v1787066063/Gram_jt8rhc.jpg' },
+        { id: 'avax', name: 'Avalanche (AVAX)', img: 'https://res.cloudinary.com/dyqegwdme/image/upload/v1787066194/Avax_b66rlb.jpg' },
+        { id: 'lite', name: 'Litecoin (LITE)', img: 'https://res.cloudinary.com/dyqegwdme/image/upload/v1787066063/Litecoin_wyu8c7.jpg' }
     ];
 
-    const INTERVAL_TIME = 12 * 60 * 60 * 1000; // 12 Hours in milliseconds[cite: 1]
+    const INTERVAL_TIME = 12 * 60 * 60 * 1000; // ১২ ঘণ্টা
+    const BOOST_DURATION = 15 * 24 * 60 * 60 * 1000; // ১৫ দিন
     let userGP = 0;
     let miningData = {};
+    let boostData = {};
 
     function initStore() {
         db.ref('users/' + userId).on('value', snap => {
             const data = snap.val() || {};
             userGP = data.gp || 0;
             miningData = data.mining || {};
+            boostData = data.boosts || {};
             renderMiningCards();
         });
     }
@@ -94,39 +112,45 @@
 
         coins.forEach(coin => {
             const coinInfo = miningData[coin.id] || { endTime: 0, status: 'idle' };
+            const boostInfo = boostData[coin.id] || { expireTime: 0 };
+            
             const timeLeft = coinInfo.endTime - now;
             const isRunning = timeLeft > 0;
+            const isBoostActive = boostInfo.expireTime > now;
 
-            let buttonHTML = `<button class="btn-mine" onclick="startMining('${coin.id}')">Start Mining</button>`;
+            let mainBtnHTML = `<button class="btn-mine" onclick="startMining('${coin.id}')">Start Mining</button>`;
             let timerHTML = '';
 
             if (isRunning) {
                 const hours = Math.floor(timeLeft / (1000 * 60 * 60));
                 const mins = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
                 const secs = Math.floor((timeLeft % (1000 * 60)) / 1000);
-                buttonHTML = `<button class="btn-mine" disabled>Mining...</button>`;
+                mainBtnHTML = `<button class="btn-mine" disabled>Mining...</button>`;
                 timerHTML = `<div class="timer-text">Ready in: ${hours}h ${mins}m ${secs}s</div>`;
             } else if (coinInfo.status === 'ready') {
-                buttonHTML = `
-                    <button class="btn-mine" onclick="claimMining('${coin.id}', false)">Claim 100 GP</button>
-                    <button class="btn-double" onclick="claimMining('${coin.id}', true)">Boost 500 GP ($1)</button>
-                `;
+                const rewardAmount = isBoostActive ? 500 : 100;
+                mainBtnHTML = `<button class="btn-mine" onclick="claimMining('${coin.id}', ${isBoostActive})">Claim ${rewardAmount} GP</button>`;
             }
+
+            // দ্বিতীয় বাটন: বুস্ট অপশন ($1.4 / 15 Days)
+            let boostBtnText = isBoostActive ? "Boosted (Active)" : "Boost ($1.4)";
+            let boostBtnHTML = `<button class="btn-boost ${isBoostActive ? 'active-boost' : ''}" onclick="purchaseBoost('${coin.id}')">${boostBtnText}</button>`;
 
             container.innerHTML += `
                 <div class="mining-card">
                     <div class="mining-info">
                         <div class="coin-details">
-                            <i class="fab ${coin.icon} coin-icon"></i>
+                            <img src="${coin.img}" class="coin-img" alt="${coin.name}">
                             <div>
                                 <div class="coin-name">${coin.name}</div>
-                                <div class="coin-reward">Reward: 100 GP (Paid Boost: 500 GP for $1)</div>
+                                <div class="coin-reward">Normal: 100 GP | Boosted: 500 GP ($1.4 / 15 Days)</div>
                             </div>
                         </div>
                     </div>
                     ${timerHTML}
                     <div class="mining-actions">
-                        ${buttonHTML}
+                        ${mainBtnHTML}
+                        ${boostBtnHTML}
                     </div>
                 </div>
             `;
@@ -143,14 +167,8 @@
         });
     }
 
-    function claimMining(coinId, isPaid) {
-        let reward = 100; // নরমাল মাইনিং ১০০ জিপি[cite: 1]
-        if (isPaid) {
-            let confirmPay = confirm(`To boost to 500 GP, please send exactly $1 (USDT via TON Network) to this wallet address:\n\n${ADMIN_WALLET}\n\nClick OK after completing your payment to verify and claim.`);
-            if (!confirmPay) return;
-            
-            reward = 500; // পেইড করলে ৫০০ জিপি[cite: 1]
-        }
+    function claimMining(coinId, isBoosted) {
+        let reward = isBoosted ? 500 : 100;
 
         userGP += reward;
         db.ref(`users/${userId}`).update({
@@ -161,7 +179,19 @@
         });
     }
 
-    // Auto-update timers every second
+    function purchaseBoost(coinId) {
+        let confirmPay = confirm(`To activate 500 GP mining boost for 15 Days, please send exactly $1.4 (USDT via TON Network) to this wallet address:\n\n${ADMIN_WALLET}\n\nClick OK after completing your payment to verify and activate.`);
+        if (!confirmPay) return;
+
+        const expireTime = Date.now() + BOOST_DURATION;
+        db.ref(`users/${userId}/boosts/${coinId}`).update({
+            expireTime: expireTime
+        }).then(() => {
+            alert("Payment verified! 15 Days Boost activated successfully.");
+        });
+    }
+
+    // অটো টাইমার আপডেট
     setInterval(() => {
         const now = Date.now();
         coins.forEach(coin => {
@@ -178,4 +208,3 @@
 </script>
 </body>
 </html>
-[cite: 1]
