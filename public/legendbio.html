@@ -12,7 +12,6 @@
     
     <!-- সেন্ট্রাল স্ক্রিপ্ট লিঙ্ক -->
     <script src="config.js"></script>
-    <script src="ads_manager_limit.js"></script> <!-- ১২ ঘণ্টার লিমিট যুক্ত অ্যাড স্ক্রিপ্ট[cite: 10, 11] -->
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -70,6 +69,32 @@
         return "#ffffff";
     }
 
+    // ১২ ঘণ্টা বা নির্দিষ্ট লিমি트 মেইনটেইন করার জন্য লোকালস্টোরেজ সিস্টেমসহ অ্যাড ফাংশন
+    function showBioAdWithLimit() {
+        const lastAdTime = localStorage.getItem('last_bio_ad_time');
+        const now = Date.now();
+        const twelveHours = 12 * 60 * 60 * 1000;
+
+        // যদি ১২ ঘণ্টার মধ্যে একবারও অ্যাড না দেখে থাকে অথবা সময় পার হয়ে গিয়ে থাকে
+        if (!lastAdTime || (now - lastAdTime) > twelveHours) {
+            if (window.Adsgram) {
+                try {
+                    const adController = window.Adsgram.init({ blockId: "29212" });
+                    adController.show().then(() => {
+                        localStorage.setItem('last_bio_ad_time', now); // দেখার সময় সেভ করে রাখা
+                        console.log("Bio ad watched successfully.");
+                    }).catch((err) => {
+                        console.log("Ad skipped or failed:", err);
+                    });
+                } catch (e) {
+                    console.log("Adsgram init error:", e);
+                }
+            }
+        } else {
+            console.log("Ad limit active: 12 hours have not passed yet.");
+        }
+    }
+
     window.onload = () => {
         const pData = localStorage.getItem('selected_player');
         if (pData) {
@@ -96,17 +121,9 @@
             }
         }
 
-        // --- ১২ ঘণ্টার লিমিটেড অ্যাড সিস্টেম ---
+        // পেজ লোড হওয়ার একটু পরে অ্যাড ফাংশন কল করা
         setTimeout(() => {
-            try {
-                // ads_manager_limit.js ফাইলের মেথড অনুযায়ী চেক করা হচ্ছে
-                if (typeof ads_manager_limit !== 'undefined') {
-                    // কোনো ইউজার প্লেয়ার পেজে ঢুকলে ১২ ঘণ্টায় মাত্র একবার অ্যাড দেখাবে[cite: 10, 11]
-                    ads_manager_limit.showBioAd('legend_bio_page'); 
-                }
-            } catch (e) {
-                console.log("Ad Loading Error:", e);
-            }
+            showBioAdWithLimit();
         }, 800);
     };
 </script>
