@@ -192,17 +192,14 @@
                     totalGP += (u.gp || 0);
 
                     // ৫ মিনিটের মধ্যে অ্যাক্টিভ থাকলে লাইভ কাউন্ট হবে
-                    let isActive = false;
                     if (u.lastSeen && (currentTime - u.lastSeen) < (5 * 60 * 1000)) { 
                         activeCount++; 
-                        isActive = true;
                     }
 
                     // ১২ ঘণ্টা বা তার বেশি সময় ইনঅ্যাক্টিভ থাকলে নোটিফিকেশন চেক ও পুশ করা
                     let twelveHours = 12 * 60 * 60 * 1000;
                     if (u.lastSeen && (currentTime - u.lastSeen) > twelveHours) {
                         let lastNotifTime = u.last_inactive_notif || 0;
-                        // ২৪ ঘণ্টায় একবারের বেশি একই নোটিফিকেশন এভয়েড করার জন্য চেক
                         if ((currentTime - lastNotifTime) > (24 * 60 * 60 * 1000)) {
                             db.ref(`users/${uId}/notifications`).push({
                                 text: "Apnake onek din app e dekha jacche na! Taratari eFootball HUB e eshe mining start korun.",
@@ -212,6 +209,7 @@
                         }
                     }
 
+                    // অ্যারেতে ইউজার ডাটা পুশ করা
                     usersArray.push({ id: uId, name: uName, gp: u.gp || 0, banned: u.banned || false, pending_boosts: u.pending_boosts });
 
                     if(u.pending_boosts) {
@@ -257,7 +255,7 @@
                 let activePercent = count > 0 ? ((activeCount / count) * 100).toFixed(1) : 0;
 
                 document.getElementById('st-users').innerText = count;
-                document.getElementById('st-active').innerHTML = `${activeCount} <small style="font-size: 12px; color: #fbbf24;">(${activePercent}%)</small>`;
+                document.getElementById('st-active').innerHTML = `${activeCount} <small style="font-size: 11px; color: #fbbf24;">(${activePercent}%)</small>`;
                 document.getElementById('st-banned').innerText = banned;
                 document.getElementById('st-total-gp').innerText = totalGP.toLocaleString();
                 document.getElementById('user-list').innerHTML = html;
