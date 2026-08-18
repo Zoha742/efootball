@@ -85,37 +85,38 @@
             border-color: var(--primary);
         }
 
-        /* কাস্টম মডাল ও ফর্ম ডিজাইন */
+        /* পেমেন্ট মডাল ও বক্স ফিক্স (মাঝখানে ও ছোট রাখার জন্য) */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px);
             display: none; align-items: center; justify-content: center; z-index: 2000;
+            padding: 15px; box-sizing: border-box;
         }
         .modal-content {
-            background: #121e36; border: 1px solid var(--border); width: 90%; max-width: 340px;
-            padding: 20px; border-radius: 16px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-            max-height: 90vh; overflow-y: auto;
+            background: #121e36; border: 1px solid var(--border); width: 100%; max-width: 320px;
+            padding: 18px; border-radius: 16px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            max-height: 85vh; overflow-y: auto; margin: auto; box-sizing: border-box;
         }
-        .modal-title { font-size: 16px; color: var(--primary); font-weight: bold; margin-bottom: 10px; }
-        .modal-desc { font-size: 12px; color: #94a3b8; margin-bottom: 15px; line-height: 1.4; }
+        .modal-title { font-size: 15px; color: var(--primary); font-weight: bold; margin-bottom: 8px; }
+        .modal-desc { font-size: 11px; color: #94a3b8; margin-bottom: 12px; line-height: 1.4; }
         .wallet-option-btn {
             display: block; width: 100%; background: #1e293b; color: #fff; border: 1px solid #334155;
-            padding: 12px; margin-bottom: 10px; border-radius: 10px; font-weight: bold; font-size: 13px;
-            cursor: pointer; transition: 0.2s; text-decoration: none; text-align: center;
+            padding: 10px; margin-bottom: 8px; border-radius: 10px; font-weight: bold; font-size: 12px;
+            cursor: pointer; transition: 0.2s; text-decoration: none; text-align: center; box-sizing: border-box;
         }
         .wallet-option-btn:hover { background: #334155; border-color: var(--primary); }
         
         .form-input {
             width: 100%; padding: 10px; background: #050a18; border: 1px solid var(--border);
-            color: #fff; border-radius: 8px; margin-bottom: 12px; font-size: 13px; box-sizing: border-box;
+            color: #fff; border-radius: 8px; margin-bottom: 10px; font-size: 12px; box-sizing: border-box;
         }
         .file-label { font-size: 11px; color: #94a3b8; display: block; text-align: left; margin-bottom: 4px; }
         
         .modal-close {
-            background: transparent; border: none; color: #f87171; font-size: 13px; font-weight: bold; cursor: pointer; margin-top: 12px; display: block; width: 100%;
+            background: transparent; border: none; color: #f87171; font-size: 12px; font-weight: bold; cursor: pointer; margin-top: 10px; display: block; width: 100%;
         }
         .copy-box {
-            background: #050a18; border: 1px dashed var(--border); padding: 8px; border-radius: 8px; margin-bottom: 15px; font-size: 11px; color: #fbbf24; word-break: break-all; display: flex; align-items: center; justify-content: space-between; gap: 5px;
+            background: #050a18; border: 1px dashed var(--border); padding: 8px; border-radius: 8px; margin-bottom: 12px; font-size: 11px; color: #fbbf24; word-break: break-all; display: flex; align-items: center; justify-content: space-between; gap: 5px; box-sizing: border-box;
         }
     </style>
 </head>
@@ -181,8 +182,8 @@
 
     // AdsGram অ্যাড কন্ট্রোলার ইনিশিয়ালাইজেশন
     let adController = null;
-    if (window.AdsGram) {
-        adController = window.AdsGram.init({ blockId: "int-6916" });
+    if (window.Adsgram) {
+        adController = window.Adsgram.init({ blockId: "int-6916" });
     }
 
     const coins = [
@@ -278,7 +279,7 @@
         });
     }
 
-    // ২ বার বিজ্ঞাপন দেখানোর পর মাইনিং স্টার্ট হওয়ার ফাংশন
+    // মাত্র ১টি বিজ্ঞাপন দেখার পর মাইনিং স্টার্ট হওয়ার ফাংশন
     function startMiningProcess(coinId) {
         if (!window.AdsGram) {
             startMining(coinId);
@@ -289,17 +290,11 @@
             adController = window.AdsGram.init({ blockId: "int-6916" });
         }
 
-        alert("Please watch Ad 1 of 2 to start mining.");
-        
         adController.show().then(() => {
-            alert("Great! Now watch Ad 2 of 2.");
-            adController.show().then(() => {
-                startMining(coinId);
-            }).catch((err) => {
-                alert("Second ad was skipped or failed. Mining not started.");
-            });
+            // অ্যাড সফলভাবে দেখার পর মাইনিং শুরু হবে
+            startMining(coinId);
         }).catch((err) => {
-            alert("First ad was skipped or failed. Mining not started.");
+            alert("Ad was skipped or failed. Mining not started.");
         });
     }
 
