@@ -54,7 +54,7 @@
         </div>
 
         <div class="info-box">
-            <div id="status-text">Free Spins Left: 10</div>
+            <div id="status-text">Free Spins Left: 3</div>
         </div>
 
         <a href="index.html" class="btn-back"><i class="fas fa-arrow-left"></i> Back</a>
@@ -73,26 +73,27 @@
                     ad.show()
                       .then((result) => { if (onReward) onReward(result); })
                       .catch((err) => { 
-                          alert("No ads available right now! Please try again later.");
+                          alert("No ads available right now! Please wait 3 minutes and try again.");
                           if (onError) onError(err); 
                       });
                 } else {
-                    alert("No ads available right now! Please try again later.");
+                    alert("No ads available right now! Please wait 3 minutes and try again.");
                 }
             }
         };
 
         const symbols = ['🍇', '🔔', '🪙', '7️⃣', '💎', '⭐'];
-        let freeSpinsLeft = 10;
+        let freeSpinsLeft = 3; // ফ্রি স্পিন ৩টি করা হলো
         let userGP = 0;
         let isSpinning = false;
-        let adRewardPending = false;
+        let adSpinsEarned = 0; // অ্যাড দেখার পর স্পিন কাউন্ট
 
         function initSpin() {
             db.ref('users/' + userId).on('value', snap => {
                 const data = snap.val() || {};
                 userGP = data.gp || 0;
-                freeSpinsLeft = data.spin_free_left !== undefined ? data.spin_free_left : 10;
+                freeSpinsLeft = data.spin_free_left !== undefined ? data.spin_free_left : 3;
+                adSpinsEarned = data.spin_ad_earned || 0;
                 updateUI();
             });
         }
@@ -101,8 +102,8 @@
             const statusText = document.getElementById('status-text');
             if (freeSpinsLeft > 0) {
                 statusText.innerText = `Free Spins Left: ${freeSpinsLeft}`;
-            } else if (adRewardPending) {
-                statusText.innerText = `Ready to Spin! Click SPIN.`;
+            } else if (adSpinsEarned > 0) {
+                statusText.innerText = `Ad Spins Left: ${adSpinsEarned}`;
             } else {
                 statusText.innerText = `Out of free spins! Watch ad to spin.`;
             }
@@ -115,15 +116,17 @@
                 freeSpinsLeft--;
                 db.ref('users/' + userId).update({ spin_free_left: freeSpinsLeft });
                 executeSlotSpin();
-            } else if (adRewardPending) {
-                adRewardPending = false;
+            } else if (adSpinsEarned > 0) {
+                adSpinsEarned--;
+                db.ref('users/' + userId).update({ spin_ad_earned: adSpinsEarned });
                 executeSlotSpin();
             } else {
                 // Trigger Ad
                 AdController.showVideoAd(
                     (result) => {
-                        adRewardPending = true;
-                        alert("Ad watched successfully! You can now spin.");
+                        adSpinsEarned++;
+                        db.ref('users/' + userId).update({ spin_ad_earned: adSpinsEarned });
+                        alert("Ad watched successfully! You got 1 spin.");
                         updateUI();
                     },
                     (error) => {}
@@ -148,16 +151,20 @@
                     clearInterval(roll);
                     let f1 = symbols[Math.floor(Math.random() * symbols.length)];
                     let f2 = symbols[Math.floor(Math.random() * symbols.length)];
-                    let f3 = (Math.random() < 0.3) ? f1 : symbols[Math.floor(Math.random() * symbols.length)];
+                    let f3 = symbols[Math.floor(Math.random() * symbols.length)];
 
                     r1.innerText = f1; r2.innerText = f2; r3.innerText = f3;
                     isSpinning = false;
 
-                    let win = 100; // default draw
+                    let win = 100; // ডিফল্ট ড্র
+                    
+                    // ৩টি মিললে ১০০০ GP
                     if (f1 === f2 && f2 === f3) {
                         win = 1000;
-                        triggerConfetti(); // Jackpot animation
-                    } else if (f1 === f2 || f2 === f3 || f1 === f3) {
+                        triggerConfetti();
+                    } 
+                    // যে কোনো ২টি মিললে (যেমন ১ম-২য়, ২য়-৩য় বা ১ম-৩য়)
+                    else if (f1 === f2 || f2 === f3 || f1 === f3) {
                         win = Math.random() < 0.5 ? 400 : 200;
                     }
 
