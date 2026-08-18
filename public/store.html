@@ -140,7 +140,7 @@
     <!-- ১. ওয়ালেট ও পেমেন্ট অপশন সিলেকশন মডাল -->
     <div class="modal-overlay" id="walletModal">
         <div class="modal-content">
-            <div class="modal-title">Select Payment Method ($1.4)</div>
+            <div class="modal-title">Select Payment Method ($10)</div>
             <div class="modal-desc">Choose your preferred payment method to proceed securely.</div>
             
             <a href="#" class="wallet-option-btn" onclick="openProofForm('Binance Pay')"><i class="fas fa-wallet" style="color:#f3ba2f; margin-right:8px;"></i> Binance Pay</a>
@@ -237,11 +237,11 @@
                 mainBtnHTML = `<button class="btn-mine" disabled>Mining...</button>`;
                 timerHTML = `<div class="timer-text">Ready in: ${hours}h ${mins}m ${secs}s</div>`;
             } else if (coinInfo.status === 'ready') {
-                const rewardAmount = isBoostActive ? 500 : 100;
+                const rewardAmount = isBoostActive ? 500 : 50;
                 mainBtnHTML = `<button class="btn-mine" onclick="claimMining('${coin.id}', ${isBoostActive})">Claim ${rewardAmount} GP</button>`;
             }
 
-            let boostBtnText = "Boost ($1.4)";
+            let boostBtnText = "Boost ($10)";
             let boostClass = "btn-boost";
             let boostAction = `showWalletModal('${coin.id}', false, false)`;
 
@@ -264,7 +264,7 @@
                             <img src="${coin.img}" class="coin-img" alt="${coin.name}">
                             <div>
                                 <div class="coin-name">${coin.name}</div>
-                                <div class="coin-reward">Normal: 100 GP | Boosted: 500 GP ($1.4 / 15 Days)</div>
+                                <div class="coin-reward">Normal: 50 GP | Boosted: 500 GP ($10 / 15 Days)</div>
                             </div>
                         </div>
                     </div>
@@ -314,7 +314,7 @@
     }
 
     function claimMining(coinId, isBoosted) {
-        let reward = isBoosted ? 500 : 100;
+        let reward = isBoosted ? 500 : 50;
         userGP += reward;
         db.ref(`users/${userId}`).update({
             gp: userGP,
