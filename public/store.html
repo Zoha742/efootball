@@ -110,12 +110,11 @@
         }
         .file-label { font-size: 11px; color: #94a3b8; display: block; text-align: left; margin-bottom: 4px; }
         
-        .action-btn-row { display: flex; gap: 10px; margin-top: 15px; }
-        .btn-yes { flex: 1; background: #22c55e; border: none; padding: 10px; border-radius: 8px; color: #fff; font-weight: bold; cursor: pointer; }
-        .btn-no { flex: 1; background: #ef4444; border: none; padding: 10px; border-radius: 8px; color: #fff; font-weight: bold; cursor: pointer; }
-        
         .modal-close {
             background: transparent; border: none; color: #f87171; font-size: 13px; font-weight: bold; cursor: pointer; margin-top: 12px; display: block; width: 100%;
+        }
+        .copy-box {
+            background: #050a18; border: 1px dashed var(--border); padding: 8px; border-radius: 8px; margin-bottom: 15px; font-size: 11px; color: #fbbf24; word-break: break-all; display: flex; align-items: center; justify-content: space-between; gap: 5px;
         }
     </style>
 </head>
@@ -137,46 +136,39 @@
         </a>
     </div>
 
-    <!-- ১. ওয়ালেট সিলেকশন মডাল -->
+    <!-- ১. ওয়ালেট ও পেমেন্ট অপশন সিলেকশন মডাল -->
     <div class="modal-overlay" id="walletModal">
         <div class="modal-content">
-            <div class="modal-title">Select Wallet to Pay $1.4</div>
-            <div class="modal-desc">Choose your preferred wallet to proceed securely.</div>
+            <div class="modal-title">Select Payment Method ($1.4)</div>
+            <div class="modal-desc">Choose your preferred payment method to proceed securely.</div>
             
-            <a href="#" class="wallet-option-btn" onclick="openWalletApp('binance')"><i class="fas fa-wallet" style="color:#f3ba2f; margin-right:8px;"></i> Binance Pay</a>
-            <a href="#" class="wallet-option-btn" onclick="openWalletApp('bitget')"><i class="fas fa-shield-alt" style="color:#00f0ff; margin-right:8px;"></i> Bitget Wallet</a>
-            <a href="#" class="wallet-option-btn" onclick="openWalletApp('tonkeeper')"><i class="fas fa-coins" style="color:#0098ea; margin-right:8px;"></i> Tonkeeper / Telegram Wallet</a>
-            <a href="#" class="wallet-option-btn" onclick="openTelegramStarsForm()" style="background: #7c3aed;"><i class="fas fa-star" style="color:#fbbf24; margin-right:8px;"></i> Pay with Telegram Stars</a>
+            <a href="#" class="wallet-option-btn" onclick="openProofForm('Binance Pay')"><i class="fas fa-wallet" style="color:#f3ba2f; margin-right:8px;"></i> Binance Pay</a>
+            <a href="#" class="wallet-option-btn" onclick="openProofForm('Bitget Wallet')"><i class="fas fa-shield-alt" style="color:#00f0ff; margin-right:8px;"></i> Bitget Wallet</a>
+            <a href="#" class="wallet-option-btn" onclick="openProofForm('Tonkeeper / Telegram Wallet')"><i class="fas fa-coins" style="color:#0098ea; margin-right:8px;"></i> Tonkeeper / Telegram Wallet</a>
+            <a href="#" class="wallet-option-btn" onclick="openProofForm('Telegram Stars')" style="background: #7c3aed;"><i class="fas fa-star" style="color:#fbbf24; margin-right:8px;"></i> Telegram Stars</a>
             
             <button class="modal-close" onclick="closeModal('walletModal')">Cancel</button>
         </div>
     </div>
 
-    <!-- ২. পেমেন্ট কনফার্মেশন মডাল (Yes / No) -->
-    <div class="modal-overlay" id="confirmModal">
+    <!-- ২. ডকুমেন্ট ও স্ক্রিনশট আপলোড ফর্ম মডাল (সব মেথডের জন্য এক) -->
+    <div class="modal-overlay" id="proofModal">
         <div class="modal-content">
-            <div class="modal-title">Payment Confirmation</div>
-            <div class="modal-desc">Have you successfully completed the payment in your wallet app?</div>
+            <div class="modal-title" id="proofModalTitle">Submit Payment Proof</div>
+            <div class="modal-desc">Copy admin USDT address to pay, then enter your ID and upload screenshot.</div>
             
-            <div class="action-btn-row">
-                <button class="btn-yes" onclick="handlePaymentResponse(true)">Yes</button>
-                <button class="btn-no" onclick="handlePaymentResponse(false)">No</button>
+            <!-- কপি ইউএসডিটি অ্যাড্রেস বক্স -->
+            <div class="copy-box">
+                <span id="adminWalletText" style="overflow:hidden; text-overflow:ellipsis;">UQApIeZRdy...Ktaf9z</span>
+                <button onclick="copyWalletAddress()" style="background:var(--primary); color:#000; border:none; padding:5px 8px; border-radius:4px; font-weight:bold; cursor:pointer; font-size:10px;"><i class="fas fa-copy"></i> Copy</button>
             </div>
-        </div>
-    </div>
 
-    <!-- ৩. টেলিগ্রাম স্টারস ও ডকুমেন্ট আপলোড ফর্ম মডাল -->
-    <div class="modal-overlay" id="starsModal">
-        <div class="modal-content">
-            <div class="modal-title">Telegram Stars Boost</div>
-            <div class="modal-desc">Send stars and submit your User ID & Screenshot proof.</div>
-            
             <input type="text" id="formUserId" class="form-input" placeholder="Enter Your Telegram User ID">
             <label class="file-label">Upload Payment Proof / Screenshot:</label>
             <input type="file" id="formFile" class="form-input" accept="image/*">
             
-            <button class="wallet-option-btn" style="background:#22c55e;" onclick="submitStarsForm()">Submit Proof</button>
-            <button class="modal-close" onclick="closeModal('starsModal')">Cancel</button>
+            <button class="wallet-option-btn" style="background:#22c55e;" onclick="submitProofForm()">Submit Proof</button>
+            <button class="modal-close" onclick="closeModal('proofModal')">Cancel</button>
         </div>
     </div>
 
@@ -201,6 +193,7 @@
     let boostData = {};
     let pendingData = {};
     let activeCoinId = '';
+    let selectedMethod = '';
 
     function initStore() {
         db.ref('users/' + userId).on('value', snap => {
@@ -311,47 +304,21 @@
         document.getElementById(modalId).style.display = 'none';
     }
 
-    function openWalletApp(walletType) {
+    function openProofForm(methodName) {
         closeModal('walletModal');
-        let paymentUrl = `ton://transfer/${ADMIN_WALLET}?amount=1400000&text=Boost_${activeCoinId}`;
-        if (walletType === 'binance') paymentUrl = `https://app.binance.com/en/qr/pay?to=${ADMIN_WALLET}`;
-        else if (walletType === 'bitget') paymentUrl = `bitget://wallet/transfer?to=${ADMIN_WALLET}&amount=1.4`;
-
-        window.open(paymentUrl, '_blank');
-        
-        setTimeout(() => {
-            document.getElementById('confirmModal').style.display = 'flex';
-        }, 1000);
-    }
-
-    function handlePaymentResponse(isYes) {
-        closeModal('confirmModal');
-        const currentUserId = tg.initDataUnsafe?.user?.id || userId;
-        const currentUserName = tg.initDataUnsafe?.user?.first_name || userName;
-
-        if (isYes) {
-            db.ref(`users/${currentUserId}/pending_boosts/${activeCoinId}`).set({
-                status: true,
-                timestamp: Date.now(),
-                dateTime: new Date().toLocaleString(),
-                userName: currentUserName,
-                coin: activeCoinId,
-                method: 'Wallet Payment'
-            }).then(() => {
-                alert("Payment request submitted successfully! Waiting for Admin approval.");
-            });
-        } else {
-            alert("Payment was not completed.");
-        }
-    }
-
-    function openTelegramStarsForm() {
-        closeModal('walletModal');
+        selectedMethod = methodName;
+        document.getElementById('proofModalTitle').innerText = `${methodName} Proof`;
         document.getElementById('formUserId').value = tg.initDataUnsafe?.user?.id || userId;
-        document.getElementById('starsModal').style.display = 'flex';
+        document.getElementById('proofModal').style.display = 'flex';
     }
 
-    function submitStarsForm() {
+    function copyWalletAddress() {
+        navigator.clipboard.writeText(ADMIN_WALLET).then(() => {
+            alert("USDT Wallet Address Copied to Clipboard!");
+        });
+    }
+
+    function submitProofForm() {
         const currentUserId = tg.initDataUnsafe?.user?.id || userId;
         const currentUserName = tg.initDataUnsafe?.user?.first_name || userName;
         
@@ -379,12 +346,12 @@
                 userName: currentUserName,
                 customUserId: uId,
                 coin: activeCoinId,
-                method: 'Telegram Stars / Proof Uploaded',
+                method: selectedMethod,
                 screenshot: base64Image
             }).then(() => {
-                closeModal('starsModal');
+                closeModal('proofModal');
                 document.getElementById('formFile').value = '';
-                alert("Stars payment & proof submitted successfully! Admin will review and approve.");
+                alert("Payment proof submitted successfully! Admin will review and approve.");
             }).catch(error => {
                 alert("Failed to upload: " + error.message);
             });
