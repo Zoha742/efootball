@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Store & Offers - eFootball HUB</title>
+    <title>Crypto Mining - eFootball HUB</title>
     
     <!-- SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
@@ -13,110 +13,165 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --bg: #050a18; --primary: #fbbf24; --text: #ffffff; --card: #121e36; --border: #1e2d4d; }
+        :root { --bg: #050a18; --primary: #fbbf24; --text: #ffffff; --card: #121e36; --border: #1e2d4d; --green: #22c55e; }
         body { background: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; padding: 15px; padding-bottom: 50px; }
         
-        .header { display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 25px; }
+        .header { display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 20px; }
         .back-btn { position: absolute; left: 0; font-size: 22px; color: var(--primary); text-decoration: none; }
         .header h2 { font-size: 18px; color: var(--primary); margin: 0; }
 
         .section-title { font-size: 14px; color: #94a3b8; margin: 20px 0 10px; text-transform: uppercase; letter-spacing: 1px; }
 
-        .affiliate-container { display: flex; flex-direction: column; gap: 10px; }
-        .affiliate-btn { 
-            display: flex; align-items: center; justify-content: space-between;
-            background: var(--card); border: 1px solid var(--border); padding: 12px 15px;
-            border-radius: 10px; color: var(--text); text-decoration: none; cursor: default;
+        .mining-container { display: flex; flex-direction: column; gap: 12px; }
+        .mining-card { 
+            background: var(--card); border: 1px solid var(--border); padding: 15px;
+            border-radius: 14px; display: flex; flex-direction: column; gap: 10px;
         }
-        .affiliate-btn i:first-child { font-size: 20px; color: var(--primary); width: 25px; text-align: center; }
-        .btn-text { flex-grow: 1; margin-left: 15px; font-weight: bold; font-size: 14px; }
-        .coming-soon { font-size: 10px; background: #1e2947; color: var(--primary); padding: 2px 8px; border-radius: 4px; text-transform: uppercase; }
+        .mining-info { display: flex; align-items: center; justify-content: space-between; }
+        .coin-details { display: flex; align-items: center; gap: 12px; }
+        .coin-icon { font-size: 24px; color: var(--primary); width: 35px; text-align: center; }
+        .coin-name { font-weight: bold; font-size: 15px; }
+        .coin-reward { font-size: 12px; color: #94a3b8; margin-top: 3px; }
+
+        .mining-actions { display: flex; gap: 8px; }
+        .btn-mine { 
+            flex: 1; background: linear-gradient(135deg, #f59e0b, #d97706); border: none; 
+            padding: 10px; border-radius: 8px; color: #fff; font-weight: bold; font-size: 13px; cursor: pointer; 
+        }
+        .btn-mine:disabled { background: #334155; color: #94a3b8; cursor: not-allowed; }
+        
+        .btn-double { 
+            background: linear-gradient(135deg, #22c55e, #15803d); border: none; 
+            padding: 10px 12px; border-radius: 8px; color: #fff; font-weight: bold; font-size: 12px; cursor: pointer; 
+        }
+        .timer-text { font-size: 12px; color: #f87171; font-weight: bold; text-align: center; }
     </style>
 </head>
 <body>
 
     <div class="header">
         <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
-        <h2>STORE & DEALS</h2>
+        <h2>CRYPTO MINING</h2>
     </div>
 
-    <div class="section-title">Coming Soon Platforms</div>
+    <div class="section-title">Active Mining Rigs (12 Hours Interval)</div>
 
-    <div class="affiliate-container">
-        <!-- ১. Payoneer -->
-        <div class="affiliate-btn">
-            <i class="fas fa-university"></i>
-            <span class="btn-text">Payoneer</span>
-            <span class="coming-soon">Coming Soon</span>
-        </div>
-
-        <!-- ২. Fiverr -->
-        <div class="affiliate-btn">
-            <i class="fas fa-briefcase"></i>
-            <span class="btn-text">Fiverr</span>
-            <span class="coming-soon">Coming Soon</span>
-        </div>
-
-        <!-- ৩. Hostinger -->
-        <div class="affiliate-btn">
-            <i class="fas fa-server"></i>
-            <span class="btn-text">Hostinger</span>
-            <span class="coming-soon">Coming Soon</span>
-        </div>
-
-        <!-- ৪. AliExpress -->
-        <div class="affiliate-btn">
-            <i class="fas fa-shopping-bag"></i>
-            <span class="btn-text">AliExpress</span>
-            <span class="coming-soon">Coming Soon</span>
-        </div>
-
-        <!-- ৫. Amazon -->
-        <div class="affiliate-btn">
-            <i class="fab fa-amazon"></i>
-            <span class="btn-text">Amazon</span>
-            <span class="coming-soon">Coming Soon</span>
-        </div>
-
-        <!-- ৬. Binance -->
-        <div class="affiliate-btn">
-            <i class="fas fa-chart-line"></i>
-            <span class="btn-text">Binance</span>
-            <span class="coming-soon">Coming Soon</span>
-        </div>
-
-        <!-- ৭. Namecheap -->
-        <div class="affiliate-btn">
-            <i class="fas fa-globe"></i>
-            <span class="btn-text">Namecheap</span>
-            <span class="coming-soon">Coming Soon</span>
-        </div>
-
-        <!-- ৮. Envato -->
-        <div class="affiliate-btn">
-            <i class="fas fa-code"></i>
-            <span class="btn-text">Envato Market</span>
-            <span class="coming-soon">Coming Soon</span>
-        </div>
-
-        <!-- ৯. AppSumo -->
-        <div class="affiliate-btn">
-            <i class="fas fa-rocket"></i>
-            <span class="btn-text">AppSumo</span>
-            <span class="coming-soon">Coming Soon</span>
-        </div>
-
-        <!-- ১০. Bluehost -->
-        <div class="affiliate-btn">
-            <i class="fas fa-cloud"></i>
-            <span class="btn-text">Bluehost</span>
-            <span class="coming-soon">Coming Soon</span>
-        </div>
+    <div class="mining-container" id="miningList">
+        <!-- Dynamic Mining Cards will load here -->
     </div>
 
 <script>
     const tg = window.Telegram.WebApp;
     tg.expand();
+    const userId = tg.initDataUnsafe?.user?.id || "test_user";
+
+    const coins = [
+        { id: 'btc', name: 'Bitcoin (BTC)', icon: 'fa-bitcoin' },
+        { id: 'bnb', name: 'Binance (BNB)', icon: 'fa-chart-line' },
+        { id: 'gram', name: 'Gram Token (GRAM)', icon: 'fa-gem' },
+        { id: 'avax', name: 'Avalanche (AVAX)', icon: 'fa-mountain' },
+        { id: 'lite', name: 'Litecoin (LITE)', icon: 'fa-coins' }
+    ];
+
+    const INTERVAL_TIME = 12 * 60 * 60 * 1000; // 12 Hours in milliseconds
+    let userGP = 0;
+    let miningData = {};
+
+    function initStore() {
+        db.ref('users/' + userId).on('value', snap => {
+            const data = snap.val() || {};
+            userGP = data.gp || 0;
+            miningData = data.mining || {};
+            renderMiningCards();
+        });
+    }
+
+    function renderMiningCards() {
+        const container = document.getElementById('miningList');
+        container.innerHTML = '';
+        const now = Date.now();
+
+        coins.forEach(coin => {
+            const coinInfo = miningData[coin.id] || { endTime: 0, status: 'idle' };
+            const timeLeft = coinInfo.endTime - now;
+            const isRunning = timeLeft > 0;
+
+            let buttonHTML = `<button class="btn-mine" onclick="startMining('${coin.id}')">Start Mining</button>`;
+            let timerHTML = '';
+
+            if (isRunning) {
+                const hours = Math.floor(timeLeft / (1000 * 60 * 60));
+                const mins = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                const secs = Math.floor((timeLeft % (1000 * 60)) / 1000);
+                buttonHTML = `<button class="btn-mine" disabled>Mining...</button>`;
+                timerHTML = `<div class="timer-text">Ready in: ${hours}h ${mins}m ${secs}s</div>`;
+            } else if (coinInfo.status === 'ready') {
+                buttonHTML = `
+                    <button class="btn-mine" onclick="claimMining('${coin.id}', false)">Claim 100 GP</button>
+                    <button class="btn-double" onclick="claimMining('${coin.id}', true)">Boost 500 GP ($1)</button>
+                `;
+            }
+
+            container.innerHTML += `
+                <div class="mining-card">
+                    <div class="mining-info">
+                        <div class="coin-details">
+                            <i class="fab ${coin.icon} coin-icon"></i>
+                            <div>
+                                <div class="coin-name">${coin.name}</div>
+                                <div class="coin-reward">Reward: 100 GP (Paid Boost: 500 GP for $1)</div>
+                            </div>
+                        </div>
+                    </div>
+                    ${timerHTML}
+                    <div class="mining-actions">
+                        ${buttonHTML}
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    function startMining(coinId) {
+        const endTime = Date.now() + INTERVAL_TIME;
+        db.ref(`users/${userId}/mining/${coinId}`).update({
+            endTime: endTime,
+            status: 'running'
+        }).then(() => {
+            alert("Mining started successfully! Come back after 12 hours.");
+        });
+    }
+
+    function claimMining(coinId, isPaid) {
+        let reward = 100; // নরমাল মাইনিং ১০০ জিপি
+        if (isPaid) {
+            alert("Payment gateway simulated: $1 paid successfully!");
+            reward = 500; // পেইড করলে ৫০০ জিপি
+        }
+
+        userGP += reward;
+        db.ref(`users/${userId}`).update({
+            gp: userGP,
+            [`mining/${coinId}`]: { endTime: 0, status: 'idle' }
+        }).then(() => {
+            alert(`Successfully claimed ${reward} GP!`);
+        });
+    }
+
+    // Auto-update timers every second
+    setInterval(() => {
+        const now = Date.now();
+        coins.forEach(coin => {
+            if (miningData[coin.id] && miningData[coin.id].endTime > 0) {
+                if (now >= miningData[coin.id].endTime && miningData[coin.id].status === 'running') {
+                    db.ref(`users/${userId}/mining/${coin.id}`).update({ status: 'ready' });
+                }
+            }
+        });
+        renderMiningCards();
+    }, 1000);
+
+    window.onload = initStore;
 </script>
 </body>
 </html>
