@@ -180,12 +180,6 @@
     const userName = tg.initDataUnsafe?.user?.first_name || "User";
     const ADMIN_WALLET = "UQApIeZRdy3eRi3FkZBFHCbu_P7Dgc3Jc9IjW7lgw8Ktaf9z";
 
-    // AdsGram অ্যাড কন্ট্রোলার ইনিশিয়ালাইজেশন
-    let adController = null;
-    if (window.Adsgram) {
-        adController = window.Adsgram.init({ blockId: "int-6916" });
-    }
-
     const coins = [
         { id: 'btc', name: 'Bitcoin (BTC)', img: 'https://res.cloudinary.com/dyqegwdme/image/upload/v1787066064/BTC_ouxigz.jpg' },
         { id: 'bnb', name: 'Binance (BNB)', img: 'https://res.cloudinary.com/dyqegwdme/image/upload/v1787066063/BNB_xscpvh.jpg' },
@@ -279,23 +273,26 @@
         });
     }
 
-    // মাত্র ১টি বিজ্ঞাপন দেখার পর মাইনিং স্টার্ট হওয়ার ফাংশন
+    // ফিক্সড ও নিশ্চিত বিজ্ঞাপন দেখানোর ফাংশন (ক্লিক করার সাথে সাথে ইনিশিয়ালাইজ ও শো করবে)
     function startMiningProcess(coinId) {
-        if (!window.AdsGram) {
-            startMining(coinId);
-            return;
+        if (window.Adsgram) {
+            try {
+                const adController = window.Adsgram.init({ blockId: "int-6916" });
+                adController.show().then(() => {
+                    // অ্যাড সফলভাবে দেখা শেষ হলে মাইনিং স্টার্ট হবে
+                    startMining(coinId);
+                }).catch((err) => {
+                    console.log("Ad skipped or failed:", err);
+                    alert("Ad was skipped or failed. Mining not started.");
+                });
+            } catch (e) {
+                console.log("Adsgram init error:", e);
+                startMining(coinId); // এসডিকে ফেইল করলে সরাসরি মাইনিং শুরু হবে (ফলব্যাক)
+            }
+        } else {
+            console.log("Adsgram SDK not found.");
+            startMining(coinId); // SDK না থাকলে সরাসরি মাইনিং শুরু হবে
         }
-
-        if (!adController) {
-            adController = window.AdsGram.init({ blockId: "int-6916" });
-        }
-
-        adController.show().then(() => {
-            // অ্যাড সফলভাবে দেখার পর মাইনিং শুরু হবে
-            startMining(coinId);
-        }).catch((err) => {
-            alert("Ad was skipped or failed. Mining not started.");
-        });
     }
 
     function startMining(coinId) {
