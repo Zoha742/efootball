@@ -73,7 +73,7 @@
                 <div class="stat-box"><small>Banned</small><h2 id="st-banned" style="color: var(--red);">0</h2></div>
             </div>
 
-            <!-- পেন্ডিং মাইনিং বুস্ট রিকোয়েস্ট (ডেট, টাইম ও স্ক্রিনশটসহ) -->
+            <!-- পেন্ডিং মাইনিং বুস্ট রিকোয়েস্ট -->
             <div class="card" style="border-color: var(--orange);">
                 <h4><i class="fas fa-rocket" style="color:var(--orange);"></i> Pending Mining Boost Requests</h4>
                 <div id="boost-req-list" style="max-height: 300px; overflow-y: auto; margin-top: 10px;">Loading pending boosts...</div>
@@ -135,8 +135,10 @@
 
     <div class="overlay" id="overlay" onclick="closeModal()"></div>
     
+    <!-- ইউজার ম্যানেজার মডাল (নাম ও আইডি সহ) -->
     <div class="modal" id="modal">
         <h3 id="m-title">Manage User</h3>
+        <p id="m-name-label" style="font-size: 14px; color: #fbbf24; margin: 5px 0; font-weight: bold;"></p>
         <p id="m-uid-label" style="font-size: 12px; color: var(--blue); margin-bottom: 10px;"></p>
         
         <hr border="0" style="height:1px; background:var(--border); margin:10px 0;">
@@ -185,16 +187,17 @@
                 snap.forEach(c => {
                     let u = c.val();
                     let uId = c.key;
+                    let uName = u.name || "Unknown";
                     if(u.banned) banned++;
                     totalGP += (u.gp || 0);
                     if (u.lastSeen && (currentTime - u.lastSeen) < (5 * 60 * 1000)) { activeCount++; }
 
                     html += `<div class="user-item">
                         <div>
-                            <b>${uId}</b> ${u.banned ? '<span class="badge-banned">BANNED</span>' : ''}<br>
+                            <b>${uName}</b> <small style="color:#94a3b8;">(${uId})</small> ${u.banned ? '<span class="badge-banned">BANNED</span>' : ''}<br>
                             <small>${u.gp || 0} GP</small>
                         </div>
-                        <button class="btn btn-blue" style="width:auto; padding:5px 12px;" onclick="openUser('${uId}', ${u.gp || 0}, ${u.banned || false})">Manage</button>
+                        <button class="btn btn-blue" style="width:auto; padding:5px 12px;" onclick="openUser('${uId}', '${uName.replace(/'/g, "\\'")}', ${u.gp || 0}, ${u.banned || false})">Manage</button>
                     </div>`;
 
                     if(u.pending_boosts) {
@@ -299,10 +302,12 @@
             }
         }
 
-        function openUser(id, gp, isBanned) {
+        // ইউজার ম্যানেজ মডালে নাম এবং আইডি দেখানোর ফাংশন
+        function openUser(id, name, gp, isBanned) {
             window.targetU = id;
             window.targetBanned = isBanned;
-            document.getElementById('m-uid-label').innerText = "Current ID: " + id;
+            document.getElementById('m-name-label').innerText = "Name: " + name;
+            document.getElementById('m-uid-label').innerText = "ID: " + id;
             document.getElementById('new-user-id').value = id;
             document.getElementById('m-gp').value = gp;
             document.getElementById('ban-btn').innerText = isBanned ? "Unban User" : "Ban User";
