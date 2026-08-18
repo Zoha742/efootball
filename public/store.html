@@ -8,6 +8,7 @@
     <!-- SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
+    <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="config.js"></script>
 
@@ -179,6 +180,9 @@
     const userName = tg.initDataUnsafe?.user?.first_name || "User";
     const ADMIN_WALLET = "UQApIeZRdy3eRi3FkZBFHCbu_P7Dgc3Jc9IjW7lgw8Ktaf9z";
 
+    // AdsGram অ্যাড ব্লক ইনিশিয়ালাইজ (আপনার ব্লক আইডি এখানে বসানো আছে)
+    const adController = window.AdsGram ? window.AdsGram.init({ blockId: "int-6916" }) : null;
+
     const coins = [
         { id: 'btc', name: 'Bitcoin (BTC)', img: 'https://res.cloudinary.com/dyqegwdme/image/upload/v1787066064/BTC_ouxigz.jpg' },
         { id: 'bnb', name: 'Binance (BNB)', img: 'https://res.cloudinary.com/dyqegwdme/image/upload/v1787066063/BNB_xscpvh.jpg' },
@@ -221,7 +225,7 @@
             const isBoostActive = boostInfo.expireTime > now;
             const isPending = pendingInfo.status === true;
 
-            let mainBtnHTML = `<button class="btn-mine" onclick="startMining('${coin.id}')">Start Mining</button>`;
+            let mainBtnHTML = `<button class="btn-mine" onclick="startMiningProcess('${coin.id}')">Start Mining</button>`;
             let timerHTML = '';
 
             if (isRunning) {
@@ -269,6 +273,31 @@
                     </div>
                 </div>
             `;
+        });
+    }
+
+    // ব্যাক টু ব্যাক ২টি অ্যাড দেখানোর লজিক
+    function startMiningProcess(coinId) {
+        if (!adController) {
+            // যদি অ্যাডসনেটে কোনো সমস্যা হয়, সরাসরি মাইনিং শুরু হয়ে যাবে
+            startMining(coinId);
+            return;
+        }
+
+        alert("Please watch Ad 1 of 2 to start mining.");
+        
+        // প্রথম অ্যাড দেখানো
+        adController.show().then(() => {
+            // প্রথম অ্যাড দেখা শেষ হলে দ্বিতীয় অ্যাড দেখানো
+            alert("Great! Now watch Ad 2 of 2.");
+            adController.show().then(() => {
+                // দুটি অ্যাড দেখা শেষ হলে মাইনিং স্টার্ট হবে
+                startMining(coinId);
+            }).catch((err) => {
+                alert("Second ad was skipped or failed. Mining not started.");
+            });
+        }).catch((err) => {
+            alert("First ad was skipped or failed. Mining not started.");
         });
     }
 
