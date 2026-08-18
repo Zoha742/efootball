@@ -152,13 +152,12 @@
         </div>
     </div>
 
-    <!-- ২. ডকুমেন্ট ও স্ক্রিনশট আপলোড ফর্ম মডাল (সব মেথডের জন্য এক) -->
+    <!-- ২. ডকুমেন্ট ও স্ক্রিনশট আপলোড ফর্ম মডাল -->
     <div class="modal-overlay" id="proofModal">
         <div class="modal-content">
             <div class="modal-title" id="proofModalTitle">Submit Payment Proof</div>
             <div class="modal-desc">Copy admin USDT address to pay, then enter your ID and upload screenshot.</div>
             
-            <!-- কপি ইউএসডিটি অ্যাড্রেস বক্স -->
             <div class="copy-box">
                 <span id="adminWalletText" style="overflow:hidden; text-overflow:ellipsis;">UQApIeZRdy...Ktaf9z</span>
                 <button onclick="copyWalletAddress()" style="background:var(--primary); color:#000; border:none; padding:5px 8px; border-radius:4px; font-weight:bold; cursor:pointer; font-size:10px;"><i class="fas fa-copy"></i> Copy</button>
@@ -180,8 +179,11 @@
     const userName = tg.initDataUnsafe?.user?.first_name || "User";
     const ADMIN_WALLET = "UQApIeZRdy3eRi3FkZBFHCbu_P7Dgc3Jc9IjW7lgw8Ktaf9z";
 
-    // AdsGram অ্যাড ব্লক ইনিশিয়ালাইজ (আপনার ব্লক আইডি এখানে বসানো আছে)
-    const adController = window.AdsGram ? window.AdsGram.init({ blockId: "int-6916" }) : null;
+    // AdsGram অ্যাড কন্ট্রোলার ইনিশিয়ালাইজেশন
+    let adController = null;
+    if (window.AdsGram) {
+        adController = window.AdsGram.init({ blockId: "int-6916" });
+    }
 
     const coins = [
         { id: 'btc', name: 'Bitcoin (BTC)', img: 'https://res.cloudinary.com/dyqegwdme/image/upload/v1787066064/BTC_ouxigz.jpg' },
@@ -276,22 +278,22 @@
         });
     }
 
-    // ব্যাক টু ব্যাক ২টি অ্যাড দেখানোর লজিক
+    // ২ বার বিজ্ঞাপন দেখানোর পর মাইনিং স্টার্ট হওয়ার ফাংশন
     function startMiningProcess(coinId) {
-        if (!adController) {
-            // যদি অ্যাডসনেটে কোনো সমস্যা হয়, সরাসরি মাইনিং শুরু হয়ে যাবে
+        if (!window.AdsGram) {
             startMining(coinId);
             return;
         }
 
+        if (!adController) {
+            adController = window.AdsGram.init({ blockId: "int-6916" });
+        }
+
         alert("Please watch Ad 1 of 2 to start mining.");
         
-        // প্রথম অ্যাড দেখানো
         adController.show().then(() => {
-            // প্রথম অ্যাড দেখা শেষ হলে দ্বিতীয় অ্যাড দেখানো
             alert("Great! Now watch Ad 2 of 2.");
             adController.show().then(() => {
-                // দুটি অ্যাড দেখা শেষ হলে মাইনিং স্টার্ট হবে
                 startMining(coinId);
             }).catch((err) => {
                 alert("Second ad was skipped or failed. Mining not started.");
