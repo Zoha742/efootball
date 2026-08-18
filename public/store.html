@@ -273,13 +273,13 @@
         });
     }
 
-    // ফিক্সড ও নিশ্চিত বিজ্ঞাপন দেখানোর ফাংশন (ক্লিক করার সাথে সাথে ইনিশিয়ালাইজ ও শো করবে)
+    // সঠিক ভিডিও ব্লক আইডি (29212) দিয়ে অ্যাড শো করার ফাংশন
     function startMiningProcess(coinId) {
         if (window.Adsgram) {
             try {
-                const adController = window.Adsgram.init({ blockId: "int-6916" });
+                // সঠিক ভিডিও ব্লক আইডি বসানো হয়েছে (যেটি আপনার অন্য ফাইলে কাজ করছে)
+                const adController = window.Adsgram.init({ blockId: "29212" });
                 adController.show().then(() => {
-                    // অ্যাড সফলভাবে দেখা শেষ হলে মাইনিং স্টার্ট হবে
                     startMining(coinId);
                 }).catch((err) => {
                     console.log("Ad skipped or failed:", err);
@@ -287,11 +287,11 @@
                 });
             } catch (e) {
                 console.log("Adsgram init error:", e);
-                startMining(coinId); // এসডিকে ফেইল করলে সরাসরি মাইনিং শুরু হবে (ফলব্যাক)
+                startMining(coinId); // ফলব্যাক হিসেবে সরাসরি স্টার্ট হবে
             }
         } else {
             console.log("Adsgram SDK not found.");
-            startMining(coinId); // SDK না থাকলে সরাসরি মাইনিং শুরু হবে
+            startMining(coinId); // SDK না থাকলে সরাসরি স্টার্ট হবে
         }
     }
 
