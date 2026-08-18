@@ -31,7 +31,7 @@
         .mining-info { display: flex; align-items: center; justify-content: space-between; }
         .coin-details { display: flex; align-items: center; gap: 12px; }
         
-        /* কয়েনের লোগো ইমেজ একদম গোল করা হয়েছে */
+        /* গোল করা কয়েন লোগো ইমেজ */
         .coin-img { width: 40px; height: 40px; object-fit: cover; border-radius: 50%; border: 2px solid var(--primary); }
         
         .coin-name { font-weight: bold; font-size: 15px; }
@@ -54,8 +54,31 @@
         }
         .btn-boost:active { transform: scale(0.98); }
         .btn-boost.active-boost { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+        .btn-boost.pending-boost { background: linear-gradient(135deg, #d97706, #b45309); }
 
         .timer-text { font-size: 12px; color: #f87171; font-weight: bold; text-align: center; }
+
+        /* কাস্টম পেমেন্ট মডাল ডিজাইন */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(5px);
+            display: none; align-items: center; justify-content: center; z-index: 2000;
+        }
+        .modal-content {
+            background: #121e36; border: 1px solid var(--border); width: 90%; max-width: 340px;
+            padding: 20px; border-radius: 16px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+        .modal-title { font-size: 16px; color: var(--primary); font-weight: bold; margin-bottom: 10px; }
+        .modal-desc { font-size: 12px; color: #94a3b8; margin-bottom: 20px; line-height: 1.4; }
+        .wallet-option-btn {
+            display: block; width: 100%; background: #1e293b; color: #fff; border: 1px solid #334155;
+            padding: 12px; margin-bottom: 10px; border-radius: 10px; font-weight: bold; font-size: 13px;
+            cursor: pointer; transition: 0.2s; text-decoration: none; text-align: center;
+        }
+        .wallet-option-btn:hover { background: #334155; border-color: var(--primary); }
+        .modal-close {
+            background: transparent; border: none; color: #f87171; font-size: 13px; font-weight: bold; cursor: pointer; margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -68,13 +91,28 @@
     <div class="section-title">Active Mining Rigs (12 Hours Interval)</div>
 
     <div class="mining-container" id="miningList">
-        <!-- Dynamic Mining Cards will load here -->
+        <!-- Dynamic Mining Cards -->
+    </div>
+
+    <!-- কাস্টম ওয়ালেট সিলেকশন মডাল -->
+    <div class="modal-overlay" id="walletModal">
+        <div class="modal-content">
+            <div class="modal-title">Select Wallet to Pay $1.4</div>
+            <div class="modal-desc">Choose your preferred wallet app to proceed with the 15 Days Mining Boost payment securely.</div>
+            
+            <a href="#" class="wallet-option-btn" onclick="openWalletApp('binance')"><i class="fas fa-wallet" style="color:#f3ba2f; margin-right:8px;"></i> Binance Pay</a>
+            <a href="#" class="wallet-option-btn" onclick="openWalletApp('bitget')"><i class="fas fa-shield-alt" style="color:#00f0ff; margin-right:8px;"></i> Bitget Wallet</a>
+            <a href="#" class="wallet-option-btn" onclick="openWalletApp('tonkeeper')"><i class="fas fa-coins" style="color:#0098ea; margin-right:8px;"></i> Tonkeeper / Telegram Wallet</a>
+            
+            <button class="modal-close" onclick="closeWalletModal()">Cancel</button>
+        </div>
     </div>
 
 <script>
     const tg = window.Telegram.WebApp;
     tg.expand();
     const userId = tg.initDataUnsafe?.user?.id || "test_user";
+    const userName = tg.initDataUnsafe?.user?.first_name || "User";
     const ADMIN_WALLET = "UQApIeZRdy3eRi3FkZBFHCbu_P7Dgc3Jc9IjW7lgw8Ktaf9z";
 
     const coins = [
@@ -86,10 +124,11 @@
     ];
 
     const INTERVAL_TIME = 12 * 60 * 60 * 1000; // ১২ ঘণ্টা
-    const BOOST_DURATION = 15 * 24 * 60 * 60 * 1000; // ১৫ দিন
     let userGP = 0;
     let miningData = {};
     let boostData = {};
+    let pendingData = {};
+    let activeCoinId = '';
 
     function initStore() {
         db.ref('users/' + userId).on('value', snap => {
@@ -97,6 +136,7 @@
             userGP = data.gp || 0;
             miningData = data.mining || {};
             boostData = data.boosts || {};
+            pendingData = data.pending_boosts || {};
             renderMiningCards();
         });
     }
@@ -109,10 +149,12 @@
         coins.forEach(coin => {
             const coinInfo = miningData[coin.id] || { endTime: 0, status: 'idle' };
             const boostInfo = boostData[coin.id] || { expireTime: 0 };
+            const pendingInfo = pendingData[coin.id] || { status: false };
             
             const timeLeft = coinInfo.endTime - now;
             const isRunning = timeLeft > 0;
             const isBoostActive = boostInfo.expireTime > now;
+            const isPending = pendingInfo.status === true;
 
             let mainBtnHTML = `<button class="btn-mine" onclick="startMining('${coin.id}')">Start Mining</button>`;
             let timerHTML = '';
@@ -128,8 +170,21 @@
                 mainBtnHTML = `<button class="btn-mine" onclick="claimMining('${coin.id}', ${isBoostActive})">Claim ${rewardAmount} GP</button>`;
             }
 
-            let boostBtnText = isBoostActive ? "Boosted (Active)" : "Boost ($1.4)";
-            let boostBtnHTML = `<button class="btn-boost ${isBoostActive ? 'active-boost' : ''}" onclick="purchaseBoost('${coin.id}', ${isBoostActive})">${boostBtnText}</button>`;
+            let boostBtnText = "Boost ($1.4)";
+            let boostClass = "btn-boost";
+            let boostAction = `showWalletModal('${coin.id}', false, false)`;
+
+            if (isBoostActive) {
+                boostBtnText = "Boosted (Active)";
+                boostClass = "btn-boost active-boost";
+                boostAction = `alert('Your 15 Days Boost is currently active!')`;
+            } else if (isPending) {
+                boostBtnText = "Pending Approval...";
+                boostClass = "btn-boost pending-boost";
+                boostAction = `alert('Your payment request is pending admin approval. Please wait.')`;
+            }
+
+            let boostBtnHTML = `<button class="${boostClass}" onclick="${boostAction}">${boostBtnText}</button>`;
 
             container.innerHTML += `
                 <div class="mining-card">
@@ -174,31 +229,51 @@
         });
     }
 
-    function purchaseBoost(coinId, isAlreadyActive) {
+    function showWalletModal(coinId, isAlreadyActive, isPending) {
         if (isAlreadyActive) {
             alert("Your 15 Days Boost is already active for this coin!");
             return;
         }
-
-        // ইউজারকে পেমেন্ট করার জন্য ওয়ালেট অপশন এবং নির্দেশিকা দেওয়া হলো
-        let paymentConfirm = confirm(
-            `To activate 15 Days Boost ($1.4), you must complete payment using any of your preferred wallets:\n\n` +
-            `• Binance\n` +
-            `• Bitget Wallet\n` +
-            `• Tonkeeper / Telegram Wallet\n\n` +
-            `Send exactly $1.4 (USDT) to this Admin Wallet Address:\n${ADMIN_WALLET}\n\n` +
-            `Click 'OK' after you have successfully made the payment to verify and activate.`
-        );
-
-        if (paymentConfirm) {
-            // পেমেন্ট সম্পন্ন করার পর ইউজার ভেরিফিকেশন কনফার্ম করলে বুস্ট অ্যাক্টিভ হবে
-            const expireTime = Date.now() + BOOST_DURATION;
-            db.ref(`users/${userId}/boosts/${coinId}`).update({
-                expireTime: expireTime
-            }).then(() => {
-                alert("Payment verified successfully! Your 15 Days Boost is now active.");
-            });
+        if (isPending) {
+            alert("Your request is already pending for admin approval!");
+            return;
         }
+        activeCoinId = coinId;
+        document.getElementById('walletModal').style.display = 'flex';
+    }
+
+    function closeWalletModal() {
+        document.getElementById('walletModal').style.display = 'none';
+    }
+
+    function openWalletApp(walletType) {
+        closeWalletModal();
+
+        let paymentUrl = `ton://transfer/${ADMIN_WALLET}?amount=1400000&text=Boost_${activeCoinId}`;
+        
+        if (walletType === 'binance') {
+            paymentUrl = `https://app.binance.com/en/qr/pay?to=${ADMIN_WALLET}`;
+        } else if (walletType === 'bitget') {
+            paymentUrl = `bitget://wallet/transfer?to=${ADMIN_WALLET}&amount=1.4`;
+        }
+
+        // রিডাইরেক্ট করে ওয়ালেট অ্যাপ ওপেন করা
+        window.open(paymentUrl, '_blank');
+
+        // পেমেন্ট করার পর অ্যাডমিনের কাছে নোটিফিকেশন বা রিকোয়েস্ট সাবমিট করা
+        setTimeout(() => {
+            let verify = confirm("Did you complete the payment in your wallet app?\n\nClick 'OK' to submit your payment request to the Admin for approval.");
+            if (verify) {
+                db.ref(`users/${userId}/pending_boosts/${activeCoinId}`).set({
+                    status: true,
+                    timestamp: Date.now(),
+                    userName: userName,
+                    coin: activeCoinId
+                }).then(() => {
+                    alert("Payment submitted successfully! Your boost will be activated once the admin verifies your payment.");
+                });
+            }
+        }, 1500);
     }
 
     setInterval(() => {
