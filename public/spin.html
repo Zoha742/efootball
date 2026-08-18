@@ -175,11 +175,11 @@
                     let win = 100; 
                     
                     if (f1 === f2 && f2 === f3) {
-                        win = 1000;
+                        win = 300;
                         triggerConfetti();
                     } 
                     else if (f1 === f2 || f2 === f3 || f1 === f3) {
-                        win = Math.random() < 0.5 ? 400 : 200;
+                        win = Math.random() < 0.5 ? 200 : 100;
                     }
 
                     const newGP = userGP + win;
