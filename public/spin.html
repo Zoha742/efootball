@@ -1,325 +1,117 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jackpot Slot Machine - eFootball TM</title>
-    <!-- Firebase & SDKs -->
+    <title>Jackpot Slot Machine</title>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    
-    <!-- Central Config -->
     <script src="config.js"></script>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --bg: #0d061f; --text: #ffffff; --yellow: #fbbf24; }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; padding-bottom: 90px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+        :root { --bg: #0d061f; --text: #ffffff; }
+        body { background: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding-bottom: 20px; }
+        .container { width: 100%; max-width: 400px; padding: 10px; text-align: center; }
         
-        .container { width: 100%; max-width: 420px; padding: 10px; text-align: center; margin: auto; }
-        
-        /* জ্যাকপট স্লট মেশিনের মূল ইমেজ ফ্রেম */
+        /* Slot Machine Image Frame */
         .slot-wrapper { 
-            position: relative; 
-            width: 100%; 
-            aspect-ratio: 3 / 4; 
+            position: relative; width: 100%; aspect-ratio: 3/4; 
             background-image: url('https://res.cloudinary.com/dyqegwdme/image/upload/v1787058019/jackpot_xmaool.png'); 
-            background-size: cover; 
-            background-position: center; 
-            margin: 0 auto; 
+            background-size: cover; background-position: center; 
         }
 
-        /* রিল বা চাকার ঘরগুলোর পজিশন */
         .reels-overlay {
-            position: absolute;
-            top: 31%;
-            left: 20%;
-            width: 60%;
-            height: 29%;
-            display: flex;
-            justify-content: space-between;
-            gap: 6px;
-            padding: 4px;
-            z-index: 5;
+            position: absolute; top: 31%; left: 20.5%; width: 59%; height: 28%;
+            display: flex; justify-content: space-between; gap: 5px; z-index: 5;
         }
-
         .reel {
-            flex: 1;
-            background: #ffffff;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
-            overflow: hidden;
+            flex: 1; background: #ffffff; border-radius: 6px; display: flex; align-items: center; justify-content: center;
+            font-size: 30px; box-shadow: inset 0 0 10px rgba(0,0,0,0.3); overflow: hidden; color: #000;
         }
 
-        /* ইমেজের নিজস্ব SPIN বাটনের ওপর ক্লিক করার জন্য ট্রান্সপারেন্ট বাটন ওভারলে */
+        /* Spin button position adjusted to match image */
         .spin-click-area {
-            position: absolute;
-            bottom: 11.5%;
-            left: 28%;
-            width: 44%;
-            height: 10%;
-            cursor: pointer;
-            z-index: 10;
+            position: absolute; bottom: 13.5%; left: 28%; width: 44%; height: 9.5%;
+            cursor: pointer; z-index: 10;
         }
 
-        /* স্ট্যাটাস ও কাউন্টডাউন বক্স */
-        .info-box {
-            margin-top: 15px;
-            background: rgba(18, 30, 54, 0.8);
-            padding: 12px;
-            border-radius: 14px;
-            border: 1px solid rgba(251, 191, 36, 0.3);
-        }
-        #status-text { font-size: 13px; color: var(--yellow); font-weight: bold; margin-bottom: 5px; }
-        #timer-display { font-size: 14px; font-weight: bold; color: #f87171; display: none; }
-        
-        .btn-back { display: inline-block; margin-top: 15px; padding: 10px 25px; border-radius: 10px; background: rgba(30, 45, 77, 0.8); color: #ffffff; text-decoration: none; font-size: 13px; font-weight: bold; }
-
-        /* Bottom Nav */
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 70px; background: #070d19; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #1e2d4d; z-index: 1000; }
-        .nav-item { text-align: center; color: #94a3b8; font-size: 11px; text-decoration: none; flex: 1; }
-        .nav-item i { font-size: 20px; display: block; margin-bottom: 4px; }
+        .info-box { margin-top: 10px; background: rgba(30, 45, 77, 0.8); padding: 10px; border-radius: 12px; }
+        .btn-back { display: inline-block; margin-top: 10px; padding: 8px 20px; border-radius: 8px; background: #1e2d4d; color: #fff; text-decoration: none; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <div class="slot-wrapper" id="slotMachineBg">
-            <!-- ৩টি ঘূর্ণমান রিল -->
+        <div class="slot-wrapper">
             <div class="reels-overlay">
-                <div class="reel" id="reel-1">7️⃣</div>
-                <div class="reel" id="reel-2">7️⃣</div>
-                <div class="reel" id="reel-3">7️⃣</div>
+                <div class="reel" id="reel-1">7</div>
+                <div class="reel" id="reel-2">7</div>
+                <div class="reel" id="reel-3">7</div>
             </div>
-
-            <!-- ইমেজের মূল স্পিন বাটনের ওপর ট্যাপ করার এরিয়া -->
-            <div class="spin-click-area" onclick="handleSpinAction()" id="spin-trigger-btn"></div>
+            <div class="spin-click-area" onclick="handleSpinAction()"></div>
         </div>
 
         <div class="info-box">
-            <div id="status-text">ফ্রি স্পিন উপলব্ধ আছে (৫টি বাকি)</div>
-            <div id="timer-display">পরবর্তী স্পিন সময়: <span id="countdown">০০:০০</span></div>
+            <div id="status-text">Free Spins Left: 10</div>
+            <div id="timer-display" style="display:none; color:#f87171;">Cooldown: <span id="countdown">00:00</span></div>
         </div>
 
         <a href="index.html" class="btn-back"><i class="fas fa-arrow-left"></i> Back</a>
     </div>
-
-    <!-- নিচের নেভিগেশন বার -->
-    <nav class="bottom-nav">
-        <a href="index.html" class="nav-item" style="color: #3b82f6;"><i class="fas fa-home"></i>হোম</a>
-        <a href="legend.html" class="nav-item"><i class="fas fa-crown"></i>লেজেন্ড</a>
-        <a href="task.html" class="nav-item"><i class="fas fa-clipboard-check"></i>আয়</a>
-        <a href="profile.html" class="nav-item"><i class="fas fa-user-circle"></i>প্রোফাইল</a>
-    </nav>
 
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand();
         const userId = tg.initDataUnsafe?.user?.id || "test_user";
 
-        const AdController = {
-            videoBlockId: "29212", 
-            showVideoAd: function(onReward, onError) {
-                if (window.Adsgram) {
-                    const ad = window.Adsgram.init({ blockId: this.videoBlockId });
-                    ad.show()
-                      .then((result) => { if (onReward) onReward(result); })
-                      .catch((err) => { 
-                          alert("No ads available right now! Please wait 3 minutes and try again.");
-                          if (onError) onError(err); 
-                      });
-                } else {
-                    alert("No ads available right now! Please wait 3 minutes and try again.");
-                }
-            }
-        };
-
-        const symbols = ['🍇', '🔔', '🪙', '7️⃣', '🍒', '⭐'];
-        const cooldownTime = 3 * 60 * 60 * 1000; 
-        const adInterval = 5 * 1000;             
-
-        let freeSpinsLeft = 5; // ফ্রি স্পিন ৫টি করা হলো
-        let adsWatched = 0;
-        let nextAllowedTime = 0;
-        let nextSpinTime = 0;
-        let userGP = 0;
-        let timerInterval;
+        const symbols = ['🍇', '🔔', '🪙', '7️⃣', '💎', '⭐'];
+        let freeSpinsLeft = 10;
         let isSpinning = false;
-
-        function initSpin() {
-            db.ref('users/' + userId).on('value', snap => {
-                const data = snap.val() || {};
-                userGP = data.gp || 0;
-                freeSpinsLeft = data.spin_free_left !== undefined ? data.spin_free_left : 5;
-                adsWatched = data.spin_ads_count || 0;
-                nextAllowedTime = data.spin_next_ad_time || 0;
-                nextSpinTime = data.spin_cooldown_time || 0;
-                updateUI();
-            });
-        }
-
-        function updateUI() {
-            const now = Date.now();
-            const statusText = document.getElementById('status-text');
-            const timerDiv = document.getElementById('timer-display');
-
-            if (now < nextSpinTime) {
-                timerDiv.style.display = 'block';
-                statusText.innerText = "Cooldown Active!";
-                startTimer(nextSpinTime - now);
-                return;
-            } else if (nextSpinTime > 0 && now >= nextSpinTime && freeSpinsLeft === 0 && adsWatched >= 3) {
-                db.ref('users/' + userId).update({
-                    spin_free_left: 5,
-                    spin_ads_count: 0,
-                    spin_cooldown_time: 0
-                });
-                freeSpinsLeft = 5;
-                adsWatched = 0;
-            }
-
-            if (now < nextAllowedTime) {
-                timerDiv.style.display = 'block';
-                startTimer(nextAllowedTime - now);
-                statusText.innerText = `Watch Ad (${adsWatched}/3)`;
-                return;
-            }
-
-            timerDiv.style.display = 'none';
-
-            if (freeSpinsLeft > 0) {
-                statusText.innerText = `ফ্রি স্পিন বাকি: ${freeSpinsLeft}টি`;
-            } else if (adsWatched < 3) {
-                statusText.innerText = `অ্যাড দেখে স্পিন আনলক করুন (${adsWatched}/৩)`;
-            } else {
-                statusText.innerText = `জ্যাকপট স্পিন করার জন্য প্রস্তুত!`;
-            }
-        }
 
         function handleSpinAction() {
             if (isSpinning) return;
 
-            const now = Date.now();
-            if (now < nextAllowedTime) return;
-
             if (freeSpinsLeft > 0) {
                 freeSpinsLeft--;
-                db.ref('users/' + userId).update({
-                    spin_free_left: freeSpinsLeft
-                });
-                executeSlotSpin(false); 
-            } 
-            else if (adsWatched < 3) {
-                AdController.showVideoAd(
-                    (result) => {
-                        adsWatched++;
-                        const nextAdWait = Date.now() + adInterval;
-                        
-                        db.ref('users/' + userId).update({
-                            spin_ads_count: adsWatched,
-                            spin_next_ad_time: nextAdWait
-                        });
-
-                        if (adsWatched < 3) {
-                            alert(`Ad ${adsWatched}/3 watched! Please wait 5 seconds for the next ad.`);
-                        } else {
-                            alert("All 3 ads watched successfully! Click Spin again.");
-                        }
-                        updateUI();
-                    },
-                    (error) => {}
-                );
-            } 
-            else {
-                executeSlotSpin(true);
+                executeSlotSpin();
+            } else {
+                alert("Out of free spins! Watch ads to continue.");
             }
         }
 
-        function executeSlotSpin(isFinalCycle) {
+        function executeSlotSpin() {
             isSpinning = true;
             const r1 = document.getElementById('reel-1');
             const r2 = document.getElementById('reel-2');
             const r3 = document.getElementById('reel-3');
 
             let counter = 0;
-            const rollInterval = setInterval(() => {
+            const roll = setInterval(() => {
                 r1.innerText = symbols[Math.floor(Math.random() * symbols.length)];
                 r2.innerText = symbols[Math.floor(Math.random() * symbols.length)];
                 r3.innerText = symbols[Math.floor(Math.random() * symbols.length)];
                 counter++;
 
-                if (counter > 20) {
-                    clearInterval(rollInterval);
-                    
-                    let final1 = symbols[Math.floor(Math.random() * symbols.length)];
-                    let final2 = symbols[Math.floor(Math.random() * symbols.length)];
-                    let final3 = (Math.random() < 0.35) ? final1 : symbols[Math.floor(Math.random() * symbols.length)];
+                if (counter > 15) {
+                    clearInterval(roll);
+                    let f1 = symbols[Math.floor(Math.random() * symbols.length)];
+                    let f2 = symbols[Math.floor(Math.random() * symbols.length)];
+                    let f3 = (Math.random() < 0.3) ? f1 : symbols[Math.floor(Math.random() * symbols.length)];
 
-                    r1.innerText = final1;
-                    r2.innerText = final2;
-                    r3.innerText = final3;
-
+                    r1.innerText = f1; r2.innerText = f2; r3.innerText = f3;
                     isSpinning = false;
-                    let wonAmount = 0;
 
-                    if (final1 === final2 && final2 === final3) {
-                        wonAmount = 1000; 
-                    } else if (final1 === final2 || final2 === final3 || final1 === final3) {
-                        wonAmount = 300;  
-                    } else {
-                        wonAmount = 100;  
-                    }
-
-                    const newGP = userGP + wonAmount;
-                    let updateData = { gp: newGP };
-
-                    if (isFinalCycle) {
-                        updateData.spin_cooldown_time = Date.now() + cooldownTime;
-                        updateData.spin_next_ad_time = 0;
-                    }
-
-                    db.ref('users/' + userId).update(updateData).then(() => {
-                        alert(`🎉 অভিনন্দন! স্লট মেশিন ঘুরিয়ে আপনি জিতেছেন ${wonAmount} GP!`);
-                    });
+                    let win = (f1 === f2 && f2 === f3) ? 1000 : ((f1 === f2 || f2 === f3 || f1 === f3) ? 300 : 100);
+                    
+                    // Wish in English
+                    alert(`Congratulations! You won ${win} GP!`);
+                    
+                    document.getElementById('status-text').innerText = `Free Spins Left: ${freeSpinsLeft}`;
                 }
             }, 100);
         }
-
-        function startTimer(remaining) {
-            const countdownSpan = document.getElementById('countdown');
-            clearInterval(timerInterval);
-
-            let targetTime = Date.now() + remaining;
-
-            timerInterval = setInterval(() => {
-                const now = Date.now();
-                const diff = targetTime - now;
-
-                if (diff <= 0) {
-                    clearInterval(timerInterval);
-                    updateUI();
-                    return;
-                }
-
-                let h = Math.floor(diff / 3600000);
-                let m = Math.floor((diff % 3600000) / 60000);
-                let s = Math.floor((diff % 60000) / 1000);
-
-                countdownSpan.innerText = 
-                    (h > 0 ? h + "ঘণ্টা " : "") + 
-                    m.toString().padStart(2,'0') + ":" + 
-                    s.toString().padStart(2,'0');
-            }, 1000);
-        }
-
-        window.onload = initSpin;
     </script>
 </body>
 </html>
