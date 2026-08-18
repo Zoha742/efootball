@@ -17,11 +17,11 @@
     <style>
         :root { --bg: #0d061f; --text: #ffffff; --yellow: #fbbf24; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; padding-bottom: 30px; display: flex; flex-direction: align-items; justify-content: center; min-height: 100vh; }
+        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; padding-bottom: 90px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
         
         .container { width: 100%; max-width: 420px; padding: 10px; text-align: center; margin: auto; }
         
-        /* স্লট মেশিনের মূল ইমেজ ফ্রেম */
+        /* জ্যাকপট স্লট মেশিনের মূল ইমেজ ফ্রেম */
         .slot-wrapper { 
             position: relative; 
             width: 100%; 
@@ -32,7 +32,7 @@
             margin: 0 auto; 
         }
 
-        /* ইমেজের ভেতরে ঠিক রিল বা চাকার ঘরগুলোর ওপর পজিশন করা */
+        /* রিল বা চাকার ঘরগুলোর পজিশন */
         .reels-overlay {
             position: absolute;
             top: 31%;
@@ -69,7 +69,7 @@
             z-index: 10;
         }
 
-        /* স্ট্যাটাস ও কাউন্টডাউন মেসেজ */
+        /* স্ট্যাটাস ও কাউন্টডাউন বক্স */
         .info-box {
             margin-top: 15px;
             background: rgba(18, 30, 54, 0.8);
@@ -80,7 +80,12 @@
         #status-text { font-size: 13px; color: var(--yellow); font-weight: bold; margin-bottom: 5px; }
         #timer-display { font-size: 14px; font-weight: bold; color: #f87171; display: none; }
         
-        .btn-back { display: inline-block; margin-top: 15px; padding: 10px 25px; border-radius: 10px; background: rgba(30, 45, 77, 0.8); color: #ffffff; text-decoration: none; font-size: 13px; }
+        .btn-back { display: inline-block; margin-top: 15px; padding: 10px 25px; border-radius: 10px; background: rgba(30, 45, 77, 0.8); color: #ffffff; text-decoration: none; font-size: 13px; font-weight: bold; }
+
+        /* Bottom Nav */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 70px; background: #070d19; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #1e2d4d; z-index: 1000; }
+        .nav-item { text-align: center; color: #94a3b8; font-size: 11px; text-decoration: none; flex: 1; }
+        .nav-item i { font-size: 20px; display: block; margin-bottom: 4px; }
     </style>
 </head>
 <body>
@@ -99,12 +104,20 @@
         </div>
 
         <div class="info-box">
-            <div id="status-text">ফ্রি স্পিন উপলব্ধ আছে (১০টি বাকি)</div>
+            <div id="status-text">ফ্রি স্পিন উপলব্ধ আছে (৫টি বাকি)</div>
             <div id="timer-display">পরবর্তী স্পিন সময়: <span id="countdown">০০:০০</span></div>
         </div>
 
-        <a href="index.html" class="btn-back"><i class="fas fa-arrow-left"></i> হোম পেজে ফিরে যান</a>
+        <a href="index.html" class="btn-back"><i class="fas fa-arrow-left"></i> Back</a>
     </div>
+
+    <!-- নিচের নেভিগেশন বার -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item" style="color: #3b82f6;"><i class="fas fa-home"></i>হোম</a>
+        <a href="legend.html" class="nav-item"><i class="fas fa-crown"></i>লেজেন্ড</a>
+        <a href="task.html" class="nav-item"><i class="fas fa-clipboard-check"></i>আয়</a>
+        <a href="profile.html" class="nav-item"><i class="fas fa-user-circle"></i>প্রোফাইল</a>
+    </nav>
 
     <script>
         const tg = window.Telegram.WebApp;
@@ -132,7 +145,7 @@
         const cooldownTime = 3 * 60 * 60 * 1000; 
         const adInterval = 5 * 1000;             
 
-        let freeSpinsLeft = 10;
+        let freeSpinsLeft = 5; // ফ্রি স্পিন ৫টি করা হলো
         let adsWatched = 0;
         let nextAllowedTime = 0;
         let nextSpinTime = 0;
@@ -144,7 +157,7 @@
             db.ref('users/' + userId).on('value', snap => {
                 const data = snap.val() || {};
                 userGP = data.gp || 0;
-                freeSpinsLeft = data.spin_free_left !== undefined ? data.spin_free_left : 10;
+                freeSpinsLeft = data.spin_free_left !== undefined ? data.spin_free_left : 5;
                 adsWatched = data.spin_ads_count || 0;
                 nextAllowedTime = data.spin_next_ad_time || 0;
                 nextSpinTime = data.spin_cooldown_time || 0;
@@ -164,11 +177,11 @@
                 return;
             } else if (nextSpinTime > 0 && now >= nextSpinTime && freeSpinsLeft === 0 && adsWatched >= 3) {
                 db.ref('users/' + userId).update({
-                    spin_free_left: 10,
+                    spin_free_left: 5,
                     spin_ads_count: 0,
                     spin_cooldown_time: 0
                 });
-                freeSpinsLeft = 10;
+                freeSpinsLeft = 5;
                 adsWatched = 0;
             }
 
