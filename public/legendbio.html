@@ -12,7 +12,7 @@
     
     <!-- সেন্ট্রাল স্ক্রিপ্ট লিঙ্ক -->
     <script src="config.js"></script>
-    <script src="ads_manager_limit.js"></script> <!-- সেন্ট্রাল অ্যাড স্ক্রিপ্ট -->
+    <script src="ads_manager_limit.js"></script> <!-- ১২ ঘণ্টার লিমিট যুক্ত অ্যাড স্ক্রিপ্ট[cite: 10, 11] -->
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -96,16 +96,13 @@
             }
         }
 
-      // --- ১২ ঘণ্টার লিমিটেড অ্যাড সিস্টেম ---
+        // --- ১২ ঘণ্টার লিমিটেড অ্যাড সিস্টেম ---
         setTimeout(() => {
             try {
-                // আমরা যেহেতু নতুন ফাইল ads-manager2.js ব্যবহার করছি, তাই BioAdController চেক হবে
-                if (typeof BioAdController !== 'undefined') {
-                    // ১. ভিডিও অ্যাড (১২ ঘণ্টায় একবার আসবে)
-                    BioAdController.showBioAd('legend_bio_page'); 
-
-                    // ২. ব্যানার অ্যাড লোড করা
-                   // BioAdController.loadBioBanner('banner-container');
+                // ads_manager_limit.js ফাইলের মেথড অনুযায়ী চেক করা হচ্ছে
+                if (typeof ads_manager_limit !== 'undefined') {
+                    // কোনো ইউজার প্লেয়ার পেজে ঢুকলে ১২ ঘণ্টায় মাত্র একবার অ্যাড দেখাবে[cite: 10, 11]
+                    ads_manager_limit.showBioAd('legend_bio_page'); 
                 }
             } catch (e) {
                 console.log("Ad Loading Error:", e);
