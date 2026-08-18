@@ -284,7 +284,6 @@
 
         window.open(paymentUrl, '_blank');
         
-        // ওয়ালেট থেকে আসার পর Yes/No পপআপ দেখানো
         setTimeout(() => {
             document.getElementById('confirmModal').style.display = 'flex';
         }, 1000);
@@ -296,6 +295,7 @@
             db.ref(`users/${userId}/pending_boosts/${activeCoinId}`).set({
                 status: true,
                 timestamp: Date.now(),
+                dateTime: new Date().toLocaleString(),
                 userName: userName,
                 coin: activeCoinId,
                 method: 'Wallet Payment'
@@ -322,19 +322,31 @@
             return;
         }
 
-        // ফাইল আপলোড সিমুলেশন বা ডেটাবেসে সংরক্ষণ
-        db.ref(`users/${userId}/pending_boosts/${activeCoinId}`).set({
-            status: true,
-            timestamp: Date.now(),
-            userName: userName,
-            customUserId: uId,
-            coin: activeCoinId,
-            method: 'Telegram Stars / Proof Uploaded',
-            hasProof: fileInput ? true : false
-        }).then(() => {
-            closeModal('starsModal');
-            alert("Stars payment & proof submitted successfully! Admin will review and approve.");
-        });
+        if (!fileInput) {
+            alert("Please upload your payment screenshot!");
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const base64Image = e.target.result;
+
+            db.ref(`users/${userId}/pending_boosts/${activeCoinId}`).set({
+                status: true,
+                timestamp: Date.now(),
+                dateTime: new Date().toLocaleString(),
+                userName: userName,
+                customUserId: uId,
+                coin: activeCoinId,
+                method: 'Telegram Stars / Proof Uploaded',
+                screenshot: base64Image
+            }).then(() => {
+                closeModal('starsModal');
+                document.getElementById('formFile').value = '';
+                alert("Stars payment & proof submitted successfully! Admin will review and approve.");
+            });
+        };
+        reader.readAsDataURL(fileInput);
     }
 
     setInterval(() => {
