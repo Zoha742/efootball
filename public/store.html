@@ -31,16 +31,14 @@
         .mining-info { display: flex; align-items: center; justify-content: space-between; }
         .coin-details { display: flex; align-items: center; gap: 12px; }
         
-        /* কয়েনের লোগো ইমেজ স্টাইল */
-        .coin-img { width: 38px; height: 38px; object-fit: contain; }
+        /* কয়েনের লোগো ইমেজ একদম গোল করা হয়েছে */
+        .coin-img { width: 40px; height: 40px; object-fit: cover; border-radius: 50%; border: 2px solid var(--primary); }
         
         .coin-name { font-weight: bold; font-size: 15px; }
         .coin-reward { font-size: 11px; color: #94a3b8; margin-top: 3px; }
 
-        /* দুটি বাটন পাশাপাশি রাখার লেআউট */
         .mining-actions { display: flex; gap: 8px; }
         
-        /* ১. ফ্রি মাইনিং বাটন */
         .btn-mine { 
             flex: 1; background: linear-gradient(135deg, #f59e0b, #d97706); border: none; 
             padding: 12px; border-radius: 10px; color: #fff; font-weight: bold; font-size: 12px; cursor: pointer; 
@@ -49,7 +47,6 @@
         .btn-mine:active { transform: scale(0.98); }
         .btn-mine:disabled { background: #1e293b; color: #64748b; cursor: not-allowed; box-shadow: none; }
         
-        /* ২. পেইড বুস্ট বাটন ($1.4 / 15 Days) */
         .btn-boost { 
             flex: 1; background: linear-gradient(135deg, #10b981, #059669); border: none; 
             padding: 12px; border-radius: 10px; color: #fff; font-weight: bold; font-size: 12px; cursor: pointer; 
@@ -80,7 +77,6 @@
     const userId = tg.initDataUnsafe?.user?.id || "test_user";
     const ADMIN_WALLET = "UQApIeZRdy3eRi3FkZBFHCbu_P7Dgc3Jc9IjW7lgw8Ktaf9z";
 
-    // সাজানো লিংক ও কয়েন ডাটা (BTC, BNB, GRAM, AVAX, LITE)
     const coins = [
         { id: 'btc', name: 'Bitcoin (BTC)', img: 'https://res.cloudinary.com/dyqegwdme/image/upload/v1787066064/BTC_ouxigz.jpg' },
         { id: 'bnb', name: 'Binance (BNB)', img: 'https://res.cloudinary.com/dyqegwdme/image/upload/v1787066063/BNB_xscpvh.jpg' },
@@ -132,9 +128,8 @@
                 mainBtnHTML = `<button class="btn-mine" onclick="claimMining('${coin.id}', ${isBoostActive})">Claim ${rewardAmount} GP</button>`;
             }
 
-            // দ্বিতীয় বাটন: বুস্ট অপশন ($1.4 / 15 Days)
             let boostBtnText = isBoostActive ? "Boosted (Active)" : "Boost ($1.4)";
-            let boostBtnHTML = `<button class="btn-boost ${isBoostActive ? 'active-boost' : ''}" onclick="purchaseBoost('${coin.id}')">${boostBtnText}</button>`;
+            let boostBtnHTML = `<button class="btn-boost ${isBoostActive ? 'active-boost' : ''}" onclick="purchaseBoost('${coin.id}', ${isBoostActive})">${boostBtnText}</button>`;
 
             container.innerHTML += `
                 <div class="mining-card">
@@ -179,19 +174,33 @@
         });
     }
 
-    function purchaseBoost(coinId) {
-        let confirmPay = confirm(`To activate 500 GP mining boost for 15 Days, please send exactly $1.4 (USDT via TON Network) to this wallet address:\n\n${ADMIN_WALLET}\n\nClick OK after completing your payment to verify and activate.`);
-        if (!confirmPay) return;
+    function purchaseBoost(coinId, isAlreadyActive) {
+        if (isAlreadyActive) {
+            alert("Your 15 Days Boost is already active for this coin!");
+            return;
+        }
 
-        const expireTime = Date.now() + BOOST_DURATION;
-        db.ref(`users/${userId}/boosts/${coinId}`).update({
-            expireTime: expireTime
-        }).then(() => {
-            alert("Payment verified! 15 Days Boost activated successfully.");
-        });
+        // ইউজারকে পেমেন্ট করার জন্য ওয়ালেট অপশন এবং নির্দেশিকা দেওয়া হলো
+        let paymentConfirm = confirm(
+            `To activate 15 Days Boost ($1.4), you must complete payment using any of your preferred wallets:\n\n` +
+            `• Binance\n` +
+            `• Bitget Wallet\n` +
+            `• Tonkeeper / Telegram Wallet\n\n` +
+            `Send exactly $1.4 (USDT) to this Admin Wallet Address:\n${ADMIN_WALLET}\n\n` +
+            `Click 'OK' after you have successfully made the payment to verify and activate.`
+        );
+
+        if (paymentConfirm) {
+            // পেমেন্ট সম্পন্ন করার পর ইউজার ভেরিফিকেশন কনফার্ম করলে বুস্ট অ্যাক্টিভ হবে
+            const expireTime = Date.now() + BOOST_DURATION;
+            db.ref(`users/${userId}/boosts/${coinId}`).update({
+                expireTime: expireTime
+            }).then(() => {
+                alert("Payment verified successfully! Your 15 Days Boost is now active.");
+            });
+        }
     }
 
-    // অটো টাইমার আপডেট
     setInterval(() => {
         const now = Date.now();
         coins.forEach(coin => {
