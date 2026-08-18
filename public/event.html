@@ -8,6 +8,7 @@
     <!-- SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
+    <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="config.js"></script>
 
@@ -61,18 +62,31 @@
     let slideInterval;
     let startX = 0;
 
+    // AdsGram অ্যাড কন্ট্রোলার ইনিশিয়ালাইজ (আপনার ব্লক আইডি অনুযায়ী)
+    const adController = window.AdsGram ? window.AdsGram.init({ blockId: "int-6916" }) : null;
+
+    // পেজে ঢোকার সাথে সাথে অ্যাড দেখানোর ফাংশন
+    function showEntryAd() {
+        if (adController) {
+            adController.show().then(() => {
+                console.log("Event entry ad watched successfully.");
+            }).catch((err) => {
+                console.log("Ad skipped or failed:", err);
+            });
+        }
+    }
+
     async function fetchEvents() {
         const track = document.getElementById('slider-track');
         const vContainer = document.getElementById('vertical-container');
         const dotsContainer = document.getElementById('dots');
 
         try {
-            // event.json থেকে ডেটা ফেচ করা
+            // event.json থেকে ডেটা ফেচ করা[cite: 9]
             const res = await fetch('event.json');
             if (!res.ok) throw new Error("JSON not found");
             const data = await res.json();
             
-            // ডেটা ফরম্যাট হ্যান্ডলিং
             images = data.events || data.event || [];
 
             if (images.length === 0) {
@@ -85,18 +99,15 @@
             dotsContainer.innerHTML = "";
 
             images.forEach((ev, index) => {
-                // স্লাইডার ইমেজ
                 const sImg = document.createElement('img');
                 sImg.src = ev.img;
                 track.appendChild(sImg);
 
-                // নিচে ভার্টিক্যাল লিস্ট
                 const vCard = document.createElement('div');
                 vCard.className = 'v-card';
                 vCard.innerHTML = `<img src="${ev.img}">`;
                 vContainer.appendChild(vCard);
 
-                // নেভিগেশন ডটস
                 const dot = document.createElement('div');
                 dot.className = index === 0 ? 'dot active' : 'dot';
                 dotsContainer.appendChild(dot);
@@ -145,7 +156,11 @@
         });
     }
 
-    window.onload = fetchEvents;
+    // পেজ লোড হওয়ার সাথে সাথে অ্যাড শো করবে এবং ইভেন্ট লোড হবে
+    window.onload = function() {
+        showEntryAd(); // ইউজার পেজে ঢুকলেই বিজ্ঞাপন দেখাবে
+        fetchEvents(); // ইভেন্ট লোড হবে
+    };
 </script>
 </body>
 </html>
