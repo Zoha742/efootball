@@ -8,14 +8,14 @@
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script src="config.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --bg: #0d061f; --text: #ffffff; }
+        :root { --bg: #0d061f; --text: #ffffff; --yellow: #fbbf24; }
         body { background: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding-bottom: 20px; }
         .container { width: 100%; max-width: 400px; padding: 10px; text-align: center; }
         
-        /* Slot Machine Image Frame */
         .slot-wrapper { 
             position: relative; width: 100%; aspect-ratio: 3/4; 
             background-image: url('https://res.cloudinary.com/dyqegwdme/image/upload/v1787058019/jackpot_xmaool.png'); 
@@ -31,13 +31,13 @@
             font-size: 30px; box-shadow: inset 0 0 10px rgba(0,0,0,0.3); overflow: hidden; color: #000;
         }
 
-        /* Spin button position adjusted to match image */
         .spin-click-area {
             position: absolute; bottom: 13.5%; left: 28%; width: 44%; height: 9.5%;
             cursor: pointer; z-index: 10;
         }
 
-        .info-box { margin-top: 10px; background: rgba(30, 45, 77, 0.8); padding: 10px; border-radius: 12px; }
+        .info-box { margin-top: 10px; background: rgba(30, 45, 77, 0.8); padding: 12px; border-radius: 12px; }
+        #status-text { font-size: 14px; font-weight: bold; color: var(--yellow); }
         .btn-back { display: inline-block; margin-top: 10px; padding: 8px 20px; border-radius: 8px; background: #1e2d4d; color: #fff; text-decoration: none; font-weight: bold; }
     </style>
 </head>
@@ -55,7 +55,6 @@
 
         <div class="info-box">
             <div id="status-text">Free Spins Left: 10</div>
-            <div id="timer-display" style="display:none; color:#f87171;">Cooldown: <span id="countdown">00:00</span></div>
         </div>
 
         <a href="index.html" class="btn-back"><i class="fas fa-arrow-left"></i> Back</a>
@@ -66,18 +65,69 @@
         tg.expand();
         const userId = tg.initDataUnsafe?.user?.id || "test_user";
 
+        const AdController = {
+            videoBlockId: "29212", 
+            showVideoAd: function(onReward, onError) {
+                if (window.Adsgram) {
+                    const ad = window.Adsgram.init({ blockId: this.videoBlockId });
+                    ad.show()
+                      .then((result) => { if (onReward) onReward(result); })
+                      .catch((err) => { 
+                          alert("No ads available right now! Please try again later.");
+                          if (onError) onError(err); 
+                      });
+                } else {
+                    alert("No ads available right now! Please try again later.");
+                }
+            }
+        };
+
         const symbols = ['🍇', '🔔', '🪙', '7️⃣', '💎', '⭐'];
         let freeSpinsLeft = 10;
+        let userGP = 0;
         let isSpinning = false;
+        let adRewardPending = false;
+
+        function initSpin() {
+            db.ref('users/' + userId).on('value', snap => {
+                const data = snap.val() || {};
+                userGP = data.gp || 0;
+                freeSpinsLeft = data.spin_free_left !== undefined ? data.spin_free_left : 10;
+                updateUI();
+            });
+        }
+
+        function updateUI() {
+            const statusText = document.getElementById('status-text');
+            if (freeSpinsLeft > 0) {
+                statusText.innerText = `Free Spins Left: ${freeSpinsLeft}`;
+            } else if (adRewardPending) {
+                statusText.innerText = `Ready to Spin! Click SPIN.`;
+            } else {
+                statusText.innerText = `Out of free spins! Watch ad to spin.`;
+            }
+        }
 
         function handleSpinAction() {
             if (isSpinning) return;
 
             if (freeSpinsLeft > 0) {
                 freeSpinsLeft--;
+                db.ref('users/' + userId).update({ spin_free_left: freeSpinsLeft });
+                executeSlotSpin();
+            } else if (adRewardPending) {
+                adRewardPending = false;
                 executeSlotSpin();
             } else {
-                alert("Out of free spins! Watch ads to continue.");
+                // Trigger Ad
+                AdController.showVideoAd(
+                    (result) => {
+                        adRewardPending = true;
+                        alert("Ad watched successfully! You can now spin.");
+                        updateUI();
+                    },
+                    (error) => {}
+                );
             }
         }
 
@@ -103,15 +153,32 @@
                     r1.innerText = f1; r2.innerText = f2; r3.innerText = f3;
                     isSpinning = false;
 
-                    let win = (f1 === f2 && f2 === f3) ? 1000 : ((f1 === f2 || f2 === f3 || f1 === f3) ? 300 : 100);
-                    
-                    // Wish in English
-                    alert(`Congratulations! You won ${win} GP!`);
-                    
-                    document.getElementById('status-text').innerText = `Free Spins Left: ${freeSpinsLeft}`;
+                    let win = 100; // default draw
+                    if (f1 === f2 && f2 === f3) {
+                        win = 1000;
+                        triggerConfetti(); // Jackpot animation
+                    } else if (f1 === f2 || f2 === f3 || f1 === f3) {
+                        win = Math.random() < 0.5 ? 400 : 200;
+                    }
+
+                    const newGP = userGP + win;
+                    db.ref('users/' + userId).update({ gp: newGP }).then(() => {
+                        alert(`Congratulations! You won ${win} GP!`);
+                        updateUI();
+                    });
                 }
             }, 100);
         }
+
+        function triggerConfetti() {
+            confetti({
+                particleCount: 120,
+                spread: 80,
+                origin: { y: 0.6 }
+            });
+        }
+
+        window.onload = initSpin;
     </script>
 </body>
 </html>
