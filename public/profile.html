@@ -14,7 +14,6 @@
         :root { --bg: #050a18; --card-dark: #121e36; --pink: #d946ef; --text: #ffffff; --border: #1e2d4d; }
         body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; padding: 20px; padding-bottom: 90px; margin: 0; }
         
-        /* কালারফুল এবং গ্লোয়িং প্রোফাইল কার্ড ডিজাইন */
         .profile-container { 
             background: linear-gradient(135deg, rgba(217, 70, 239, 0.25), rgba(59, 130, 246, 0.25), var(--card-dark)); 
             border-radius: 20px; padding: 30px 20px; text-align: center; border: 1px solid rgba(217, 70, 239, 0.4); 
@@ -143,8 +142,8 @@
     const user = tg.initDataUnsafe?.user;
     const userId = user?.id ? String(user.id) : "test_user";
 
-    // আপনার নির্দিষ্ট অ্যাডমিন আইডি এখানে সেট করা হলো (অন্য কোনো ইউজার এটি দেখতে পারবে না)
-    const ADMIN_TELEGRAM_ID = "8318950890"; 
+    // আপনার একাধিক অ্যাডমিন টেলিগ্রাম আইডি এখানে অ্যারে (Array) আকারে যুক্ত করা হলো
+    const ADMIN_TELEGRAM_IDS = ["8318950890", "7757851056"]; 
 
     // ১. ফায়ারবেস থেকে GP এবং Task Done রেকর্ড লাইভ লোড করা
     if (userId) {
@@ -161,7 +160,7 @@
         });
     }
 
-    // ২. ইউজার ইনফো এবং অ্যাডমিন প্যানেল শুধুমাত্র আপনার আইডির জন্য রেন্ডার করা
+    // ২. ইউজার ইনফো এবং অ্যাডমিন প্যানেল শুধুমাত্র আপনার নির্দিষ্ট আইডিগুলোর জন্য রেন্ডার করা
     if (user) {
         document.getElementById('user-name').innerText = user.first_name + (user.last_name ? " " + user.last_name : "");
         document.getElementById('user-id').innerText = "ID: #" + user.id;
@@ -169,8 +168,8 @@
             document.getElementById('user-avatar').src = user.photo_url;
         }
 
-        // চেক করা হচ্ছে ইউজার আইডি আপনার অ্যাডমিন আইডি কিনা
-        if (userId === ADMIN_TELEGRAM_ID) {
+        // চেক করা হচ্ছে বর্তমান ইউজার আইডিটি আপনার অ্যাডমিন লিস্টের মধ্যে আছে কিনা
+        if (ADMIN_TELEGRAM_IDS.includes(userId)) {
             const actionGrid = document.getElementById('action-grid');
             const adminBox = document.createElement('a');
             adminBox.href = "admin.html";
