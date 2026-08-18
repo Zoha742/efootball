@@ -4,11 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lucky Spin - eFootball TM</title>
+    <!-- Firebase & SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     
+    <!-- Central Config -->
     <script src="config.js"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -90,14 +92,14 @@
 
     <div class="top-bar">
         <a href="index.html"><i class="fas fa-chevron-left"></i></a>
-        <span>Lucky Spin Wheel</span>
+        <span>লকি স্পিন হুইল</span>
     </div>
 
     <div class="container">
         <div class="spin-card">
             <i class="fas fa-dharmachakra" style="font-size: 35px; color: var(--yellow); margin-bottom: 8px; filter: drop-shadow(0 0 10px rgba(251,191,36,0.5));"></i>
-            <h3 style="margin-bottom: 5px; font-size: 20px; letter-spacing: 0.5px;">Lucky Spin Wheel</h3>
-            <p style="font-size: 12px; color: var(--yellow); margin-bottom: 10px;" id="status-text">Free Spins Available</p>
+            <h3 style="margin-bottom: 5px; font-size: 20px; letter-spacing: 0.5px;">লকি স্পিন হুইল</h3>
+            <p style="font-size: 12px; color: var(--yellow); margin-bottom: 10px;" id="status-text">ফ্রি স্পিন উপলব্ধ আছে</p>
             
             <div class="wheel-container">
                 <div class="wheel-pointer"></div>
@@ -114,28 +116,28 @@
             </div>
 
             <button id="spin-btn" class="btn-spin" onclick="handleSpinAction()">
-                <i class="fas fa-gift"></i> FREE SPIN (10 Left)
+                <i class="fas fa-gift"></i> ফ্রি স্পিন (10 Left)
             </button>
 
             <div id="timer-display">
-                Next Action In: <span id="countdown">00:00</span>
+                পরবর্তী স্পিন সময়: <span id="countdown">০০:০০</span>
             </div>
 
             <div class="limit-note">
-                <i class="fas fa-info-circle"></i> Testing Mode: 10 FREE spins available for testing! After that, ads will appear.
+                <i class="fas fa-info-circle"></i> টেস্টিং মোড: ১০টি ফ্রি স্পিন দেওয়া আছে। এরপর অ্যাড দেখে স্পিন করতে পারবেন।
             </div>
 
             <a href="index.html" class="btn-back">
-                <i class="fas fa-arrow-left" style="margin-right: 6px;"></i> Back
+                <i class="fas fa-arrow-left" style="margin-right: 6px;"></i> ফিরে যান
             </a>
         </div>
     </div>
 
     <nav class="bottom-nav">
-        <a href="index.html" class="nav-item" style="color: #3b82f6;"><i class="fas fa-home"></i>Home</a>
-        <a href="legend.html" class="nav-item"><i class="fas fa-crown"></i>Legend</a>
-        <a href="task.html" class="nav-item"><i class="fas fa-clipboard-check"></i>Earn</a>
-        <a href="profile.html" class="nav-item"><i class="fas fa-user-circle"></i>Profile</a>
+        <a href="index.html" class="nav-item" style="color: #3b82f6;"><i class="fas fa-home"></i>হোম</a>
+        <a href="legend.html" class="nav-item"><i class="fas fa-crown"></i>লেজেন্ড</a>
+        <a href="task.html" class="nav-item"><i class="fas fa-clipboard-check"></i>আয়</a>
+        <a href="profile.html" class="nav-item"><i class="fas fa-user-circle"></i>প্রোফাইল</a>
     </nav>
 
     <script>
@@ -164,7 +166,7 @@
         const cooldownTime = 3 * 60 * 60 * 1000; 
         const adInterval = 5 * 1000;             
 
-        let freeSpinsLeft = 10; // testing er jonno 10 kora holo
+        let freeSpinsLeft = 10;
         let adsWatched = 0;
         let nextAllowedTime = 0;
         let nextSpinTime = 0;
@@ -219,14 +221,14 @@
             btn.disabled = false;
 
             if (freeSpinsLeft > 0) {
-                statusText.innerText = `Free Spins Left: ${freeSpinsLeft}`;
-                btn.innerHTML = `<i class="fas fa-gift"></i> FREE SPIN (${freeSpinsLeft} Left)`;
+                statusText.innerText = `ফ্রি স্পিন বাকি: ${freeSpinsLeft}`;
+                btn.innerHTML = `<i class="fas fa-gift"></i> ফ্রি স্পিন (${freeSpinsLeft}টি বাকি)`;
             } else if (adsWatched < 3) {
-                statusText.innerText = `Watch Ads to Unlock Spin (${adsWatched}/3)`;
-                btn.innerHTML = `<i class="fas fa-play-circle"></i> WATCH AD (${adsWatched + 1}/3)`;
+                statusText.innerText = `অ্যাড দেখুন (${adsWatched}/৩)`;
+                btn.innerHTML = `<i class="fas fa-play-circle"></i> অ্যাড দেখুন (${adsWatched + 1}/3)`;
             } else {
-                statusText.innerText = `Ready to Spin!`;
-                btn.innerHTML = `<i class="fas fa-dharmachakra"></i> SPIN THE WHEEL NOW`;
+                statusText.innerText = `স্পিন করার জন্য প্রস্তুত!`;
+                btn.innerHTML = `<i class="fas fa-dharmachakra"></i> এখনই স্পিন করুন`;
             }
         }
 
@@ -283,4 +285,59 @@
 
             const wonAmount = prizes[winningIndex];
 
-            const
+            // নিখুঁত স্পিন ডিগ্রি ক্যালকুলেশন
+            const segmentAngle = 360 / prizes.length;
+            const targetDegree = 360 * 5 + (360 - (winningIndex * segmentAngle + segmentAngle / 2));
+            currentDegree = targetDegree + Math.floor(currentDegree / 360) * 360 + 360 * 5;
+
+            const wheel = document.getElementById('inner-wheel');
+            wheel.style.transform = `rotate(${currentDegree}deg)`;
+
+            setTimeout(() => {
+                isSpinning = false;
+                const newGP = userGP + wonAmount;
+                
+                let updateData = { gp: newGP };
+
+                if (isFinalCycle) {
+                    updateData.spin_cooldown_time = Date.now() + cooldownTime;
+                    updateData.spin_next_ad_time = 0;
+                }
+
+                db.ref('users/' + userId).update(updateData).then(() => {
+                    alert(`🎉 অভিনন্দন! আপনি জিতেছেন ${wonAmount} GP! আপনার প্রোফাইলে যোগ করা হয়েছে।`);
+                });
+            }, 4500);
+        }
+
+        function startTimer(remaining) {
+            const countdownSpan = document.getElementById('countdown');
+            clearInterval(timerInterval);
+
+            let targetTime = Date.now() + remaining;
+
+            timerInterval = setInterval(() => {
+                const now = Date.now();
+                const diff = targetTime - now;
+
+                if (diff <= 0) {
+                    clearInterval(timerInterval);
+                    updateUI();
+                    return;
+                }
+
+                let h = Math.floor(diff / 3600000);
+                let m = Math.floor((diff % 3600000) / 60000);
+                let s = Math.floor((diff % 60000) / 1000);
+
+                countdownSpan.innerText = 
+                    (h > 0 ? h + "ঘণ্টা " : "") + 
+                    m.toString().padStart(2,'0') + ":" + 
+                    s.toString().padStart(2,'0');
+            }, 1000);
+        }
+
+        window.onload = initSpin;
+    </script>
+</body>
+</html>
