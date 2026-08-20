@@ -141,7 +141,7 @@
     <!-- ১. ওয়ালেট ও পেমেন্ট অপশন সিলেকশন মডাল -->
     <div class="modal-overlay" id="walletModal">
         <div class="modal-content">
-            <div class="modal-title">Select Payment Method ($10)</div>
+            <div class="modal-title">Select Payment Method ($2.5)</div>
             <div class="modal-desc">Choose your preferred payment method to proceed securely.</div>
             
             <a href="#" class="wallet-option-btn" onclick="openProofForm('Binance Pay')"><i class="fas fa-wallet" style="color:#f3ba2f; margin-right:8px;"></i> Binance Pay</a>
@@ -236,7 +236,7 @@
                 mainBtnHTML = `<button class="btn-mine" onclick="claimMining('${coin.id}', ${isBoostActive})">Claim ${rewardAmount} GP</button>`;
             }
 
-            let boostBtnText = "Boost ($10)";
+            let boostBtnText = "Boost ($2.5)";
             let boostClass = "btn-boost";
             let boostAction = `showWalletModal('${coin.id}', false, false)`;
 
@@ -259,7 +259,7 @@
                             <img src="${coin.img}" class="coin-img" alt="${coin.name}">
                             <div>
                                 <div class="coin-name">${coin.name}</div>
-                                <div class="coin-reward">Normal: 50 GP | Boosted: 500 GP ($10 / 15 Days)</div>
+                                <div class="coin-reward">Normal: 50 GP | Boosted: 500 GP ($2.5 / 15 Days)</div>
                             </div>
                         </div>
                     </div>
@@ -273,11 +273,9 @@
         });
     }
 
-    // সঠিক ভিডিও ব্লক আইডি (29212) দিয়ে অ্যাড শো করার ফাংশন
     function startMiningProcess(coinId) {
         if (window.Adsgram) {
             try {
-                // সঠিক ভিডিও ব্লক আইডি বসানো হয়েছে (যেটি আপনার অন্য ফাইলে কাজ করছে)
                 const adController = window.Adsgram.init({ blockId: "29212" });
                 adController.show().then(() => {
                     startMining(coinId);
@@ -287,11 +285,11 @@
                 });
             } catch (e) {
                 console.log("Adsgram init error:", e);
-                startMining(coinId); // ফলব্যাক হিসেবে সরাসরি স্টার্ট হবে
+                startMining(coinId);
             }
         } else {
             console.log("Adsgram SDK not found.");
-            startMining(coinId); // SDK না থাকলে সরাসরি স্টার্ট হবে
+            startMining(coinId);
         }
     }
 
