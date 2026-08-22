@@ -108,7 +108,7 @@
         
         .form-input {
             width: 100%; padding: 10px; background: #050a18; border: 1px solid var(--border);
-            color: #fff; border-radius: 8px; margin-bottom: 10px; font-size: 12px; box-sizing: border-box;
+            color: #fbbf24; border-radius: 8px; margin-bottom: 10px; font-size: 13px; font-weight: bold; box-sizing: border-box; text-align: center;
         }
         .file-label { font-size: 11px; color: #94a3b8; display: block; text-align: left; margin-bottom: 4px; }
         
@@ -138,7 +138,7 @@
         </a>
     </div>
 
-    <!-- ১. ওয়ালেট ও পেমেন্ট অপশন সিলেকশন মডাল (Telegram Stars বাদ দেওয়া হয়েছে) -->
+    <!-- ১. ওয়ালেট ও পেমেন্ট অপশন সিলেকশন মডাল -->
     <div class="modal-overlay" id="walletModal">
         <div class="modal-content">
             <div class="modal-title">Select Payment Method ($2.5)</div>
@@ -155,14 +155,17 @@
     <div class="modal-overlay" id="proofModal">
         <div class="modal-content">
             <div class="modal-title" id="proofModalTitle">Submit Payment Proof</div>
-            <div class="modal-desc" id="proofModalDesc">Copy admin UID to pay, then enter your ID and upload screenshot.</div>
+            <div class="modal-desc" id="proofModalDesc">Copy admin UID to pay, then check your Telegram User ID and upload screenshot.</div>
             
             <div class="copy-box">
                 <span id="adminWalletText">UID - <span id="uidNumberText">521132367</span></span>
                 <button onclick="copyWalletAddress()" style="background:var(--primary); color:#000; border:none; padding:5px 8px; border-radius:4px; font-weight:bold; cursor:pointer; font-size:10px;"><i class="fas fa-copy"></i> Copy</button>
             </div>
 
-            <input type="text" id="formUserId" class="form-input" placeholder="Enter Your Telegram User ID">
+            <!-- ইউজার আইডি লেবেল এবং লক করা ইনপুট ফিল্ড -->
+            <label class="file-label" id="userIdLabelText" style="font-weight: bold; color: var(--primary);">Telegram User ID:</label>
+            <input type="text" id="formUserId" class="form-input" readonly>
+
             <label class="file-label">Upload Payment Proof / Screenshot:</label>
             <input type="file" id="formFile" class="form-input" accept="image/*">
             
@@ -177,7 +180,7 @@
     const userId = tg.initDataUnsafe?.user?.id || "test_user";
     const userName = tg.initDataUnsafe?.user?.first_name || "User";
     
-    // নির্দিষ্ট ইউআইডি লিস্ট[cite: 15]
+    // নির্দিষ্ট ইউআইডি লিস্ট
     const ADMIN_UIDS = {
         'Binance Pay': '521132367',
         'Bitget Wallet': '9950270208'
@@ -333,19 +336,23 @@
         selectedMethod = methodName;
         document.getElementById('proofModalTitle').innerText = `${methodName} Proof`;
         
-        // মেথড অনুযায়ী নির্দিষ্ট UID বসানো[cite: 15]
+        // মেথড অনুযায়ী UID সেট করা[cite: 15]
         const targetUid = ADMIN_UIDS[methodName] || '521132367';
         document.getElementById('uidNumberText').innerText = targetUid;
         
+        // মেথডের নাম অনুযায়ী ইউজার আইডি লেবেল পরিবর্তন করা (যেমন: Binance User ID বা Bitget User ID)
+        document.getElementById('userIdLabelText').innerText = `${methodName} User ID:`;
+        
+        // ইউজার আইডি ফিল্ডে আইডি বসিয়ে লক (readonly) করে দেওয়া
         document.getElementById('formUserId').value = tg.initDataUnsafe?.user?.id || userId;
+        
         document.getElementById('proofModal').style.display = 'flex';
     }
 
     function copyWalletAddress() {
-        // শুধুমাত্র সংখ্যা বা কোডটুকু ক্লিপবোর্ডে কপি হবে[cite: 15]
         const textToCopy = document.getElementById('uidNumberText').innerText;
         navigator.clipboard.writeText(textToCopy).then(() => {
-            alert("UID Copied to Clipboard!");
+            alert("UID Copied to Clipboard!");[cite: 15]
         });
     }
 
