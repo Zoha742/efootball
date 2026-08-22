@@ -215,6 +215,7 @@
 
     function renderMiningCards() {
         const container = document.getElementById('miningList');
+        if (!container) return;
         container.innerHTML = '';
         const now = Date.now();
 
@@ -336,14 +337,10 @@
         selectedMethod = methodName;
         document.getElementById('proofModalTitle').innerText = `${methodName} Proof`;
         
-        // মেথড অনুযায়ী UID সেট করা[cite: 15]
         const targetUid = ADMIN_UIDS[methodName] || '521132367';
         document.getElementById('uidNumberText').innerText = targetUid;
         
-        // মেথডের নাম অনুযায়ী ইউজার আইডি লেবেল পরিবর্তন করা (যেমন: Binance User ID বা Bitget User ID)
         document.getElementById('userIdLabelText').innerText = `${methodName} User ID:`;
-        
-        // ইউজার আইডি ফিল্ডে আইডি বসিয়ে লক (readonly) করে দেওয়া
         document.getElementById('formUserId').value = tg.initDataUnsafe?.user?.id || userId;
         
         document.getElementById('proofModal').style.display = 'flex';
@@ -352,7 +349,7 @@
     function copyWalletAddress() {
         const textToCopy = document.getElementById('uidNumberText').innerText;
         navigator.clipboard.writeText(textToCopy).then(() => {
-            alert("UID Copied to Clipboard!");[cite: 15]
+            alert("UID Copied to Clipboard!");
         });
     }
 
