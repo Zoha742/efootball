@@ -138,7 +138,7 @@
         </a>
     </div>
 
-    <!-- ১. ওয়ালেট ও পেমেন্ট অপশন সিলেকশন মডাল (Tonkeeper বাদ দেওয়া হয়েছে) -->
+    <!-- ১. ওয়ালেট ও পেমেন্ট অপশন সিলেকশন মডাল (Telegram Stars বাদ দেওয়া হয়েছে) -->
     <div class="modal-overlay" id="walletModal">
         <div class="modal-content">
             <div class="modal-title">Select Payment Method ($2.5)</div>
@@ -146,7 +146,6 @@
             
             <a href="#" class="wallet-option-btn" onclick="openProofForm('Binance Pay')"><i class="fas fa-wallet" style="color:#f3ba2f; margin-right:8px;"></i> Binance Pay</a>
             <a href="#" class="wallet-option-btn" onclick="openProofForm('Bitget Wallet')"><i class="fas fa-shield-alt" style="color:#00f0ff; margin-right:8px;"></i> Bitget Wallet</a>
-            <a href="#" class="wallet-option-btn" onclick="openProofForm('Telegram Stars')" style="background: #7c3aed;"><i class="fas fa-star" style="color:#fbbf24; margin-right:8px;"></i> Telegram Stars</a>
             
             <button class="modal-close" onclick="closeModal('walletModal')">Cancel</button>
         </div>
@@ -178,11 +177,10 @@
     const userId = tg.initDataUnsafe?.user?.id || "test_user";
     const userName = tg.initDataUnsafe?.user?.first_name || "User";
     
-    // নির্দিষ্ট ইউআইডি লিস্ট (Binance এবং Bitget এর জন্য সঠিক UID)[cite: 15]
+    // নির্দিষ্ট ইউআইডি লিস্ট[cite: 15]
     const ADMIN_UIDS = {
         'Binance Pay': '521132367',
-        'Bitget Wallet': '9950270208',
-        'Telegram Stars': '521132367'
+        'Bitget Wallet': '9950270208'
     };
 
     const coins = [
@@ -394,7 +392,7 @@
 
     setInterval(() => {
         const now = Date.now();
-        coins.footeach = coins.forEach(coin => {
+        coins.forEach(coin => {
             if (miningData[coin.id] && miningData[coin.id].endTime > 0) {
                 if (now >= miningData[coin.id].endTime && miningData[coin.id].status === 'running') {
                     db.ref(`users/${userId}/mining/${coin.id}`).update({ status: 'ready' });
