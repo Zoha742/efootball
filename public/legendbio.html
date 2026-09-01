@@ -7,7 +7,6 @@
     <!-- Firebase & SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
-    <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     
     <!-- সেন্ট্রাল স্ক্রিপ্ট লিঙ্ক -->
@@ -50,7 +49,6 @@
 
 <div class="info-grid">
     <div class="info-box"><span class="info-label">Nationality</span><span class="info-value" id="p-nation">--</span></div>
-    
     <div class="info-box"><span class="info-label">Position</span><span class="info-value" id="p-pos">--</span></div>
     <div class="info-box"><span class="info-label">Foot</span><span class="info-value" id="p-foot">--</span></div>
     <div class="info-box"><span class="info-label">Playing Style</span><span class="info-value" id="p-style">--</span></div>
@@ -69,32 +67,6 @@
         return "#ffffff";
     }
 
-    // ১২ ঘণ্টা বা নির্দিষ্ট লিমি트 মেইনটেইন করার জন্য লোকালস্টোরেজ সিস্টেমসহ অ্যাড ফাংশন
-    function showBioAdWithLimit() {
-        const lastAdTime = localStorage.getItem('last_bio_ad_time');
-        const now = Date.now();
-        const twelveHours = 12 * 60 * 60 * 1000;
-
-        // যদি ১২ ঘণ্টার মধ্যে একবারও অ্যাড না দেখে থাকে অথবা সময় পার হয়ে গিয়ে থাকে
-        if (!lastAdTime || (now - lastAdTime) > twelveHours) {
-            if (window.Adsgram) {
-                try {
-                    const adController = window.Adsgram.init({ blockId: "29212" });
-                    adController.show().then(() => {
-                        localStorage.setItem('last_bio_ad_time', now); // দেখার সময় সেভ করে রাখা
-                        console.log("Bio ad watched successfully.");
-                    }).catch((err) => {
-                        console.log("Ad skipped or failed:", err);
-                    });
-                } catch (e) {
-                    console.log("Adsgram init error:", e);
-                }
-            }
-        } else {
-            console.log("Ad limit active: 12 hours have not passed yet.");
-        }
-    }
-
     window.onload = () => {
         const pData = localStorage.getItem('selected_player');
         if (pData) {
@@ -102,7 +74,6 @@
             document.getElementById('p-img').src = p.img;
             document.getElementById('p-name').innerText = p.name;
             document.getElementById('p-nation').innerText = p.nationality || "N/A";
-            
             document.getElementById('p-pos').innerText = p.pos || "N/A";
             document.getElementById('p-foot').innerText = p.foot || "N/A";
             document.getElementById('p-style').innerText = p.style || "N/A";
@@ -120,11 +91,6 @@
                 });
             }
         }
-
-        // পেজ লোড হওয়ার একটু পরে অ্যাড ফাংশন কল করা
-        setTimeout(() => {
-            showBioAdWithLimit();
-        }, 800);
     };
 </script>
 </body>
