@@ -115,12 +115,12 @@
 
             <!-- ৬টি স্লটে বড় সাইজের ছবি -->
             <div class="ad-grid" id="ad-slots">
-                <div class="ad-slot" id="slot-1"><span class="slot-num">1</span><span class="slot-label">Ad 1</span></div>
-                <div class="ad-slot" id="slot-2"><span class="slot-num">2</span><span class="slot-label">Ad 2</span></div>
-                <div class="ad-slot" id="slot-3"><span class="slot-num">3</span><span class="slot-label">Ad 3</span></div>
-                <div class="ad-slot" id="slot-4"><span class="slot-num">4</span><span class="slot-label">Ad 4</span></div>
-                <div class="ad-slot" id="slot-5"><span class="slot-num">5</span><span class="slot-label">Ad 5</span></div>
-                <div class="ad-slot" id="slot-6"><span class="slot-num">6</span><span class="slot-label">Ad 6</span></div>
+                <div class="ad-slot" id="slot-1"><span class="slot-num">1</span><span class="slot-label">Kickoff</span></div>
+                <div class="ad-slot" id="slot-2"><span class="slot-num">2</span><span class="slot-label">Golden Goal</span></div>
+                <div class="ad-slot" id="slot-3"><span class="slot-num">3</span><span class="slot-label">Power Play</span></div>
+                <div class="ad-slot" id="slot-4"><span class="slot-num">4</span><span class="slot-label">Fast Break</span></div>
+                <div class="ad-slot" id="slot-5"><span class="slot-num">5</span><span class="slot-label">Victory Lap</span></div>
+                <div class="ad-slot" id="slot-6"><span class="slot-num">6</span><span class="slot-label">Champion Cup</span></div>
             </div>
 
             <button id="task-btn" class="btn-main btn-blue" onclick="handleTask()">WATCH AD (1/6)</button>
@@ -145,6 +145,8 @@
         const tg = window.Telegram.WebApp;
         tg.expand();
         const userId = tg.initDataUnsafe?.user?.id || "test_user";
+
+        const slotNames = ["Kickoff", "Golden Goal", "Power Play", "Fast Break", "Victory Lap", "Champion Cup"];
 
         const AdController = {
             videoBlockId: "29212", 
@@ -317,7 +319,7 @@
                         slot.innerHTML = `<span class="slot-num">&#10003;</span><span class="slot-label">Done</span>`;
                     } else {
                         slot.classList.remove('done');
-                        slot.innerHTML = `<span class="slot-num">${i}</span><span class="slot-label">Ad ${i}</span>`;
+                        slot.innerHTML = `<span class="slot-num">${i}</span><span class="slot-label">${slotNames[i-1]}</span>`;
                     }
                 }
             }
