@@ -62,13 +62,29 @@
     let slideInterval;
     let startX = 0;
 
-    // সঠিক ব্লক আইডি (29212) দিয়ে অ্যাড কন্ট্রোলার ইনিশিয়ালাইজ করা হয়েছে
+    // সঠিক ব্লক আইডি (29212) দিয়ে অ্যাড কন্ট্রোলার ইনিশিয়ালাইজ করা হয়েছে
+    // ---- সব পেজ মিলিয়ে ইউজার মোট সর্বোচ্চ ৫টি অ্যাড দেখবে (localStorage এ গোনা হয়) ----
+    const MAX_TOTAL_ADS = 5;
+    const AD_COUNT_KEY = 'efootball_total_ads_shown';
+
+    function getAdsShownCount() {
+        return parseInt(localStorage.getItem(AD_COUNT_KEY) || '0', 10);
+    }
+    function incrementAdsShownCount() {
+        localStorage.setItem(AD_COUNT_KEY, String(getAdsShownCount() + 1));
+    }
+
     function showEntryAd() {
+        if (getAdsShownCount() >= MAX_TOTAL_ADS) {
+            console.log("Total ad limit (5) reached, skipping entry ad.");
+            return;
+        }
         if (window.Adsgram) {
             try {
                 const adController = window.Adsgram.init({ blockId: "29212" });
                 adController.show().then(() => {
                     console.log("Event entry ad watched successfully.");
+                    incrementAdsShownCount();
                 }).catch((err) => {
                     console.log("Ad skipped or failed:", err);
                 });
