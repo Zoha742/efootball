@@ -75,7 +75,18 @@
             box-shadow: 0 3px 0 rgba(112,26,117,0.9), 0 0 14px rgba(217,70,239,0.6), inset 0 1px 0 rgba(255,255,255,0.35);
         }
 
-        .task-ad-wrap { margin-bottom: 20px; }
+        .task-ad-wrap {
+            position: relative; overflow: hidden; margin-bottom: 20px;
+            border-radius: 16px; padding: 4px;
+            background: linear-gradient(150deg, #e879f9, #7e22ce);
+            border: 1px solid rgba(255,255,255,0.18);
+            box-shadow: 0 5px 0 rgba(0,0,0,0.35), 0 10px 18px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+        .task-ad-wrap::before {
+            content: ""; position: absolute; top: 0; left: 0; right: 0; height: 45%;
+            background: linear-gradient(180deg, rgba(255,255,255,0.32), rgba(255,255,255,0));
+            pointer-events: none; z-index: 0;
+        }
         .task-ad-wrap .task {
             --adsgram-task-font-size: 15px;
             --adsgram-task-icon-size: 46px;
@@ -83,19 +94,19 @@
             --adsgram-task-button-width: 64px;
             --adsgram-task-icon-border-radius: 10px;
             display: block; width: 100%; box-sizing: border-box;
-            padding: 12px 14px; border-radius: 16px;
-            background: linear-gradient(135deg, rgba(217, 70, 239, 0.18), var(--card-dark));
-            border: 1px solid rgba(217, 70, 239, 0.4);
-            box-shadow: 0 0 20px rgba(217, 70, 239, 0.15);
+            padding: 12px 14px; border-radius: 13px;
+            background: transparent; border: none; box-shadow: none;
+            position: relative; z-index: 1;
             font-family: 'Segoe UI', sans-serif; color: #fff;
         }
-        .task-ad-wrap .task__reward { margin: 2px 0 0 0; font-size: 12px; color: #f0abfc; }
+        .task-ad-wrap .task__reward { margin: 2px 0 0 0; font-size: 12px; color: #fdf4ff; opacity: 0.9; }
         .task-ad-wrap .task__button {
             padding: 8px 4px; border-radius: 10px; text-align: center; font-weight: bold; font-size: 12px;
-            background: linear-gradient(135deg, #d946ef, #a21caf); color: #fff; cursor: pointer;
+            background: rgba(0,0,0,0.28); color: #fff; cursor: pointer;
+            box-shadow: 0 3px 0 rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.15);
         }
         .task-ad-wrap .task__button_claim { background: linear-gradient(135deg, #fbbf24, #b45309); }
-        .task-ad-wrap .task__button_done { background: #334155; cursor: default; }
+        .task-ad-wrap .task__button_done { background: rgba(0,0,0,0.35); cursor: default; box-shadow: none; }
 
         .notif-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 10, 24, 0.9); backdrop-filter: blur(10px); display: none; justify-content: center; align-items: center; z-index: 5000; }
         .notif-box { background: #121e36; width: 85%; max-width: 320px; border-radius: 25px; padding: 30px 20px; border: 1px solid #d946ef; text-align: center; box-shadow: 0 0 40px rgba(217, 70, 239, 0.2); transform: translateY(50px); opacity: 0; transition: 0.4s ease; }
@@ -105,14 +116,6 @@
     </style>
 </head>
 <body>
-    <!-- ব্যাক বাটন অপশন -->
-    <div style="display: flex; align-items: center; padding: 12px 15px; background: rgba(18, 30, 54, 0.7); backdrop-filter: blur(15px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); position: sticky; top: 0; z-index: 2000;">
-        <a href="index.html" style="color: white; text-decoration: none; font-size: 18px; display: flex; align-items: center; gap: 8px;">
-            <i class="fas fa-arrow-left" style="color: var(--pink);"></i>
-            <span style="font-size: 15px; font-weight: 600;">Back to Home</span>
-        </a>
-    </div>
-
     <div style="height: 15px;"></div>
 
     <div class="profile-container">
