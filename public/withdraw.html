@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --bg: #050a18; --card: #121e36; --border: #1e2d4d; --text: #ffffff; --green: #22c55e; --blue: #3b82f6; --orange: #f59e0b; --red: #ef4444; }
-        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding: 15px; }
+        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding: 15px; padding-bottom: 95px; }
         
         .header { display: flex; align-items: center; gap: 15px; margin-bottom: 25px; margin-top: 10px; }
         .back-nav { font-size: 22px; color: white; cursor: pointer; padding: 5px; }
@@ -90,12 +90,36 @@
             background: linear-gradient(180deg, #fbbf24, #b45309);
         }
         .status-pending { color: var(--orange); font-weight: bold; font-size: 12px; }
+
+        /* নিচে দুইটা কালারফুল 3D বাটন - Home ও Profile */
+        .bottom-nav-mini {
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 72px;
+            display: flex; gap: 10px; padding: 10px 15px;
+            background: linear-gradient(180deg, #0f172a, #070d19);
+            border-top: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 -6px 20px rgba(0,0,0,0.5);
+            box-sizing: border-box; z-index: 1000;
+        }
+        .nav-mini-item {
+            flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px;
+            border-radius: 12px; text-decoration: none; color: #fff; font-weight: bold; font-size: 13px;
+            border: 1px solid rgba(255,255,255,0.18);
+            box-shadow: 0 4px 0 rgba(0,0,0,0.35), 0 8px 14px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+            transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
+        }
+        .nav-mini-item i { font-size: 16px; }
+        .nav-mini-item:active {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 rgba(0,0,0,0.35), 0 2px 6px rgba(0,0,0,0.4);
+            filter: brightness(1.25);
+        }
+        .nav-mini-home { background: linear-gradient(150deg, #60a5fa, #2563eb); }
+        .nav-mini-profile { background: linear-gradient(150deg, #f0abfc, #a21caf); }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <i class="fas fa-arrow-left back-nav" onclick="window.history.back()"></i>
+    <div class="header" style="justify-content: center;">
         <h3 style="margin: 0; font-size: 20px;">Withdraw GP</h3>
     </div>
 
@@ -128,6 +152,11 @@
 
     <h4 style="margin-bottom: 10px;"><i class="fas fa-history"></i> Withdraw History</h4>
     <div id="history-list">Loading history...</div>
+
+    <nav class="bottom-nav-mini">
+        <a href="index.html" class="nav-mini-item nav-mini-home"><i class="fas fa-home"></i>Home</a>
+        <a href="profile.html" class="nav-mini-item nav-mini-profile"><i class="fas fa-user-circle"></i>Profile</a>
+    </nav>
 
     <script>
         const tg = window.Telegram.WebApp;
