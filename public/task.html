@@ -25,10 +25,44 @@
         .reward-info i { font-size: 40px; color: #fbbf24; margin-bottom: 10px; }
         .reward-info h2 { margin: 5px 0; color: var(--green); }
         
-        .ad-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0; }
-        .ad-slot { background: #050a18; border: 1px solid var(--border); padding: 8px; border-radius: 12px; font-size: 11px; transition: 0.3s; text-align: center; }
-        .ad-slot img { width: 100%; height: 65px; object-fit: cover; border-radius: 8px; margin-bottom: 5px; display: block; border: 1px solid var(--primary); }
-        .ad-slot.done { border-color: var(--green); color: var(--green); }
+        .ad-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0; }
+
+        /* 3D কালারফুল কার্ড - আইকন/ছবির বদলে কালার + ডেপথ */
+        .ad-slot {
+            position: relative;
+            overflow: hidden;
+            padding: 16px 6px 14px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 700;
+            text-align: center;
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.18);
+            box-shadow: 0 5px 0 rgba(0,0,0,0.35), 0 10px 18px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.25);
+            transform: translateY(0);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+        .ad-slot::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 45%;
+            background: linear-gradient(180deg, rgba(255,255,255,0.35), rgba(255,255,255,0));
+            pointer-events: none;
+        }
+        .ad-slot:active { transform: translateY(3px); box-shadow: 0 2px 0 rgba(0,0,0,0.35), 0 4px 10px rgba(0,0,0,0.4); }
+
+        .slot-num { display: block; font-size: 20px; font-weight: 900; text-shadow: 0 2px 3px rgba(0,0,0,0.35); margin-bottom: 4px; position: relative; z-index: 1; }
+        .slot-label { display: block; font-size: 11px; opacity: 0.95; position: relative; z-index: 1; }
+
+        .ad-slot:nth-child(6n+1) { background: linear-gradient(150deg, #a855f7, #6d28d9); }
+        .ad-slot:nth-child(6n+2) { background: linear-gradient(150deg, #fb923c, #c2410c); }
+        .ad-slot:nth-child(6n+3) { background: linear-gradient(150deg, #f472b6, #be185d); }
+        .ad-slot:nth-child(6n+4) { background: linear-gradient(150deg, #fbbf24, #b45309); }
+        .ad-slot:nth-child(6n+5) { background: linear-gradient(150deg, #22d3ee, #0e7490); }
+        .ad-slot:nth-child(6n+6) { background: linear-gradient(150deg, #34d399, #047857); }
+
+        .ad-slot.done { background: linear-gradient(150deg, #4ade80, #15803d) !important; box-shadow: 0 5px 0 rgba(0,0,0,0.35), 0 0 16px rgba(74,222,128,0.55), inset 0 1px 0 rgba(255,255,255,0.25); }
         
         .btn-main { width: 100%; border: none; padding: 15px; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 16px; margin-bottom: 12px; }
         .btn-blue { background: var(--primary); box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); }
@@ -40,10 +74,28 @@
         .btn-lock { background: #334155; cursor: not-allowed; opacity: 0.8; }
         #timer { font-size: 18px; font-weight: bold; color: #f87171; margin-top: 10px; display: none; }
 
-        /* Bottom Nav */
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 70px; background: #070d19; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid var(--border); z-index: 1000; }
-        .nav-item { text-align: center; color: #94a3b8; font-size: 11px; text-decoration: none; flex: 1; }
-        .nav-item i { font-size: 20px; display: block; margin-bottom: 4px; }
+        /* Bottom Nav - কালারফুল 3D স্টাইল */
+        .bottom-nav {
+            position: fixed; bottom: 0; width: 100%; height: 72px;
+            background: linear-gradient(180deg, #0f172a, #070d19);
+            display: flex; justify-content: space-around; align-items: center;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 -6px 20px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.06);
+            z-index: 1000; padding: 6px 6px;
+        }
+        .nav-item { text-align: center; color: #94a3b8; font-size: 11px; text-decoration: none; flex: 1; padding: 6px 2px; border-radius: 14px; transition: 0.2s; }
+        .nav-item i {
+            font-size: 19px; display: block; margin-bottom: 4px;
+            width: 34px; height: 34px; line-height: 34px; margin: 0 auto 4px;
+            border-radius: 10px;
+            background: linear-gradient(150deg, #1e2d4d, #111a2e);
+            box-shadow: 0 3px 0 rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.08);
+        }
+        .nav-item.active, .nav-item[style] { color: #fff !important; }
+        .nav-item.active i, .nav-item[style] i {
+            background: linear-gradient(150deg, #60a5fa, #2563eb);
+            box-shadow: 0 3px 0 rgba(30,64,175,0.9), 0 0 14px rgba(59,130,246,0.6), inset 0 1px 0 rgba(255,255,255,0.35);
+        }
     </style>
 </head>
 <body>
@@ -63,30 +115,12 @@
 
             <!-- ৬টি স্লটে বড় সাইজের ছবি -->
             <div class="ad-grid" id="ad-slots">
-                <div class="ad-slot" id="slot-1">
-                    <img src="https://res.cloudinary.com/dyqegwdme/image/upload/v1786994788/1._start_wmufid.png" alt="Ad 1">
-                    <span>Ad 1</span>
-                </div>
-                <div class="ad-slot" id="slot-2">
-                    <img src="https://res.cloudinary.com/dyqegwdme/image/upload/v1786994788/2._goal_sbspgy.png" alt="Ad 2">
-                    <span>Ad 2</span>
-                </div>
-                <div class="ad-slot" id="slot-3">
-                    <img src="https://res.cloudinary.com/dyqegwdme/image/upload/v1786994788/3._kick_wvbdfw.png" alt="Ad 3">
-                    <span>Ad 3</span>
-                </div>
-                <div class="ad-slot" id="slot-4">
-                    <img src="https://res.cloudinary.com/dyqegwdme/image/upload/v1786994787/4.star_zxgufd.png" alt="Ad 4">
-                    <span>Ad 4</span>
-                </div>
-                <div class="ad-slot" id="slot-5">
-                    <img src="https://res.cloudinary.com/dyqegwdme/image/upload/v1786994787/5.Cup_khdiku.png" alt="Ad 5">
-                    <span>Ad 5</span>
-                </div>
-                <div class="ad-slot" id="slot-6">
-                    <img src="https://res.cloudinary.com/dyqegwdme/image/upload/v1786994787/6.Win_ypr6bc.png" alt="Ad 6">
-                    <span>Ad 6</span>
-                </div>
+                <div class="ad-slot" id="slot-1"><span class="slot-num">1</span><span class="slot-label">Ad 1</span></div>
+                <div class="ad-slot" id="slot-2"><span class="slot-num">2</span><span class="slot-label">Ad 2</span></div>
+                <div class="ad-slot" id="slot-3"><span class="slot-num">3</span><span class="slot-label">Ad 3</span></div>
+                <div class="ad-slot" id="slot-4"><span class="slot-num">4</span><span class="slot-label">Ad 4</span></div>
+                <div class="ad-slot" id="slot-5"><span class="slot-num">5</span><span class="slot-label">Ad 5</span></div>
+                <div class="ad-slot" id="slot-6"><span class="slot-num">6</span><span class="slot-label">Ad 6</span></div>
             </div>
 
             <button id="task-btn" class="btn-main btn-blue" onclick="handleTask()">WATCH AD (1/6)</button>
@@ -111,15 +145,6 @@
         const tg = window.Telegram.WebApp;
         tg.expand();
         const userId = tg.initDataUnsafe?.user?.id || "test_user";
-
-        const slotImages = [
-            "https://res.cloudinary.com/dyqegwdme/image/upload/v1786994788/1._start_wmufid.png",
-            "https://res.cloudinary.com/dyqegwdme/image/upload/v1786994788/2._goal_sbspgy.png",
-            "https://res.cloudinary.com/dyqegwdme/image/upload/v1786994788/3._kick_wvbdfw.png",
-            "https://res.cloudinary.com/dyqegwdme/image/upload/v1786994787/4.star_zxgufd.png",
-            "https://res.cloudinary.com/dyqegwdme/image/upload/v1786994787/5.Cup_khdiku.png",
-            "https://res.cloudinary.com/dyqegwdme/image/upload/v1786994787/6.Win_ypr6bc.png"
-        ];
 
         const AdController = {
             videoBlockId: "29212", 
@@ -205,7 +230,7 @@
             const slot = document.getElementById(`slot-${num}`);
             if(slot) {
                 slot.classList.add('done');
-                slot.innerHTML = `<img src="${slotImages[num-1]}" alt="Done"><span>Done</span>`;
+                slot.innerHTML = `<span class="slot-num">&#10003;</span><span class="slot-label">Done</span>`;
             }
         }
 
@@ -289,10 +314,10 @@
                 if(slot) {
                     if (i <= adsWatched) {
                         slot.classList.add('done');
-                        slot.innerHTML = `<img src="${slotImages[i-1]}" alt="Done"><span>Done</span>`;
+                        slot.innerHTML = `<span class="slot-num">&#10003;</span><span class="slot-label">Done</span>`;
                     } else {
                         slot.classList.remove('done');
-                        slot.innerHTML = `<img src="${slotImages[i-1]}" alt="Ad ${i}"><span>Ad ${i}</span>`;
+                        slot.innerHTML = `<span class="slot-num">${i}</span><span class="slot-label">Ad ${i}</span>`;
                     }
                 }
             }
