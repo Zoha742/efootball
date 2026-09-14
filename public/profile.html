@@ -24,29 +24,78 @@
         .user-id { color: #94a3b8; font-size: 12px; background: rgba(0,0,0,0.3); display: inline-block; padding: 4px 12px; border-radius: 20px; border: 1px solid var(--border); }
 
         .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .action-box { 
-            background: var(--card-dark); border-radius: 16px; padding: 18px 10px; text-align: center; 
-            border: 1px solid var(--border); text-decoration: none; color: white; transition: 0.3s; cursor: pointer; 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2); position: relative; overflow: hidden;
+        .action-box {
+            position: relative; overflow: hidden;
+            border-radius: 16px; padding: 18px 10px; text-align: center;
+            border: 1px solid rgba(255,255,255,0.18); text-decoration: none; color: white; cursor: pointer;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            box-shadow: 0 5px 0 rgba(0,0,0,0.35), 0 10px 18px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.2);
         }
-        .action-box:active { transform: scale(0.95); }
-        .action-box i { font-size: 24px; margin-bottom: 8px; display: block; }
-        .action-box span { font-size: 11px; font-weight: bold; text-transform: uppercase; color: #cbd5e1; }
-        .action-box .value { font-size: 16px; font-weight: bold; margin-top: 4px; color: #ffffff; }
+        .action-box::before {
+            content: ""; position: absolute; top: 0; left: 0; right: 0; height: 45%;
+            background: linear-gradient(180deg, rgba(255,255,255,0.32), rgba(255,255,255,0));
+            pointer-events: none;
+        }
+        .action-box:active { transform: translateY(3px); box-shadow: 0 2px 0 rgba(0,0,0,0.35), 0 4px 10px rgba(0,0,0,0.4); }
+        .action-box i { font-size: 24px; margin-bottom: 8px; display: block; position: relative; z-index: 1; color: #fff !important; text-shadow: 0 2px 3px rgba(0,0,0,0.35) !important; }
+        .action-box span { font-size: 11px; font-weight: bold; text-transform: uppercase; color: #ffffff; position: relative; z-index: 1; opacity: 0.95; }
+        .action-box .value { font-size: 16px; font-weight: bold; margin-top: 4px; color: #ffffff; position: relative; z-index: 1; }
+        .action-box .value[style] { color: rgba(255,255,255,0.85) !important; }
 
-        .box-gp i { color: #fbbf24; text-shadow: 0 0 10px rgba(251, 191, 36, 0.4); }
-        .box-task i { color: #22c55e; text-shadow: 0 0 10px rgba(34, 197, 94, 0.4); }
-        .box-refer i { color: #f472b6; } 
-        .box-earn i { color: #818cf8; }  
-        .box-wallet i { color: #3b82f6; }
-        .box-withdraw i { color: #f87171; }
-        .box-history i { color: #a78bfa; }
-        .box-support i { color: #2dd4bf; }
-        .box-admin i { color: #ef4444; text-shadow: 0 0 10px rgba(239, 68, 68, 0.5); } 
+        .box-gp { background: linear-gradient(150deg, #fbbf24, #b45309); }
+        .box-task { background: linear-gradient(150deg, #4ade80, #15803d); }
+        .box-refer { background: linear-gradient(150deg, #f472b6, #be185d); }
+        .box-earn { background: linear-gradient(150deg, #818cf8, #4338ca); }
+        .box-wallet { background: linear-gradient(150deg, #60a5fa, #1d4ed8); }
+        .box-withdraw { background: linear-gradient(150deg, #f87171, #b91c1c); }
+        .box-history { background: linear-gradient(150deg, #a78bfa, #6d28d9); }
+        .box-support { background: linear-gradient(150deg, #2dd4bf, #0f766e); }
+        .box-admin { background: linear-gradient(150deg, #f87171, #7f1d1d); box-shadow: 0 5px 0 rgba(0,0,0,0.35), 0 0 16px rgba(239,68,68,0.5), inset 0 1px 0 rgba(255,255,255,0.2); }
 
-        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 70px; background: rgba(5, 10, 24, 0.9); backdrop-filter: blur(15px); display: flex; justify-content: space-around; align-items: center; border-top: 1px solid rgba(255, 255, 255, 0.1); z-index: 1000; }
-        .nav-item { text-align: center; color: #64748b; text-decoration: none; font-size: 11px; }
-        .nav-item i { font-size: 20px; display: block; margin-bottom: 4px; }
+        /* Bottom Nav - কালারফুল 3D স্টাইল */
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 72px;
+            background: linear-gradient(180deg, #0f172a, #070d19);
+            display: flex; justify-content: space-around; align-items: center;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 -6px 20px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.06);
+            z-index: 1000; padding: 6px 6px;
+        }
+        .nav-item { text-align: center; color: #94a3b8; font-size: 11px; text-decoration: none; flex: 1; padding: 6px 2px; border-radius: 14px; transition: 0.2s; }
+        .nav-item i {
+            font-size: 19px; display: block; margin-bottom: 4px;
+            width: 34px; height: 34px; line-height: 34px; margin: 0 auto 4px;
+            border-radius: 10px;
+            background: linear-gradient(150deg, #1e2d4d, #111a2e);
+            box-shadow: 0 3px 0 rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.08);
+        }
+        .nav-item[style] { color: #fff !important; }
+        .nav-item[style] i {
+            background: linear-gradient(150deg, #f0abfc, #a21caf);
+            box-shadow: 0 3px 0 rgba(112,26,117,0.9), 0 0 14px rgba(217,70,239,0.6), inset 0 1px 0 rgba(255,255,255,0.35);
+        }
+
+        .task-ad-wrap { margin-bottom: 20px; }
+        .task-ad-wrap .task {
+            --adsgram-task-font-size: 15px;
+            --adsgram-task-icon-size: 46px;
+            --adsgram-task-icon-title-gap: 12px;
+            --adsgram-task-button-width: 64px;
+            --adsgram-task-icon-border-radius: 10px;
+            display: block; width: 100%; box-sizing: border-box;
+            padding: 12px 14px; border-radius: 16px;
+            background: linear-gradient(135deg, rgba(217, 70, 239, 0.18), var(--card-dark));
+            border: 1px solid rgba(217, 70, 239, 0.4);
+            box-shadow: 0 0 20px rgba(217, 70, 239, 0.15);
+            font-family: 'Segoe UI', sans-serif; color: #fff;
+        }
+        .task-ad-wrap .task__reward { margin: 2px 0 0 0; font-size: 12px; color: #f0abfc; }
+        .task-ad-wrap .task__button {
+            padding: 8px 4px; border-radius: 10px; text-align: center; font-weight: bold; font-size: 12px;
+            background: linear-gradient(135deg, #d946ef, #a21caf); color: #fff; cursor: pointer;
+        }
+        .task-ad-wrap .task__button_claim { background: linear-gradient(135deg, #fbbf24, #b45309); }
+        .task-ad-wrap .task__button_done { background: #334155; cursor: default; }
 
         .notif-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 10, 24, 0.9); backdrop-filter: blur(10px); display: none; justify-content: center; align-items: center; z-index: 5000; }
         .notif-box { background: #121e36; width: 85%; max-width: 320px; border-radius: 25px; padding: 30px 20px; border: 1px solid #d946ef; text-align: center; box-shadow: 0 0 40px rgba(217, 70, 239, 0.2); transform: translateY(50px); opacity: 0; transition: 0.4s ease; }
@@ -70,6 +119,16 @@
         <img src="https://via.placeholder.com/100" class="avatar" id="user-avatar">
         <div class="name" id="user-name">Loading...</div>
         <div class="user-id" id="user-id">ID: Fetching...</div>
+    </div>
+
+    <!-- eFootball TM Task Ad (AdsGram, block: task-29213) -->
+    <div class="task-ad-wrap">
+        <adsgram-task data-block-id="task-29213" class="task">
+            <span slot="reward" class="task__reward">Bonus Reward</span>
+            <div slot="button" class="task__button">GO</div>
+            <div slot="claim" class="task__button task__button_claim">CLAIM</div>
+            <div slot="done" class="task__button task__button_done">DONE</div>
+        </adsgram-task>
     </div>
 
     <div class="action-grid" id="action-grid">
