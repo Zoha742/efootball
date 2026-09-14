@@ -7,6 +7,7 @@
     <!-- Firebase & SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
+    <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     
     <!-- সেন্ট্রাল স্ক্রিপ্ট লিঙ্ক -->
@@ -59,6 +60,33 @@
 <script>
     console.log("Database connected successfully!");
 
+    // ---- Adsgram Interstitial (blockId: int-29249) ----
+    // যেকোনো পেজেই ইউজার মোট সর্বোচ্চ ৫টি অ্যাড দেখবে (সব পেজ মিলিয়ে, localStorage এ গোনা হয়)
+    const MAX_TOTAL_ADS = 5;
+    const AD_COUNT_KEY = 'efootball_total_ads_shown';
+
+    function getAdsShownCount() {
+        return parseInt(localStorage.getItem(AD_COUNT_KEY) || '0', 10);
+    }
+    function incrementAdsShownCount() {
+        localStorage.setItem(AD_COUNT_KEY, String(getAdsShownCount() + 1));
+    }
+
+    function tryShowInterstitialAd() {
+        if (getAdsShownCount() >= MAX_TOTAL_ADS) return;
+        if (!window.Adsgram) return;
+
+        const InterstitialController = window.Adsgram.init({ blockId: "int-29249" });
+        InterstitialController.show()
+            .then(() => {
+                // ইউজার অ্যাড দেখেছে বা স্কিপ করে বন্ধ করেছে - কাউন্ট বাড়ানো হলো
+                incrementAdsShownCount();
+            })
+            .catch(() => {
+                // অ্যাড লোড/প্লে করতে সমস্যা হয়েছে - কাউন্ট বাড়ানো হবে না, পরের পেজে আবার চেষ্টা হবে
+            });
+    }
+
     function getStatColor(val) {
         if (val >= 94) return "#0FD4B1"; 
         if (val >= 90) return "#5AB510"; 
@@ -68,6 +96,8 @@
     }
 
     window.onload = () => {
+        tryShowInterstitialAd();
+
         const pData = localStorage.getItem('selected_player');
         if (pData) {
             const p = JSON.parse(pData);
