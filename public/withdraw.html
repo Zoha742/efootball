@@ -6,6 +6,7 @@
     <title>Withdraw GP - eFootball HUB</title>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
+    <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="config.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -17,30 +18,77 @@
         .back-nav { font-size: 22px; color: white; cursor: pointer; padding: 5px; }
 
         .balance-box { text-align: center; margin-bottom: 20px; }
-        .balance-box h1 { font-size: 32px; margin: 5px 0; color: var(--green); }
+        .balance-box h1 {
+            font-size: 34px; margin: 5px 0; font-weight: 900;
+            background: linear-gradient(90deg, #4ade80, #22c55e, #16a34a);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 25px rgba(34, 197, 94, 0.35);
+        }
 
-        .rate-info-box { 
-            border: 1px solid var(--red); 
-            color: var(--red); 
-            padding: 8px 15px; 
-            border-radius: 8px; 
-            font-size: 13px; 
-            display: inline-block; 
+        .rate-info-box {
+            border: 1px solid rgba(239, 68, 68, 0.5);
+            background: linear-gradient(145deg, rgba(239,68,68,0.18), rgba(127,29,29,0.25));
+            color: #fca5a5;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            display: inline-block;
             margin-top: 5px;
             font-weight: bold;
+            box-shadow: 0 3px 10px rgba(239,68,68,0.15), inset 0 1px 0 rgba(255,255,255,0.08);
         }
-        
-        .card { background: var(--card); padding: 20px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 20px; }
-        .input-group { margin-bottom: 15px; }
+
+        .card {
+            position: relative; overflow: hidden;
+            background: linear-gradient(160deg, #17233f, #0b1224);
+            padding: 20px; border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.08);
+            margin-bottom: 20px;
+            box-shadow: 0 10px 24px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.06);
+        }
+        .card::before {
+            content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, #fbbf24, #f59e0b, #d97706);
+        }
+
+        .input-group { margin-bottom: 15px; position: relative; z-index: 1; }
         .input-group label { display: block; font-size: 14px; color: #94a3b8; margin-bottom: 8px; }
         
         #calc-display { color: var(--orange); font-weight: bold; margin-left: 10px; font-size: 13px; }
 
-        .input-group input, .input-group select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); background: #0a1226; color: white; box-sizing: border-box; outline: none; }
-        .withdraw-btn { width: 100%; padding: 15px; border-radius: 8px; border: none; background: var(--blue); color: white; font-weight: bold; cursor: pointer; font-size: 16px; }
-        .withdraw-btn:disabled { background: #2d3748; cursor: not-allowed; opacity: 0.6; }
+        .input-group input, .input-group select {
+            width: 100%; padding: 12px; border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: linear-gradient(160deg, #0f1830, #0a1226);
+            color: white; box-sizing: border-box; outline: none;
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.4);
+            transition: border-color 0.2s;
+        }
+        .input-group input:focus, .input-group select:focus { border-color: var(--blue); }
+
+        .withdraw-btn {
+            width: 100%; padding: 15px; border-radius: 12px; border: none;
+            background: linear-gradient(150deg, #60a5fa, #2563eb);
+            color: white; font-weight: bold; cursor: pointer; font-size: 16px;
+            box-shadow: 0 5px 0 rgba(29,78,216,0.9), 0 10px 18px rgba(37,99,235,0.35), inset 0 1px 0 rgba(255,255,255,0.25);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            position: relative; z-index: 1;
+        }
+        .withdraw-btn:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 2px 0 rgba(29,78,216,0.9), 0 4px 10px rgba(37,99,235,0.3); }
+        .withdraw-btn:disabled { background: #2d3748; box-shadow: none; cursor: not-allowed; opacity: 0.6; }
         
-        .history-item { background: #0a1226; padding: 15px; border-radius: 10px; margin-bottom: 10px; border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .history-item {
+            position: relative; overflow: hidden;
+            background: linear-gradient(160deg, #15213c, #0a1226);
+            padding: 15px 15px 15px 18px; border-radius: 12px; margin-bottom: 10px;
+            border: 1px solid rgba(255,255,255,0.08);
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.05);
+        }
+        .history-item::before {
+            content: ""; position: absolute; top: 0; left: 0; bottom: 0; width: 4px;
+            background: linear-gradient(180deg, #fbbf24, #b45309);
+        }
         .status-pending { color: var(--orange); font-weight: bold; font-size: 12px; }
     </style>
 </head>
@@ -87,6 +135,33 @@
         let userGP = 0;
         let minLimit = 5000; 
         let exchangeRate = 10000; 
+
+        // ---- Adsgram Interstitial (blockId: int-29249) ----
+        // সব পেজ মিলিয়ে ইউজার মোট সর্বোচ্চ ৫টি অ্যাড দেখবে (localStorage এ গোনা হয়)
+        const MAX_TOTAL_ADS = 5;
+        const AD_COUNT_KEY = 'efootball_total_ads_shown';
+
+        function getAdsShownCount() {
+            return parseInt(localStorage.getItem(AD_COUNT_KEY) || '0', 10);
+        }
+        function incrementAdsShownCount() {
+            localStorage.setItem(AD_COUNT_KEY, String(getAdsShownCount() + 1));
+        }
+
+        function tryShowInterstitialAd() {
+            if (getAdsShownCount() >= MAX_TOTAL_ADS) return;
+            if (!window.Adsgram) return;
+
+            const InterstitialController = window.Adsgram.init({ blockId: "int-29249" });
+            InterstitialController.show()
+                .then(() => {
+                    incrementAdsShownCount();
+                })
+                .catch(() => {
+                    // অ্যাড লোড/প্লে করতে সমস্যা - কাউন্ট বাড়ানো হবে না
+                });
+        }
+        tryShowInterstitialAd();
 
         // ১. অ্যাডমিন প্যানেল থেকে রিয়েল-টাইম ডাটা রিড করা
         db.ref('config').on('value', (snapshot) => {
