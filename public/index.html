@@ -4,52 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>eFootball TM</title>
-    <!-- Firebase & SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    
-    <!-- সেন্ট্রাল স্ক্রিপ্ট লিঙ্ক -->
     <script src="config.js"></script>
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --bg: #050a18; --card-dark: #121e36; --primary: #3b82f6; --text: #ffffff; --border: #1e2d4d; }
+        :root { --bg: #050a18; --card-dark: #121e36; --primary: #3b82f6; --text: #ffffff; --border: #1e2d4d; --glacier: #e0f2fe; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; padding-bottom: 80px; overflow-x: hidden; }
+        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; padding-bottom: 90px; overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
         
         .container { padding: 15px; }
-        .hub-title { text-align: center; margin: 15px 0 25px; font-weight: bold; font-size: 20px; text-transform: uppercase; }
+        .hub-title { text-align: center; margin: 15px 0 25px; font-weight: bold; font-size: 20px; text-transform: uppercase; color: var(--glacier); }
         .hub-title span { color: var(--primary); }
 
-        /* Interface Buttons */
         .id-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px; }
         .id-btn-card { display: block; width: 100%; text-decoration: none; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); transition: transform 0.2s ease, filter 0.2s ease; }
         .id-btn-card img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 16px; }
         .id-btn-card:active { transform: scale(0.95); filter: brightness(0.9); }
 
-        /* Headline Style */
-        .headline { color: var(--text); font-size: 16px; font-weight: bold; text-transform: uppercase; margin: 25px 0 12px; border-left: 4px solid var(--primary); padding-left: 10px; }
+        .headline { color: var(--glacier); font-size: 16px; font-weight: bold; text-transform: uppercase; margin: 25px 0 12px; border-left: 4px solid var(--primary); padding-left: 10px; }
 
-        /* Quick Action Buttons */
         .quick-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 25px; }
-        .quick-btn { background: var(--card-dark); border: 1px solid var(--border); padding: 15px 5px; border-radius: 12px; text-align: center; cursor: pointer; color: #fff; font-size: 12px; transition: 0.3s; }
-        .quick-btn i { display: block; margin-bottom: 8px; color: #f97316; font-size: 18px; }
-
-        /* Top Player Card View */
         .player-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
-        .top-card { background: var(--card-dark); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; text-align: center; padding: 5px; cursor: pointer; }
+        .top-card { background: var(--card-dark); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; text-align: center; padding: 5px; cursor: pointer; transition: transform 0.2s ease; }
+        .top-card:active { transform: scale(0.96); }
         .top-card img { width: 100%; border-radius: 8px; display: block; }
-        .top-card p { font-size: 9px; padding: 5px; font-weight: bold; }
+        .top-card p { font-size: 9px; padding: 5px; font-weight: bold; color: var(--glacier); }
 
-        /* Bottom Nav */
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 70px; background: #070d19; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid var(--border); z-index: 1000; }
-        .nav-item { text-align: center; color: #94a3b8; font-size: 11px; text-decoration: none; flex: 1; }
-        .nav-item i { font-size: 20px; display: block; margin-bottom: 4px; }
-
-        /* Boost Button Disabled State */
-        .boost-disabled { opacity: 0.6; cursor: not-allowed !important; }
+        /* iOS Animated Bottom Nav */
+        .bottom-nav { 
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 68px; 
+            background: rgba(7, 13, 25, 0.95); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            display: flex; justify-content: space-around; align-items: center; 
+            border-top: 1px solid rgba(224, 242, 254, 0.1); z-index: 1000; padding-bottom: env(safe-area-inset-bottom);
+        }
+        .nav-item { 
+            text-align: center; color: #94a3b8; font-size: 11px; text-decoration: none; flex: 1; 
+            transition: color 0.3s cubic-bezier(0.25, 1, 0.5, 1), transform 0.2s ease; 
+        }
+        .nav-item i { 
+            font-size: 20px; display: block; margin-bottom: 3px; 
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.3s ease; 
+        }
+        .nav-item:active { transform: scale(0.9); }
+        .nav-item.active { color: var(--glacier) !important; font-weight: 600; }
+        .nav-item.active i { transform: translateY(-3px); color: var(--primary); }
     </style>
 </head>
 <body>
@@ -65,20 +66,9 @@
 
         <div class="headline">Quick Action</div>
         <div class="quick-grid">
-            <!-- Store -->
-            <a href="store.html" class="id-btn-card" style="display: block;">
-                <img src="https://res.cloudinary.com/dyqegwdme/image/upload/v1786992420/Store_dvtbcb.png" alt="Store" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">
-            </a>
-
-            <!-- Boost -->
-            <div id="boostBtn" class="id-btn-card" onclick="handleBoostClick()" style="cursor: pointer; display: block;">
-                <img src="https://res.cloudinary.com/dyqegwdme/image/upload/v1786992421/Boost_ptdlbx.png" alt="Boost" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">
-            </div>
-
-            <!-- Spin (অ্যাডমিন বাটন সরিয়ে এখানে নতুন স্পিন বাটন যুক্ত করা হলো) -->
-            <a href="spin.html" class="id-btn-card" style="display: block;">
-                <img src="https://res.cloudinary.com/dyqegwdme/image/upload/v1787002000/Spin_wm5pzz.png" alt="Spin" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">
-            </a>
+            <a href="store.html" class="id-btn-card"><img src="https://res.cloudinary.com/dyqegwdme/image/upload/v1786992420/Store_dvtbcb.png" alt="Store"></a>
+            <div id="boostBtn" class="id-btn-card" onclick="handleBoostClick()" style="cursor: pointer;"><img src="https://res.cloudinary.com/dyqegwdme/image/upload/v1786992421/Boost_ptdlbx.png" alt="Boost"></div>
+            <a href="spin.html" class="id-btn-card"><img src="https://res.cloudinary.com/dyqegwdme/image/upload/v1787002000/Spin_wm5pzz.png" alt="Spin"></a>
         </div>
 
         <div class="headline">Top Player</div>
@@ -86,15 +76,13 @@
     </div>
 
     <nav class="bottom-nav">
-        <a href="index.html" class="nav-item" style="color: #3b82f6;"><i class="fas fa-home"></i>Home</a>
+        <a href="index.html" class="nav-item active"><i class="fas fa-home"></i>Home</a>
         <a href="legend.html" class="nav-item"><i class="fas fa-crown"></i>Legend</a>
         <a href="task.html" class="nav-item"><i class="fas fa-clipboard-check"></i>Earn</a>
         <a href="profile.html" class="nav-item"><i class="fas fa-user-circle"></i>Profile</a>
     </nav>
 
     <script>
-    console.log("Database connected successfully!");
-
     const tg = window.Telegram.WebApp;
     tg.expand();
     const user = tg.initDataUnsafe?.user;
@@ -106,11 +94,7 @@
         showVideoAd: function(onReward, onError) {
             if (window.Adsgram) {
                 const ad = window.Adsgram.init({ blockId: this.videoBlockId });
-                ad.show()
-                  .then((result) => { if (onReward) onReward(result); })
-                  .catch((err) => { if (onError) onError(err); });
-            } else {
-                console.log("Adsgram SDK not loaded yet.");
+                ad.show().then(res => onReward && onReward(res)).catch(err => onError && onError(err));
             }
         }
     };
@@ -124,13 +108,11 @@
             const response = await fetch('legendplayer.json'); 
             const data = await response.json();
             const players = data.legend || data.players;
-            
             container.innerHTML = "";
             players.slice(0, 6).forEach(p => {
                 const card = document.createElement('div');
                 card.className = 'top-card';
                 card.innerHTML = `<img src="${p.img}"><p>${p.name}</p>`;
-                
                 card.onclick = () => {
                     localStorage.setItem('selected_player', JSON.stringify(p)); 
                     window.location.href = 'legendbio.html'; 
@@ -144,77 +126,52 @@
 
     function handleBoostClick() {
         const userRef = db.ref('users/' + userId);
-        
         userRef.once('value').then(snap => {
             if (snap.exists()) {
                 const userData = snap.val();
                 const lastBoostTime = userData.lastBoostTime || 0;
                 const currentTime = Date.now();
-                const timePassed = currentTime - lastBoostTime;
-
-                if (timePassed < COOLDOWN_TIME) {
-                    const timeLeft = COOLDOWN_TIME - timePassed;
+                if (currentTime - lastBoostTime < COOLDOWN_TIME) {
+                    const timeLeft = COOLDOWN_TIME - (currentTime - lastBoostTime);
                     const h = Math.floor(timeLeft / (1000 * 60 * 60));
                     const m = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-                    alert(`Boost Locked! Try again after ${h} hours ${m} minutes.`);
+                    alert(`Boost Locked! Try again after ${h}h ${m}m.`);
                     return;
                 }
-
-                AdController.showVideoAd(
-                    (result) => { 
-                        const newGp = (userData.gp || 0) + BOOST_REWARD;
-                        userRef.update({
-                            gp: newGp,
-                            lastBoostTime: currentTime
-                        }).then(() => {
-                            alert(`Congratulations! You watched the video and won ${BOOST_REWARD} GP!`);
-                        });
-                    },
-                    (error) => { 
-                        alert("You need to watch the full video.");
-                    }
-                );
+                AdController.showVideoAd(() => {
+                    userRef.update({ gp: (userData.gp || 0) + BOOST_REWARD, lastBoostTime: currentTime })
+                        .then(() => alert(`Congratulations! Won ${BOOST_REWARD} GP!`));
+                }, () => alert("You need to watch the full video."));
             }
         });
     }
 
     window.addEventListener('load', () => {
         loadHomeLegends();
-        
         if (user) {
             const userRef = db.ref('users/' + userId);
-
             db.ref('config/maintenance').on('value', snap => {
                 if (snap.val() === true) {
-                    document.body.innerHTML = "<div style='background:#050a18; height:100vh; display:flex; align-items:center; justify-content:center; color:white; text-align:center; padding:20px;'><h1>Server Maintenance... <br> Please wait!</h1></div>";
-                    return;
+                    document.body.innerHTML = "<div style='background:#050a18; height:100vh; display:flex; align-items:center; justify-content:center; color:white; text-align:center;'><h1>Server Maintenance...</h1></div>";
                 }
             });
-
             userRef.on('value', snap => {
                 if (!snap.exists()) {
-                    let welcomeBonus = startParam ? 1000 : 0; 
                     userRef.set({
                         name: user.first_name + " " + (user.last_name || ""),
                         username: user.username || "N/A",
-                        gp: welcomeBonus,
+                        gp: startParam ? 1000 : 0,
                         referredBy: startParam || "none",
-                        banned: false,
-                        lastSeen: Date.now(),
-                        lastBoostTime: 0,
-                        joinDate: new Date().toLocaleString()
+                        banned: false, lastSeen: Date.now(), lastBoostTime: 0
                     });
+                } else if (snap.val().banned === true) {
+                    document.body.innerHTML = "<div style='background:#050a18; height:100vh; display:flex; align-items:center; justify-content:center; color:red; text-align:center;'><h1>You are BANNED!</h1></div>";
                 } else {
-                    const userData = snap.val();
-                    if (userData.banned === true) {
-                        document.body.innerHTML = "<div style='background:#050a18; height:100vh; display:flex; align-items:center; justify-content:center; color:red; text-align:center; padding:20px;'><h1>You are BANNED! <br> Contact Admin for help.</h1></div>";
-                    } else {
-                        userRef.update({ lastSeen: Date.now() });
-                    }
+                    userRef.update({ lastSeen: Date.now() });
                 }
             });
         }
     });
-</script>
+    </script>
 </body>
 </html>
