@@ -4,19 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Player Bio</title>
-    <!-- Firebase & SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    
-    <!-- সেন্ট্রাল স্ক্রিপ্ট লিঙ্ক -->
     <script src="config.js"></script>
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --bg: #050a18; --card: #121e36; --primary: #fbbf24; --text: #ffffff; }
-        body { background: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; padding: 15px; padding-bottom: 50px; }
+        :root { --bg: #070e1e; --card: #121e36; --primary: #fbbf24; --text: #ffffff; --glacier: #e0f2fe; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; padding: 15px; padding-bottom: 90px; -webkit-tap-highlight-color: transparent; }
         
         .header { display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 15px; }
         .back-btn { position: absolute; left: 0; font-size: 22px; color: var(--primary); text-decoration: none; }
@@ -27,13 +24,32 @@
 
         .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
         .info-box { background: var(--card); padding: 10px; border-radius: 8px; border: 1px solid #1e2d4d; }
-        .info-label { font-size: 10px; color: #94a3b8; display: block; margin-bottom: 15px; }
-        .info-value { font-size: 13px; font-weight: bold; }
+        .info-label { font-size: 10px; color: #94a3b8; display: block; margin-bottom: 5px; }
+        .info-value { font-size: 13px; font-weight: bold; color: var(--glacier); }
 
         .stats-container { display: flex; flex-direction: column; gap: 8px; }
         .stat-box { display: flex; justify-content: space-between; align-items: center; background: #0f172a; padding: 8px 12px; border-radius: 6px; border: 1px solid #1e2d4d; }
         .stat-name { font-size: 12px; color: #cbd5e1; }
         .stat-num { font-size: 14px; font-weight: bold; color: #000; padding: 2px 8px; border-radius: 4px; min-width: 35px; text-align: center; }
+
+        /* iOS / Clean Colorful Bottom Nav */
+        .bottom-nav { 
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 68px; 
+            background: rgba(12, 20, 39, 0.92); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            display: flex; justify-content: space-around; align-items: center; 
+            border-top: 1px solid rgba(255, 255, 255, 0.08); z-index: 1000; padding-bottom: env(safe-area-inset-bottom);
+        }
+        .nav-item { 
+            text-align: center; color: #94a3b8; font-size: 11px; text-decoration: none; flex: 1; 
+            transition: color 0.3s cubic-bezier(0.25, 1, 0.5, 1), transform 0.2s ease; 
+        }
+        .nav-item i { 
+            font-size: 20px; display: block; margin-bottom: 3px; 
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.3s ease; 
+        }
+        .nav-item:active { transform: scale(0.9); }
+        .nav-item.active { color: #ffffff !important; font-weight: 600; }
+        .nav-item.active i { transform: translateY(-3px); color: #fbbf24; text-shadow: 0 0 10px rgba(251, 191, 36, 0.5); }
     </style>
 </head>
 <body>
@@ -57,34 +73,24 @@
 
 <div class="stats-container" id="stats-container"></div>
 
-<script>
-    console.log("Database connected successfully!");
+<nav class="bottom-nav">
+    <a href="index.html" class="nav-item"><i class="fas fa-home" style="color: #60a5fa;"></i>Home</a>
+    <a href="legend.html" class="nav-item active"><i class="fas fa-crown" style="color: #fbbf24;"></i>Legend</a>
+    <a href="task.html" class="nav-item"><i class="fas fa-clipboard-check" style="color: #34d399;"></i>Earn</a>
+    <a href="profile.html" class="nav-item"><i class="fas fa-user-circle" style="color: #f472b6;"></i>Profile</a>
+</nav>
 
-    // ---- Adsgram Interstitial (blockId: int-29249) ----
-    // যেকোনো পেজেই ইউজার মোট সর্বোচ্চ ৫টি অ্যাড দেখবে (সব পেজ মিলিয়ে, localStorage এ গোনা হয়)
+<script>
     const MAX_TOTAL_ADS = 5;
     const AD_COUNT_KEY = 'efootball_total_ads_shown';
 
-    function getAdsShownCount() {
-        return parseInt(localStorage.getItem(AD_COUNT_KEY) || '0', 10);
-    }
-    function incrementAdsShownCount() {
-        localStorage.setItem(AD_COUNT_KEY, String(getAdsShownCount() + 1));
-    }
+    function getAdsShownCount() { return parseInt(localStorage.getItem(AD_COUNT_KEY) || '0', 10); }
+    function incrementAdsShownCount() { localStorage.setItem(AD_COUNT_KEY, String(getAdsShownCount() + 1)); }
 
     function tryShowInterstitialAd() {
         if (getAdsShownCount() >= MAX_TOTAL_ADS) return;
         if (!window.Adsgram) return;
-
-        const InterstitialController = window.Adsgram.init({ blockId: "int-29249" });
-        InterstitialController.show()
-            .then(() => {
-                // ইউজার অ্যাড দেখেছে বা স্কিপ করে বন্ধ করেছে - কাউন্ট বাড়ানো হলো
-                incrementAdsShownCount();
-            })
-            .catch(() => {
-                // অ্যাড লোড/প্লে করতে সমস্যা হয়েছে - কাউন্ট বাড়ানো হবে না, পরের পেজে আবার চেষ্টা হবে
-            });
+        window.Adsgram.init({ blockId: "int-29249" }).show().then(() => incrementAdsShownCount()).catch(() => {});
     }
 
     function getStatColor(val) {
@@ -97,7 +103,6 @@
 
     window.onload = () => {
         tryShowInterstitialAd();
-
         const pData = localStorage.getItem('selected_player');
         if (pData) {
             const p = JSON.parse(pData);
@@ -110,13 +115,11 @@
 
             const container = document.getElementById('stats-container');
             container.innerHTML = "";
-            
             if (p.stats) {
                 Object.entries(p.stats).forEach(([name, val]) => {
                     const box = document.createElement('div');
                     box.className = 'stat-box';
-                    box.innerHTML = `<span class="stat-name">${name}</span>
-                                    <span class="stat-num" style="background:${getStatColor(val)}">${val}</span>`;
+                    box.innerHTML = `<span class="stat-name">${name}</span><span class="stat-num" style="background:${getStatColor(val)}">${val}</span>`;
                     container.appendChild(box);
                 });
             }
