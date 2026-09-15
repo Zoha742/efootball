@@ -4,92 +4,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Players - eFootball HUB</title>
-    <!-- Firebase & SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    
-    <!-- সেন্ট্রাল স্ক্রিপ্ট লিঙ্ক -->
     <script src="config.js"></script>
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --bg: #050a18; --card-dark: #121e36; --primary: #fbbf24; --text: #ffffff; --border: #1e2d4d; }
-        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; padding: 15px; margin: 0; }
+        :root { --bg: #070e1e; --card-dark: #121e36; --primary: #fbbf24; --text: #ffffff; --border: #1e2d4d; --glacier: #e0f2fe; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; padding: 15px; padding-bottom: 90px; -webkit-tap-highlight-color: transparent; }
         
         .header { display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 25px; }
         .back-btn { position: absolute; left: 0; font-size: 22px; color: var(--primary); text-decoration: none; }
         
-        /* All Position Buttons - Unchanged */
         .pos-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 25px; }
-        .pos-btn { background: var(--card-dark); border: 1px solid var(--primary); padding: 12px; text-align: center; border-radius: 8px; cursor: pointer; color: var(--primary); font-weight: bold; font-size: 14px; }
+        .pos-btn { background: var(--card-dark); border: 1px solid var(--primary); padding: 12px; text-align: center; border-radius: 8px; cursor: pointer; color: var(--primary); font-weight: bold; font-size: 14px; transition: transform 0.2s ease; }
+        .pos-btn:active { transform: scale(0.95); }
         
-        .player-grid { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr 1fr; 
-            gap: 12px; 
-            padding-bottom: 100px; 
-        }
+        .player-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; padding-bottom: 20px; }
 
-        /* Card Design like Screenshot 6 */
         .top-card { 
-            background: var(--card-dark); 
-            border-radius: 10px; 
-            overflow: hidden; 
-            border: 1.5px solid var(--primary);
-            text-align: center; 
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.2s;
+            background: var(--card-dark); border-radius: 10px; overflow: hidden; border: 1.5px solid var(--primary);
+            text-align: center; cursor: pointer; display: flex; flex-direction: column; transition: transform 0.2s;
         }
-        
         .top-card:active { transform: scale(0.95); }
+        .top-card img { width: 100%; aspect-ratio: 2/2.3; object-fit: cover; object-position: top; display: block; }
+        .top-card p { font-size: 11px; padding: 8px 2px; margin: 0; color: var(--text); background: rgba(18, 30, 54, 0.9); font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        /* Image View Fix */
-        .top-card img { 
-            width: 100%; 
-            aspect-ratio: 2/2.3; 
-            object-fit: cover; 
-            object-position: top; 
-            display: block;
+        /* iOS / Clean Colorful Bottom Nav */
+        .bottom-nav { 
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 68px; 
+            background: rgba(12, 20, 39, 0.92); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            display: flex; justify-content: space-around; align-items: center; 
+            border-top: 1px solid rgba(255, 255, 255, 0.08); z-index: 1000; padding-bottom: env(safe-area-inset-bottom);
         }
-
-        .top-card p { 
-            font-size: 11px; 
-            padding: 8px 2px; 
-            margin: 0; 
-            color: var(--text); 
-            background: rgba(18, 30, 54, 0.9);
-            font-weight: bold;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+        .nav-item { 
+            text-align: center; color: #94a3b8; font-size: 11px; text-decoration: none; flex: 1; 
+            transition: color 0.3s cubic-bezier(0.25, 1, 0.5, 1), transform 0.2s ease; 
         }
-
-        /* ব্যানার কন্টেইনার স্টাইল */
-        #banner-container { display: flex; justify-content: center; margin-top: 20px; padding-bottom: 20px; }
+        .nav-item i { 
+            font-size: 20px; display: block; margin-bottom: 3px; 
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.3s ease; 
+        }
+        .nav-item:active { transform: scale(0.9); }
+        .nav-item.active { color: #ffffff !important; font-weight: 600; }
+        .nav-item.active i { transform: translateY(-3px); color: #60a5fa; text-shadow: 0 0 10px rgba(96, 165, 250, 0.5); }
     </style>
 </head>
 <body>
 
     <div class="header">
         <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
-        <h2 style="font-size: 18px;">SELECT POSITION</h2>
+        <h2 style="font-size: 18px; color: var(--primary);">SELECT POSITION</h2>
     </div>
 
-    <!-- আপনার পজিশন বাটনগুলো হুবহু আগের মতো রাখা হয়েছে -->
     <div class="pos-grid">
         <div class="pos-btn" onclick="loadPlayers('CF')">CF</div>
         <div class="pos-btn" onclick="loadPlayers('SS')">SS</div>
-        <div class="pos-btn" onclick="loadPlayers('RWF')">RWF</div> <!-- ঠিক করা হয়েছে -->
-        <div class="pos-btn" onclick="loadPlayers('LWF')">LWF</div> <!-- ঠিক করা হয়েছে -->
-        <div class="pos-btn" onclick="loadPlayers('AMF')">AMF</div> <!-- ঠিক করা হয়েছে -->
-        <div class="pos-btn" onclick="loadPlayers('LMF')">LMF</div> <!-- ঠিক করা হয়েছে -->
-        <div class="pos-btn" onclick="loadPlayers('RMF')">RMF</div> <!-- ঠিক করা হয়েছে -->
-        <div class="pos-btn" onclick="loadPlayers('CMF')">CMF</div> <!-- ঠিক করা হয়েছে -->
-        <div class="pos-btn" onclick="loadPlayers('DMF')">DMF</div> <!-- ঠিক করা হয়েছে -->
+        <div class="pos-btn" onclick="loadPlayers('RWF')">RWF</div>
+        <div class="pos-btn" onclick="loadPlayers('LWF')">LWF</div>
+        <div class="pos-btn" onclick="loadPlayers('AMF')">AMF</div>
+        <div class="pos-btn" onclick="loadPlayers('LMF')">LMF</div>
+        <div class="pos-btn" onclick="loadPlayers('RMF')">RMF</div>
+        <div class="pos-btn" onclick="loadPlayers('CMF')">CMF</div>
+        <div class="pos-btn" onclick="loadPlayers('DMF')">DMF</div>
         <div class="pos-btn" onclick="loadPlayers('LB')">LB</div>
         <div class="pos-btn" onclick="loadPlayers('RB')">RB</div>
         <div class="pos-btn" onclick="loadPlayers('CB')">CB</div>
@@ -97,30 +76,26 @@
     </div>
 
     <div id="player-container" class="player-grid"></div>
-
-    <!-- ব্যানার কন্টেইনার -->
     <div id="banner-container"></div>
 
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item"><i class="fas fa-home" style="color: #60a5fa;"></i>Home</a>
+        <a href="legend.html" class="nav-item"><i class="fas fa-crown" style="color: #fbbf24;"></i>Legend</a>
+        <a href="task.html" class="nav-item"><i class="fas fa-clipboard-check" style="color: #34d399;"></i>Earn</a>
+        <a href="profile.html" class="nav-item"><i class="fas fa-user-circle" style="color: #f472b6;"></i>Profile</a>
+    </nav>
+
    <script>
-    console.log("Database connected successfully!");
-       
     const tg = window.Telegram.WebApp;
     tg.expand();
 
     async function loadPlayers(pos) {
         const container = document.getElementById('player-container');
         container.innerHTML = "<p style='grid-column: span 3; text-align:center; color: #3b82f6;'>Loading Players...</p>";
-        
         try {
             const response = await fetch('player.json'); 
-            
-            if (!response.ok) {
-                throw new Error("ফাইল খুঁজে পাওয়া যায়নি (File not found)");
-            }
-
             const data = await response.json();
             const filteredPlayers = data.players.filter(p => p.pos === pos);
-            
             container.innerHTML = ""; 
 
             if (filteredPlayers.length === 0) {
@@ -131,29 +106,12 @@
             filteredPlayers.forEach(p => {
                 const card = document.createElement('div');
                 card.className = 'top-card';
-                card.innerHTML = `
-                    <img src="${p.img}" onerror="this.src='https://via.placeholder.com/150'">
-                    <p>${p.name}</p>
-                `;
-                
-                card.onclick = () => {
-                    // ভিডিও অ্যাড বর্তমানে হাইড করা আছে
-                    /*
-                    if (typeof AdController !== 'undefined') {
-                        AdController.showVideoAd(
-                            () => openBio(p), 
-                            () => openBio(p)
-                        );
-                        return;
-                    }
-                    */
-                    openBio(p);
-                };
+                card.innerHTML = `<img src="${p.img}" onerror="this.src='https://via.placeholder.com/150'"><p>${p.name}</p>`;
+                card.onclick = () => openBio(p);
                 container.appendChild(card);
             });
         } catch (error) {
-            console.error(error);
-            container.innerHTML = "<p style='grid-column: span 3; text-align:center; color: red;'>ডাটা লোড করতে সমস্যা হয়েছে। দয়া করে player.json ফাইলটি চেক করুন।</p>";
+            container.innerHTML = "<p style='grid-column: span 3; text-align:center; color: red;'>ডাটা লোড করতে সমস্যা হয়েছে।</p>";
         }
     }
 
@@ -162,9 +120,7 @@
         window.location.href = 'playerbio.html';
     }
 
-    window.onload = () => {
-    loadPlayers('CF');
-};
+    window.onload = () => { loadPlayers('CF'); };
 </script>
 </body>
 </html>
