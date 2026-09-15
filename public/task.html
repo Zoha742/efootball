@@ -4,56 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daily Tasks - eFootball HUB</title>
-    <!-- Firebase & SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    
-    <!-- Central Config -->
     <script src="config.js"></script>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --bg: #050a18; --card: #121e36; --primary: #3b82f6; --text: #ffffff; --border: #1e2d4d; --green: #22c55e; }
+        :root { --bg: #050a18; --card: #121e36; --primary: #3b82f6; --text: #ffffff; --border: #1e2d4d; --green: #22c55e; --glacier: #e0f2fe; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; padding-bottom: 90px; }
-        .top-bar { display: flex; align-items: center; padding: 15px; background: rgba(18, 30, 54, 0.7); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; }
-        .top-bar a { color: white; text-decoration: none; margin-right: 15px; }
+        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; padding-bottom: 90px; -webkit-tap-highlight-color: transparent; }
+        
         .container { padding: 20px; text-align: center; }
         .task-card { background: var(--card); border-radius: 20px; padding: 25px; border: 1px solid var(--border); margin-bottom: 20px; }
         .reward-info i { font-size: 40px; color: #fbbf24; margin-bottom: 10px; }
         .reward-info h2 { margin: 5px 0; color: var(--green); }
         
         .ad-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0; }
-
-        /* 3D কালারফুল কার্ড - আইকন/ছবির বদলে কালার + ডেপথ */
         .ad-slot {
-            position: relative;
-            overflow: hidden;
-            padding: 16px 6px 14px;
-            border-radius: 16px;
-            font-size: 12px;
-            font-weight: 700;
-            text-align: center;
-            color: #fff;
-            border: 1px solid rgba(255,255,255,0.18);
-            box-shadow: 0 5px 0 rgba(0,0,0,0.35), 0 10px 18px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.25);
-            transform: translateY(0);
+            position: relative; overflow: hidden; padding: 16px 6px 14px; border-radius: 16px; font-size: 12px; font-weight: 700; text-align: center; color: #fff;
+            border: 1px solid rgba(255,255,255,0.18); box-shadow: 0 5px 0 rgba(0,0,0,0.35), 0 10px 18px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.25);
             transition: transform 0.15s ease, box-shadow 0.15s ease;
         }
-        .ad-slot::before {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 45%;
-            background: linear-gradient(180deg, rgba(255,255,255,0.35), rgba(255,255,255,0));
-            pointer-events: none;
-        }
-        .ad-slot:active { transform: translateY(3px); box-shadow: 0 2px 0 rgba(0,0,0,0.35), 0 4px 10px rgba(0,0,0,0.4); }
+        .ad-slot::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 45%; background: linear-gradient(180deg, rgba(255,255,255,0.35), rgba(255,255,255,0)); pointer-events: none; }
+        .ad-slot:active { transform: translateY(3px) scale(0.97); }
 
         .slot-num { display: block; font-size: 20px; font-weight: 900; text-shadow: 0 2px 3px rgba(0,0,0,0.35); margin-bottom: 4px; position: relative; z-index: 1; }
-        .slot-label { display: block; font-size: 11px; opacity: 0.95; position: relative; z-index: 1; }
+        .slot-label { display: block; font-size: 11px; opacity: 0.95; position: relative; z-index: 1; color: var(--glacier); }
 
         .ad-slot:nth-child(6n+1) { background: linear-gradient(150deg, #a855f7, #6d28d9); }
         .ad-slot:nth-child(6n+2) { background: linear-gradient(150deg, #fb923c, #c2410c); }
@@ -61,45 +38,38 @@
         .ad-slot:nth-child(6n+4) { background: linear-gradient(150deg, #fbbf24, #b45309); }
         .ad-slot:nth-child(6n+5) { background: linear-gradient(150deg, #22d3ee, #0e7490); }
         .ad-slot:nth-child(6n+6) { background: linear-gradient(150deg, #34d399, #047857); }
-
-        .ad-slot.done { background: linear-gradient(150deg, #4ade80, #15803d) !important; box-shadow: 0 5px 0 rgba(0,0,0,0.35), 0 0 16px rgba(74,222,128,0.55), inset 0 1px 0 rgba(255,255,255,0.25); }
+        .ad-slot.done { background: linear-gradient(150deg, #4ade80, #15803d) !important; }
         
-        .btn-main { width: 100%; border: none; padding: 15px; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 16px; margin-bottom: 12px; }
+        .btn-main { width: 100%; border: none; padding: 15px; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; transition: transform 0.2s ease; font-size: 16px; margin-bottom: 12px; }
+        .btn-main:active { transform: scale(0.97); }
         .btn-blue { background: var(--primary); box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); }
         
-        /* লাল বক্সের জায়গার হোম বাটন স্টাইল */
-        .btn-home { display: block; width: 100%; padding: 12px; border-radius: 12px; background: rgba(30, 45, 77, 0.6); border: 1px solid var(--border); color: #ffffff; text-decoration: none; font-weight: bold; font-size: 14px; transition: 0.3s; }
-        .btn-home:hover { background: rgba(59, 130, 246, 0.2); border-color: var(--primary); }
-
+        .btn-home { display: block; width: 100%; padding: 12px; border-radius: 12px; background: rgba(30, 45, 77, 0.6); border: 1px solid var(--border); color: var(--glacier); text-decoration: none; font-weight: bold; font-size: 14px; transition: transform 0.2s ease; }
+        .btn-home:active { transform: scale(0.97); }
         .btn-lock { background: #334155; cursor: not-allowed; opacity: 0.8; }
         #timer { font-size: 18px; font-weight: bold; color: #f87171; margin-top: 10px; display: none; }
 
-        /* Bottom Nav - কালারফুল 3D স্টাইল */
-        .bottom-nav {
-            position: fixed; bottom: 0; width: 100%; height: 72px;
-            background: linear-gradient(180deg, #0f172a, #070d19);
-            display: flex; justify-content: space-around; align-items: center;
-            border-top: 1px solid rgba(255,255,255,0.08);
-            box-shadow: 0 -6px 20px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.06);
-            z-index: 1000; padding: 6px 6px;
+        /* iOS Animated Bottom Nav - Uniform with Home */
+        .bottom-nav { 
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 68px; 
+            background: rgba(7, 13, 25, 0.95); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            display: flex; justify-content: space-around; align-items: center; 
+            border-top: 1px solid rgba(224, 242, 254, 0.1); z-index: 1000; padding-bottom: env(safe-area-inset-bottom);
         }
-        .nav-item { text-align: center; color: #94a3b8; font-size: 11px; text-decoration: none; flex: 1; padding: 6px 2px; border-radius: 14px; transition: 0.2s; }
-        .nav-item i {
-            font-size: 19px; display: block; margin-bottom: 4px;
-            width: 34px; height: 34px; line-height: 34px; margin: 0 auto 4px;
-            border-radius: 10px;
-            background: linear-gradient(150deg, #1e2d4d, #111a2e);
-            box-shadow: 0 3px 0 rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.08);
+        .nav-item { 
+            text-align: center; color: #94a3b8; font-size: 11px; text-decoration: none; flex: 1; 
+            transition: color 0.3s cubic-bezier(0.25, 1, 0.5, 1), transform 0.2s ease; 
         }
-        .nav-item.active, .nav-item[style] { color: #fff !important; }
-        .nav-item.active i, .nav-item[style] i {
-            background: linear-gradient(150deg, #60a5fa, #2563eb);
-            box-shadow: 0 3px 0 rgba(30,64,175,0.9), 0 0 14px rgba(59,130,246,0.6), inset 0 1px 0 rgba(255,255,255,0.35);
+        .nav-item i { 
+            font-size: 20px; display: block; margin-bottom: 3px; 
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.3s ease; 
         }
+        .nav-item:active { transform: scale(0.9); }
+        .nav-item.active { color: var(--glacier) !important; font-weight: 600; }
+        .nav-item.active i { transform: translateY(-3px); color: var(--primary); }
     </style>
 </head>
 <body>
-
     <div class="container">
         <div class="task-card">
             <div class="reward-info">
@@ -108,7 +78,6 @@
                 <h2>500 GP Points</h2>
             </div>
 
-            <!-- ৬টি স্লটে বড় সাইজের ছবি -->
             <div class="ad-grid" id="ad-slots">
                 <div class="ad-slot" id="slot-1"><span class="slot-num">1</span><span class="slot-label">Kickoff</span></div>
                 <div class="ad-slot" id="slot-2"><span class="slot-num">2</span><span class="slot-label">Golden Goal</span></div>
@@ -121,18 +90,16 @@
             <button id="task-btn" class="btn-main btn-blue" onclick="handleTask()">WATCH AD (1/6)</button>
             <div id="timer">Next Ad In: <span id="countdown">00:05</span></div>
 
-            <!-- আপনার দেওয়া লাল বক্সের জায়গায় হোম বাটন -->
             <a href="index.html" class="btn-home">
                 <i class="fas fa-home" style="margin-right: 8px;"></i> HOME
             </a>
         </div>
     </div>
 
-    <!-- নিচের নেভিগেশন বার -->
     <nav class="bottom-nav">
-        <a href="index.html" class="nav-item" style="color: #3b82f6;"><i class="fas fa-home"></i>Home</a>
+        <a href="index.html" class="nav-item"><i class="fas fa-home"></i>Home</a>
         <a href="legend.html" class="nav-item"><i class="fas fa-crown"></i>Legend</a>
-        <a href="task.html" class="nav-item"><i class="fas fa-clipboard-check"></i>Earn</a>
+        <a href="task.html" class="nav-item active"><i class="fas fa-clipboard-check"></i>Earn</a>
         <a href="profile.html" class="nav-item"><i class="fas fa-user-circle"></i>Profile</a>
     </nav>
 
@@ -140,29 +107,23 @@
         const tg = window.Telegram.WebApp;
         tg.expand();
         const userId = tg.initDataUnsafe?.user?.id || "test_user";
-
         const slotNames = ["Kickoff", "Golden Goal", "Power Play", "Fast Break", "Victory Lap", "Champion Cup"];
 
         const AdController = {
             videoBlockId: "29212", 
             showVideoAd: function(onReward, onError) {
                 if (window.Adsgram) {
-                    const ad = window.Adsgram.init({ blockId: this.videoBlockId });
-                    ad.show()
-                      .then((result) => { if (onReward) onReward(result); })
-                      .catch((err) => { if (onError) onError(err); });
+                    window.Adsgram.init({ blockId: this.videoBlockId }).show()
+                      .then(res => onReward && onReward(res))
+                      .catch(err => onError && onError(err));
                 } else {
                     alert("Ad system is loading, please wait.");
                 }
             }
         };
 
-        let adsWatched = 0;
-        let userGP = 0;
-        let nextAllowedTime = 0;
-        let timerInterval;
-        const adCooldown = 5 * 1000;              // প্রতিটি অ্যাডের মাঝে ৫ সেকেন্ড ওয়েটিং টাইম
-        const finalCooldown = 3 * 60 * 60 * 1000;  // ৬টি শেষ হলে ৩ ঘণ্টার কাউন্টডাউন
+        let adsWatched = 0, userGP = 0, nextAllowedTime = 0, timerInterval;
+        const adCooldown = 5 * 1000, finalCooldown = 3 * 3600 * 1000;
 
         function initTask() {
             db.ref('users/' + userId).on('value', snap => {
@@ -188,36 +149,24 @@
 
         function handleTask() {
             const now = Date.now();
-            if (now < nextAllowedTime) {
-                alert("Please wait for the 5-second timer to finish!");
-                return;
-            }
+            if (now < nextAllowedTime) return alert("Please wait for the timer to finish!");
 
             if (adsWatched < 6) {
-                AdController.showVideoAd(
-                    (result) => {
-                        adsWatched++;
-                        updateSlotUI(adsWatched);
-                        
-                        const nextWait = Date.now() + adCooldown;
-                        db.ref('users/' + userId).update({
-                            task_ads_count: adsWatched,
-                            task_next_time: nextWait
-                        });
+                AdController.showVideoAd(() => {
+                    adsWatched++;
+                    updateSlotUI(adsWatched);
+                    const nextWait = Date.now() + adCooldown;
+                    db.ref('users/' + userId).update({ task_ads_count: adsWatched, task_next_time: nextWait });
 
-                        if (adsWatched === 6) {
-                            document.getElementById('task-btn').innerText = "COLLECT 500 GP";
-                            document.getElementById('task-btn').style.background = "var(--green)";
-                            document.getElementById('timer').style.display = "none";
-                        } else {
-                            document.getElementById('task-btn').innerText = `WATCH AD (${adsWatched + 1}/6)`;
-                            startAdTimer(nextWait);
-                        }
-                    },
-                    (error) => {
-                        alert("আপনাকে সম্পূর্ণ ভিডিওটি দেখতে হবে।");
+                    if (adsWatched === 6) {
+                        document.getElementById('task-btn').innerText = "COLLECT 500 GP";
+                        document.getElementById('task-btn').style.background = "var(--green)";
+                        document.getElementById('timer').style.display = "none";
+                    } else {
+                        document.getElementById('task-btn').innerText = `WATCH AD (${adsWatched + 1}/6)`;
+                        startAdTimer(nextWait);
                     }
-                );
+                }, () => alert("আপনাকে সম্পূর্ণ ভিডিওটি দেখতে হবে।"));
             } else {
                 collectReward();
             }
@@ -232,72 +181,39 @@
         }
 
         function collectReward() {
-            const rewardAmount = 500;
             db.ref('users/' + userId).update({
-                gp: userGP + rewardAmount,
-                task_completed: true,
-                last_task_collect: Date.now(),
-                task_next_time: Date.now() + finalCooldown
+                gp: userGP + 500, task_completed: true, last_task_collect: Date.now(), task_next_time: Date.now() + finalCooldown
             }).then(() => {
-                alert(`Wish You Success! Congratulations, you have successfully completed 6 ads and ${rewardAmount} GP has been added to your profile!`);
+                alert("Congratulations! 500 GP has been added to your profile!");
                 startFullCooldownTimer(Date.now() + finalCooldown);
             });
         }
 
         function startAdTimer(endTime) {
-            const btn = document.getElementById('task-btn');
-            const timerDiv = document.getElementById('timer');
-            const countdownSpan = document.getElementById('countdown');
-            
-            btn.disabled = true;
-            btn.classList.add('btn-lock');
-            timerDiv.style.display = "block";
-
+            const btn = document.getElementById('task-btn'), timerDiv = document.getElementById('timer');
+            btn.disabled = true; btn.classList.add('btn-lock'); timerDiv.style.display = "block";
             clearInterval(timerInterval);
             timerInterval = setInterval(() => {
-                const now = Date.now();
-                const remaining = endTime - now;
-
+                const remaining = endTime - Date.now();
                 if (remaining <= 0) {
-                    clearInterval(timerInterval);
-                    timerDiv.style.display = "none";
-                    btn.disabled = false;
-                    btn.classList.remove('btn-lock');
-                    if(adsWatched < 6) {
-                        btn.innerText = `WATCH AD (${adsWatched + 1}/6)`;
-                    }
+                    clearInterval(timerInterval); timerDiv.style.display = "none";
+                    btn.disabled = false; btn.classList.remove('btn-lock');
+                    if(adsWatched < 6) btn.innerText = `WATCH AD (${adsWatched + 1}/6)`;
                     return;
                 }
-
-                let s = Math.floor((remaining % 60000) / 1000);
-                countdownSpan.innerText = `00:${s.toString().padStart(2,'0')}`;
+                document.getElementById('countdown').innerText = `00:${Math.floor((remaining % 60000) / 1000).toString().padStart(2,'0')}`;
             }, 1000);
         }
 
         function startFullCooldownTimer(endTime) {
-            const btn = document.getElementById('task-btn');
-            const timerDiv = document.getElementById('timer');
-            const countdownSpan = document.getElementById('countdown');
-            
-            btn.style.display = "none";
-            timerDiv.style.display = "block";
-
+            const btn = document.getElementById('task-btn'), timerDiv = document.getElementById('timer');
+            btn.style.display = "none"; timerDiv.style.display = "block";
             clearInterval(timerInterval);
             timerInterval = setInterval(() => {
-                const now = Date.now();
-                const remaining = endTime - now;
-
-                if (remaining <= 0) {
-                    clearInterval(timerInterval);
-                    initTask();
-                    return;
-                }
-
-                let h = Math.floor(remaining / 3600000);
-                let m = Math.floor((remaining % 3600000) / 60000);
-                let s = Math.floor((remaining % 60000) / 1000);
-                countdownSpan.innerText = 
-                    `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+                const remaining = endTime - Date.now();
+                if (remaining <= 0) { clearInterval(timerInterval); initTask(); return; }
+                let h = Math.floor(remaining / 3600000), m = Math.floor((remaining % 3600000) / 60000), s = Math.floor((remaining % 60000) / 1000);
+                document.getElementById('countdown').innerText = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
             }, 1000);
         }
 
@@ -305,7 +221,6 @@
             const now = Date.now();
             document.getElementById('task-btn').style.display = "block";
             document.getElementById('task-btn').style.background = "var(--primary)";
-            
             for (let i = 1; i <= 6; i++) {
                 const slot = document.getElementById(`slot-${i}`);
                 if(slot) {
@@ -318,20 +233,14 @@
                     }
                 }
             }
-
             if (adsWatched === 6) {
                 document.getElementById('task-btn').innerText = "COLLECT 500 GP";
                 document.getElementById('task-btn').style.background = "var(--green)";
                 document.getElementById('timer').style.display = "none";
             } else {
                 document.getElementById('task-btn').innerText = `WATCH AD (${adsWatched + 1}/6)`;
-                if (now < nextAllowedTime) {
-                    startAdTimer(nextAllowedTime);
-                } else {
-                    document.getElementById('timer').style.display = "none";
-                    document.getElementById('task-btn').disabled = false;
-                    document.getElementById('task-btn').classList.remove('btn-lock');
-                }
+                if (now < nextAllowedTime) startAdTimer(nextAllowedTime);
+                else { document.getElementById('timer').style.display = "none"; document.getElementById('task-btn').disabled = false; document.getElementById('task-btn').classList.remove('btn-lock'); }
             }
         }
 
