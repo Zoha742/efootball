@@ -4,52 +4,61 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Earn More - eFootball HUB</title>
-    <!-- Firebase & SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    
-    <!-- Central Config -->
     <script src="config.js"></script>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --bg: #050a18; --card: #121e36; --primary: #818cf8; --text: #ffffff; --border: #1e2d4d; --yellow: #fbbf24; }
-        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 30px; }
+        :root { --bg: #050a18; --card: #121e36; --primary: #818cf8; --text: #ffffff; --border: #1e2d4d; --yellow: #fbbf24; --glacier: #e0f2fe; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; padding-bottom: 90px; -webkit-tap-highlight-color: transparent; }
         
         .top-bar { display: flex; align-items: center; padding: 15px; background: rgba(18, 30, 54, 0.7); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; }
-        .top-bar a { color: white; text-decoration: none; margin-right: 15px; }
+        .top-bar a { color: var(--glacier); text-decoration: none; margin-right: 15px; }
 
         .container { padding: 20px; text-align: center; }
         .earn-card { background: var(--card); border-radius: 20px; padding: 25px; border: 1px solid var(--border); margin-bottom: 20px; }
-        
         .status-info { margin-bottom: 20px; font-size: 14px; color: #94a3b8; }
         .status-info b { color: var(--yellow); }
 
         .btn-earn { 
-            width: 100%; border: none; padding: 16px; border-radius: 12px; 
-            color: white; font-weight: bold; cursor: pointer; transition: 0.3s; 
+            width: 100%; border: none; padding: 16px; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; 
             font-size: 16px; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 12px;
+            transition: transform 0.2s ease, filter 0.2s ease;
         }
+        .btn-earn:active { transform: scale(0.97); }
         .btn-blue { background: linear-gradient(135deg, #818cf8, #6366f1); box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3); }
         .btn-lock { background: #334155; cursor: not-allowed; opacity: 0.8; }
 
-        /* ছোট ব্যাক বাটন স্টাইল (আপনার লাল বক্সের মতো) */
-        .btn-back { display: block; width: 60%; margin: 15px auto 0 auto; padding: 12px; border-radius: 12px; background: rgba(30, 45, 77, 0.6); border: 1px solid var(--border); color: #ffffff; text-decoration: none; font-weight: bold; font-size: 14px; text-align: center; transition: 0.3s; }
-        .btn-back:hover { background: rgba(129, 140, 248, 0.2); border-color: var(--primary); }
+        .btn-back { display: block; width: 60%; margin: 15px auto 0 auto; padding: 12px; border-radius: 12px; background: rgba(30, 45, 77, 0.6); border: 1px solid var(--border); color: var(--glacier); text-decoration: none; font-weight: bold; font-size: 14px; text-align: center; transition: 0.3s; }
+        .btn-back:active { transform: scale(0.97); }
 
         #timer-display { margin-top: 15px; font-size: 18px; font-weight: bold; color: #f87171; display: none; }
         .limit-note { font-size: 11px; color: #64748b; margin-top: 15px; line-height: 1.4; }
 
-        /* Bottom Nav */
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 70px; background: #070d19; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid var(--border); z-index: 1000; }
-        .nav-item { text-align: center; color: #94a3b8; font-size: 11px; text-decoration: none; flex: 1; }
-        .nav-item i { font-size: 20px; display: block; margin-bottom: 4px; }
+        /* iOS Animated Bottom Nav - Uniform with Home */
+        .bottom-nav { 
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 68px; 
+            background: rgba(7, 13, 25, 0.95); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            display: flex; justify-content: space-around; align-items: center; 
+            border-top: 1px solid rgba(224, 242, 254, 0.1); z-index: 1000; padding-bottom: env(safe-area-inset-bottom);
+        }
+        .nav-item { 
+            text-align: center; color: #94a3b8; font-size: 11px; text-decoration: none; flex: 1; 
+            transition: color 0.3s cubic-bezier(0.25, 1, 0.5, 1), transform 0.2s ease; 
+        }
+        .nav-item i { 
+            font-size: 20px; display: block; margin-bottom: 3px; 
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.3s ease; 
+        }
+        .nav-item:active { transform: scale(0.9); }
+        .nav-item.active { color: var(--glacier) !important; font-weight: 600; }
+        .nav-item.active i { transform: translateY(-3px); color: var(--primary); }
     </style>
 </head>
 <body>
-
     <div class="top-bar">
         <a href="profile.html"><i class="fas fa-chevron-left"></i></a>
         <span>Earn More GP</span>
@@ -58,35 +67,24 @@
     <div class="container">
         <div class="earn-card">
             <i class="fas fa-gem" style="font-size: 40px; color: var(--yellow); margin-bottom: 15px;"></i>
-            <div class="status-info">
-                Daily Task: <b id="ad-count">0</b> / 3 Ads Watched
-            </div>
+            <div class="status-info">Daily Task: <b id="ad-count">0</b> / 3 Ads Watched</div>
 
             <button id="earn-btn" class="btn-earn btn-blue" onclick="watchAd()">
                 <i class="fas fa-play-circle"></i> WATCH VIDEO AD
             </button>
 
-            <div id="timer-display">
-                Next Ad In: <span id="countdown">00:00</span>
-            </div>
+            <div id="timer-display">Next Ad In: <span id="countdown">00:00</span></div>
+            <div class="limit-note"><i class="fas fa-info-circle"></i> Watch 3 videos completely to earn 500 GP. 15s wait between ads and 8h cooldown after completion.</div>
 
-            <div class="limit-note">
-                <i class="fas fa-info-circle"></i> If you watch 3 videos completely, 500 GP will be added. There is a 15-second waiting time between each ad and an 8-hour cooldown after 3 ads.
-            </div>
-
-            <!-- ছোট ব্যাক বাটন (লাল বক্সের মতো) -->
-            <a href="profile.html" class="btn-back">
-                <i class="fas fa-arrow-left" style="margin-right: 6px;"></i> Back
-            </a>
+            <a href="profile.html" class="btn-back"><i class="fas fa-arrow-left" style="margin-right: 6px;"></i> Back</a>
         </div>
     </div>
 
-    <!-- নিচের নেভিগেশন বার -->
     <nav class="bottom-nav">
         <a href="index.html" class="nav-item"><i class="fas fa-home"></i>Home</a>
         <a href="legend.html" class="nav-item"><i class="fas fa-crown"></i>Legend</a>
-        <a href="task.html" class="nav-item"><i class="fas fa-clipboard-check"></i>Task</a>
-        <a href="profile.html" class="nav-item" style="color: #818cf8;"><i class="fas fa-user-circle"></i>Profile</a>
+        <a href="task.html" class="nav-item"><i class="fas fa-clipboard-check"></i>Earn</a>
+        <a href="profile.html" class="nav-item active"><i class="fas fa-user-circle"></i>Profile</a>
     </nav>
 
     <script>
@@ -98,20 +96,14 @@
             videoBlockId: "29212", 
             showVideoAd: function(onReward, onError) {
                 if (window.Adsgram) {
-                    const ad = window.Adsgram.init({ blockId: this.videoBlockId });
-                    ad.show()
-                      .then((result) => { if (onReward) onReward(result); })
-                      .catch((err) => { if (onError) onError(err); });
-                } else {
-                    console.log("Adsgram SDK not loaded yet.");
+                    window.Adsgram.init({ blockId: this.videoBlockId }).show()
+                      .then(res => onReward && onReward(res))
+                      .catch(err => onError && onError(err));
                 }
             }
         };
 
-        let adsWatched = 0;
-        let nextAllowedTime = 0;
-        let userGP = 0;
-        let timerInterval;
+        let adsWatched = 0, nextAllowedTime = 0, userGP = 0, timerInterval;
 
         function initEarn() {
             db.ref('users/' + userId).on('value', snap => {
@@ -126,95 +118,50 @@
         function updateUI() {
             const now = Date.now();
             document.getElementById('ad-count').innerText = adsWatched;
-
             if (now < nextAllowedTime) {
                 startTimer(nextAllowedTime - now);
+            } else if (adsWatched >= 3) {
+                if (now >= nextAllowedTime) resetDailyLimit();
+                else showLimitReached();
             } else {
-                if (adsWatched >= 3 && now >= nextAllowedTime) {
-                    resetDailyLimit();
-                } else if (adsWatched >= 3) {
-                    showLimitReached();
-                } else {
-                    showReadyState();
-                }
+                showReadyState();
             }
         }
 
         function watchAd() {
-            if (adsWatched >= 3) {
-                alert("Daily limit reached! Please wait for the cooldown.");
-                return;
-            }
-
-            AdController.showVideoAd(
-                (result) => {
-                    handleReward();
-                },
-                (error) => {
-                    alert("Ad failed or skipped. Please try again.");
-                }
-            );
+            if (adsWatched >= 3) return alert("Daily limit reached!");
+            AdController.showVideoAd(() => handleReward(), () => alert("Ad failed or skipped."));
         }
 
         function handleReward() {
             if (adsWatched >= 3) return;
-
             const newCount = adsWatched + 1;
-            let reward = 0;
-
-            if (newCount === 3) {
-                reward = 500;
-            }
-
-            let waitTime = 0;
-            if (newCount < 3) {
-                waitTime = 15 * 1000; // ১৫ সেকেন্ড ওয়েট
-            } else {
-                waitTime = 8 * 60 * 60 * 1000; // ৮ ঘণ্টা কোডাউন
-            }
-
+            const reward = (newCount === 3) ? 500 : 0;
+            const waitTime = (newCount < 3) ? 15 * 1000 : 8 * 3600 * 1000;
             const nextTime = Date.now() + waitTime;
 
             db.ref('users/' + userId).update({
-                gp: userGP + reward,
-                earn_ads_count: newCount,
-                earn_next_time: nextTime
+                gp: userGP + reward, earn_ads_count: newCount, earn_next_time: nextTime
             }).then(() => {
-                if (newCount === 3) {
-                    alert("Congratulations! You have completed 3 ads and earned 500 GP!");
-                } else {
-                    alert(`Ad ${newCount}/3 watched successfully! Please wait 15 seconds for the next ad.`);
-                }
+                if (newCount === 3) alert("Completed 3 ads and earned 500 GP!");
+                else alert(`Ad ${newCount}/3 watched! Please wait 15 seconds.`);
             });
         }
 
         function startTimer(diff) {
             const btn = document.getElementById('earn-btn');
-            const timerDiv = document.getElementById('timer-display');
-            const countdownSpan = document.getElementById('countdown');
-
             btn.disabled = true;
             btn.classList.add('btn-lock');
             btn.innerHTML = `<i class="fas fa-lock"></i> WAIT FOR NEXT AD`;
-            timerDiv.style.display = 'block';
+            document.getElementById('timer-display').style.display = 'block';
 
             clearInterval(timerInterval);
             timerInterval = setInterval(() => {
-                const now = Date.now();
-                const remaining = nextAllowedTime - now;
-
-                if (remaining <= 0) {
-                    clearInterval(timerInterval);
-                    updateUI();
-                    return;
-                }
-
-                let h = Math.floor(remaining / 3600000);
+                const remaining = nextAllowedTime - Date.now();
+                if (remaining <= 0) { clearInterval(timerInterval); updateUI(); return; }
                 let m = Math.floor((remaining % 3600000) / 60000);
                 let s = Math.floor((remaining % 60000) / 1000);
-
-                let display = (h > 0 ? h + "h " : "") + (m < 10 ? "0" + m : m) + ":" + (s < 10 ? "0" + s : s);
-                countdownSpan.innerText = display;
+                document.getElementById('countdown').innerText = `${m < 10 ? "0" + m : m}:${s < 10 ? "0" + s : s}`;
             }, 1000);
         }
 
@@ -236,10 +183,7 @@
         }
 
         function resetDailyLimit() {
-            db.ref('users/' + userId).update({
-                earn_ads_count: 0,
-                earn_next_time: 0
-            });
+            db.ref('users/' + userId).update({ earn_ads_count: 0, earn_next_time: 0 });
         }
 
         window.onload = initEarn;
