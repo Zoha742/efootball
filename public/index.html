@@ -11,7 +11,7 @@
     <script src="config.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --bg: #050a18; --card-dark: #121e36; --primary: #3b82f6; --text: #ffffff; --border: #1e2d4d; --glacier: #e0f2fe; }
+        :root { --bg: #070e1e; --card-dark: #121e36; --primary: #3b82f6; --text: #ffffff; --border: #1e2d4d; --glacier: #e0f2fe; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; padding-bottom: 90px; overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
         
@@ -33,12 +33,12 @@
         .top-card img { width: 100%; border-radius: 8px; display: block; }
         .top-card p { font-size: 9px; padding: 5px; font-weight: bold; color: var(--glacier); }
 
-        /* iOS Animated Bottom Nav */
+        /* iOS / Clean Bottom Nav */
         .bottom-nav { 
             position: fixed; bottom: 0; left: 0; width: 100%; height: 68px; 
-            background: rgba(7, 13, 25, 0.95); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            background: rgba(12, 20, 39, 0.92); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
             display: flex; justify-content: space-around; align-items: center; 
-            border-top: 1px solid rgba(224, 242, 254, 0.1); z-index: 1000; padding-bottom: env(safe-area-inset-bottom);
+            border-top: 1px solid rgba(255, 255, 255, 0.08); z-index: 1000; padding-bottom: env(safe-area-inset-bottom);
         }
         .nav-item { 
             text-align: center; color: #94a3b8; font-size: 11px; text-decoration: none; flex: 1; 
@@ -49,8 +49,8 @@
             transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.3s ease; 
         }
         .nav-item:active { transform: scale(0.9); }
-        .nav-item.active { color: var(--glacier) !important; font-weight: 600; }
-        .nav-item.active i { transform: translateY(-3px); color: var(--primary); }
+        .nav-item.active { color: #ffffff !important; font-weight: 600; }
+        .nav-item.active i { transform: translateY(-3px); color: #60a5fa; text-shadow: 0 0 10px rgba(96, 165, 250, 0.5); }
     </style>
 </head>
 <body>
@@ -76,10 +76,10 @@
     </div>
 
     <nav class="bottom-nav">
-        <a href="index.html" class="nav-item active"><i class="fas fa-home"></i>Home</a>
-        <a href="legend.html" class="nav-item"><i class="fas fa-crown"></i>Legend</a>
-        <a href="task.html" class="nav-item"><i class="fas fa-clipboard-check"></i>Earn</a>
-        <a href="profile.html" class="nav-item"><i class="fas fa-user-circle"></i>Profile</a>
+        <a href="index.html" class="nav-item active"><i class="fas fa-home" style="color: #60a5fa;"></i>Home</a>
+        <a href="legend.html" class="nav-item"><i class="fas fa-crown" style="color: #fbbf24;"></i>Legend</a>
+        <a href="task.html" class="nav-item"><i class="fas fa-clipboard-check" style="color: #34d399;"></i>Earn</a>
+        <a href="profile.html" class="nav-item"><i class="fas fa-user-circle" style="color: #f472b6;"></i>Profile</a>
     </nav>
 
     <script>
@@ -152,7 +152,7 @@
             const userRef = db.ref('users/' + userId);
             db.ref('config/maintenance').on('value', snap => {
                 if (snap.val() === true) {
-                    document.body.innerHTML = "<div style='background:#050a18; height:100vh; display:flex; align-items:center; justify-content:center; color:white; text-align:center;'><h1>Server Maintenance...</h1></div>";
+                    document.body.innerHTML = "<div style='background:#070e1e; height:100vh; display:flex; align-items:center; justify-content:center; color:white; text-align:center;'><h1>Server Maintenance...</h1></div>";
                 }
             });
             userRef.on('value', snap => {
@@ -165,7 +165,7 @@
                         banned: false, lastSeen: Date.now(), lastBoostTime: 0
                     });
                 } else if (snap.val().banned === true) {
-                    document.body.innerHTML = "<div style='background:#050a18; height:100vh; display:flex; align-items:center; justify-content:center; color:red; text-align:center;'><h1>You are BANNED!</h1></div>";
+                    document.body.innerHTML = "<div style='background:#070e1e; height:100vh; display:flex; align-items:center; justify-content:center; color:red; text-align:center;'><h1>You are BANNED!</h1></div>";
                 } else {
                     userRef.update({ lastSeen: Date.now() });
                 }
