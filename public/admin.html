@@ -41,7 +41,7 @@
         .badge-banned { background: var(--red); color: white; padding: 2px 6px; border-radius: 4px; font-size: 10px; }
         .proof-img { width: 100px; height: 100px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); cursor: pointer; margin-top: 8px; display: block; }
         .img-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 3000; align-items: center; justify-content: center; flex-direction: column; }
-        .img-modal img { max-width: 90%; max-height: 80vh; border-radius: 10px; border: 2px solid var(--primary); }
+        .img-modal img { max-width: 90%; max-height: 80vh; border-radius: 10px; border: 2px solid var(--blue); }
     </style>
 </head>
 <body>
@@ -191,26 +191,11 @@
                     if(u.banned) banned++;
                     totalGP += (u.gp || 0);
 
-                    // ৫ মিনিটের মধ্যে অ্যাক্টিভ থাকলে লাইভ কাউন্ট হবে
                     if (u.lastSeen && (currentTime - u.lastSeen) < (5 * 60 * 1000)) { 
                         activeCount++; 
                     }
 
-                    // ১২ ঘণ্টা বা তার বেশি সময় ইনঅ্যাক্টিভ থাকলে নোটিফিকেশন চেক ও পুশ করা
-                    let twelveHours = 12 * 60 * 60 * 1000;
-                    if (u.lastSeen && (currentTime - u.lastSeen) > twelveHours) {
-                        let lastNotifTime = u.last_inactive_notif || 0;
-                        if ((currentTime - lastNotifTime) > (24 * 60 * 60 * 1000)) {
-                            db.ref(`users/${uId}/notifications`).push({
-                                text: "Apnake onek din app e dekha jacche na! Taratari eFootball HUB e eshe mining start korun.",
-                                date: new Date().toLocaleString()
-                            });
-                            db.ref(`users/${uId}`).update({ last_inactive_notif: currentTime });
-                        }
-                    }
-
-                    // অ্যারেতে ইউজার ডাটা পুশ করা
-                    usersArray.push({ id: uId, name: uName, gp: u.gp || 0, banned: u.banned || false, pending_boosts: u.pending_boosts });
+                    usersArray.push({ id: uId, name: uName, gp: u.gp || 0, banned: u.banned || false });
 
                     if(u.pending_boosts) {
                         Object.keys(u.pending_boosts).forEach(coinId => {
@@ -237,7 +222,6 @@
                     }
                 });
 
-                // GP পয়েন্ট অনুযায়ী বড় থেকে ছোট (Highest GP First) সর্টিং করা
                 usersArray.sort((a, b) => b.gp - a.gp);
 
                 let html = "";
@@ -251,7 +235,6 @@
                     </div>`;
                 });
 
-                // অ্যাক্টিভ পার্সেন্টেজ হিসাব করা
                 let activePercent = count > 0 ? ((activeCount / count) * 100).toFixed(1) : 0;
 
                 document.getElementById('st-users').innerText = count;
